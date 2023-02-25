@@ -443,8 +443,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentLobbyID: 0
-  Hostbutton: {fileID: 935691028}
-  LobbyNameText: {fileID: 1943788755}
 --- !u!114 &612197486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,17 +488,19 @@ MonoBehaviour:
   autoStartServerBuild: 1
   autoConnectClientBuild: 0
   sendRate: 30
-  offlineScene: 
-  onlineScene: 
+  offlineScene: Assets/Scenes/MainMenu.unity
+  onlineScene: Assets/Scenes/Lobby.unity
   transport: {fileID: 612197487}
   networkAddress: localhost
   maxConnections: 100
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 0}
-  autoCreatePlayer: 0
+  playerPrefab: {fileID: 6481003701711376223, guid: c23e29528d260da40850e2efc6c4622b, type: 3}
+  autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 5128584884438735198, guid: df340c9d318be6647b903dd6dae18029, type: 3}
   timeInterpolationGui: 0
+  GamePlayerPrefab: {fileID: 8544065240725089489, guid: df340c9d318be6647b903dd6dae18029, type: 3}
 --- !u!4 &612197489
 Transform:
   m_ObjectHideFlags: 0
@@ -544,7 +544,7 @@ RectTransform:
   m_GameObject: {fileID: 935691028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.82, y: 2.82, z: 2.82}
+  m_LocalScale: {x: 1.7900001, y: 1.7900001, z: 1.7900001}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 346577921}
@@ -787,8 +787,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.3422, y: 222.873}
-  m_SizeDelta: {x: 1389.4948, y: 184.2539}
+  m_AnchoredPosition: {x: 0, y: 79.311104}
+  m_SizeDelta: {x: 956.8329, y: 141.8361}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1943788755
 MonoBehaviour:
@@ -812,7 +812,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 81
+    m_FontSize: 51
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
