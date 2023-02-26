@@ -19,7 +19,7 @@ public class LobbyController : MonoBehaviour
     public ulong CurrentLobbyID;
     public bool PlayerItemCreated = false;
     private List<PlayerListItem> PlayerListItems = new List<PlayerListItem>();
-    public PlayerObjectController LocalPLayerController;
+    public PlayerObjectController LocalPlayerController;
 
     private CustomNetworkManager manager;
 
@@ -49,12 +49,15 @@ public class LobbyController : MonoBehaviour
     public void UpdatePlayerList()
     {
         if(!PlayerItemCreated) { CreateHostPlayerItem(); }
+        if(PlayerListItems.Count < Manager.GamePlayers.Count) { CreateClientPlayerItem(); }
+        if(PlayerListItems.Count > Manager.GamePlayers.Count) { RemovePlayerItem(); }
+        if(PlayerListItems.Count == Manager.GamePlayers.Count) { UpdatePlayerItem(); }
     }
 
     public void FindLocalPlayer()
     {
         LocalPlayerObject = GameObject.Find("LocalGamePlayer");
-        LocalPLayerController = LocalPlayerObject.GetComponent<PlayerObjectController>();
+        LocalPlayerController = LocalPlayerObject.GetComponent<PlayerObjectController>();
     }
 
     public void CreateHostPlayerItem()

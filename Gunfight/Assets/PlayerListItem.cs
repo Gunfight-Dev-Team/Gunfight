@@ -24,7 +24,7 @@ public class PlayerListItem : MonoBehaviour
     public void SetPlayerValues()
     {
         PlayerNameText.text = PlayerName;
-        if(AvatarReceived) { GetPlayerIcon(); }
+        if(!AvatarReceived) { GetPlayerIcon(); }
     }
 
     void GetPlayerIcon()
