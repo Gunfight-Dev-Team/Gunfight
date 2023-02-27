@@ -13,8 +13,24 @@ public class PlayerListItem : MonoBehaviour
 
     public Text PlayerNameText;
     public RawImage PlayerIcon;
+    public Text PlayerReadyText;
+    public bool Ready;
 
     protected Callback<AvatarImageLoaded_t> ImageLoaded;
+
+    public void ChangeReadyStatus()
+    {
+        if(Ready)
+        {
+            PlayerReadyText.text = "Ready";
+            PlayerReadyText.color = Color.green;
+        }
+        else
+        {
+            PlayerReadyText.text = "Not Ready";
+            PlayerReadyText.color = Color.red;
+        }
+    }
 
     private void Start()
     {
@@ -24,7 +40,8 @@ public class PlayerListItem : MonoBehaviour
     public void SetPlayerValues()
     {
         PlayerNameText.text = PlayerName;
-        if(!AvatarReceived) { GetPlayerIcon(); }
+        ChangeReadyStatus();
+        if (!AvatarReceived) { GetPlayerIcon(); }
     }
 
     void GetPlayerIcon()
