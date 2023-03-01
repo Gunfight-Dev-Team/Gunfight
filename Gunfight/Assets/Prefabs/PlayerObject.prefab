@@ -366,7 +366,7 @@ MonoBehaviour:
   target: {fileID: 5568238824894995105}
   offset: {x: 0, y: 0, z: 0}
   deadzoneRadius: 0
-  damping: 0
+  damping: 0.15
 --- !u!1 &5568238824894995105
 GameObject:
   m_ObjectHideFlags: 0
