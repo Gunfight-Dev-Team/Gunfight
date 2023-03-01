@@ -10,6 +10,8 @@ public class CameraController : NetworkBehaviour
 {
     public GameObject cameraHolder;
 
+    public GameObject target;
+
     public Vector3 offset;    // Offset to apply to camera position
 
     public float deadzoneRadius;
@@ -28,17 +30,12 @@ public class CameraController : NetworkBehaviour
         if (SceneManager.GetActiveScene().name == "Game")
         {
 
-            float distance = Vector3.Distance(cameraHolder.transform.position, transform.position);
+            float distance = Vector3.Distance(cameraHolder.transform.position, target.transform.position);
 
             if (distance > deadzoneRadius)
             {
-                Vector3 smoothedPosition = Vector3.SmoothDamp(cameraHolder.transform.position, transform.position, ref velocity, damping);
-                offset = Vector3.Lerp(cameraHolder.transform.position, smoothedPosition, damping);
-                cameraHolder.transform.position = Vector3.Lerp(cameraHolder.transform.position, smoothedPosition, damping);
-            }
-            else
-            {
-                cameraHolder.transform.position = offset;
+                Vector3 smoothedPosition = Vector3.SmoothDamp(cameraHolder.transform.position, target.transform.position, ref velocity, damping);
+                cameraHolder.transform.position = smoothedPosition;
             }
         }
     }
@@ -46,6 +43,6 @@ public class CameraController : NetworkBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, deadzoneRadius);
+        Gizmos.DrawWireSphere(cameraHolder.transform.position, deadzoneRadius);
     }
 }

@@ -8,6 +8,10 @@ public class PlayerMovementController : NetworkBehaviour
 {
     public float Speed = 5.0f;
     public GameObject PlayerModel;
+    public Rigidbody2D rb;
+    public Camera cam;
+
+    private Vector2 mousePos;
 
     private void Start()
     {
@@ -33,7 +37,7 @@ public class PlayerMovementController : NetworkBehaviour
 
     public void SetPosition()
     {
-        transform.position = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0.0f);
+        PlayerModel.transform.position = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0.0f);
     }
 
     public void Movement()
@@ -41,8 +45,19 @@ public class PlayerMovementController : NetworkBehaviour
         float xDirection = Input.GetAxis("Horizontal");
         float yDirection = Input.GetAxis("Vertical");
 
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = cam.ScreenToWorldPoint(mousePosition);
+
+        Vector2 direction = new Vector2(
+            mousePosition.x - PlayerModel.transform.position.x,
+            mousePosition.y - PlayerModel.transform.position.y
+        );
+
+        PlayerModel.transform.up = direction;
+
         Vector3 moveDirection = new Vector3(xDirection, yDirection, 0.0f);
 
-        transform.position += moveDirection * Speed * Time.deltaTime;
+        PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
+        
     }
 }
