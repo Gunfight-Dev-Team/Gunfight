@@ -363,9 +363,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   cameraHolder: {fileID: 1980555527576154038}
+  cam: {fileID: 1343792888070247277}
   target: {fileID: 5568238824894995105}
   offset: {x: 0, y: 0, z: 0}
   deadzoneRadius: 0
+  mouseRangeRadius: 0.2
   damping: 0.15
 --- !u!1 &5568238824894995105
 GameObject:
