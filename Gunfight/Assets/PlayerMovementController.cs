@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class PlayerMovementController : NetworkBehaviour
 {
     public float Speed = 5.0f;
     public GameObject PlayerModel;
-    public Rigidbody2D rb;
     public Camera cam;
+    public Transform shootPoint;
+    public float bulletTrailSpeed;
+    public GameObject bulletTrail;
+    public float weaponRange = 10f;
+
+
 
     private Vector2 mousePos;
 
@@ -30,6 +36,7 @@ public class PlayerMovementController : NetworkBehaviour
             
             if(isOwned)
             {
+                Shooting();
                 Movement();
             }
         }
@@ -58,6 +65,31 @@ public class PlayerMovementController : NetworkBehaviour
         Vector3 moveDirection = new Vector3(xDirection, yDirection, 0.0f);
 
         PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
-        
+     
+    }
+
+    public void Shooting()
+    {
+        if(Input.GetButtonDown("Fire1"))
+        {
+            Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 direction = (mousePos - (Vector2)shootPoint.position).normalized;
+            RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, direction, weaponRange);
+
+            var trail = Instantiate(bulletTrail, shootPoint.position, PlayerModel.transform.rotation);
+
+            var trailScript = trail.GetComponent<BulletTrail>();
+
+            if (hit.collider != null) //&& hit.collider.CompareTag("Enemy")
+            {
+                Debug.Log("hit");
+                trailScript.SetTargetPosition(hit.point);
+            }
+            else
+            {
+                var endPos = shootPoint.position + PlayerModel.transform.up * weaponRange;
+                trailScript.SetTargetPosition(endPos);
+            }
+        }
     }
 }
