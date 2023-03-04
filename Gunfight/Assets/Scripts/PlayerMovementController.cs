@@ -44,13 +44,13 @@ public class PlayerMovementController : NetworkBehaviour
     public void SetPosition()
     {
         if (poc.PlayerIdNumber == 1)
-            PlayerModel.transform.position = new Vector3(100.0f, 100.0f, 0.0f);
+            PlayerModel.transform.position = new Vector3(25.0f, 25.0f, 0.0f);
         if (poc.PlayerIdNumber == 2)
-            PlayerModel.transform.position = new Vector3(-1.0f, -1.0f, 0.0f);
+            PlayerModel.transform.position = new Vector3(-25.0f, -25.0f, 0.0f);
         if (poc.PlayerIdNumber == 3)
-            PlayerModel.transform.position = new Vector3(-1.0f, 1.0f, 0.0f);
+            PlayerModel.transform.position = new Vector3(-25.0f, 25.0f, 0.0f);
         if (poc.PlayerIdNumber == 4)
-            PlayerModel.transform.position = new Vector3(1.0f, -1.0f, 0.0f);
+            PlayerModel.transform.position = new Vector3(25.0f, -25.0f, 0.0f);
     }
 
     public void Movement()
