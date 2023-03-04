@@ -1,34 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Mirror;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovementController : NetworkBehaviour
 {
     public float Speed = 5.0f;
+
     public GameObject PlayerModel;
+
     public Rigidbody2D rb;
+
     public Camera cam;
+
+    public PlayerObjectController poc;
 
     private Vector2 mousePos;
 
     private void Start()
     {
         PlayerModel.SetActive(false);
+        poc = GetComponent<PlayerObjectController>();
     }
 
     private void Update()
     {
-        if(SceneManager.GetActiveScene().name == "Game")
+        if (SceneManager.GetActiveScene().name == "Game")
         {
-            if(PlayerModel.activeSelf == false)
+            if (PlayerModel.activeSelf == false)
             {
                 SetPosition();
                 PlayerModel.SetActive(true);
             }
-            
-            if(isOwned)
+
+            if (isOwned)
             {
                 Movement();
             }
@@ -37,7 +43,14 @@ public class PlayerMovementController : NetworkBehaviour
 
     public void SetPosition()
     {
-        PlayerModel.transform.position = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0.0f);
+        if (poc.PlayerIdNumber == 1)
+            PlayerModel.transform.position = new Vector3(100.0f, 100.0f, 0.0f);
+        if (poc.PlayerIdNumber == 2)
+            PlayerModel.transform.position = new Vector3(-1.0f, -1.0f, 0.0f);
+        if (poc.PlayerIdNumber == 3)
+            PlayerModel.transform.position = new Vector3(-1.0f, 1.0f, 0.0f);
+        if (poc.PlayerIdNumber == 4)
+            PlayerModel.transform.position = new Vector3(1.0f, -1.0f, 0.0f);
     }
 
     public void Movement()
@@ -48,16 +61,15 @@ public class PlayerMovementController : NetworkBehaviour
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = cam.ScreenToWorldPoint(mousePosition);
 
-        Vector2 direction = new Vector2(
-            mousePosition.x - PlayerModel.transform.position.x,
-            mousePosition.y - PlayerModel.transform.position.y
-        );
+        Vector2 direction =
+            new Vector2(mousePosition.x - PlayerModel.transform.position.x,
+                mousePosition.y - PlayerModel.transform.position.y);
 
         PlayerModel.transform.up = direction;
 
         Vector3 moveDirection = new Vector3(xDirection, yDirection, 0.0f);
 
-        PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
-        
+        PlayerModel.transform.position +=
+            moveDirection * Speed * Time.deltaTime;
     }
 }
