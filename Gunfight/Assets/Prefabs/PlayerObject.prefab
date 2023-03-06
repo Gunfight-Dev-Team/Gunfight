@@ -295,6 +295,7 @@ MonoBehaviour:
   PlayerModel: {fileID: 5568238824894995105}
   rb: {fileID: 0}
   cam: {fileID: 1343792888070247277}
+  poc: {fileID: 0}
 --- !u!114 &2587965880881467095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,4 +450,4 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
