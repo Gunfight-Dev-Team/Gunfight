@@ -26,7 +26,8 @@ namespace MyPlayer
                 // [x] TODO: pass the data to the local player
                 Destroy(gameObject);
                 other.GetComponent<PlayerInfo>().nAmmo = weapon.nAmmo;
-                Debug.Log("Ammo: " + other.GetComponent<PlayerInfo>());
+                other.GetComponent<PlayerInfo>().range = weapon.range;
+                other.GetComponent<PlayerInfo>().speedOfPlayer = weapon.speedOfPlayer;
             }
         }
     }
