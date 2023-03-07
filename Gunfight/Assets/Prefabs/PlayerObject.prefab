@@ -329,6 +329,7 @@ MonoBehaviour:
   bulletTrailSpeed: 5
   bulletTrail: {fileID: 1592149606584016135, guid: 4c106be7ad5b0b74b8016d506cb6e36e, type: 3}
   weaponRange: 10
+  health: 10
 --- !u!114 &2587965880881467095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,7 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab2cbc52526ea384ba280d13cd1a57b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
   syncInterval: 0.1
   target: {fileID: 7556019727412048153}

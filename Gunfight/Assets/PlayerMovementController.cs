@@ -14,7 +14,7 @@ public class PlayerMovementController : NetworkBehaviour
     public float bulletTrailSpeed;
     public GameObject bulletTrail;
     public float weaponRange = 10f;
-    public float health = 10f;
+    [SyncVar] public float health = 10f;
 
 
 
