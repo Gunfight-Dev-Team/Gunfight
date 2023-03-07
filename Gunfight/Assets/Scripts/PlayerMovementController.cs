@@ -24,7 +24,7 @@ public class PlayerMovementController : NetworkBehaviour
         poc = GetComponent<PlayerObjectController>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
@@ -69,7 +69,8 @@ public class PlayerMovementController : NetworkBehaviour
 
         Vector3 moveDirection = new Vector3(xDirection, yDirection, 0.0f);
 
-        PlayerModel.transform.position +=
-            moveDirection * Speed * Time.deltaTime;
+        rb.MovePosition(PlayerModel.transform.position + moveDirection * Speed * Time.deltaTime);
+        //PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
+
     }
 }

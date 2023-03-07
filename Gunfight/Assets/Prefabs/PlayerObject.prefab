@@ -293,7 +293,7 @@ MonoBehaviour:
   syncInterval: 0.1
   Speed: 7
   PlayerModel: {fileID: 5568238824894995105}
-  rb: {fileID: 0}
+  rb: {fileID: 7556019727412048153}
   cam: {fileID: 1343792888070247277}
   poc: {fileID: 0}
 --- !u!114 &2587965880881467095
