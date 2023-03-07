@@ -69,9 +69,7 @@ public class PlayerMovementController : NetworkBehaviour
 
         Vector3 moveDirection = new Vector3(xDirection, yDirection, 0.0f);
 
-        rb
-            .MovePosition(PlayerModel.transform.position +
-            moveDirection * Speed * Time.deltaTime);
+        rb.MovePosition(PlayerModel.transform.position + moveDirection * Speed * Time.deltaTime);
         //PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
     }
 }
