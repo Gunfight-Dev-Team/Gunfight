@@ -84,6 +84,7 @@ public class PlayerMovementController : NetworkBehaviour
             {
                 Debug.Log("hit");
                 trailScript.SetTargetPosition(hit.point);
+                Destroy(hit.collider.gameObject);
             }
             else
             {
