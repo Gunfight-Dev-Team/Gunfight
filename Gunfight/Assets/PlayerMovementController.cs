@@ -14,6 +14,7 @@ public class PlayerMovementController : NetworkBehaviour
     public float bulletTrailSpeed;
     public GameObject bulletTrail;
     public float weaponRange = 10f;
+    public float health = 10f;
 
 
 
@@ -31,7 +32,10 @@ public class PlayerMovementController : NetworkBehaviour
             if(PlayerModel.activeSelf == false)
             {
                 SetPosition();
-                PlayerModel.SetActive(true);
+                if (health >= 9)
+                {
+                    PlayerModel.SetActive(true);
+                }
             }
             
             if(isOwned)
@@ -85,6 +89,7 @@ public class PlayerMovementController : NetworkBehaviour
                 Debug.Log("hit");
                 trailScript.SetTargetPosition(hit.point);
                 hit.collider.gameObject.SetActive(false);
+                hit.collider.gameObject.GetComponent<PlayerMovementController>().health -= 1;
             }
             else
             {
