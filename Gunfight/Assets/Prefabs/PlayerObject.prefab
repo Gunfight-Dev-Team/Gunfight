@@ -93,6 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2011693276686711293}
+  - component: {fileID: 8527434122960156324}
   m_Layer: 0
   m_Name: CameraHolder
   m_TagString: Untagged
@@ -116,6 +117,27 @@ Transform:
   m_Father: {fileID: 8189162925337818591}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &8527434122960156324
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980555527576154038}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &2635938949277048717
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,8 +315,9 @@ MonoBehaviour:
   syncInterval: 0.1
   Speed: 7
   PlayerModel: {fileID: 5568238824894995105}
-  rb: {fileID: 0}
+  rb: {fileID: 7556019727412048153}
   cam: {fileID: 1343792888070247277}
+  poc: {fileID: 0}
 --- !u!114 &2587965880881467095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,6 +386,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   cameraHolder: {fileID: 1980555527576154038}
+  rb: {fileID: 8527434122960156324}
   cam: {fileID: 1343792888070247277}
   target: {fileID: 5568238824894995105}
   offset: {x: 0, y: 0, z: 0}
@@ -449,4 +473,4 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4

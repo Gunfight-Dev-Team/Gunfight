@@ -5,10 +5,13 @@ using UnityEngine.SceneManagement;
 using Mirror;
 using static UnityEngine.GraphicsBuffer;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class CameraController : NetworkBehaviour
 {
     public GameObject cameraHolder;
+
+    public Rigidbody2D rb;
 
     public Camera cam;
 
@@ -52,7 +55,8 @@ public class CameraController : NetworkBehaviour
             if (distance > deadzoneRadius)
             {
                 Vector3 smoothedPosition = Vector3.SmoothDamp(cameraHolder.transform.position, trackedPosition, ref velocity, damping);
-                cameraHolder.transform.position = smoothedPosition;
+                rb.MovePosition(smoothedPosition);
+                //cameraHolder.transform.position = smoothedPosition;
             }
         }
     }
