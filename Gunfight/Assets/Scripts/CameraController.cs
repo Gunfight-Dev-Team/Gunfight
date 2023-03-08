@@ -34,7 +34,7 @@ public class CameraController : NetworkBehaviour
         cameraHolder.SetActive(true);
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
@@ -56,7 +56,7 @@ public class CameraController : NetworkBehaviour
             {
                 //Vector3 smoothedPosition = Vector3.SmoothDamp(cameraHolder.transform.position, trackedPosition, ref velocity, damping);
                 Vector3 smoothedPosition = Vector3.Lerp(cameraHolder.transform.position, trackedPosition, 10f*Time.deltaTime);
-               rb.MovePosition(smoothedPosition);
+                rb.MovePosition(smoothedPosition);
                 //cameraHolder.transform.position = smoothedPosition;
             }
         }
