@@ -54,8 +54,9 @@ public class CameraController : NetworkBehaviour
 
             if (distance > deadzoneRadius)
             {
-                Vector3 smoothedPosition = Vector3.SmoothDamp(cameraHolder.transform.position, trackedPosition, ref velocity, damping);
-                rb.MovePosition(smoothedPosition);
+                //Vector3 smoothedPosition = Vector3.SmoothDamp(cameraHolder.transform.position, trackedPosition, ref velocity, damping);
+                Vector3 smoothedPosition = Vector3.Lerp(cameraHolder.transform.position, trackedPosition, 10f*Time.deltaTime);
+               rb.MovePosition(smoothedPosition);
                 //cameraHolder.transform.position = smoothedPosition;
             }
         }
