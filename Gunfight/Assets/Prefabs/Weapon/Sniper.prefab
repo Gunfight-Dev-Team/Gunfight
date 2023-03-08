@@ -73,8 +73,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -994250803
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 674281414, guid: ed1297ad7c9744ae588737ab36753c10, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6895cd0efb0348748ae51ff21e06d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 
+  id: 3
   nAmmo: 0
   range: 0
   speedOfPlayer: 0
@@ -115,6 +115,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b43d130e2b24a4753ae908b13164ff79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AK47: {fileID: 4542724738798047833, guid: efc55c34014bb429f9bc3e7f34407cb8, type: 3}
+  Knife: {fileID: 4434992512352626665, guid: 14bd63210f2db4523b027bf496721467, type: 3}
+  Pistol: {fileID: 222421779905360649, guid: 0bfa630724c5f46b69b36048d06b930c, type: 3}
+  Sniper: {fileID: 732958966662152150}
+  Uzi: {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
   weapon: {fileID: 732958966662152148}
 --- !u!61 &-8204547055257126754
 BoxCollider2D:
@@ -140,5 +145,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.32, y: 0.32}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0

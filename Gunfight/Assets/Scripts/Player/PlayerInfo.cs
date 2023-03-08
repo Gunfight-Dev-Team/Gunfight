@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInfo : MonoBehaviour
 {
-    public int weaponID;
+    public WeaponID weaponID;
     public int nAmmo;
     public float range;
 

@@ -404,6 +404,8 @@ GameObject:
   - component: {fileID: 5993130751786850207}
   - component: {fileID: 6255961073072909304}
   - component: {fileID: 7556019727412048153}
+  - component: {fileID: 6727467425346759176}
+  - component: {fileID: 3342560200271500876}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -474,3 +476,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &6727467425346759176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5568238824894995105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79d062394567c4549b1ac299a4ac3da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponID: 1
+  nAmmo: 0
+  range: 0
+  speedOfPlayer: 0
+  health: 0
+  equipments: 
+--- !u!210 &3342560200271500876
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5568238824894995105}
+  m_Enabled: 1
+  m_SortingLayerID: -495451703
+  m_SortingLayer: 3
+  m_SortingOrder: 0
