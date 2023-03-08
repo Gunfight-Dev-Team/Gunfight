@@ -72,30 +72,41 @@ public class PlayerMovementController : NetworkBehaviour
      
     }
 
+    [Command]
+    void CmdShootRay()
+    {
+        RpcFireWeapon();
+    }
+
+    [ClientRpc]
+    void RpcFireWeapon()
+    {
+        Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mousePos - (Vector2)shootPoint.position).normalized;
+        RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, direction, weaponRange);
+
+        var trail = Instantiate(bulletTrail, shootPoint.position, PlayerModel.transform.rotation);
+
+        var trailScript = trail.GetComponent<BulletTrail>();
+
+        if (hit.collider != null) //&& hit.collider.CompareTag("Enemy")
+        {
+            trailScript.SetTargetPosition(hit.point);
+            hit.collider.gameObject.SetActive(false);
+            //hit.collider.gameObject.GetComponent<PlayerMovementController>().health -= 1;
+        }
+        else
+        {
+            var endPos = shootPoint.position + PlayerModel.transform.up * weaponRange;
+            trailScript.SetTargetPosition(endPos);
+        }
+    }
+
     public void Shooting()
     {
         if(Input.GetButtonDown("Fire1"))
         {
-            Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mousePos - (Vector2)shootPoint.position).normalized;
-            RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, direction, weaponRange);
-
-            var trail = Instantiate(bulletTrail, shootPoint.position, PlayerModel.transform.rotation);
-
-            var trailScript = trail.GetComponent<BulletTrail>();
-
-            if (hit.collider != null) //&& hit.collider.CompareTag("Enemy")
-            {
-                Debug.Log("hit");
-                trailScript.SetTargetPosition(hit.point);
-                hit.collider.gameObject.SetActive(false);
-                hit.collider.gameObject.GetComponent<PlayerMovementController>().health -= 1;
-            }
-            else
-            {
-                var endPos = shootPoint.position + PlayerModel.transform.up * weaponRange;
-                trailScript.SetTargetPosition(endPos);
-            }
+            RpcFireWeapon();
         }
     }
 }
