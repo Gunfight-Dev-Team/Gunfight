@@ -20,7 +20,7 @@ namespace MyPlayer
 
         private Transform child;
 
-        private Collider2D collider;
+        private Collider2D OtherCollider;
 
         private void Start()
         {
@@ -32,7 +32,7 @@ namespace MyPlayer
             if (other.CompareTag("Player"))
             {
                 canPickup = true;
-                collider = other;
+                OtherCollider = other;
             }
         }
 
@@ -50,8 +50,8 @@ namespace MyPlayer
             {
                 // Pick up the weapon
                 Debug.Log("Weapon picked up!");
-                Drop(child.GetComponent<PlayerInfo>().weaponID, child.GetComponent<Collider2D>());
-                PickUp(child.GetComponent<Collider2D>());
+                Drop(OtherCollider.GetComponent<PlayerInfo>().weaponID, OtherCollider);
+                PickUp(OtherCollider);
             }
         }
 
@@ -67,7 +67,7 @@ namespace MyPlayer
             };
 
             GameObject newWeapon = Instantiate(weapons[newWeaponID], 
-                                        collider.GetComponent<Transform>().position, 
+                                        OtherCollider.GetComponent<Transform>().position, 
                                         weapons[newWeaponID].transform.rotation);
             newWeapon.GetComponent<WeaponInfo>().nAmmo = other.GetComponent<PlayerInfo>().nAmmo;
             newWeapon.GetComponent<WeaponInfo>().range = other.GetComponent<PlayerInfo>().range;
