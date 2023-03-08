@@ -14,14 +14,44 @@ namespace MyPlayer
         [SerializeField] private GameObject Uzi;
 
         public WeaponInfo weapon;
+        public GameObject Player;
 
-        void OnTriggerStay2D(Collider2D other)
+        private bool canPickup = false;
+
+        private Transform child;
+
+        private Collider2D collider;
+
+        private void Start()
         {
-            if (other.gameObject.name == "Player" && Input.GetKeyDown(KeyCode.E))
+            child = Player.transform.Find("Player");
+        }
+
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
             {
-                // [ ] TODO: what happen if grenade is drop?
-                Drop(other.GetComponent<PlayerInfo>().weaponID, other);
-                PickUp(other);
+                canPickup = true;
+                collider = other;
+            }
+        }
+
+        void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                canPickup = false;
+            }
+        }
+
+        void Update()
+        {
+            if (canPickup && Input.GetKeyDown(KeyCode.E))
+            {
+                // Pick up the weapon
+                Debug.Log("Weapon picked up!");
+                Drop(child.GetComponent<PlayerInfo>().weaponID, child.GetComponent<Collider2D>());
+                PickUp(child.GetComponent<Collider2D>());
             }
         }
 
@@ -37,7 +67,7 @@ namespace MyPlayer
             };
 
             GameObject newWeapon = Instantiate(weapons[newWeaponID], 
-                                        other.GetComponent<Transform>().position, 
+                                        collider.GetComponent<Transform>().position, 
                                         weapons[newWeaponID].transform.rotation);
             newWeapon.GetComponent<WeaponInfo>().nAmmo = other.GetComponent<PlayerInfo>().nAmmo;
             newWeapon.GetComponent<WeaponInfo>().range = other.GetComponent<PlayerInfo>().range;

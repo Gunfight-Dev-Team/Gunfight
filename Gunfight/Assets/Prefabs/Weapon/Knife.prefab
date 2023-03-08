@@ -121,6 +121,7 @@ MonoBehaviour:
   Sniper: {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
   Uzi: {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
   weapon: {fileID: 4434992512352626667}
+  Player: {fileID: 5128584884438735198, guid: df340c9d318be6647b903dd6dae18029, type: 3}
 --- !u!61 &3116356718501793633
 BoxCollider2D:
   m_ObjectHideFlags: 0
