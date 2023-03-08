@@ -92,6 +92,7 @@ public class PlayerMovementController : NetworkBehaviour
 
         if (hit.collider != null) //&& hit.collider.CompareTag("Enemy")
         {
+            Debug.Log("hit");
             trailScript.SetTargetPosition(hit.point);
             hit.collider.gameObject.SetActive(false);
             //hit.collider.gameObject.GetComponent<PlayerMovementController>().health -= 1;
