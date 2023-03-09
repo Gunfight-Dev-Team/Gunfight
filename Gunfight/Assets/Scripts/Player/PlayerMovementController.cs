@@ -232,6 +232,41 @@ public class PlayerMovementController : NetworkBehaviour
             var endPos = shootPoint + PlayerModel.transform.up * weaponRange;
             trailScript.SetTargetPosition(endPos);
         }
+
+        RpcShoot(hit, shootPoint);
+    }
+
+    [ClientRpc]
+    void RpcShoot(RaycastHit2D hit, Vector3 shootPoint)
+    {
+        var trail = Instantiate(bulletTrail, shootPoint, PlayerModel.transform.rotation);
+
+        var trailScript = trail.GetComponent<BulletTrail>();
+
+        NetworkServer.Spawn(trail);
+
+        if (hit.collider != null && !hit.collider.CompareTag("Uncolliable")) //&& hit.collider.CompareTag("Enemy")
+        {
+            Debug.Log("hit");
+            trailScript.SetTargetPosition(hit.point);
+            var hp = Instantiate(hitParticle, hit.point, Quaternion.identity);
+
+
+            /*            NetworkServer.Spawn(hp.gameObject);*/
+
+
+
+            if (hit.collider.gameObject.tag == "Player")
+            {
+                Debug.Log("Hit Player");
+                hit.collider.gameObject.transform.parent.gameObject.GetComponent<PlayerMovementController>().health -= 1;
+            }
+        }
+        else
+        {
+            var endPos = shootPoint + PlayerModel.transform.up * weaponRange;
+            trailScript.SetTargetPosition(endPos);
+        }
     }
 
     public void Shooting()
