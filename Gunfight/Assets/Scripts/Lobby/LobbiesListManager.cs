@@ -11,6 +11,8 @@ public class LobbiesListManager : MonoBehaviour
     public GameObject lobbyDataItemPrefab;
     public GameObject lobbyListContent;
 
+    public GameObject title;
+
     public GameObject lobbiesButton, hostButton;
 
     public List<GameObject> listOfLobbies = new List<GameObject> ();
@@ -24,7 +26,7 @@ public class LobbiesListManager : MonoBehaviour
     {
         lobbiesButton.SetActive (false);
         hostButton.SetActive (false);
-
+        title.SetActive(false);
         lobbiesMenu.SetActive (true);
 
         SteamLobby.Instance.GetLobbiesList();
@@ -34,7 +36,7 @@ public class LobbiesListManager : MonoBehaviour
     {
         lobbiesButton.SetActive(true);
         hostButton.SetActive(true);
-
+        title.SetActive(true);
         lobbiesMenu.SetActive(false);
 
         DestroyLobbies();

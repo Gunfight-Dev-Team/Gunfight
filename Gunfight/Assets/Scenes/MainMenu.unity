@@ -576,6 +576,7 @@ MonoBehaviour:
   lobbiesMenu: {fileID: 1445603130}
   lobbyDataItemPrefab: {fileID: 2876961585267011576, guid: 9ca142c05d64801419dd5e3da43e312d, type: 3}
   lobbyListContent: {fileID: 726496109}
+  title: {fileID: 1055331421}
   lobbiesButton: {fileID: 897089076}
   hostButton: {fileID: 935691028}
   listOfLobbies: []
