@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -217,10 +218,10 @@ public class PlayerMovementController : NetworkBehaviour
             {
                 Debug.Log("hit");
                 trailScript.SetTargetPosition(hit.point);
-                hit.collider.gameObject.SetActive(false);
                 if (hit.collider.gameObject.tag == "Player")
                 {
                     Debug.Log("Hit Player");
+                    hit.collider.gameObject.SetActive(false);
                     CmdDamage(hit.collider.gameObject.transform.parent.gameObject);
                 }
             }
