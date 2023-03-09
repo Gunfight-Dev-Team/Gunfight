@@ -108,7 +108,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598924796804092196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.228, y: 0.84, z: 0}
+  m_LocalPosition: {x: 0.2, y: 0.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -375,14 +375,16 @@ MonoBehaviour:
   - {fileID: -783792538, guid: 341650319fed14e399a261df191e77d8, type: 3}
   - {fileID: -842534410, guid: 97ed5b8f7f7694df390eae63fe2aa800, type: 3}
   - {fileID: -2060054260, guid: 88246d8b03dfa42eea1835f10405572b, type: 3}
+  deadSprite: {fileID: 21300000, guid: 4b173ce0b57e0a44cb57379331f3e381, type: 3}
   player: {fileID: 5568238824894995105}
   spriteRenderer: {fileID: 5891011091002882805}
-  cam: {fileID: 1343792888070247277}
   shootPoint: {fileID: 4178969342016999261}
   bulletTrailSpeed: 5
   bulletTrail: {fileID: 1592149606584016135, guid: 4c106be7ad5b0b74b8016d506cb6e36e, type: 3}
   weaponRange: 10
   health: 10
+  isDead: 0
+  hitParticle: {fileID: 6237037792323056697, guid: 383d96aac74cf654b973f8fe364cf4d6, type: 3}
 --- !u!114 &2587965880881467095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,7 +586,7 @@ GameObject:
   - component: {fileID: 1574322347707904020}
   m_Layer: 0
   m_Name: Bound
-  m_TagString: Untagged
+  m_TagString: Uncolliable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

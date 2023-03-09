@@ -41,6 +41,9 @@ public class PlayerMovementController : NetworkBehaviour
     public GameObject bulletTrail;
     public float weaponRange = 10f;
     public float health = 10f;
+    public bool isDead = false;
+
+    public ParticleSystem hitParticle;
 
     private Vector2 mousePos;
 
@@ -64,7 +67,6 @@ public class PlayerMovementController : NetworkBehaviour
 
             if (isLocalPlayer)
             {
-                Shooting();
                 Movement();
             }
         }
@@ -72,6 +74,15 @@ public class PlayerMovementController : NetworkBehaviour
 
     private void Update()
     {
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            if (isLocalPlayer)
+            {
+                Shooting();
+            }
+        }
+            if (isDead)
+            spriteRenderer.sprite = deadSprite;
         if (team.Equals(Team.Green))
         {
             // [ ] TODO: change it to be using event intead of update
@@ -191,20 +202,35 @@ public class PlayerMovementController : NetworkBehaviour
     }
 
     [Command]
-    public void CmdDamage(GameObject enemyPlayer)
+    void CmdShoot(RaycastHit2D hit, Vector3 shootPoint)
     {
-        RpcDamage(enemyPlayer);
-    }
+        var trail = Instantiate(bulletTrail, shootPoint, PlayerModel.transform.rotation);
 
-    [ClientRpc]
-    public void RpcDamage(GameObject enemyPlayer)
-    {
-        enemyPlayer.GetComponent<PlayerMovementController>().health -= 1;
-        if (health < 8)
+        var trailScript = trail.GetComponent<BulletTrail>();
+
+        NetworkServer.Spawn(trail);
+
+        if (hit.collider != null && !hit.collider.CompareTag("Uncolliable")) //&& hit.collider.CompareTag("Enemy")
         {
-            enemyPlayer.GetComponent<SpriteRenderer>().sprite = deadSprite;
-            if (enemyPlayer.transform.parent.gameObject == NetworkClient.localPlayer.gameObject)
-                Debug.Log("im dead now");
+            Debug.Log("hit");
+            trailScript.SetTargetPosition(hit.point);
+            var hp = Instantiate(hitParticle, hit.point, Quaternion.identity);
+
+            
+/*            NetworkServer.Spawn(hp.gameObject);*/
+
+
+
+            if (hit.collider.gameObject.tag == "Player")
+            {
+                Debug.Log("Hit Player");
+                hit.collider.gameObject.transform.parent.gameObject.GetComponent<PlayerMovementController>().health -= 1;
+            }
+        }
+        else
+        {
+            var endPos = shootPoint + PlayerModel.transform.up * weaponRange;
+            trailScript.SetTargetPosition(endPos);
         }
     }
 
@@ -212,32 +238,12 @@ public class PlayerMovementController : NetworkBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
+            Debug.Log("mouse pressed");
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = (mousePos - (Vector2)shootPoint.position).normalized;
             RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, direction, weaponRange);
 
-            var trail = Instantiate(bulletTrail, shootPoint.position, PlayerModel.transform.rotation);
-            if (isServer)
-                NetworkServer.Spawn(trail);
-
-            var trailScript = trail.GetComponent<BulletTrail>();
-
-            if (hit.collider != null) //&& hit.collider.CompareTag("Enemy")
-            {
-                Debug.Log("hit");
-                trailScript.SetTargetPosition(hit.point);
-                if (hit.collider.gameObject.tag == "Player")
-                {
-                    Debug.Log("Hit Player");
-                    hit.collider.gameObject.SetActive(false);
-                    CmdDamage(hit.collider.gameObject.transform.parent.gameObject);
-                }
-            }
-            else
-            {
-                var endPos = shootPoint.position + PlayerModel.transform.up * weaponRange;
-                trailScript.SetTargetPosition(endPos);
-            }
+            CmdShoot(hit, shootPoint.position);
         }
     }
 }
