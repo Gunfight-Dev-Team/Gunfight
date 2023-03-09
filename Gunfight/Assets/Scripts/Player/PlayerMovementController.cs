@@ -201,7 +201,7 @@ public class PlayerMovementController : NetworkBehaviour
         //PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
     }
 
-    [Command]
+    [Command (requiresAuthority = false)]
     void CmdShoot(RaycastHit2D hit, Vector3 shootPoint)
     {
         var trail = Instantiate(bulletTrail, shootPoint, PlayerModel.transform.rotation);
