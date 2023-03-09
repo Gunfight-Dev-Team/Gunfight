@@ -39,7 +39,7 @@ public class PlayerMovementController : NetworkBehaviour
                 }
             }
             
-            if(isOwned)
+            if(isLocalPlayer)
             {
                 Shooting();
                 Movement();
@@ -85,6 +85,12 @@ public class PlayerMovementController : NetworkBehaviour
         
     }
 
+    [Command]
+    public void CmdShoot(GameObject enemyPlayer)
+    {
+        enemyPlayer.GetComponent<PlayerMovementController>().health -= 1;
+    }
+
     public void Shooting()
     {
         if(Input.GetButtonDown("Fire1"))
@@ -107,7 +113,7 @@ public class PlayerMovementController : NetworkBehaviour
                 if (hit.collider.gameObject.tag == "Player")
                 {
                     Debug.Log("Hit Player");
-                    hit.collider.gameObject.transform.parent.GetComponent<PlayerMovementController>().health -= 1;
+                    CmdShoot(hit.collider.gameObject.transform.parent.gameObject);
                 }
             }
             else
