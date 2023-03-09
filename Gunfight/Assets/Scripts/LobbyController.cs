@@ -169,10 +169,10 @@ public class LobbyController : MonoBehaviour
                     PlayerListItemScript.PlayerName = player.PlayerName;
                     PlayerListItemScript.Ready = player.Ready;
                     PlayerListItemScript.SetPlayerValues();
-                    if(player == LocalPlayerController)
-                    {
-                        UpdateButton();
-                    }
+                    // if(player == LocalPlayerController)
+                    // {
+                    //     UpdateButton();
+                    // }
                 }
             }
         }
