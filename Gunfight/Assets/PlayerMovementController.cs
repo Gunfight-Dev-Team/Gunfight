@@ -93,7 +93,8 @@ public class PlayerMovementController : NetworkBehaviour
             RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, direction, weaponRange);
 
             var trail = Instantiate(bulletTrail, shootPoint.position, PlayerModel.transform.rotation);
-            NetworkServer.Spawn(trail);
+            if(isServer)
+                NetworkServer.Spawn(trail);
 
             var trailScript = trail.GetComponent<BulletTrail>();
 
