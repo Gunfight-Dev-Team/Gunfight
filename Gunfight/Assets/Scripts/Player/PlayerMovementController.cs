@@ -55,9 +55,10 @@ public class PlayerMovementController : NetworkBehaviour
         {
             if (PlayerModel.activeSelf == false)
             {
+                if (health > 8)
+                    PlayerModel.SetActive(true);
                 SetPosition();
                 SetTeam();
-                PlayerModel.SetActive(true);
             }
 
             if (isLocalPlayer)
@@ -191,13 +192,15 @@ public class PlayerMovementController : NetworkBehaviour
     [Command]
     public void CmdDamage(GameObject enemyPlayer)
     {
-        enemyPlayer.GetComponent<PlayerMovementController>().health -= 1;
+        RpcDamage(enemyPlayer);
     }
 
-    [Command]
-    public void CmdShoot()
+    [ClientRpc]
+    public void RpcDamage(GameObject enemyPlayer)
     {
-
+        enemyPlayer.GetComponent<PlayerMovementController>().health -= 1;
+        if(health < 8)
+            enemyPlayer.SetActive(false);
     }
 
     public void Shooting()
