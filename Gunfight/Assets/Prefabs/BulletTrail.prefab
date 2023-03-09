@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4284270888967191350}
   - component: {fileID: 6990584320810495396}
   - component: {fileID: 4148816715019666460}
+  - component: {fileID: 7396241305219023722}
   m_Layer: 0
   m_Name: BulletTrail
   m_TagString: Untagged
@@ -171,4 +172,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6402c85ce6772f64bb72b28f63ca19dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.1
   speed: 200
+--- !u!114 &7396241305219023722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592149606584016135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 8199615470481138470}
+  clientAuthority: 0
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  onlySyncOnChange: 1
+  bufferResetMultiplier: 5
+  positionSensitivity: 0.01
+  rotationSensitivity: 0.01
+  scaleSensitivity: 0.01

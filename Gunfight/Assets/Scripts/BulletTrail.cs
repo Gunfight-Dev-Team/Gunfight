@@ -13,27 +13,10 @@ public class BulletTrail : NetworkBehaviour
 
     [SerializeField] private float speed = 40f;
 
-    public override void OnStartServer()
-    {
-        Invoke(nameof(DestroySelf), 0.02f);
-    }
-
     void Start()
     {
         startPos = transform.position.WithAxis(Axis.Z, -1);
     }
-
-    // destroy for everyone on the server
-    [Server]
-    void DestroySelf()
-    {
-        NetworkServer.Destroy(gameObject);
-    }
-
-    // ServerCallback because we don't want a warning
-    // if OnTriggerEnter is called on the client
-    [ServerCallback]
-    void OnTriggerEnter(Collider co) => DestroySelf();
 
     // Update is called once per frame
     void Update()
