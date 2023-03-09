@@ -31,6 +31,7 @@ public class PlayerMovementController : NetworkBehaviour
     [SerializeField] public Sprite[] redSprite;
     [SerializeField] public Sprite[] orangeSprite;
     [SerializeField] public Sprite[] whiteSprite;
+    public Sprite deadSprite;
     public GameObject player;
     public SpriteRenderer spriteRenderer;
 
@@ -199,8 +200,12 @@ public class PlayerMovementController : NetworkBehaviour
     public void RpcDamage(GameObject enemyPlayer)
     {
         enemyPlayer.GetComponent<PlayerMovementController>().health -= 1;
-        if(health < 8)
-            enemyPlayer.SetActive(false);
+        if (health < 8)
+        {
+            enemyPlayer.GetComponent<SpriteRenderer>().sprite = deadSprite;
+            if (enemyPlayer.transform.parent.gameObject == NetworkClient.localPlayer.gameObject)
+                Debug.Log("im dead now");
+        }
     }
 
     public void Shooting()
