@@ -33,6 +33,13 @@ public class PlayerMovementController : NetworkBehaviour
     public GameObject player;
     public SpriteRenderer spriteRenderer;
 
+    //Shooting
+    public Transform shootPoint;
+    public float bulletTrailSpeed;
+    public GameObject bulletTrail;
+    public float weaponRange = 10f;
+    public float health = 10f;
+
     private Vector2 mousePos;
 
     private void Start()
@@ -52,8 +59,9 @@ public class PlayerMovementController : NetworkBehaviour
                 PlayerModel.SetActive(true);
             }
 
-            if (isOwned)
+            if (isLocalPlayer)
             {
+                Shooting();
                 Movement();
             }
         }
@@ -177,5 +185,50 @@ public class PlayerMovementController : NetworkBehaviour
         rb.MovePosition(PlayerModel.transform.position + moveDirection * Speed * Time.deltaTime);
         Physics2D.SyncTransforms();
         //PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
+    }
+
+    [Command]
+    public void CmdDamage(GameObject enemyPlayer)
+    {
+        enemyPlayer.GetComponent<PlayerMovementController>().health -= 1;
+    }
+
+    [Command]
+    public void CmdShoot()
+    {
+
+    }
+
+    public void Shooting()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 direction = (mousePos - (Vector2)shootPoint.position).normalized;
+            RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, direction, weaponRange);
+
+            var trail = Instantiate(bulletTrail, shootPoint.position, PlayerModel.transform.rotation);
+            if (isServer)
+                NetworkServer.Spawn(trail);
+
+            var trailScript = trail.GetComponent<BulletTrail>();
+
+            if (hit.collider != null) //&& hit.collider.CompareTag("Enemy")
+            {
+                Debug.Log("hit");
+                trailScript.SetTargetPosition(hit.point);
+                hit.collider.gameObject.SetActive(false);
+                if (hit.collider.gameObject.tag == "Player")
+                {
+                    Debug.Log("Hit Player");
+                    CmdDamage(hit.collider.gameObject.transform.parent.gameObject);
+                }
+            }
+            else
+            {
+                var endPos = shootPoint.position + PlayerModel.transform.up * weaponRange;
+                trailScript.SetTargetPosition(endPos);
+            }
+        }
     }
 }
