@@ -318,6 +318,33 @@ MonoBehaviour:
   rb: {fileID: 7556019727412048153}
   cam: {fileID: 1343792888070247277}
   poc: {fileID: 0}
+  team: 0
+  greenSprite:
+  - {fileID: 1509069, guid: 4bbe6c2970dda4ebaa84b43638bdfabf, type: 3}
+  - {fileID: -1147277355, guid: d22a9804159504ac18c004d76e425e42, type: 3}
+  - {fileID: -1310047814, guid: 341650319fed14e399a261df191e77d8, type: 3}
+  - {fileID: 70281801, guid: 97ed5b8f7f7694df390eae63fe2aa800, type: 3}
+  - {fileID: -859665813, guid: 88246d8b03dfa42eea1835f10405572b, type: 3}
+  redSprite:
+  - {fileID: -2015607544, guid: 4bbe6c2970dda4ebaa84b43638bdfabf, type: 3}
+  - {fileID: -870778762, guid: d22a9804159504ac18c004d76e425e42, type: 3}
+  - {fileID: 613837591, guid: 341650319fed14e399a261df191e77d8, type: 3}
+  - {fileID: -1343885935, guid: 97ed5b8f7f7694df390eae63fe2aa800, type: 3}
+  - {fileID: 578629680, guid: 88246d8b03dfa42eea1835f10405572b, type: 3}
+  orangeSprite:
+  - {fileID: 106770544, guid: 4bbe6c2970dda4ebaa84b43638bdfabf, type: 3}
+  - {fileID: -477749129, guid: d22a9804159504ac18c004d76e425e42, type: 3}
+  - {fileID: -970266842, guid: 341650319fed14e399a261df191e77d8, type: 3}
+  - {fileID: 1281180508, guid: 97ed5b8f7f7694df390eae63fe2aa800, type: 3}
+  - {fileID: -356502899, guid: 88246d8b03dfa42eea1835f10405572b, type: 3}
+  whiteSprite:
+  - {fileID: 1361618066, guid: 4bbe6c2970dda4ebaa84b43638bdfabf, type: 3}
+  - {fileID: -1211172363, guid: d22a9804159504ac18c004d76e425e42, type: 3}
+  - {fileID: -783792538, guid: 341650319fed14e399a261df191e77d8, type: 3}
+  - {fileID: -842534410, guid: 97ed5b8f7f7694df390eae63fe2aa800, type: 3}
+  - {fileID: -2060054260, guid: 88246d8b03dfa42eea1835f10405572b, type: 3}
+  player: {fileID: 5568238824894995105}
+  spriteRenderer: {fileID: 5891011091002882805}
 --- !u!114 &2587965880881467095
 MonoBehaviour:
   m_ObjectHideFlags: 0
