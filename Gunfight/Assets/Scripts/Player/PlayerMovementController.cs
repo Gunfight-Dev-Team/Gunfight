@@ -207,8 +207,8 @@ public class PlayerMovementController : NetworkBehaviour
         var trail = Instantiate(bulletTrail, shootPoint, PlayerModel.transform.rotation);
 
         var trailScript = trail.GetComponent<BulletTrail>();
-
-        NetworkServer.Spawn(trail);
+        if (isServer)
+            NetworkServer.Spawn(trail);
 
         if (hit.collider != null && !hit.collider.CompareTag("Uncolliable")) //&& hit.collider.CompareTag("Enemy")
         {
@@ -243,7 +243,8 @@ public class PlayerMovementController : NetworkBehaviour
 
         var trailScript = trail.GetComponent<BulletTrail>();
 
-        NetworkServer.Spawn(trail);
+        if (isServer)
+            NetworkServer.Spawn(trail);
 
         if (hit.collider != null && !hit.collider.CompareTag("Uncolliable")) //&& hit.collider.CompareTag("Enemy")
         {
