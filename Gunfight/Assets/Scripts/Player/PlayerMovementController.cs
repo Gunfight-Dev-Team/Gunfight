@@ -259,6 +259,6 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcDie()
     {
-        gameObject.SetActive(false);
+        gameObject.transform.Find("Player").gameObject.SetActive(false);
     }
 }
