@@ -211,6 +211,8 @@ public class PlayerMovementController : NetworkBehaviour
         var trail = Instantiate(bulletTrail, startPos, Quaternion.identity);
         var trailScript = trail.GetComponent<BulletTrail>();
         trailScript.SetTargetPosition(endPos);
+        if(isServer)
+            NetworkServer.Spawn(trail);
 
         var hitParticleInstance = Instantiate(hitParticle.GetComponent<ParticleSystem>(), endPos, Quaternion.identity);
     }
