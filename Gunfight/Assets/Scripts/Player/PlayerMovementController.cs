@@ -250,6 +250,7 @@ public class PlayerMovementController : NetworkBehaviour
         if (!isServer)
             return;
 
+        spriteRenderer.sprite = deadSprite;
         health -= damage;
 
         if (health <= 0)
