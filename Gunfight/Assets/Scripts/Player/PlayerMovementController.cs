@@ -254,6 +254,18 @@ public class PlayerMovementController : NetworkBehaviour
 
         if (health <= 0)
             RpcDie();
+        else
+        {
+            StartCoroutine(FlashSprite());
+        }
+    }
+
+    IEnumerator FlashSprite()
+    {
+        Sprite temp = spriteRenderer.sprite;
+        spriteRenderer.sprite = deadSprite;
+        yield return new WaitForSeconds(0.5f);
+        spriteRenderer.sprite = temp;
     }
 
     [ClientRpc]
