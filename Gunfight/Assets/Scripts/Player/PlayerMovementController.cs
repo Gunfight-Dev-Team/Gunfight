@@ -250,7 +250,6 @@ public class PlayerMovementController : NetworkBehaviour
         if (!isServer)
             return;
 
-        spriteRenderer.color = Color.red;
         health -= damage;
 
         if (health <= 0)
@@ -263,10 +262,10 @@ public class PlayerMovementController : NetworkBehaviour
 
     IEnumerator FlashSprite()
     {
-        Sprite temp = spriteRenderer.sprite;
-        spriteRenderer.sprite = deadSprite;
-        yield return new WaitForSeconds(0.5f);
-        spriteRenderer.sprite = temp;
+        Color temp = spriteRenderer.color;
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = temp;
     }
 
     [ClientRpc]
