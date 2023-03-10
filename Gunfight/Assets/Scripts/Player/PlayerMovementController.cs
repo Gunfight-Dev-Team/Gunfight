@@ -36,14 +36,14 @@ public class PlayerMovementController : NetworkBehaviour
     public SpriteRenderer spriteRenderer;
 
     //Shooting
-    public Transform shootPoint;
+    [SyncVar] public Transform shootPoint;
     public float bulletTrailSpeed;
     public GameObject bulletTrail;
     public float weaponRange = 10f;
-    public float health = 10f;
+    [SyncVar] public float health = 10f;
     public bool isDead = false;
 
-    public ParticleSystem hitParticle;
+    public GameObject hitParticle;
 
     private Vector2 mousePos;
 
@@ -78,7 +78,10 @@ public class PlayerMovementController : NetworkBehaviour
         {
             if (isLocalPlayer)
             {
-                Shooting();
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    CmdShooting();
+                }
             }
         }
             if (isDead)
@@ -201,85 +204,40 @@ public class PlayerMovementController : NetworkBehaviour
         //PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
     }
 
-    [Command (requiresAuthority = false)]
-    void CmdShoot(RaycastHit2D hit, Vector3 shootPoint)
-    {
-        var trail = Instantiate(bulletTrail, shootPoint, PlayerModel.transform.rotation);
-
-        var trailScript = trail.GetComponent<BulletTrail>();
-        if (isServer)
-            NetworkServer.Spawn(trail);
-
-        if (hit.collider != null && !hit.collider.CompareTag("Uncolliable")) //&& hit.collider.CompareTag("Enemy")
-        {
-            Debug.Log("hit");
-            trailScript.SetTargetPosition(hit.point);
-            var hp = Instantiate(hitParticle, hit.point, Quaternion.identity);
-
-            
-/*            NetworkServer.Spawn(hp.gameObject);*/
-
-
-
-            if (hit.collider.gameObject.tag == "Player")
-            {
-                Debug.Log("Hit Player");
-                hit.collider.gameObject.transform.parent.gameObject.GetComponent<PlayerMovementController>().health -= 1;
-            }
-        }
-        else
-        {
-            var endPos = shootPoint + PlayerModel.transform.up * weaponRange;
-            trailScript.SetTargetPosition(endPos);
-        }
-
-        RpcShoot(hit, shootPoint);
-    }
 
     [ClientRpc]
-    void RpcShoot(RaycastHit2D hit, Vector3 shootPoint)
+    void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
-        var trail = Instantiate(bulletTrail, shootPoint, PlayerModel.transform.rotation);
-
+        var trail = Instantiate(bulletTrail, startPos, Quaternion.identity);
         var trailScript = trail.GetComponent<BulletTrail>();
+        trailScript.SetTargetPosition(endPos);
 
-        if (isServer)
-            NetworkServer.Spawn(trail);
-
-        if (hit.collider != null && !hit.collider.CompareTag("Uncolliable")) //&& hit.collider.CompareTag("Enemy")
-        {
-            Debug.Log("hit");
-            trailScript.SetTargetPosition(hit.point);
-            var hp = Instantiate(hitParticle, hit.point, Quaternion.identity);
-
-
-            /*            NetworkServer.Spawn(hp.gameObject);*/
-
-
-
-            if (hit.collider.gameObject.tag == "Player")
-            {
-                Debug.Log("Hit Player");
-                hit.collider.gameObject.transform.parent.gameObject.GetComponent<PlayerMovementController>().health -= 1;
-            }
-        }
-        else
-        {
-            var endPos = shootPoint + PlayerModel.transform.up * weaponRange;
-            trailScript.SetTargetPosition(endPos);
-        }
+        var hitParticleInstance = Instantiate(hitParticle.GetComponent<ParticleSystem>(), endPos, Quaternion.identity);
     }
 
-    public void Shooting()
+    [Command]
+    public void CmdShooting()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
             Debug.Log("mouse pressed");
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = (mousePos - (Vector2)shootPoint.position).normalized;
-            RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, direction, weaponRange);
+            RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, PlayerModel.transform.up, weaponRange);
 
-            CmdShoot(hit, shootPoint.position);
-        }
+            var endPos = hit.point;
+
+            if (hit.collider != null && !hit.collider.CompareTag("Uncolliable")) //&& hit.collider.CompareTag("Enemy")
+            {
+                Debug.Log("hit");
+                if (hit.collider.gameObject.tag == "Player")
+                {
+                    Debug.Log("Hit Player");
+                    hit.collider.gameObject.transform.parent.gameObject.GetComponent<PlayerMovementController>().health -= 1;
+                }
+            }
+            else
+            {
+                endPos = shootPoint.position + PlayerModel.transform.up * weaponRange;
+            }
+            RpcSpawnBulletTrail(shootPoint.position, endPos);
     }
 }
