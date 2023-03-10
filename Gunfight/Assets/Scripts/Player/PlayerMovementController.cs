@@ -235,7 +235,7 @@ public class PlayerMovementController : NetworkBehaviour
                 if (hit.collider.gameObject.tag == "Player")
                 {
                     Debug.Log("Hit Player");
-                    hit.collider.gameObject.transform.parent.gameObject.GetComponent<PlayerMovementController>().health -= 1;
+                    hit.collider.gameObject.transform.parent.gameObject.GetComponent<PlayerMovementController>().TakeDamage(2);
                 }
             }
             else
@@ -243,5 +243,22 @@ public class PlayerMovementController : NetworkBehaviour
                 endPos = shootPoint + PlayerModel.transform.up * weaponRange;
             }
             RpcSpawnBulletTrail(shootPoint, endPos);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (!isServer)
+            return;
+
+        health -= damage;
+
+        if (health <= 0)
+            RpcDie();
+    }
+
+    [ClientRpc]
+    void RpcDie()
+    {
+        gameObject.SetActive(false);
     }
 }
