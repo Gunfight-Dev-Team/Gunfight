@@ -256,7 +256,7 @@ public class PlayerMovementController : NetworkBehaviour
             RpcDie();
         else
         {
-            StartCoroutine(FlashSprite());
+            RpcHitColor();
         }
     }
 
@@ -266,6 +266,12 @@ public class PlayerMovementController : NetworkBehaviour
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         spriteRenderer.color = temp;
+    }
+
+    [ClientRpc]
+    void RpcHitColor()
+    {
+        StartCoroutine(FlashSprite());
     }
 
     [ClientRpc]
