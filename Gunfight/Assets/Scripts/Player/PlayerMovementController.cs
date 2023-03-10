@@ -36,7 +36,7 @@ public class PlayerMovementController : NetworkBehaviour
     public SpriteRenderer spriteRenderer;
 
     //Shooting
-    [SyncVar] public Transform shootPoint;
+    public Transform shootPoint;
     public float bulletTrailSpeed;
     public GameObject bulletTrail;
     public float weaponRange = 10f;
@@ -80,7 +80,7 @@ public class PlayerMovementController : NetworkBehaviour
             {
                 if (Input.GetButtonDown("Fire1"))
                 {
-                    CmdShooting();
+                    CmdShooting(shootPoint.position);
                 }
             }
         }
@@ -216,12 +216,12 @@ public class PlayerMovementController : NetworkBehaviour
     }
 
     [Command]
-    public void CmdShooting()
+    public void CmdShooting(Vector3 shootPoint)
     {
             Debug.Log("mouse pressed");
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mousePos - (Vector2)shootPoint.position).normalized;
-            RaycastHit2D hit = Physics2D.Raycast(shootPoint.position, PlayerModel.transform.up, weaponRange);
+            Vector2 direction = (mousePos - (Vector2)shootPoint).normalized;
+            RaycastHit2D hit = Physics2D.Raycast(shootPoint, PlayerModel.transform.up, weaponRange);
 
             var endPos = hit.point;
 
@@ -236,8 +236,8 @@ public class PlayerMovementController : NetworkBehaviour
             }
             else
             {
-                endPos = shootPoint.position + PlayerModel.transform.up * weaponRange;
+                endPos = shootPoint + PlayerModel.transform.up * weaponRange;
             }
-            RpcSpawnBulletTrail(shootPoint.position, endPos);
+            RpcSpawnBulletTrail(shootPoint, endPos);
     }
 }
