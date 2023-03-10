@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using Mirror;
 
-public class BulletTrail : NetworkBehaviour
+public class BulletTrail : MonoBehaviour
 {
 
     private Vector3 startPos;

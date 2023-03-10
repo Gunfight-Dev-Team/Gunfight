@@ -385,6 +385,7 @@ MonoBehaviour:
   health: 10
   isDead: 0
   hitParticle: {fileID: 3070724589798040209, guid: 383d96aac74cf654b973f8fe364cf4d6, type: 3}
+  bulletParticle: {fileID: 3070724589798040209, guid: 18f90b87657ad4646be3723c87ba90ae, type: 3}
 --- !u!114 &2587965880881467095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,7 +523,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.01, y: 0.61}
   m_EdgeRadius: 0
 --- !u!50 &7556019727412048153
 Rigidbody2D:

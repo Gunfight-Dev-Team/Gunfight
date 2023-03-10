@@ -44,6 +44,7 @@ public class PlayerMovementController : NetworkBehaviour
     public bool isDead = false;
 
     public GameObject hitParticle;
+    public GameObject bulletParticle;
 
     private Vector2 mousePos;
 
@@ -214,6 +215,7 @@ public class PlayerMovementController : NetworkBehaviour
         if(isServer)
             NetworkServer.Spawn(trail);
 
+        Instantiate(bulletParticle.GetComponent<ParticleSystem>(), startPos, PlayerModel.transform.rotation);
         var hitParticleInstance = Instantiate(hitParticle.GetComponent<ParticleSystem>(), endPos, Quaternion.identity);
     }
 
