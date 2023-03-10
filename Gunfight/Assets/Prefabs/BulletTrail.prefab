@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6990584320810495396}
   - component: {fileID: 4148816715019666460}
   - component: {fileID: 8289816398440524089}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BulletTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
