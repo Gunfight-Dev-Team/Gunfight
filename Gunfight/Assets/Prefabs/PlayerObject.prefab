@@ -474,6 +474,7 @@ GameObject:
   - component: {fileID: 6255961073072909304}
   - component: {fileID: 7556019727412048153}
   - component: {fileID: 7477781774259724041}
+  - component: {fileID: 9066404547414160564}
   - component: {fileID: 7973271518598485071}
   m_Layer: 0
   m_Name: Player
@@ -564,6 +565,31 @@ MonoBehaviour:
   speedOfPlayer: 0
   health: 0
   equipments: 
+--- !u!114 &9066404547414160564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5568238824894995105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebbefb8a10d7046d581ae76d29548dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
+  playerInfo: {fileID: 7477781774259724041}
+  greenSprite: []
+  redSprite: []
+  orangeSprite: []
+  whiteSprite: []
+  deadSprite: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  AK47: {fileID: 4542724738798047833, guid: efc55c34014bb429f9bc3e7f34407cb8, type: 3}
+  Knife: {fileID: 4434992512352626665, guid: 14bd63210f2db4523b027bf496721467, type: 3}
+  Pistol: {fileID: 222421779905360649, guid: 0bfa630724c5f46b69b36048d06b930c, type: 3}
+  Sniper: {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
+  Uzi: {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
 --- !u!210 &7973271518598485071
 SortingGroup:
   m_ObjectHideFlags: 0

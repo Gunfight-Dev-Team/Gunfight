@@ -11,11 +11,10 @@ GameObject:
   - component: {fileID: 4542724738798047826}
   - component: {fileID: 4542724738798047837}
   - component: {fileID: 4542724738798047839}
-  - component: {fileID: 2386654000661529486}
   - component: {fileID: -998639533774560843}
   m_Layer: 0
   m_Name: AK47
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,25 +102,6 @@ MonoBehaviour:
   nAmmo: 10
   range: 10
   speedOfPlayer: 10
---- !u!114 &2386654000661529486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4542724738798047833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b43d130e2b24a4753ae908b13164ff79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AK47: {fileID: 4542724738798047833}
-  Knife: {fileID: 4434992512352626665, guid: 14bd63210f2db4523b027bf496721467, type: 3}
-  Pistol: {fileID: 222421779905360649, guid: 0bfa630724c5f46b69b36048d06b930c, type: 3}
-  Sniper: {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
-  Uzi: {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
-  weapon: {fileID: 4542724738798047839}
-  Player: {fileID: 5128584884438735198, guid: df340c9d318be6647b903dd6dae18029, type: 3}
 --- !u!61 &-998639533774560843
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -139,7 +119,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.32, y: 0.32}
+    oldSize: {x: 1.0666667, y: 1.0666667}
     newSize: {x: 0.32, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
