@@ -10,6 +10,8 @@ public class WeaponSpawning : MonoBehaviour
 
     [SerializeField] private Tilemap tileMap;
 
+    [SerializeField] private int numWeapons;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,13 +26,9 @@ public class WeaponSpawning : MonoBehaviour
             }
         }
 
-
-        // BoundsInt bounds = tileMap.cellBounds;
-        // TileBase[] tileArray = tileMap.GetTilesBlock(bounds);
-
         foreach(GameObject weapon in weapons)
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < numWeapons; i++)
             {
                 Instantiate(weapon, tileLoc[Random.Range(0, tileLoc.Count)], Quaternion.identity);
             }
