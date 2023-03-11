@@ -7,17 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class PlayerWeaponController : MonoBehaviour
 {
-    [SerializeField] public Team team;
+    [SerializeField] internal Team team;
 
     public PlayerInfo playerInfo;
 
     //Sprite
-    [SerializeField] public Sprite[] greenSprite;
-    [SerializeField] public Sprite[] redSprite;
-    [SerializeField] public Sprite[] orangeSprite;
-    [SerializeField] public Sprite[] whiteSprite;
-    public Sprite deadSprite;
     public SpriteRenderer spriteRenderer;
+    [SerializeField] internal List<Sprite> spriteArray;
 
     //Weapon
     private bool canPickup = false;
@@ -40,68 +36,6 @@ public class PlayerWeaponController : MonoBehaviour
                     PickUp();
                 }
         }
-        // if (isDead)
-        //     spriteRenderer.sprite = deadSprite;
-        
-        // if (team.Equals(Team.Green))
-        // {
-        //     // [ ] TODO: change it to be using event intead of update
-        //     if (playerInfo.weaponID.Equals(WeaponID.AK47))
-        //         spriteRenderer.sprite = greenSprite[0];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Knife))
-        //         spriteRenderer.sprite = greenSprite[1];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Pistol))
-        //         spriteRenderer.sprite = greenSprite[2];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Sniper))
-        //         spriteRenderer.sprite = greenSprite[3];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Uzi))
-        //         spriteRenderer.sprite = greenSprite[4];
-        // }
-
-        // if (team.Equals(Team.Red))
-        // {
-        //     // [ ] TODO: change it to be using event intead of update
-        //     if (playerInfo.weaponID.Equals(WeaponID.AK47))
-        //         spriteRenderer.sprite = redSprite[0];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Knife))
-        //         spriteRenderer.sprite = redSprite[1];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Pistol))
-        //         spriteRenderer.sprite = redSprite[2];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Sniper))
-        //         spriteRenderer.sprite = redSprite[3];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Uzi))
-        //         spriteRenderer.sprite = redSprite[4];
-        // }
-
-        // if (team.Equals(Team.Orange))
-        // {
-        //     // [ ] TODO: change it to be using event intead of update
-        //     if (playerInfo.weaponID.Equals(WeaponID.AK47))
-        //         spriteRenderer.sprite = orangeSprite[0];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Knife))
-        //         spriteRenderer.sprite = orangeSprite[1];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Pistol))
-        //         spriteRenderer.sprite = orangeSprite[2];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Sniper))
-        //         spriteRenderer.sprite = orangeSprite[3];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Uzi))
-        //         spriteRenderer.sprite = orangeSprite[4];
-        // }
-
-        // if (team.Equals(Team.White))
-        // {
-        //     // [ ] TODO: change it to be using event intead of update
-        //     if (playerInfo.weaponID.Equals(WeaponID.AK47))
-        //         spriteRenderer.sprite = whiteSprite[0];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Knife))
-        //         spriteRenderer.sprite = whiteSprite[1];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Pistol))
-        //         spriteRenderer.sprite = whiteSprite[2];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Sniper))
-        //         spriteRenderer.sprite = whiteSprite[3];
-        //     else if (playerInfo.weaponID.Equals(WeaponID.Uzi))
-        //         spriteRenderer.sprite = whiteSprite[4];
-        // }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -147,5 +81,30 @@ public class PlayerWeaponController : MonoBehaviour
         playerInfo.nAmmo = OtherCollider.GetComponent<WeaponInfo>().nAmmo;
         playerInfo.speedOfPlayer = OtherCollider.GetComponent<WeaponInfo>().speedOfPlayer;
         Destroy(OtherCollider.gameObject);
+        ChangeSprite(playerInfo.weaponID);
+    }
+
+    void ChangeSprite(WeaponID weapon)
+    {
+        // [ ] TODO: is it possible to make this more simple?
+        var weaponArray = new Dictionary<WeaponID, int>(){
+            {WeaponID.AK47, 0},
+            {WeaponID.Knife, 1},
+            {WeaponID.Pistol, 2},
+            {WeaponID.Sniper, 3},
+            {WeaponID.Uzi, 4}
+        };
+        
+        // [ ] TODO: is it possible to make this more simple?
+        var teamArray = new Dictionary<Team, int>(){
+            {Team.Green, 0},
+            {Team.Red, 1},
+            {Team.Orange, 2},
+            {Team.White, 3}
+        };
+
+        // change sprite
+        int index = weaponArray[weapon]*4 + teamArray[team];
+        spriteRenderer.sprite = spriteArray[index];
     }
 }

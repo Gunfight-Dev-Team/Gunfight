@@ -4,6 +4,8 @@ using Mirror;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public enum Team
 {
@@ -27,13 +29,11 @@ public class PlayerMovementController : NetworkBehaviour
 
     [SerializeField] public Team team;
 
-    [SerializeField] public Sprite[] greenSprite;
-    [SerializeField] public Sprite[] redSprite;
-    [SerializeField] public Sprite[] orangeSprite;
-    [SerializeField] public Sprite[] whiteSprite;
+    //Sprite
     public Sprite deadSprite;
     public GameObject player;
     public SpriteRenderer spriteRenderer;
+    public List<Sprite> spriteArray;
 
     //Shooting
     public Transform shootPoint;
@@ -52,6 +52,32 @@ public class PlayerMovementController : NetworkBehaviour
     {
         PlayerModel.SetActive(false);
         poc = GetComponent<PlayerObjectController>();
+        player.GetComponent<PlayerWeaponController>().team = team;
+        LoadSprite();
+        player.GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
+    }
+
+    void LoadSprite()
+    {
+        AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_AK47.png");
+        spriteHandle.WaitForCompletion();
+        spriteHandle.Completed += LoadSpritesWhenReady;
+        spriteHandle = Addressables.LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Knife.png");
+        spriteHandle.Completed += LoadSpritesWhenReady;
+        spriteHandle = Addressables.LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Pistol.png");
+        spriteHandle.Completed += LoadSpritesWhenReady;
+        spriteHandle = Addressables.LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Sniper.png");
+        spriteHandle.Completed += LoadSpritesWhenReady;
+        spriteHandle = Addressables.LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Uzi.png");
+        spriteHandle.Completed += LoadSpritesWhenReady;
+    }
+
+    void LoadSpritesWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
+    {
+        if(handleToCheck.Status == AsyncOperationStatus.Succeeded)
+        {
+            spriteArray.AddRange(handleToCheck.Result);
+        }
     }
 
     private void FixedUpdate()
@@ -64,6 +90,7 @@ public class PlayerMovementController : NetworkBehaviour
                     PlayerModel.SetActive(true);
                 SetPosition();
                 SetTeam();
+                SetSprite();
             }
 
             if (isLocalPlayer)
@@ -85,67 +112,9 @@ public class PlayerMovementController : NetworkBehaviour
                 }
             }
         }
-            if (isDead)
+        
+        if (isDead)
             spriteRenderer.sprite = deadSprite;
-        if (team.Equals(Team.Green))
-        {
-            // [ ] TODO: change it to be using event intead of update
-            if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.AK47))
-                spriteRenderer.sprite = greenSprite[0];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Knife))
-                spriteRenderer.sprite = greenSprite[1];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Pistol))
-                spriteRenderer.sprite = greenSprite[2];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Sniper))
-                spriteRenderer.sprite = greenSprite[3];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Uzi))
-                spriteRenderer.sprite = greenSprite[4];
-        }
-
-        if (team.Equals(Team.Red))
-        {
-            // [ ] TODO: change it to be using event intead of update
-            if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.AK47))
-                spriteRenderer.sprite = redSprite[0];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Knife))
-                spriteRenderer.sprite = redSprite[1];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Pistol))
-                spriteRenderer.sprite = redSprite[2];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Sniper))
-                spriteRenderer.sprite = redSprite[3];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Uzi))
-                spriteRenderer.sprite = redSprite[4];
-        }
-
-        if (team.Equals(Team.Orange))
-        {
-            // [ ] TODO: change it to be using event intead of update
-            if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.AK47))
-                spriteRenderer.sprite = orangeSprite[0];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Knife))
-                spriteRenderer.sprite = orangeSprite[1];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Pistol))
-                spriteRenderer.sprite = orangeSprite[2];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Sniper))
-                spriteRenderer.sprite = orangeSprite[3];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Uzi))
-                spriteRenderer.sprite = orangeSprite[4];
-        }
-
-        if (team.Equals(Team.White))
-        {
-            // [ ] TODO: change it to be using event intead of update
-            if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.AK47))
-                spriteRenderer.sprite = whiteSprite[0];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Knife))
-                spriteRenderer.sprite = whiteSprite[1];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Pistol))
-                spriteRenderer.sprite = whiteSprite[2];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Sniper))
-                spriteRenderer.sprite = whiteSprite[3];
-            else if (player.GetComponent<PlayerInfo>().weaponID.Equals(WeaponID.Uzi))
-                spriteRenderer.sprite = whiteSprite[4];
-        }
     }
 
     public void SetPosition()
@@ -163,25 +132,28 @@ public class PlayerMovementController : NetworkBehaviour
     public void SetTeam()
     {
         if (poc.PlayerIdNumber == 1)
-        {
             team = Team.Green;
-            spriteRenderer.sprite = greenSprite[1];
-        }
         else if (poc.PlayerIdNumber == 2)
-        {
             team = Team.Red;
-            spriteRenderer.sprite = redSprite[1];
-        }
         else if (poc.PlayerIdNumber == 3)
-        {
             team = Team.Orange;
-            spriteRenderer.sprite = orangeSprite[1];
-        }
         else if (poc.PlayerIdNumber == 4)
-        {
             team = Team.White;
-            spriteRenderer.sprite = whiteSprite[1];
-        }
+    }
+    
+    public void SetSprite()
+    {
+        // [ ] TODO: is it possible to make this more simple?
+        var teamArray = new Dictionary<Team, int>(){
+            {Team.Green, 0},
+            {Team.Red, 1},
+            {Team.Orange, 2},
+            {Team.White, 3}
+        };
+
+        // change sprite
+        int index = 4 + teamArray[team];
+        spriteRenderer.sprite = spriteArray[index];
     }
 
     public void Movement()

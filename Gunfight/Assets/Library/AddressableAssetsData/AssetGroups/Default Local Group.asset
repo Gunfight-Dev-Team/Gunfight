@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 813922b7244bf4b00950b0d391f16af8
+  m_SerializeEntries:
+  - m_GUID: 4bbe6c2970dda4ebaa84b43638bdfabf
+    m_Address: Assets/Art/Player/Player_AK47.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d22a9804159504ac18c004d76e425e42
+    m_Address: Assets/Art/Player/Player_Knife.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 341650319fed14e399a261df191e77d8
+    m_Address: Assets/Art/Player/Player_Pistol.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 97ed5b8f7f7694df390eae63fe2aa800
+    m_Address: Assets/Art/Player/Player_Sniper.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 88246d8b03dfa42eea1835f10405572b
+    m_Address: Assets/Art/Player/Player_Uzi.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b17999920d26b4954b7732664849b50f, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 0bb2a91df8b7a43cdad07324f2f2240d, type: 2}
+    - {fileID: 11400000, guid: 11a2874e9cd9d43f2a322fdec88f9fc7, type: 2}
