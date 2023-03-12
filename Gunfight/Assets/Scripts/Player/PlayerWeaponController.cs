@@ -48,6 +48,12 @@ public class PlayerWeaponController : NetworkBehaviour
     [Command]
     void CmdDrop(WeaponID newWeaponID, int nAmmo, float range, float speedOfPlayer)
     {
+        RpcDropWeapon();
+    }
+
+    [ClientRpc]
+    void RpcDropWeapon()
+    {
         // [ ] TODO: is it possible to make this more simple?
         var weapons = new Dictionary<WeaponID, GameObject>(){
             {WeaponID.AK47, AK47},
@@ -57,17 +63,17 @@ public class PlayerWeaponController : NetworkBehaviour
             {WeaponID.Uzi, Uzi}
         };
 
-        GameObject newWeapon = Instantiate(weapons[newWeaponID], 
-                                    playerRef.transform.position, 
-                                    weapons[newWeaponID].transform.rotation);
-        newWeapon.GetComponent<WeaponInfo>().nAmmo = nAmmo;
-        newWeapon.GetComponent<WeaponInfo>().range = range;
-        newWeapon.GetComponent<WeaponInfo>().speedOfPlayer = speedOfPlayer;
+        GameObject newWeapon = Instantiate(weapons[playerInfo.weaponID],
+                                    playerRef.transform.position,
+                                    weapons[playerInfo.weaponID].transform.rotation);
+        newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
+        newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
+        newWeapon.GetComponent<WeaponInfo>().speedOfPlayer = playerInfo.speedOfPlayer;
 
         NetworkServer.Spawn(newWeapon);
     }
 
-    [Command]
+        [Command]
     void CmdPickUp(WeaponID weapon, int nAmmo, float speedOfPlayer)
     {
         
