@@ -30,7 +30,7 @@ public class WeaponSpawning : MonoBehaviour
         {
             for (int i = 0; i < numWeapons; i++)
             {
-                Instantiate(weapon, tileLoc[Random.Range(0, tileLoc.Count)], Quaternion.identity);
+                Instantiate(weapon, tileLoc[Random.Range(0, tileLoc.Count)], Quaternion.Euler(0, 0, Random.Range(0, 360)));
             }
         }
     }
