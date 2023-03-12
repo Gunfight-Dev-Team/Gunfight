@@ -262,12 +262,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8189162925337818591}
-  - component: {fileID: 4657144043185810678}
   - component: {fileID: 8544065240725089489}
   - component: {fileID: 9202434888575235624}
+  - component: {fileID: 5201570048408056945}
+  - component: {fileID: 9040483129875215361}
   - component: {fileID: 2587965880881467095}
   - component: {fileID: -1544771411420213927}
-  - component: {fileID: 9040483129875215361}
+  - component: {fileID: 4657144043185810678}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Player
@@ -293,23 +294,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4657144043185810678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5128584884438735198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  _assetId: 3337440439
-  serverOnly: 0
-  visible: 0
-  hasSpawned: 0
 --- !u!114 &8544065240725089489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,33 +335,10 @@ MonoBehaviour:
   cam: {fileID: 1343792888070247277}
   poc: {fileID: 0}
   team: 0
-  greenSprite:
-  - {fileID: 1509069, guid: 4bbe6c2970dda4ebaa84b43638bdfabf, type: 3}
-  - {fileID: -1147277355, guid: d22a9804159504ac18c004d76e425e42, type: 3}
-  - {fileID: -1310047814, guid: 341650319fed14e399a261df191e77d8, type: 3}
-  - {fileID: 70281801, guid: 97ed5b8f7f7694df390eae63fe2aa800, type: 3}
-  - {fileID: -859665813, guid: 88246d8b03dfa42eea1835f10405572b, type: 3}
-  redSprite:
-  - {fileID: -2015607544, guid: 4bbe6c2970dda4ebaa84b43638bdfabf, type: 3}
-  - {fileID: -870778762, guid: d22a9804159504ac18c004d76e425e42, type: 3}
-  - {fileID: 613837591, guid: 341650319fed14e399a261df191e77d8, type: 3}
-  - {fileID: -1343885935, guid: 97ed5b8f7f7694df390eae63fe2aa800, type: 3}
-  - {fileID: 578629680, guid: 88246d8b03dfa42eea1835f10405572b, type: 3}
-  orangeSprite:
-  - {fileID: 106770544, guid: 4bbe6c2970dda4ebaa84b43638bdfabf, type: 3}
-  - {fileID: -477749129, guid: d22a9804159504ac18c004d76e425e42, type: 3}
-  - {fileID: -970266842, guid: 341650319fed14e399a261df191e77d8, type: 3}
-  - {fileID: 1281180508, guid: 97ed5b8f7f7694df390eae63fe2aa800, type: 3}
-  - {fileID: -356502899, guid: 88246d8b03dfa42eea1835f10405572b, type: 3}
-  whiteSprite:
-  - {fileID: 1361618066, guid: 4bbe6c2970dda4ebaa84b43638bdfabf, type: 3}
-  - {fileID: -1211172363, guid: d22a9804159504ac18c004d76e425e42, type: 3}
-  - {fileID: -783792538, guid: 341650319fed14e399a261df191e77d8, type: 3}
-  - {fileID: -842534410, guid: 97ed5b8f7f7694df390eae63fe2aa800, type: 3}
-  - {fileID: -2060054260, guid: 88246d8b03dfa42eea1835f10405572b, type: 3}
   deadSprite: {fileID: 21300000, guid: 4b173ce0b57e0a44cb57379331f3e381, type: 3}
   player: {fileID: 5568238824894995105}
   spriteRenderer: {fileID: 5891011091002882805}
+  spriteArray: []
   shootPoint: {fileID: 4178969342016999261}
   bulletTrailSpeed: 5
   bulletTrail: {fileID: 1592149606584016135, guid: 4c106be7ad5b0b74b8016d506cb6e36e, type: 3}
@@ -386,6 +347,57 @@ MonoBehaviour:
   isDead: 0
   hitParticle: {fileID: 3070724589798040209, guid: 383d96aac74cf654b973f8fe364cf4d6, type: 3}
   bulletParticle: {fileID: 3070724589798040209, guid: 18f90b87657ad4646be3723c87ba90ae, type: 3}
+--- !u!114 &5201570048408056945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5128584884438735198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebbefb8a10d7046d581ae76d29548dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.1
+  team: 0
+  playerInfo: {fileID: 7477781774259724041}
+  playerRef: {fileID: 5568238824894995105}
+  spriteRenderer: {fileID: 5891011091002882805}
+  deadSprite: {fileID: 21300000, guid: 4b173ce0b57e0a44cb57379331f3e381, type: 3}
+  spriteArray: []
+  playerColliders: {fileID: 434808543023887829}
+  AK47: {fileID: 4542724738798047833, guid: efc55c34014bb429f9bc3e7f34407cb8, type: 3}
+  Knife: {fileID: 4434992512352626665, guid: 14bd63210f2db4523b027bf496721467, type: 3}
+  Pistol: {fileID: 222421779905360649, guid: 0bfa630724c5f46b69b36048d06b930c, type: 3}
+  Sniper: {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
+  Uzi: {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
+--- !u!114 &9040483129875215361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5128584884438735198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe9aee766cb7cc40861a6c3e41db95d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.1
+  cameraHolder: {fileID: 1980555527576154038}
+  rb: {fileID: 8527434122960156324}
+  cam: {fileID: 1343792888070247277}
+  target: {fileID: 5568238824894995105}
+  offset: {x: 0, y: 0, z: 0}
+  deadzoneRadius: 0
+  mouseRangeRadius: 0.2
+  damping: 0.15
+  boundBox: {fileID: 1574322347707904020}
 --- !u!114 &2587965880881467095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,7 +450,7 @@ MonoBehaviour:
   syncAngularVelocity: 1
   clearAngularVelocity: 0
   angularVelocitySensitivity: 0.1
---- !u!114 &9040483129875215361
+--- !u!114 &4657144043185810678
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -447,21 +459,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5128584884438735198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbe9aee766cb7cc40861a6c3e41db95d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0.1
-  cameraHolder: {fileID: 1980555527576154038}
-  rb: {fileID: 8527434122960156324}
-  cam: {fileID: 1343792888070247277}
-  target: {fileID: 5568238824894995105}
-  offset: {x: 0, y: 0, z: 0}
-  deadzoneRadius: 0
-  mouseRangeRadius: 0.2
-  damping: 0.15
-  boundBox: {fileID: 1574322347707904020}
+  sceneId: 0
+  _assetId: 3337440439
+  serverOnly: 0
+  visible: 0
+  hasSpawned: 0
 --- !u!1 &5568238824894995105
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,8 +479,8 @@ GameObject:
   - component: {fileID: 6255961073072909304}
   - component: {fileID: 7556019727412048153}
   - component: {fileID: 7477781774259724041}
-  - component: {fileID: 9066404547414160564}
   - component: {fileID: 7973271518598485071}
+  - component: {fileID: 434808543023887829}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -513,7 +518,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.19}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -565,28 +570,6 @@ MonoBehaviour:
   speedOfPlayer: 0
   health: 0
   equipments: 
---- !u!114 &9066404547414160564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5568238824894995105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebbefb8a10d7046d581ae76d29548dc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  team: 0
-  playerInfo: {fileID: 7477781774259724041}
-  deadSprite: {fileID: 0}
-  spriteRenderer: {fileID: 5891011091002882805}
-  spriteArray: []
-  AK47: {fileID: 4542724738798047833, guid: efc55c34014bb429f9bc3e7f34407cb8, type: 3}
-  Knife: {fileID: 4434992512352626665, guid: 14bd63210f2db4523b027bf496721467, type: 3}
-  Pistol: {fileID: 222421779905360649, guid: 0bfa630724c5f46b69b36048d06b930c, type: 3}
-  Sniper: {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
-  Uzi: {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
 --- !u!210 &7973271518598485071
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -598,6 +581,20 @@ SortingGroup:
   m_SortingLayerID: -495451703
   m_SortingLayer: 3
   m_SortingOrder: 0
+--- !u!114 &434808543023887829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5568238824894995105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5112bfb2491039040843d0ab0d07ee27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPickup: 0
+  OtherCollider: {fileID: 0}
 --- !u!1 &6052719292452099567
 GameObject:
   m_ObjectHideFlags: 0

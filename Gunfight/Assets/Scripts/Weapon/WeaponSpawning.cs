@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Mirror;
 
-public class WeaponSpawning : MonoBehaviour
+public class WeaponSpawning : NetworkBehaviour
 {
 
     [SerializeField] private GameObject[] weapons;
@@ -15,6 +16,8 @@ public class WeaponSpawning : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(!isServer) { return; }
+
         List<Vector3> tileLoc = new List<Vector3>();
         foreach(var pos in tileMap.cellBounds.allPositionsWithin)
         {
@@ -30,7 +33,8 @@ public class WeaponSpawning : MonoBehaviour
         {
             for (int i = 0; i < numWeapons; i++)
             {
-                Instantiate(weapon, tileLoc[Random.Range(0, tileLoc.Count)], Quaternion.identity);
+                GameObject weaponInstance = Instantiate(weapon, tileLoc[Random.Range(0, tileLoc.Count)], Quaternion.identity);
+                NetworkServer.Spawn(weaponInstance);
             }
         }
     }

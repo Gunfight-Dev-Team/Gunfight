@@ -5,57 +5,48 @@ using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerWeaponController : MonoBehaviour
+public class PlayerWeaponController : NetworkBehaviour
 {
     [SerializeField] internal Team team;
 
     public PlayerInfo playerInfo;
+    public GameObject playerRef;
 
     //Sprite
     public SpriteRenderer spriteRenderer;
+    public Sprite deadSprite;
     [SerializeField] internal List<Sprite> spriteArray;
 
     //Weapon
-    private bool canPickup = false;
-    private Collider2D OtherCollider;
+    public PlayerColliders playerColliders;
     [SerializeField] private GameObject AK47;
     [SerializeField] private GameObject Knife;
     [SerializeField] private GameObject Pistol;
     [SerializeField] private GameObject Sniper;
     [SerializeField] private GameObject Uzi;
 
+    [ClientCallback]
     private void Update()
     {
+        if(!isOwned) return;
+
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            if (canPickup && Input.GetKeyDown(KeyCode.E))
-                {
+            if (playerColliders.canPickup && Input.GetKeyDown(KeyCode.E))
+            {
                     // Pick up the weapon
-                    Debug.Log("Weapon picked up!");
-                    Drop();
-                    PickUp();
+                Debug.Log("Weapon picked up!");
+                if (isServer)
+                {
+                    CmdDrop(playerInfo.weaponID, playerInfo.nAmmo, playerInfo.range, playerInfo.speedOfPlayer);
+                    CmdPickUp(playerColliders.OtherCollider.GetComponent<WeaponInfo>().id, playerColliders.OtherCollider.GetComponent<WeaponInfo>().nAmmo, playerColliders.OtherCollider.GetComponent<WeaponInfo>().speedOfPlayer);
                 }
+            }
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Weapon"))
-        {
-            canPickup = true;
-            OtherCollider = other;
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Weapon"))
-        {
-            canPickup = false;
-        }
-    }
-
-    void Drop()
+    [Command]
+    void CmdDrop(WeaponID newWeaponID, int nAmmo, float range, float speedOfPlayer)
     {
         // [ ] TODO: is it possible to make this more simple?
         var weapons = new Dictionary<WeaponID, GameObject>(){
@@ -66,22 +57,33 @@ public class PlayerWeaponController : MonoBehaviour
             {WeaponID.Uzi, Uzi}
         };
 
-        WeaponID newWeaponID = playerInfo.weaponID;
         GameObject newWeapon = Instantiate(weapons[newWeaponID], 
-                                    this.transform.position, 
+                                    playerRef.transform.position, 
                                     weapons[newWeaponID].transform.rotation);
-        newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
-        newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
-        newWeapon.GetComponent<WeaponInfo>().speedOfPlayer = playerInfo.speedOfPlayer;
+        newWeapon.GetComponent<WeaponInfo>().nAmmo = nAmmo;
+        newWeapon.GetComponent<WeaponInfo>().range = range;
+        newWeapon.GetComponent<WeaponInfo>().speedOfPlayer = speedOfPlayer;
+
+        NetworkServer.Spawn(newWeapon);
     }
 
-    void PickUp()
+    [Command]
+    void CmdPickUp(WeaponID weapon, int nAmmo, float speedOfPlayer)
     {
-        playerInfo.weaponID = OtherCollider.GetComponent<WeaponInfo>().id;
-        playerInfo.nAmmo = OtherCollider.GetComponent<WeaponInfo>().nAmmo;
-        playerInfo.speedOfPlayer = OtherCollider.GetComponent<WeaponInfo>().speedOfPlayer;
-        Destroy(OtherCollider.gameObject);
-        ChangeSprite(playerInfo.weaponID);
+        
+        ChangeSprite(weapon);
+
+        RpcDestoryWeapon(weapon, nAmmo, speedOfPlayer);
+    }
+
+    [ClientRpc]
+    void RpcDestoryWeapon(WeaponID weapon, int nAmmo, float speedOfPlayer)
+    {
+        playerInfo.weaponID = weapon;
+        playerInfo.nAmmo = nAmmo;
+        playerInfo.speedOfPlayer = speedOfPlayer;
+        Destroy(playerColliders.OtherCollider.gameObject);
+        NetworkServer.Destroy(playerColliders.OtherCollider.gameObject);
     }
 
     void ChangeSprite(WeaponID weapon)
@@ -103,8 +105,15 @@ public class PlayerWeaponController : MonoBehaviour
             {Team.White, 3}
         };
 
-        // change sprite
-        int index = weaponArray[weapon]*4 + teamArray[team];
-        spriteRenderer.sprite = spriteArray[index];
+        if (weapon == (WeaponID)(-1))
+        {
+            spriteRenderer.sprite = deadSprite;
+        }
+        else
+        {
+            // change sprite
+            int index = weaponArray[weapon] * 4 + teamArray[team];
+            spriteRenderer.sprite = spriteArray[index];
+        }
     }
 }
