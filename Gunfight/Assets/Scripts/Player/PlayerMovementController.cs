@@ -17,7 +17,7 @@ public enum Team
 
 public class PlayerMovementController : NetworkBehaviour
 {
-    public float Speed = 5.0f;
+    public float Speed = 0.0f;
 
     public GameObject PlayerModel;
 
@@ -196,7 +196,9 @@ public class PlayerMovementController : NetworkBehaviour
 
         rb
             .MovePosition(PlayerModel.transform.position +
-            moveDirection * Speed * Time.deltaTime);
+            moveDirection *
+            PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer *
+            Time.deltaTime);
         Physics2D.SyncTransforms();
         //PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
     }

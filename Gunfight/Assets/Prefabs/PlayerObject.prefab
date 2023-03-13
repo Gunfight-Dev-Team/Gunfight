@@ -329,7 +329,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  Speed: 7
+  Speed: 10
   PlayerModel: {fileID: 5568238824894995105}
   rb: {fileID: 7556019727412048153}
   cam: {fileID: 1343792888070247277}
@@ -566,9 +566,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponID: 1
   nAmmo: 0
-  range: 0
-  speedOfPlayer: 0
-  health: 0
+  range: 1
+  damage: 0
+  speedOfPlayer: 10
+  health: 10
   equipments: 
 --- !u!210 &7973271518598485071
 SortingGroup:
