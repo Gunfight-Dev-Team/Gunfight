@@ -138,6 +138,12 @@ public class PlayerWeaponController : NetworkBehaviour
         playerInfo.range = range;
         playerInfo.damage = damage;
         playerInfo.cooldown = cooldown;
+        GetComponent<PlayerMovementController>().cooldownTimer = 0f;
+        GetComponent<PlayerMovementController>().isFiring = false;
+        if (weapon == WeaponID.AK47 || weapon == WeaponID.Uzi)
+            playerInfo.isAuto = true;
+        else
+            playerInfo.isAuto = false;
         playerInfo.speedOfPlayer = speedOfPlayer;
         Destroy(playerColliders.OtherCollider.gameObject);
         if (isServer)

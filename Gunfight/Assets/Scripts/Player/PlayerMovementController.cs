@@ -47,6 +47,8 @@ public class PlayerMovementController : NetworkBehaviour
 
     public float cooldownTimer = 0;
 
+    public bool isFiring;
+
     [SyncVar]
     public float health = 10f;
 
@@ -134,13 +136,42 @@ public class PlayerMovementController : NetworkBehaviour
         {
             if (isLocalPlayer)
             {
-                if (Input.GetButtonDown("Fire1") && cooldownTimer <=0f)
+                if (Input.GetButtonDown("Fire1") && cooldownTimer <= 0f)
                 {
-                    cooldownTimer = PlayerModel.GetComponent<PlayerInfo>().cooldown;
-                    CmdShooting(shootPoint.position);
+                    // Start firing if the fire button is pressed down and this weapon is automatic
+                    if (PlayerModel.GetComponent<PlayerInfo>().isAuto)
+                    {
+                        // Set the isFiring flag to true and start firing
+                        isFiring = true;
+                        StartCoroutine(ContinuousFire());
+                    }
+                    else
+                    {
+                        // Fire a single shot
+                        cooldownTimer = PlayerModel.GetComponent<PlayerInfo>().cooldown;
+                        CmdShooting(shootPoint.position);
+                    }
                 }
+                else if (Input.GetButtonUp("Fire1") && PlayerModel.GetComponent<PlayerInfo>().isAuto)
+                {
+                    // Stop firing if the fire button is released and this weapon is automatic
+                    isFiring = false;
+                    StopCoroutine(ContinuousFire());
+                }
+
                 cooldownTimer -= Time.deltaTime;
             }
+        }
+    }
+
+    private IEnumerator ContinuousFire()
+    {
+        while (isFiring && cooldownTimer <= 0f)
+        {
+            // Fire a shot and wait for the cooldown timer to expire
+            cooldownTimer = PlayerModel.GetComponent<PlayerInfo>().cooldown;
+            CmdShooting(shootPoint.position);
+            yield return new WaitForSeconds(cooldownTimer);
         }
     }
 

@@ -24,4 +24,6 @@ public class WeaponInfo : MonoBehaviour
     public float speedOfPlayer;
 
     public float cooldown;
+
+    public bool isAuto;
 }
