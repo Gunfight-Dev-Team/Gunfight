@@ -75,16 +75,14 @@ public class PlayerWeaponController : NetworkBehaviour
 
         [Command]
     void CmdPickUp(WeaponID weapon, int nAmmo, float speedOfPlayer)
-    {
-        
-        ChangeSprite(weapon);
-
+    { 
         RpcDestoryWeapon(weapon, nAmmo, speedOfPlayer);
     }
 
     [ClientRpc]
     void RpcDestoryWeapon(WeaponID weapon, int nAmmo, float speedOfPlayer)
     {
+        ChangeSprite(weapon);
         playerInfo.weaponID = weapon;
         playerInfo.nAmmo = nAmmo;
         playerInfo.speedOfPlayer = speedOfPlayer;
