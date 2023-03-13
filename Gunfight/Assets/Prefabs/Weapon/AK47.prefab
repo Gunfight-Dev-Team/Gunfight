@@ -104,8 +104,9 @@ MonoBehaviour:
   damage: 2
   range: 15
   speedOfPlayer: 6
-  cooldown: 0.3
+  cooldown: 0.2
   isAuto: 1
+  isMelee: 0
 --- !u!61 &-998639533774560843
 BoxCollider2D:
   m_ObjectHideFlags: 0
