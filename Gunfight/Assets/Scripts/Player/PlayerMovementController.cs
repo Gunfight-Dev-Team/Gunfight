@@ -260,6 +260,7 @@ public class PlayerMovementController : NetworkBehaviour
         if (!isServer) return;
 
         health -= damage;
+        Debug.Log("Player took " + damage + " Damage");
 
         if (health <= 0)
             RpcDie();
