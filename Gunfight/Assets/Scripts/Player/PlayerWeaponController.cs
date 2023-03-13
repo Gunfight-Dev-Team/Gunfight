@@ -25,10 +25,9 @@ public class PlayerWeaponController : NetworkBehaviour
     [SerializeField] private GameObject Sniper;
     [SerializeField] private GameObject Uzi;
 
-    [ClientCallback]
     private void Update()
     {
-        if(!isOwned) return;
+        if (!isLocalPlayer) return;
 
         if (SceneManager.GetActiveScene().name == "Game")
         {
