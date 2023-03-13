@@ -132,7 +132,6 @@ public class PlayerMovementController : NetworkBehaviour
             {
                 Movement();
             }
-            
         }
     }
 
@@ -172,8 +171,7 @@ public class PlayerMovementController : NetworkBehaviour
                 cooldownTimer -= Time.deltaTime;
             }
 
-            if (Input.GetKeyDown(KeyCode.P))
-                CmdReset();
+            if (Input.GetKeyDown(KeyCode.P)) CmdReset();
         }
     }
 
@@ -257,15 +255,21 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
-        if (!PlayerModel.GetComponent<PlayerInfo>().isMelee)
+        if (
+            !PlayerModel.GetComponent<PlayerInfo>().isMelee ||
+            PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0
+        )
         {
-            AudioSource.PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
+            AudioSource
+                .PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
+
             //var trail = Instantiate(bulletTrail, startPos, Quaternion.identity);
             //var trailScript = trail.GetComponent<BulletTrail>();
             //trailScript.SetTargetPosition (endPos);
             //if (isServer) NetworkServer.Spawn(trail);
-
-            Instantiate(bulletParticle.GetComponent<ParticleSystem>(), startPos, PlayerModel.transform.rotation);
+            Instantiate(bulletParticle.GetComponent<ParticleSystem>(),
+            startPos,
+            PlayerModel.transform.rotation);
         }
         var hitParticleInstance =
             Instantiate(hitParticle.GetComponent<ParticleSystem>(),
@@ -276,42 +280,48 @@ public class PlayerMovementController : NetworkBehaviour
     [Command]
     public void CmdShooting(Vector3 shootPoint)
     {
-        Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mousePos - (Vector2) shootPoint).normalized;
-        RaycastHit2D hit =
-            Physics2D
-                .Raycast(shootPoint,
-                PlayerModel.transform.up,
-                PlayerModel.GetComponent<PlayerInfo>().range);
-
-        var endPos = hit.point;
-
-        if (
-            hit.collider != null && !hit.collider.CompareTag("Uncolliable") //&& hit.collider.CompareTag("Enemy")
-        )
+        if (PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
         {
-            Debug.Log("hit");
-            if (hit.collider.gameObject.tag == "Player")
+            Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 direction = (mousePos - (Vector2) shootPoint).normalized;
+            RaycastHit2D hit =
+                Physics2D
+                    .Raycast(shootPoint,
+                    PlayerModel.transform.up,
+                    PlayerModel.GetComponent<PlayerInfo>().range);
+
+            var endPos = hit.point;
+
+            if (
+                hit.collider != null && !hit.collider.CompareTag("Uncolliable") //&& hit.collider.CompareTag("Enemy")
+            )
             {
-                Debug.Log("Hit Player");
-                hit
-                    .collider
-                    .gameObject
-                    .transform
-                    .parent
-                    .gameObject
-                    .GetComponent<PlayerMovementController>()
-                    .TakeDamage(PlayerModel.GetComponent<PlayerInfo>().damage);
+                Debug.Log("hit");
+                if (hit.collider.gameObject.tag == "Player")
+                {
+                    Debug.Log("Hit Player");
+                    hit
+                        .collider
+                        .gameObject
+                        .transform
+                        .parent
+                        .gameObject
+                        .GetComponent<PlayerMovementController>()
+                        .TakeDamage(PlayerModel
+                            .GetComponent<PlayerInfo>()
+                            .damage);
+                }
             }
+            else
+            {
+                endPos =
+                    shootPoint +
+                    PlayerModel.transform.up *
+                    PlayerModel.GetComponent<PlayerInfo>().range;
+            }
+            PlayerModel.GetComponent<PlayerInfo>().nAmmo--;
+            RpcSpawnBulletTrail (shootPoint, endPos);
         }
-        else
-        {
-            endPos =
-                shootPoint +
-                PlayerModel.transform.up *
-                PlayerModel.GetComponent<PlayerInfo>().range;
-        }
-        RpcSpawnBulletTrail (shootPoint, endPos);
     }
 
     public void TakeDamage(float damage)
@@ -389,7 +399,5 @@ public class PlayerMovementController : NetworkBehaviour
         spriteRenderer.color = Color.white;
 
         GetComponent<PlayerWeaponController>().enabled = true;
-        
-
     }
 }

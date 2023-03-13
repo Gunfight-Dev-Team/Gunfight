@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using Unity.Burst.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class PlayerWeaponController : NetworkBehaviour
 {
@@ -62,7 +62,10 @@ public class PlayerWeaponController : NetworkBehaviour
                 playerColliders.OtherCollider.GetComponent<WeaponInfo>().nAmmo,
                 playerColliders.OtherCollider.GetComponent<WeaponInfo>().range,
                 playerColliders.OtherCollider.GetComponent<WeaponInfo>().damage,
-                playerColliders.OtherCollider.GetComponent<WeaponInfo>().cooldown,
+                playerColliders
+                    .OtherCollider
+                    .GetComponent<WeaponInfo>()
+                    .cooldown,
                 playerColliders
                     .OtherCollider
                     .GetComponent<WeaponInfo>()
@@ -97,9 +100,10 @@ public class PlayerWeaponController : NetworkBehaviour
                 { WeaponID.Uzi, Uzi }
             };
 
-        GameObject newWeapon = Instantiate(weapons[playerInfo.weaponID],
-                                    playerRef.transform.position,
-                                    Quaternion.Euler(0, 0, Random.Range(0, 360)));
+        GameObject newWeapon =
+            Instantiate(weapons[playerInfo.weaponID],
+            playerRef.transform.position,
+            Quaternion.Euler(0, 0, Random.Range(0, 360)));
         newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
         newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
         newWeapon.GetComponent<WeaponInfo>().damage = playerInfo.damage;
@@ -119,7 +123,14 @@ public class PlayerWeaponController : NetworkBehaviour
         float speedOfPlayer
     )
     {
-        RpcDestoryWeapon (weapon, nAmmo, range, damage, cooldown, speedOfPlayer);
+        RpcDestoryWeapon (
+            weapon,
+            nAmmo,
+            range,
+            damage,
+            cooldown,
+            speedOfPlayer
+        );
     }
 
     [ClientRpc]
@@ -127,7 +138,7 @@ public class PlayerWeaponController : NetworkBehaviour
         WeaponID weapon,
         int nAmmo,
         float range,
-        int damage, 
+        int damage,
         float cooldown,
         float speedOfPlayer
     )
