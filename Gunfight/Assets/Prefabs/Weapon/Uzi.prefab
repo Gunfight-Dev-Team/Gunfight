@@ -100,9 +100,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 4
-  nAmmo: 0
-  range: 0
-  speedOfPlayer: 0
+  nAmmo: 45
+  range: 8.5
+  speedOfPlayer: 8
 --- !u!61 &4691849070904339679
 BoxCollider2D:
   m_ObjectHideFlags: 0
