@@ -364,8 +364,7 @@ public class PlayerMovementController : NetworkBehaviour
         PlayerModel.GetComponent<PlayerInfo>().range = 0;
         PlayerModel.GetComponent<PlayerInfo>().damage = 0;
         PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 0;
-        this.GetComponent<PlayerWeaponController>().enabled = false;
-        this.enabled = false;
+        GetComponent<PlayerWeaponController>().enabled = false;
     }
 
     [Command]
@@ -378,13 +377,14 @@ public class PlayerMovementController : NetworkBehaviour
     void RpcRespawn()
     {
         SetPosition();
+        SetSprite();
         health = 10f;
         PlayerModel.GetComponent<PlayerInfo>().nAmmo = 0;
         PlayerModel.GetComponent<PlayerInfo>().range = 0.5f;
         PlayerModel.GetComponent<PlayerInfo>().damage = 10;
         PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 8;
-        this.GetComponent<PlayerWeaponController>().enabled = true;
-        this.enabled = true;
+        GetComponent<PlayerWeaponController>().enabled = true;
+        
 
     }
 }
