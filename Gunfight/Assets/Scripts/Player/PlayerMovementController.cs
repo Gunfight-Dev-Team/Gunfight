@@ -379,6 +379,12 @@ public class PlayerMovementController : NetworkBehaviour
     {
         SetPosition();
         health = 10f;
-        
+        PlayerModel.GetComponent<PlayerInfo>().nAmmo = 0;
+        PlayerModel.GetComponent<PlayerInfo>().range = 0.5f;
+        PlayerModel.GetComponent<PlayerInfo>().damage = 10;
+        PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 8;
+        this.GetComponent<PlayerWeaponController>().enabled = true;
+        this.enabled = true;
+
     }
 }
