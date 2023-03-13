@@ -31,8 +31,6 @@ public class PlayerMovementController : NetworkBehaviour
     public Team team;
 
     //Sprite
-    public Sprite deadSprite;
-
     public GameObject player;
 
     public SpriteRenderer spriteRenderer;
@@ -63,7 +61,6 @@ public class PlayerMovementController : NetworkBehaviour
     {
         PlayerModel.SetActive(false);
         poc = GetComponent<PlayerObjectController>();
-        GetComponent<PlayerWeaponController>().team = team;
         LoadSprite();
         GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
     }
@@ -92,6 +89,10 @@ public class PlayerMovementController : NetworkBehaviour
         spriteHandle =
             Addressables
                 .LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Uzi.png");
+        spriteHandle.Completed += LoadSpritesWhenReady;
+        spriteHandle =
+            Addressables
+                .LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Death.png");
         spriteHandle.Completed += LoadSpritesWhenReady;
     }
 
@@ -134,8 +135,6 @@ public class PlayerMovementController : NetworkBehaviour
                 }
             }
         }
-
-        if (isDead) spriteRenderer.sprite = deadSprite;
     }
 
     public void SetPosition()
@@ -159,6 +158,7 @@ public class PlayerMovementController : NetworkBehaviour
         else if (poc.PlayerIdNumber == 3)
             team = Team.Orange;
         else if (poc.PlayerIdNumber == 4) team = Team.White;
+        GetComponent<PlayerWeaponController>().team = team;
     }
 
     public void SetSprite()
@@ -290,6 +290,17 @@ public class PlayerMovementController : NetworkBehaviour
     void RpcDie()
     {
         //gameObject.transform.Find("Player").gameObject.SetActive(false);
-        spriteRenderer.sprite = deadSprite;
+        // [ ] TODO: is it possible to make this more simple?
+        var teamArray =
+            new Dictionary<Team, int>()
+            {
+                { Team.Green, 0 },
+                { Team.Red, 1 },
+                { Team.Orange, 2 },
+                { Team.White, 3 }
+            };
+
+        int index = 5 * 4 + teamArray[team];
+        spriteRenderer.sprite = spriteArray[index];
     }
 }

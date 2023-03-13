@@ -37,6 +37,10 @@ MonoBehaviour:
     m_Address: Assets/Art/Player/Player_Uzi.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: ed03495e8075d45d4a902910418a42f0
+    m_Address: Assets/Art/Player/Player_Death.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b17999920d26b4954b7732664849b50f, type: 2}
   m_SchemaSet:

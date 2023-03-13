@@ -17,8 +17,6 @@ public class PlayerWeaponController : NetworkBehaviour
     //Sprite
     public SpriteRenderer spriteRenderer;
 
-    public Sprite deadSprite;
-
     [SerializeField]
     internal List<Sprite> spriteArray;
 
@@ -166,7 +164,8 @@ public class PlayerWeaponController : NetworkBehaviour
 
         if (weapon == (WeaponID)(-1))
         {
-            spriteRenderer.sprite = deadSprite;
+            int index = 5 * 4 + teamArray[team];
+            spriteRenderer.sprite = spriteArray[index];
         }
         else
         {
