@@ -330,6 +330,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+  resetGame: 0
   Speed: 10
   PlayerModel: {fileID: 5568238824894995105}
   rb: {fileID: 7556019727412048153}
@@ -664,11 +665,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponID: 1
   nAmmo: 0
-  range: 1
+  range: 0.5
   damage: 10
   cooldown: 1
   isAuto: 0
-  canFire: 0
+  isMelee: 1
   speedOfPlayer: 10
   health: 10
   equipments: 

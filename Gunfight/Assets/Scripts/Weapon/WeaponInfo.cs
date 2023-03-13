@@ -26,4 +26,6 @@ public class WeaponInfo : MonoBehaviour
     public float cooldown;
 
     public bool isAuto;
+
+    public bool isMelee;
 }

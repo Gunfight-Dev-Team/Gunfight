@@ -10,7 +10,7 @@ public class PlayerInfo : MonoBehaviour
     public int damage;
     public float cooldown;
     public bool isAuto;
-    public bool canFire;
+    public bool isMelee;
 
     public float speedOfPlayer;
     // public bool state;

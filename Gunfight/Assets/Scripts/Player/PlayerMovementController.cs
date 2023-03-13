@@ -171,6 +171,9 @@ public class PlayerMovementController : NetworkBehaviour
 
                 cooldownTimer -= Time.deltaTime;
             }
+
+            if (Input.GetKeyDown(KeyCode.P))
+                CmdReset();
         }
     }
 
@@ -254,16 +257,16 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
-        AudioSource
-            .PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
-        var trail = Instantiate(bulletTrail, startPos, Quaternion.identity);
-        var trailScript = trail.GetComponent<BulletTrail>();
-        trailScript.SetTargetPosition (endPos);
-        if (isServer) NetworkServer.Spawn(trail);
+        if (!PlayerModel.GetComponent<PlayerInfo>().isMelee)
+        {
+            AudioSource.PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
+            //var trail = Instantiate(bulletTrail, startPos, Quaternion.identity);
+            //var trailScript = trail.GetComponent<BulletTrail>();
+            //trailScript.SetTargetPosition (endPos);
+            //if (isServer) NetworkServer.Spawn(trail);
 
-        Instantiate(bulletParticle.GetComponent<ParticleSystem>(),
-        startPos,
-        PlayerModel.transform.rotation);
+            Instantiate(bulletParticle.GetComponent<ParticleSystem>(), startPos, PlayerModel.transform.rotation);
+        }
         var hitParticleInstance =
             Instantiate(hitParticle.GetComponent<ParticleSystem>(),
             endPos,
@@ -363,5 +366,19 @@ public class PlayerMovementController : NetworkBehaviour
         PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 0;
         this.GetComponent<PlayerWeaponController>().enabled = false;
         this.enabled = false;
+    }
+
+    [Command]
+    void CmdReset()
+    {
+        RpcRespawn();
+    }
+
+    [ClientRpc]
+    void RpcRespawn()
+    {
+        SetPosition();
+        health = 10f;
+        
     }
 }

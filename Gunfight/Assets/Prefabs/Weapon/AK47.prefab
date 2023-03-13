@@ -102,7 +102,7 @@ MonoBehaviour:
   id: 0
   nAmmo: 30
   damage: 2
-  range: 10
+  range: 15
   speedOfPlayer: 6
   cooldown: 0.3
   isAuto: 1

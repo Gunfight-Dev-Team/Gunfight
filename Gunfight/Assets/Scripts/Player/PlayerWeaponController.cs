@@ -144,6 +144,10 @@ public class PlayerWeaponController : NetworkBehaviour
             playerInfo.isAuto = true;
         else
             playerInfo.isAuto = false;
+        if (weapon == WeaponID.Knife)
+            playerInfo.isMelee = true;
+        else
+            playerInfo.isMelee = false;
         playerInfo.speedOfPlayer = speedOfPlayer;
         Destroy(playerColliders.OtherCollider.gameObject);
         if (isServer)

@@ -102,10 +102,11 @@ MonoBehaviour:
   id: 1
   nAmmo: 0
   damage: 10
-  range: 1
+  range: 0.5
   speedOfPlayer: 10
   cooldown: 1
   isAuto: 0
+  isMelee: 1
 --- !u!61 &3116356718501793633
 BoxCollider2D:
   m_ObjectHideFlags: 0

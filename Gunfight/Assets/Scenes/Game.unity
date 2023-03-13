@@ -31833,6 +31833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4af689163739468e88f3b1220ac2f10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocalPlayerObject: {fileID: 0}
   LocalPlayerController: {fileID: 0}
 --- !u!4 &328192905
 Transform:
@@ -31904,7 +31905,7 @@ MonoBehaviour:
   - {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
   - {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
   tileMap: {fileID: 46667692}
-  numWeapons: 3
+  numWeapons: 5
 --- !u!114 &501821809
 MonoBehaviour:
   m_ObjectHideFlags: 0
