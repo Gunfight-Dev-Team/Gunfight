@@ -57,12 +57,16 @@ public class PlayerMovementController : NetworkBehaviour
 
     private Vector2 mousePos;
 
+    public AudioClip gunshotSound;
+    private AudioSource audioSource;
+
     private void Start()
     {
         PlayerModel.SetActive(false);
         poc = GetComponent<PlayerObjectController>();
         LoadSprite();
         GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
+        audioSource = GetComponent<AudioSource>();
     }
 
     void LoadSprite()
@@ -206,6 +210,7 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
+        AudioSource.PlayClipAtPoint(gunshotSound, startPos);
         var trail = Instantiate(bulletTrail, startPos, Quaternion.identity);
         var trailScript = trail.GetComponent<BulletTrail>();
         trailScript.SetTargetPosition (endPos);
