@@ -69,7 +69,8 @@ public class PlayerMovementController : NetworkBehaviour
 
     private void Start()
     {
-       
+        if (isLocalPlayer)
+        {
             // Get all players with an AudioListener component
             AudioListener[] audioListeners = FindObjectsOfType<AudioListener>();
 
@@ -85,6 +86,7 @@ public class PlayerMovementController : NetworkBehaviour
                     Destroy(audioListener);
                 }
             }
+        }
         
 
         PlayerModel.SetActive(false);
