@@ -7,6 +7,7 @@ public class PlayerInfo : MonoBehaviour
     public WeaponID weaponID;
     public int nAmmo;
     public float range;
+    public int damage;
 
     public float speedOfPlayer;
     // public bool state;

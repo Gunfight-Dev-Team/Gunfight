@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Mirror;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.SceneManagement;
 
 public enum Team
 {
@@ -27,23 +27,34 @@ public class PlayerMovementController : NetworkBehaviour
 
     public PlayerObjectController poc;
 
-    [SerializeField] public Team team;
+    [SerializeField]
+    public Team team;
 
     //Sprite
     public Sprite deadSprite;
+
     public GameObject player;
+
     public SpriteRenderer spriteRenderer;
+
     public List<Sprite> spriteArray;
 
     //Shooting
     public Transform shootPoint;
+
     public float bulletTrailSpeed;
+
     public GameObject bulletTrail;
+
     public float weaponRange = 10f;
-    [SyncVar] public float health = 10f;
+
+    [SyncVar]
+    public float health = 10f;
+
     public bool isDead = false;
 
     public GameObject hitParticle;
+
     public GameObject bulletParticle;
 
     private Vector2 mousePos;
@@ -59,22 +70,34 @@ public class PlayerMovementController : NetworkBehaviour
 
     void LoadSprite()
     {
-        AsyncOperationHandle<Sprite[]> spriteHandle = Addressables.LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_AK47.png");
+        AsyncOperationHandle<Sprite[]> spriteHandle =
+            Addressables
+                .LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_AK47.png");
         spriteHandle.WaitForCompletion();
         spriteHandle.Completed += LoadSpritesWhenReady;
-        spriteHandle = Addressables.LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Knife.png");
+        spriteHandle =
+            Addressables
+                .LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Knife.png");
         spriteHandle.Completed += LoadSpritesWhenReady;
-        spriteHandle = Addressables.LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Pistol.png");
+        spriteHandle =
+            Addressables
+                .LoadAssetAsync
+                <Sprite[]>("Assets/Art/Player/Player_Pistol.png");
         spriteHandle.Completed += LoadSpritesWhenReady;
-        spriteHandle = Addressables.LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Sniper.png");
+        spriteHandle =
+            Addressables
+                .LoadAssetAsync
+                <Sprite[]>("Assets/Art/Player/Player_Sniper.png");
         spriteHandle.Completed += LoadSpritesWhenReady;
-        spriteHandle = Addressables.LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Uzi.png");
+        spriteHandle =
+            Addressables
+                .LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Uzi.png");
         spriteHandle.Completed += LoadSpritesWhenReady;
     }
 
     void LoadSpritesWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
     {
-        if(handleToCheck.Status == AsyncOperationStatus.Succeeded)
+        if (handleToCheck.Status == AsyncOperationStatus.Succeeded)
         {
             spriteArray.AddRange(handleToCheck.Result);
         }
@@ -86,8 +109,7 @@ public class PlayerMovementController : NetworkBehaviour
         {
             if (PlayerModel.activeSelf == false)
             {
-                if (health > 8)
-                    PlayerModel.SetActive(true);
+                if (health > 8) PlayerModel.SetActive(true);
                 SetPosition();
                 SetTeam();
                 SetSprite();
@@ -112,9 +134,8 @@ public class PlayerMovementController : NetworkBehaviour
                 }
             }
         }
-        
-        if (isDead)
-            spriteRenderer.sprite = deadSprite;
+
+        if (isDead) spriteRenderer.sprite = deadSprite;
     }
 
     public void SetPosition()
@@ -137,19 +158,20 @@ public class PlayerMovementController : NetworkBehaviour
             team = Team.Red;
         else if (poc.PlayerIdNumber == 3)
             team = Team.Orange;
-        else if (poc.PlayerIdNumber == 4)
-            team = Team.White;
+        else if (poc.PlayerIdNumber == 4) team = Team.White;
     }
-    
+
     public void SetSprite()
     {
         // [ ] TODO: is it possible to make this more simple?
-        var teamArray = new Dictionary<Team, int>(){
-            {Team.Green, 0},
-            {Team.Red, 1},
-            {Team.Orange, 2},
-            {Team.White, 3}
-        };
+        var teamArray =
+            new Dictionary<Team, int>()
+            {
+                { Team.Green, 0 },
+                { Team.Red, 1 },
+                { Team.Orange, 2 },
+                { Team.White, 3 }
+            };
 
         // change sprite
         int index = 4 + teamArray[team];
@@ -172,55 +194,70 @@ public class PlayerMovementController : NetworkBehaviour
 
         Vector3 moveDirection = new Vector3(xDirection, yDirection, 0.0f);
 
-        rb.MovePosition(PlayerModel.transform.position + moveDirection * Speed * Time.deltaTime);
+        rb
+            .MovePosition(PlayerModel.transform.position +
+            moveDirection * Speed * Time.deltaTime);
         Physics2D.SyncTransforms();
         //PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
     }
-
 
     [ClientRpc]
     void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
         var trail = Instantiate(bulletTrail, startPos, Quaternion.identity);
         var trailScript = trail.GetComponent<BulletTrail>();
-        trailScript.SetTargetPosition(endPos);
-        if(isServer)
-            NetworkServer.Spawn(trail);
+        trailScript.SetTargetPosition (endPos);
+        if (isServer) NetworkServer.Spawn(trail);
 
-        Instantiate(bulletParticle.GetComponent<ParticleSystem>(), startPos, PlayerModel.transform.rotation);
-        var hitParticleInstance = Instantiate(hitParticle.GetComponent<ParticleSystem>(), endPos, Quaternion.identity);
+        Instantiate(bulletParticle.GetComponent<ParticleSystem>(),
+        startPos,
+        PlayerModel.transform.rotation);
+        var hitParticleInstance =
+            Instantiate(hitParticle.GetComponent<ParticleSystem>(),
+            endPos,
+            Quaternion.identity);
     }
 
     [Command]
     public void CmdShooting(Vector3 shootPoint)
     {
-            Debug.Log("mouse pressed");
-            Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mousePos - (Vector2)shootPoint).normalized;
-            RaycastHit2D hit = Physics2D.Raycast(shootPoint, PlayerModel.transform.up, weaponRange);
+        Debug.Log("mouse pressed");
+        Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mousePos - (Vector2) shootPoint).normalized;
+        RaycastHit2D hit =
+            Physics2D
+                .Raycast(shootPoint, PlayerModel.transform.up, weaponRange);
 
-            var endPos = hit.point;
+        var endPos = hit.point;
 
-            if (hit.collider != null && !hit.collider.CompareTag("Uncolliable")) //&& hit.collider.CompareTag("Enemy")
+        if (
+            hit.collider != null && !hit.collider.CompareTag("Uncolliable") //&& hit.collider.CompareTag("Enemy")
+        )
+        {
+            Debug.Log("hit");
+            if (hit.collider.gameObject.tag == "Player")
             {
-                Debug.Log("hit");
-                if (hit.collider.gameObject.tag == "Player")
-                {
-                    Debug.Log("Hit Player");
-                    hit.collider.gameObject.transform.parent.gameObject.GetComponent<PlayerMovementController>().TakeDamage(2);
-                }
+                Debug.Log("Hit Player");
+                hit
+                    .collider
+                    .gameObject
+                    .transform
+                    .parent
+                    .gameObject
+                    .GetComponent<PlayerMovementController>()
+                    .TakeDamage(2);
             }
-            else
-            {
-                endPos = shootPoint + PlayerModel.transform.up * weaponRange;
-            }
-            RpcSpawnBulletTrail(shootPoint, endPos);
+        }
+        else
+        {
+            endPos = shootPoint + PlayerModel.transform.up * weaponRange;
+        }
+        RpcSpawnBulletTrail (shootPoint, endPos);
     }
 
     public void TakeDamage(float damage)
     {
-        if (!isServer)
-            return;
+        if (!isServer) return;
 
         health -= damage;
 
