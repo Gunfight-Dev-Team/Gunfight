@@ -52,9 +52,9 @@ public class PlayerMovementController : NetworkBehaviour
     {
         PlayerModel.SetActive(false);
         poc = GetComponent<PlayerObjectController>();
-        player.GetComponent<PlayerWeaponController>().team = team;
+        GetComponent<PlayerWeaponController>().team = team;
         LoadSprite();
-        player.GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
+        GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
     }
 
     void LoadSprite()
@@ -249,6 +249,7 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcDie()
     {
-        gameObject.transform.Find("Player").gameObject.SetActive(false);
+        //gameObject.transform.Find("Player").gameObject.SetActive(false);
+        spriteRenderer.sprite = deadSprite;
     }
 }
