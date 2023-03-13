@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6672598589228257040}
   - component: {fileID: -3417721546245133633}
   - component: {fileID: -13071760579129077}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Grenade
   m_TagString: Weapon
   m_Icon: {fileID: 0}
@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 5
   nAmmo: 0
+  damage: 0
   range: 0
   speedOfPlayer: 0
 --- !u!61 &-3417721546245133633
