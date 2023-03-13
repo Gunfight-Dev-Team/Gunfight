@@ -35,7 +35,7 @@ public class PlayerWeaponController : NetworkBehaviour
             {
                     // Pick up the weapon
                 Debug.Log("Weapon picked up!");
-                if (isServer)
+                if (!isServer)
                 {
                     CmdDrop(playerInfo.weaponID, playerInfo.nAmmo, playerInfo.range, playerInfo.speedOfPlayer);
                     CmdPickUp(playerColliders.OtherCollider.GetComponent<WeaponInfo>().id, playerColliders.OtherCollider.GetComponent<WeaponInfo>().nAmmo, playerColliders.OtherCollider.GetComponent<WeaponInfo>().speedOfPlayer);
