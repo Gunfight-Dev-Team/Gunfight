@@ -63,7 +63,7 @@ public class PlayerWeaponController : NetworkBehaviour
 
         GameObject newWeapon = Instantiate(weapons[playerInfo.weaponID],
                                     playerRef.transform.position,
-                                    weapons[playerInfo.weaponID].transform.rotation);
+                                    Quaternion.Euler(0, 0, Random.Range(0, 360)));
         newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
         newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
         newWeapon.GetComponent<WeaponInfo>().speedOfPlayer = playerInfo.speedOfPlayer;
