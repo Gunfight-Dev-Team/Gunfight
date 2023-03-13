@@ -228,7 +228,7 @@ public class PlayerMovementController : NetworkBehaviour
         Vector2 direction = (mousePos - (Vector2) shootPoint).normalized;
         RaycastHit2D hit =
             Physics2D
-                .Raycast(shootPoint, PlayerModel.transform.up, weaponRange);
+                .Raycast(shootPoint, PlayerModel.transform.up, PlayerModel.GetComponent<PlayerInfo>().range);
 
         var endPos = hit.point;
 
@@ -252,7 +252,7 @@ public class PlayerMovementController : NetworkBehaviour
         }
         else
         {
-            endPos = shootPoint + PlayerModel.transform.up * weaponRange;
+            endPos = shootPoint + PlayerModel.transform.up * PlayerModel.GetComponent<PlayerInfo>().range;
         }
         RpcSpawnBulletTrail (shootPoint, endPos);
     }

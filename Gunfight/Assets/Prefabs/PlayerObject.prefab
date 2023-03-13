@@ -567,7 +567,7 @@ MonoBehaviour:
   weaponID: 1
   nAmmo: 0
   range: 1
-  damage: 0
+  damage: 10
   speedOfPlayer: 10
   health: 10
   equipments: 
