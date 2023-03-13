@@ -245,7 +245,7 @@ public class PlayerMovementController : NetworkBehaviour
                     .parent
                     .gameObject
                     .GetComponent<PlayerMovementController>()
-                    .TakeDamage(2);
+                    .TakeDamage(PlayerModel.GetComponent<PlayerInfo>().damage);
             }
         }
         else
