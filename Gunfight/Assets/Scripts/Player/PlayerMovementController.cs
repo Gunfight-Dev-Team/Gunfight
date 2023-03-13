@@ -213,7 +213,7 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
-        AudioSource.PlayClipAtPoint(gunshotSound, startPos);
+        AudioSource.PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
         var trail = Instantiate(bulletTrail, startPos, Quaternion.identity);
         var trailScript = trail.GetComponent<BulletTrail>();
         trailScript.SetTargetPosition (endPos);
