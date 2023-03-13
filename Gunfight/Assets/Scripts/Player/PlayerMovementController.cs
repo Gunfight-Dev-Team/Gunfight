@@ -255,10 +255,7 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
-        if (
-            !PlayerModel.GetComponent<PlayerInfo>().isMelee ||
-            PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0
-        )
+        if (!PlayerModel.GetComponent<PlayerInfo>().isMelee && PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
         {
             AudioSource
                 .PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
@@ -280,7 +277,7 @@ public class PlayerMovementController : NetworkBehaviour
     [Command]
     public void CmdShooting(Vector3 shootPoint)
     {
-        if (!PlayerModel.GetComponent<PlayerInfo>().isMelee || PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
+        if (!PlayerModel.GetComponent<PlayerInfo>().isMelee && PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
         {
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = (mousePos - (Vector2) shootPoint).normalized;
