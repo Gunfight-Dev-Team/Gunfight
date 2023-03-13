@@ -97,10 +97,9 @@ public class PlayerWeaponController : NetworkBehaviour
                 { WeaponID.Uzi, Uzi }
             };
 
-        GameObject newWeapon =
-            Instantiate(weapons[playerInfo.weaponID],
-            playerRef.transform.position,
-            weapons[playerInfo.weaponID].transform.rotation);
+        GameObject newWeapon = Instantiate(weapons[playerInfo.weaponID],
+                                    playerRef.transform.position,
+                                    Quaternion.Euler(0, 0, Random.Range(0, 360)));
         newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
         newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
         newWeapon.GetComponent<WeaponInfo>().damage = playerInfo.damage;
