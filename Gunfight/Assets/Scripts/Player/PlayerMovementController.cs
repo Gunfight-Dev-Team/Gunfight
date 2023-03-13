@@ -267,11 +267,13 @@ public class PlayerMovementController : NetworkBehaviour
             Instantiate(bulletParticle.GetComponent<ParticleSystem>(),
             startPos,
             PlayerModel.transform.rotation);
+            PlayerModel.GetComponent<PlayerInfo>().nAmmo--;
         }
         var hitParticleInstance =
             Instantiate(hitParticle.GetComponent<ParticleSystem>(),
             endPos,
             Quaternion.identity);
+
     }
 
     [Command]
@@ -316,7 +318,6 @@ public class PlayerMovementController : NetworkBehaviour
                     PlayerModel.transform.up *
                     PlayerModel.GetComponent<PlayerInfo>().range;
             }
-            PlayerModel.GetComponent<PlayerInfo>().nAmmo--;
             RpcSpawnBulletTrail (shootPoint, endPos);
         }
     }
