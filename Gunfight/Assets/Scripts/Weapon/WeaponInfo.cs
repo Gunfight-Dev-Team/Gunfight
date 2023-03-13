@@ -22,4 +22,6 @@ public class WeaponInfo : MonoBehaviour
     public float range;
 
     public float speedOfPlayer;
+
+    public float cooldown;
 }

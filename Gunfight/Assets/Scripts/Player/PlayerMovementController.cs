@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Mirror;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
@@ -44,7 +45,7 @@ public class PlayerMovementController : NetworkBehaviour
 
     public GameObject bulletTrail;
 
-    public float weaponRange = 10f;
+    public float cooldownTimer = 0;
 
     [SyncVar]
     public float health = 10f;
@@ -133,10 +134,12 @@ public class PlayerMovementController : NetworkBehaviour
         {
             if (isLocalPlayer)
             {
-                if (Input.GetButtonDown("Fire1"))
+                if (Input.GetButtonDown("Fire1") && cooldownTimer <=0f)
                 {
+                    cooldownTimer = PlayerModel.GetComponent<PlayerInfo>().cooldown;
                     CmdShooting(shootPoint.position);
                 }
+                cooldownTimer -= Time.deltaTime;
             }
         }
     }

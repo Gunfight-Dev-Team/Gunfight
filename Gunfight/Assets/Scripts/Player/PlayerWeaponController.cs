@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -61,6 +62,7 @@ public class PlayerWeaponController : NetworkBehaviour
                 playerColliders.OtherCollider.GetComponent<WeaponInfo>().nAmmo,
                 playerColliders.OtherCollider.GetComponent<WeaponInfo>().range,
                 playerColliders.OtherCollider.GetComponent<WeaponInfo>().damage,
+                playerColliders.OtherCollider.GetComponent<WeaponInfo>().cooldown,
                 playerColliders
                     .OtherCollider
                     .GetComponent<WeaponInfo>()
@@ -113,10 +115,11 @@ public class PlayerWeaponController : NetworkBehaviour
         int nAmmo,
         float range,
         int damage,
+        float cooldown,
         float speedOfPlayer
     )
     {
-        RpcDestoryWeapon (weapon, nAmmo, range, damage, speedOfPlayer);
+        RpcDestoryWeapon (weapon, nAmmo, range, damage, cooldown, speedOfPlayer);
     }
 
     [ClientRpc]
@@ -124,7 +127,8 @@ public class PlayerWeaponController : NetworkBehaviour
         WeaponID weapon,
         int nAmmo,
         float range,
-        int damage,
+        int damage, 
+        float cooldown,
         float speedOfPlayer
     )
     {
@@ -133,6 +137,7 @@ public class PlayerWeaponController : NetworkBehaviour
         playerInfo.nAmmo = nAmmo;
         playerInfo.range = range;
         playerInfo.damage = damage;
+        playerInfo.cooldown = cooldown;
         playerInfo.speedOfPlayer = speedOfPlayer;
         Destroy(playerColliders.OtherCollider.gameObject);
         if (isServer)

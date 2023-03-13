@@ -342,7 +342,7 @@ MonoBehaviour:
   shootPoint: {fileID: 4178969342016999261}
   bulletTrailSpeed: 5
   bulletTrail: {fileID: 1592149606584016135, guid: 4c106be7ad5b0b74b8016d506cb6e36e, type: 3}
-  weaponRange: 10
+  cooldownTimer: 0
   health: 10
   isDead: 0
   hitParticle: {fileID: 3070724589798040209, guid: 383d96aac74cf654b973f8fe364cf4d6, type: 3}
@@ -577,7 +577,7 @@ GameObject:
   - component: {fileID: 7477781774259724041}
   - component: {fileID: 7973271518598485071}
   - component: {fileID: 434808543023887829}
-  - component: {fileID: 7743432153947051866}
+  - component: {fileID: 7217641174548469605}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -665,6 +665,9 @@ MonoBehaviour:
   nAmmo: 0
   range: 1
   damage: 10
+  cooldown: 1
+  isAuto: 0
+  canFire: 0
   speedOfPlayer: 10
   health: 10
   equipments: 
@@ -693,7 +696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canPickup: 0
   OtherCollider: {fileID: 0}
---- !u!81 &7743432153947051866
+--- !u!81 &7217641174548469605
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
