@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   nAmmo: 8
+  damage: 10
   range: 20
   speedOfPlayer: 6.5
 --- !u!61 &-8204547055257126754
