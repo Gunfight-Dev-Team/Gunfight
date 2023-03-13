@@ -67,8 +67,8 @@ public class PlayerWeaponController : NetworkBehaviour
         newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
         newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
         newWeapon.GetComponent<WeaponInfo>().speedOfPlayer = playerInfo.speedOfPlayer;
-        if(isServer)
-            NetworkServer.Spawn(newWeapon);
+        //if(isServer)
+            //NetworkServer.Spawn(newWeapon);
     }
 
         [Command]
