@@ -69,25 +69,8 @@ public class PlayerMovementController : NetworkBehaviour
 
     private void Start()
     {
-        if (isLocalPlayer)
-        {
-            // Get all players with an AudioListener component
-            AudioListener[] audioListeners = FindObjectsOfType<AudioListener>();
+        AudioListener audioListener = PlayerModel.AddComponent<AudioListener>();
 
-            // Iterate through all the AudioListener components
-            foreach (AudioListener audioListener in audioListeners)
-            {
-
-                Debug.Log(audioListener.transform.root.name);
-                // Check if the AudioListener belongs to the local player
-                if (audioListener.transform.root.gameObject != gameObject)
-                {
-                    // Destroy the AudioListener if it doesn't belong to the local player
-                    Destroy(audioListener);
-                }
-            }
-        }
-        
 
         PlayerModel.SetActive(false);
         poc = GetComponent<PlayerObjectController>();
