@@ -350,6 +350,7 @@ MonoBehaviour:
   hitParticle: {fileID: 3070724589798040209, guid: 383d96aac74cf654b973f8fe364cf4d6, type: 3}
   bulletParticle: {fileID: 3070724589798040209, guid: 18f90b87657ad4646be3723c87ba90ae, type: 3}
   gunshotSound: {fileID: 8300000, guid: 4e022ae902b32eb4588e274baead6ab2, type: 3}
+  emptySound: {fileID: 8300000, guid: 60bc335360f0cc6488a77efe1103cc94, type: 3}
 --- !u!114 &5201570048408056945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,7 +480,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4921968966995785310, guid: 7ae6def6ba5493445b81411ff0089820, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 4e022ae902b32eb4588e274baead6ab2, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 60bc335360f0cc6488a77efe1103cc94, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1

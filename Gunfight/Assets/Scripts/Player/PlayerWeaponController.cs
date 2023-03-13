@@ -45,7 +45,7 @@ public class PlayerWeaponController : NetworkBehaviour
 
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            if (playerColliders.canPickup && Input.GetKeyDown(KeyCode.E))
+            if (playerColliders.canPickup && Input.GetKeyDown(KeyCode.Mouse1))
             {
                 // Pick up the weapon
                 Debug.Log("Weapon picked up!");
@@ -104,6 +104,13 @@ public class PlayerWeaponController : NetworkBehaviour
             Instantiate(weapons[playerInfo.weaponID],
             playerRef.transform.position,
             Quaternion.Euler(0, 0, Random.Range(0, 360)));
+        Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
+        weaponRigidbody.velocity = playerRef.transform.up * 10f;
+        weaponRigidbody.angularVelocity = -50f * 10f;
+        weaponRigidbody.drag = 3.5f;
+        weaponRigidbody.angularDrag = 1f;
+        newWeapon.GetComponent<Collider2D>().isTrigger = false;
+        StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
         newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
         newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
         newWeapon.GetComponent<WeaponInfo>().damage = playerInfo.damage;
@@ -111,6 +118,12 @@ public class PlayerWeaponController : NetworkBehaviour
             playerInfo.speedOfPlayer;
         //if(isServer)
         //NetworkServer.Spawn(newWeapon);
+    }
+
+    IEnumerator TurnOnTrigger(Collider2D collider)
+    {
+        yield return new WaitForSeconds(0.5f); // wait for half a second
+        collider.isTrigger = true;
     }
 
     [Command]

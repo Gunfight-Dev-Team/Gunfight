@@ -63,11 +63,30 @@ public class PlayerMovementController : NetworkBehaviour
     private Vector2 mousePos;
 
     public AudioClip gunshotSound;
+    public AudioClip emptySound;
 
     private AudioSource audioSource;
 
     private void Start()
     {
+       
+            // Get all players with an AudioListener component
+            AudioListener[] audioListeners = FindObjectsOfType<AudioListener>();
+
+            // Iterate through all the AudioListener components
+            foreach (AudioListener audioListener in audioListeners)
+            {
+
+                Debug.Log(audioListener.transform.root.name);
+                // Check if the AudioListener belongs to the local player
+                if (audioListener.transform.root.gameObject != gameObject)
+                {
+                    // Destroy the AudioListener if it doesn't belong to the local player
+                    Destroy(audioListener);
+                }
+            }
+        
+
         PlayerModel.SetActive(false);
         poc = GetComponent<PlayerObjectController>();
         LoadSprite();
@@ -260,10 +279,6 @@ public class PlayerMovementController : NetworkBehaviour
             AudioSource
                 .PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
 
-            //var trail = Instantiate(bulletTrail, startPos, Quaternion.identity);
-            //var trailScript = trail.GetComponent<BulletTrail>();
-            //trailScript.SetTargetPosition (endPos);
-            //if (isServer) NetworkServer.Spawn(trail);
             Instantiate(bulletParticle.GetComponent<ParticleSystem>(),
             startPos,
             PlayerModel.transform.rotation);
@@ -279,10 +294,10 @@ public class PlayerMovementController : NetworkBehaviour
     [Command]
     public void CmdShooting(Vector3 shootPoint)
     {
-        if (!PlayerModel.GetComponent<PlayerInfo>().isMelee && PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
+        if (PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
         {
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mousePos - (Vector2) shootPoint).normalized;
+            Vector2 direction = (mousePos - (Vector2)shootPoint).normalized;
             RaycastHit2D hit =
                 Physics2D
                     .Raycast(shootPoint,
@@ -318,11 +333,18 @@ public class PlayerMovementController : NetworkBehaviour
                     PlayerModel.transform.up *
                     PlayerModel.GetComponent<PlayerInfo>().range;
             }
-            RpcSpawnBulletTrail (shootPoint, endPos);
+            RpcSpawnBulletTrail(shootPoint, endPos);
         }
+        else if (!PlayerModel.GetComponent<PlayerInfo>().isMelee)
+            RpcPlayEmptySound(shootPoint);
     }
 
-    public void TakeDamage(float damage)
+    void RpcPlayEmptySound(Vector2 startPos)
+    {
+        AudioSource.PlayClipAtPoint(emptySound, startPos, AudioListener.volume);
+    }
+
+        public void TakeDamage(float damage)
     {
         if (!isServer) return;
 
