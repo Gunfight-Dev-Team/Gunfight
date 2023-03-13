@@ -101,10 +101,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   nAmmo: 12
-  damage: 5
+  damage: 3
   range: 10
   speedOfPlayer: 8
   cooldown: 0.2
+  isAuto: 0
 --- !u!61 &3761560000433951629
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   nAmmo: 45
-  damage: 2
+  damage: 1
   range: 8.5
   speedOfPlayer: 8
   cooldown: 0.1
