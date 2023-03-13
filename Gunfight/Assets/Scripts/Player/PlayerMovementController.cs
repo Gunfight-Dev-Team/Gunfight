@@ -66,12 +66,16 @@ public class PlayerMovementController : NetworkBehaviour
     public AudioClip emptySound;
 
     private AudioSource audioSource;
+    public override void OnStartLocalPlayer()
+    {
+        base.OnStartLocalPlayer();
+
+        // Add an AudioListener component to the local player object
+        PlayerModel.AddComponent<AudioListener>();
+    }
 
     private void Start()
     {
-        AudioListener audioListener = PlayerModel.AddComponent<AudioListener>();
-
-
         PlayerModel.SetActive(false);
         poc = GetComponent<PlayerObjectController>();
         LoadSprite();
