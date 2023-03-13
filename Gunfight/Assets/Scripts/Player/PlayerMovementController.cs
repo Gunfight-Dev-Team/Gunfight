@@ -386,6 +386,7 @@ public class PlayerMovementController : NetworkBehaviour
         PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 8;
         PlayerModel.GetComponent<PlayerInfo>().cooldown = 0.2f;
         PlayerModel.GetComponent<PlayerInfo>().isMelee = true;
+        spriteRenderer.color = Color.white;
 
         GetComponent<PlayerWeaponController>().enabled = true;
         
