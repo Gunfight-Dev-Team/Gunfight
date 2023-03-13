@@ -61,6 +61,7 @@ public class PlayerMovementController : NetworkBehaviour
     private Vector2 mousePos;
 
     public AudioClip gunshotSound;
+
     private AudioSource audioSource;
 
     private void Start()
@@ -148,11 +149,15 @@ public class PlayerMovementController : NetworkBehaviour
                     else
                     {
                         // Fire a single shot
-                        cooldownTimer = PlayerModel.GetComponent<PlayerInfo>().cooldown;
+                        cooldownTimer =
+                            PlayerModel.GetComponent<PlayerInfo>().cooldown;
                         CmdShooting(shootPoint.position);
                     }
                 }
-                else if (Input.GetButtonUp("Fire1") && PlayerModel.GetComponent<PlayerInfo>().isAuto)
+                else if (
+                    Input.GetButtonUp("Fire1") &&
+                    PlayerModel.GetComponent<PlayerInfo>().isAuto
+                )
                 {
                     // Stop firing if the fire button is released and this weapon is automatic
                     isFiring = false;
@@ -244,7 +249,7 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
-        AudioSource.PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
+        // AudioSource.PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
         var trail = Instantiate(bulletTrail, startPos, Quaternion.identity);
         var trailScript = trail.GetComponent<BulletTrail>();
         trailScript.SetTargetPosition (endPos);
@@ -263,11 +268,15 @@ public class PlayerMovementController : NetworkBehaviour
     public void CmdShooting(Vector3 shootPoint)
     {
         Debug.Log("mouse pressed");
+        AudioSource
+            .PlayClipAtPoint(gunshotSound, shootPoint, AudioListener.volume);
         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mousePos - (Vector2) shootPoint).normalized;
         RaycastHit2D hit =
             Physics2D
-                .Raycast(shootPoint, PlayerModel.transform.up, PlayerModel.GetComponent<PlayerInfo>().range);
+                .Raycast(shootPoint,
+                PlayerModel.transform.up,
+                PlayerModel.GetComponent<PlayerInfo>().range);
 
         var endPos = hit.point;
 
@@ -291,7 +300,10 @@ public class PlayerMovementController : NetworkBehaviour
         }
         else
         {
-            endPos = shootPoint + PlayerModel.transform.up * PlayerModel.GetComponent<PlayerInfo>().range;
+            endPos =
+                shootPoint +
+                PlayerModel.transform.up *
+                PlayerModel.GetComponent<PlayerInfo>().range;
         }
         RpcSpawnBulletTrail (shootPoint, endPos);
     }
