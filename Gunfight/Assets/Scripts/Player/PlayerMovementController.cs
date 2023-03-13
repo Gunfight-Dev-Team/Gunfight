@@ -18,6 +18,8 @@ public enum Team
 
 public class PlayerMovementController : NetworkBehaviour
 {
+    public bool resetGame = false;
+
     public float Speed = 0.0f;
 
     public GameObject PlayerModel;
@@ -116,18 +118,21 @@ public class PlayerMovementController : NetworkBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            if (PlayerModel.activeSelf == false)
+            if (PlayerModel.activeSelf == false || resetGame == true)
             {
-                if (health > 8) PlayerModel.SetActive(true);
+                PlayerModel.SetActive(true);
                 SetPosition();
                 SetTeam();
                 SetSprite();
+                health = 10f;
+                resetGame = false;
             }
 
             if (isLocalPlayer)
             {
                 Movement();
             }
+            
         }
     }
 
@@ -268,7 +273,6 @@ public class PlayerMovementController : NetworkBehaviour
     [Command]
     public void CmdShooting(Vector3 shootPoint)
     {
-        Debug.Log("mouse pressed");
         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mousePos - (Vector2) shootPoint).normalized;
         RaycastHit2D hit =
