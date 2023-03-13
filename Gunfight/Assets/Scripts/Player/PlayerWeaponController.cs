@@ -69,8 +69,8 @@ public class PlayerWeaponController : NetworkBehaviour
         newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
         newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
         newWeapon.GetComponent<WeaponInfo>().speedOfPlayer = playerInfo.speedOfPlayer;
-
-        NetworkServer.Spawn(newWeapon);
+        if(isServer)
+            NetworkServer.Spawn(newWeapon);
     }
 
         [Command]
@@ -87,7 +87,8 @@ public class PlayerWeaponController : NetworkBehaviour
         playerInfo.nAmmo = nAmmo;
         playerInfo.speedOfPlayer = speedOfPlayer;
         Destroy(playerColliders.OtherCollider.gameObject);
-        NetworkServer.Destroy(playerColliders.OtherCollider.gameObject);
+        if(isServer)
+            NetworkServer.Destroy(playerColliders.OtherCollider.gameObject);
     }
 
     void ChangeSprite(WeaponID weapon)
