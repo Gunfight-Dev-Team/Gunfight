@@ -334,7 +334,7 @@ public class PlayerMovementController : NetworkBehaviour
         Color temp = spriteRenderer.color;
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        spriteRenderer.color = temp;
+        spriteRenderer.color = Color.white;
     }
 
     [ClientRpc]
