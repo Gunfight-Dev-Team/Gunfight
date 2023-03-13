@@ -249,7 +249,8 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
-        // AudioSource.PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
+        AudioSource
+            .PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
         var trail = Instantiate(bulletTrail, startPos, Quaternion.identity);
         var trailScript = trail.GetComponent<BulletTrail>();
         trailScript.SetTargetPosition (endPos);
@@ -268,8 +269,6 @@ public class PlayerMovementController : NetworkBehaviour
     public void CmdShooting(Vector3 shootPoint)
     {
         Debug.Log("mouse pressed");
-        AudioSource
-            .PlayClipAtPoint(gunshotSound, shootPoint, AudioListener.volume);
         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mousePos - (Vector2) shootPoint).normalized;
         RaycastHit2D hit =
