@@ -383,6 +383,8 @@ public class PlayerMovementController : NetworkBehaviour
         PlayerModel.GetComponent<PlayerInfo>().range = 0.5f;
         PlayerModel.GetComponent<PlayerInfo>().damage = 10;
         PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 8;
+        PlayerModel.GetComponent<PlayerInfo>().isMelee = true;
+
         GetComponent<PlayerWeaponController>().enabled = true;
         
 
