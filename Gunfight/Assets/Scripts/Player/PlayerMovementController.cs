@@ -302,5 +302,12 @@ public class PlayerMovementController : NetworkBehaviour
 
         int index = 5 * 4 + teamArray[team];
         spriteRenderer.sprite = spriteArray[index];
+
+        PlayerModel.GetComponent<PlayerInfo>().nAmmo = 0;
+        PlayerModel.GetComponent<PlayerInfo>().range = 0;
+        PlayerModel.GetComponent<PlayerInfo>().damage = 0;
+        PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 0;
+        this.GetComponent<PlayerWeaponController>().enabled = false;
+        this.enabled = false;
     }
 }
