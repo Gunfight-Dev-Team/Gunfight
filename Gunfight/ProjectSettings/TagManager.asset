@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Uncolliable
+  - Weapon
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ignore Player + Raycast
   - Water
   - UI
   - 

@@ -664,7 +664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponID: 1
-  nAmmo: 0
+  nAmmo: 1000
   range: 0.5
   damage: 10
   cooldown: 1
