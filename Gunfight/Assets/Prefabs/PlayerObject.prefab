@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 5823153395104989911}
   - component: {fileID: 1343792888070247277}
   - component: {fileID: 4469278168224279741}
+  - component: {fileID: 2009238190111715295}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -253,6 +254,21 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2635938949277048717}
   m_Enabled: 0
+--- !u!114 &2009238190111715295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2635938949277048717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94010c8d9de5421ca40f9285f2fee37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 5568238824894995105}
+  shakeDuration: 0.1
+  shakeMagnitude: 0.35
 --- !u!1 &5128584884438735198
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,6 +361,7 @@ MonoBehaviour:
   bulletTrail: {fileID: 1592149606584016135, guid: 4c106be7ad5b0b74b8016d506cb6e36e, type: 3}
   cooldownTimer: 0
   isFiring: 0
+  CameraShaker: {fileID: 2009238190111715295}
   health: 10
   isDead: 0
   hitParticle: {fileID: 3070724589798040209, guid: 383d96aac74cf654b973f8fe364cf4d6, type: 3}

@@ -51,6 +51,8 @@ public class PlayerMovementController : NetworkBehaviour
 
     public bool isFiring;
 
+    public CameraShaker CameraShaker;
+
     [SyncVar]
     public float health = 10f;
 
@@ -63,9 +65,11 @@ public class PlayerMovementController : NetworkBehaviour
     private Vector2 mousePos;
 
     public AudioClip gunshotSound;
+
     public AudioClip emptySound;
 
     private AudioSource audioSource;
+
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
@@ -151,6 +155,8 @@ public class PlayerMovementController : NetworkBehaviour
             {
                 if (Input.GetButtonDown("Fire1") && cooldownTimer <= 0f)
                 {
+                    CameraShaker.ShootCameraShake(5.0f);
+
                     // Start firing if the fire button is pressed down and this weapon is automatic
                     if (PlayerModel.GetComponent<PlayerInfo>().isAuto)
                     {
@@ -190,6 +196,7 @@ public class PlayerMovementController : NetworkBehaviour
             // Fire a shot and wait for the cooldown timer to expire
             cooldownTimer = PlayerModel.GetComponent<PlayerInfo>().cooldown;
             CmdShooting(shootPoint.position);
+            CameraShaker.ShootCameraShake(5.0f);
             yield return new WaitForSeconds(cooldownTimer);
         }
     }
@@ -263,7 +270,10 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
-        if (!PlayerModel.GetComponent<PlayerInfo>().isMelee && PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
+        if (
+            !PlayerModel.GetComponent<PlayerInfo>().isMelee &&
+            PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0
+        )
         {
             AudioSource
                 .PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
@@ -277,7 +287,6 @@ public class PlayerMovementController : NetworkBehaviour
             Instantiate(hitParticle.GetComponent<ParticleSystem>(),
             endPos,
             Quaternion.identity);
-
     }
 
     [Command]
@@ -286,7 +295,7 @@ public class PlayerMovementController : NetworkBehaviour
         if (PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
         {
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mousePos - (Vector2)shootPoint).normalized;
+            Vector2 direction = (mousePos - (Vector2) shootPoint).normalized;
             RaycastHit2D hit =
                 Physics2D
                     .Raycast(shootPoint,
@@ -322,7 +331,7 @@ public class PlayerMovementController : NetworkBehaviour
                     PlayerModel.transform.up *
                     PlayerModel.GetComponent<PlayerInfo>().range;
             }
-            RpcSpawnBulletTrail(shootPoint, endPos);
+            RpcSpawnBulletTrail (shootPoint, endPos);
         }
         else if (!PlayerModel.GetComponent<PlayerInfo>().isMelee)
             RpcPlayEmptySound(shootPoint);
@@ -333,12 +342,13 @@ public class PlayerMovementController : NetworkBehaviour
         AudioSource.PlayClipAtPoint(emptySound, startPos, AudioListener.volume);
     }
 
-        public void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         if (!isServer) return;
 
         health -= damage;
         Debug.Log("Player took " + damage + " Damage");
+        CameraShaker.HurtCameraShake(5.0f);
 
         if (health <= 0)
             RpcDie();
