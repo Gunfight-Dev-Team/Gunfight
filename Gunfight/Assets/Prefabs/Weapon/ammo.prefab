@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -3557589205007440725}
   - component: {fileID: -6594362602625455830}
   - component: {fileID: 6388457499767856975}
+  - component: {fileID: -3151089310178933578}
   m_Layer: 0
   m_Name: ammo
   m_TagString: Untagged
@@ -77,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 1904426520, guid: 4508e36ff444b4ec399460a75fa4c5df, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -199,9 +200,26 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-3151089310178933578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5874581913501018297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd08cc027a6287743bf3b6ed85a90d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.1
+  collectSound: {fileID: 8300000, guid: 9eabf45ffba992c48a2cd8d535904968, type: 3}
+  ammoToAdd: 10

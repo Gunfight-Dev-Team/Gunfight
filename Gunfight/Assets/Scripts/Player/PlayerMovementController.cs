@@ -69,6 +69,8 @@ public class PlayerMovementController : NetworkBehaviour
 
     public AudioClip emptySound;
 
+    public AudioClip breakSound;
+
     private AudioSource audioSource;
     
     [SerializeField] public GameObject ammo;
@@ -339,10 +341,12 @@ public class PlayerMovementController : NetworkBehaviour
 
                     collidableTileMap.SetTile(potPos, null);
 
-                    //drops ammo on top of broken pot but currently not working
-                    // GameObject ammoInstance = Instantiate(ammo, hit.point, Quaternion.identity);
+                    AudioSource.PlayClipAtPoint(breakSound, hit.point, AudioListener.volume);
 
-                    // NetworkServer.Spawn(ammoInstance);
+                    //drops ammo on top of broken pot (fixed!)
+                    GameObject ammoInstance = Instantiate(ammo, hit.point, Quaternion.identity);
+
+                    NetworkServer.Spawn(ammoInstance);
                 }
             }
             else
