@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using Mirror;
 using Unity.Burst.CompilerServices;
@@ -285,9 +286,11 @@ public class PlayerMovementController : NetworkBehaviour
             PlayerModel.transform.rotation);
             PlayerModel.GetComponent<PlayerInfo>().nAmmo--;
         }
+
+        Vector2 newPoint = endPos + ((endPos - startPos).normalized * -0.2f);
         var hitParticleInstance =
             Instantiate(hitParticle.GetComponent<ParticleSystem>(),
-            endPos,
+            newPoint,
             Quaternion.identity);
     }
 
