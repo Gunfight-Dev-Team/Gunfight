@@ -155,7 +155,8 @@ public class PlayerMovementController : NetworkBehaviour
             {
                 if (Input.GetButtonDown("Fire1") && cooldownTimer <= 0f)
                 {
-                    CameraShaker.ShootCameraShake(5.0f);
+                    if(PlayerModel.GetComponent<PlayerInfo>().nAmmo >0)
+                        CameraShaker.ShootCameraShake(5.0f);
 
                     // Start firing if the fire button is pressed down and this weapon is automatic
                     if (PlayerModel.GetComponent<PlayerInfo>().isAuto)
@@ -196,7 +197,8 @@ public class PlayerMovementController : NetworkBehaviour
             // Fire a shot and wait for the cooldown timer to expire
             cooldownTimer = PlayerModel.GetComponent<PlayerInfo>().cooldown;
             CmdShooting(shootPoint.position);
-            CameraShaker.ShootCameraShake(5.0f);
+            if (PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
+                CameraShaker.ShootCameraShake(5.0f);
             yield return new WaitForSeconds(cooldownTimer);
         }
     }
