@@ -268,7 +268,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 5568238824894995105}
   shakeDuration: 0.1
-  shakeMagnitude: 0.35
 --- !u!1 &5128584884438735198
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,6 +367,8 @@ MonoBehaviour:
   bulletParticle: {fileID: 3070724589798040209, guid: 18f90b87657ad4646be3723c87ba90ae, type: 3}
   gunshotSound: {fileID: 8300000, guid: 4e022ae902b32eb4588e274baead6ab2, type: 3}
   emptySound: {fileID: 8300000, guid: 60bc335360f0cc6488a77efe1103cc94, type: 3}
+  breakSound: {fileID: 8300000, guid: da3f85b113bbbaf4ab706c7fe2fa3311, type: 3}
+  ammo: {fileID: 5874581913501018297, guid: 3cc7416febf644efeaa2079cdd8d4437, type: 3}
 --- !u!114 &5201570048408056945
 MonoBehaviour:
   m_ObjectHideFlags: 0

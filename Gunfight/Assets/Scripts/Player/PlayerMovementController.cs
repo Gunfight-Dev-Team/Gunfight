@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public enum Team
 {
@@ -69,7 +70,11 @@ public class PlayerMovementController : NetworkBehaviour
 
     public AudioClip emptySound;
 
+    public AudioClip breakSound;
+
     private AudioSource audioSource;
+    
+    [SerializeField] public GameObject ammo;
 
     public override void OnStartLocalPlayer()
     {
@@ -327,6 +332,24 @@ public class PlayerMovementController : NetworkBehaviour
                         .TakeDamage(PlayerModel
                             .GetComponent<PlayerInfo>()
                             .damage);
+                }
+
+                if (hit.collider.gameObject.tag == "destroy")
+                {
+                    Tilemap collidableTileMap = GameObject.Find("destroyPots").GetComponent<Tilemap>();
+
+                    Debug.Log("Hit Pot");
+
+                    Vector3Int potPos = collidableTileMap.WorldToCell(hit.point);
+
+                    collidableTileMap.SetTile(potPos, null);
+
+                    AudioSource.PlayClipAtPoint(breakSound, hit.point, AudioListener.volume);
+
+                    //drops ammo on top of broken pot (fixed!)
+                    GameObject ammoInstance = Instantiate(ammo, hit.point, Quaternion.identity);
+
+                    NetworkServer.Spawn(ammoInstance);
                 }
             }
             else

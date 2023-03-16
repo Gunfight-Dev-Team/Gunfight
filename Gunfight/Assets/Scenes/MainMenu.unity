@@ -579,7 +579,6 @@ MonoBehaviour:
   title: {fileID: 1055331421}
   lobbiesButton: {fileID: 897089076}
   hostButton: {fileID: 935691028}
-  backButton: {fileID: 0}
   listOfLobbies: []
 --- !u!4 &548252046
 Transform:
@@ -939,6 +938,7 @@ MonoBehaviour:
   - {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
   - {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
   - {fileID: 6672598589228257044, guid: 39ef0440d497842c4b03f8902e740512, type: 3}
+  - {fileID: 5874581913501018297, guid: 3cc7416febf644efeaa2079cdd8d4437, type: 3}
   timeInterpolationGui: 0
   GamePlayerPrefab: {fileID: 8544065240725089489, guid: df340c9d318be6647b903dd6dae18029, type: 3}
 --- !u!4 &665717281
