@@ -342,7 +342,9 @@ public class PlayerMovementController : NetworkBehaviour
 
                     Vector3Int potPos = collidableTileMap.WorldToCell(hit.point);
 
-                    collidableTileMap.SetTile(potPos, null);
+                    CmdBreakPot(potPos);
+
+                    //collidableTileMap.SetTile(potPos, null);
 
                     AudioSource.PlayClipAtPoint(breakSound, hit.point, AudioListener.volume);
 
@@ -446,5 +448,18 @@ public class PlayerMovementController : NetworkBehaviour
         spriteRenderer.color = Color.white;
 
         GetComponent<PlayerWeaponController>().enabled = true;
+    }
+
+    [Command]
+    void CmdBreakPot(Vector3Int potPos)
+    {
+        RpcBreakPot(potPos);
+    }
+
+    [ClientRpc]
+    void RpcBreakPot(Vector3Int potPos)
+    {
+        Tilemap collidableTileMap = GameObject.Find("destroyPots").GetComponent<Tilemap>();
+        collidableTileMap.SetTile(potPos, null);
     }
 }
