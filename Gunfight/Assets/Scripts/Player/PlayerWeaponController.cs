@@ -24,6 +24,8 @@ public class PlayerWeaponController : NetworkBehaviour
     //Weapon
     public PlayerColliders playerColliders;
 
+    public AudioClip pickupSound;
+
     [SerializeField]
     private GameObject AK47;
 
@@ -157,6 +159,8 @@ public class PlayerWeaponController : NetworkBehaviour
     )
     {
         ChangeSprite (weapon);
+        AudioSource
+                .PlayClipAtPoint(pickupSound, transform.position, AudioListener.volume);
         playerInfo.weaponID = weapon;
         playerInfo.nAmmo = nAmmo;
         playerInfo.range = range;
