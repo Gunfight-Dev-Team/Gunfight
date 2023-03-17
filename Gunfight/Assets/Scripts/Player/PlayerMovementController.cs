@@ -455,5 +455,6 @@ public class PlayerMovementController : NetworkBehaviour
     {
         Tilemap collidableTileMap = GameObject.Find("destroyPots").GetComponent<Tilemap>();
         collidableTileMap.SetTile(potPos, null);
+        AudioSource.PlayClipAtPoint(breakSound, potPos, AudioListener.volume);
     }
 }
