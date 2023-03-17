@@ -105,6 +105,8 @@ MonoBehaviour:
   range: 0
   speedOfPlayer: 0
   cooldown: 5
+  isAuto: 0
+  isMelee: 0
 --- !u!61 &-3417721546245133633
 BoxCollider2D:
   m_ObjectHideFlags: 0
