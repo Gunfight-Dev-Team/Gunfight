@@ -73,8 +73,9 @@ public class PlayerMovementController : NetworkBehaviour
     public AudioClip breakSound;
 
     private AudioSource audioSource;
-    
-    [SerializeField] public GameObject ammo;
+
+    [SerializeField]
+    public GameObject ammo;
 
     public override void OnStartLocalPlayer()
     {
@@ -161,7 +162,7 @@ public class PlayerMovementController : NetworkBehaviour
             {
                 if (Input.GetButtonDown("Fire1") && cooldownTimer <= 0f)
                 {
-                    if(PlayerModel.GetComponent<PlayerInfo>().nAmmo >0)
+                    if (PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
                         CameraShaker.ShootCameraShake(5.0f);
 
                     // Start firing if the fire button is pressed down and this weapon is automatic
@@ -336,22 +337,28 @@ public class PlayerMovementController : NetworkBehaviour
 
                 if (hit.collider.gameObject.tag == "destroy")
                 {
-                    Tilemap collidableTileMap = GameObject.Find("destroyPots").GetComponent<Tilemap>();
+                    Tilemap collidableTileMap =
+                        GameObject.Find("destroyPots").GetComponent<Tilemap>();
 
                     Debug.Log("Hit Pot");
 
-                    Vector3Int potPos = collidableTileMap.WorldToCell(hit.point);
+                    Vector3Int potPos =
+                        collidableTileMap.WorldToCell(hit.point);
 
-                    RpcBreakPot(potPos);
+                    RpcBreakPot (potPos);
 
                     collidableTileMap.SetTile(potPos, null);
 
-                    AudioSource.PlayClipAtPoint(breakSound, hit.point, AudioListener.volume);
+                    AudioSource
+                        .PlayClipAtPoint(breakSound,
+                        hit.point,
+                        AudioListener.volume);
 
                     //drops ammo on top of broken pot (fixed!)
-                    GameObject ammoInstance = Instantiate(ammo, hit.point, Quaternion.identity);
+                    GameObject ammoInstance =
+                        Instantiate(ammo, hit.point, Quaternion.identity);
 
-                    NetworkServer.Spawn(ammoInstance);
+                    NetworkServer.Spawn (ammoInstance);
                 }
             }
             else
@@ -378,8 +385,8 @@ public class PlayerMovementController : NetworkBehaviour
 
         health -= damage;
         Debug.Log("Player took " + damage + " Damage");
-        CameraShaker.HurtCameraShake(5.0f);
 
+        // CameraShaker.HurtCameraShake(5.0f);
         if (health <= 0)
             RpcDie();
         else
@@ -453,7 +460,8 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcBreakPot(Vector3Int potPos)
     {
-        Tilemap collidableTileMap = GameObject.Find("destroyPots").GetComponent<Tilemap>();
+        Tilemap collidableTileMap =
+            GameObject.Find("destroyPots").GetComponent<Tilemap>();
         collidableTileMap.SetTile(potPos, null);
         AudioSource.PlayClipAtPoint(breakSound, potPos, AudioListener.volume);
     }
