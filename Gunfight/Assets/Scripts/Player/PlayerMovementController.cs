@@ -374,6 +374,7 @@ public class PlayerMovementController : NetworkBehaviour
             RpcPlayEmptySound(shootPoint);
     }
 
+    [ClientRpc]
     void RpcPlayEmptySound(Vector2 startPos)
     {
         AudioSource.PlayClipAtPoint(emptySound, startPos, AudioListener.volume);
