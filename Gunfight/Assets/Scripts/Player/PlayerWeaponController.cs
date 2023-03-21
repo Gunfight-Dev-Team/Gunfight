@@ -180,6 +180,7 @@ public class PlayerWeaponController : NetworkBehaviour
         Destroy(playerColliders.OtherCollider.gameObject);
         if (isServer)
             NetworkServer.Destroy(playerColliders.OtherCollider.gameObject);
+        playerColliders.OtherCollider = null;
     }
 
     void ChangeSprite(WeaponID weapon)

@@ -7,6 +7,7 @@ public class PlayerColliders : MonoBehaviour
 
     public bool canPickup = false;
     public Collider2D OtherCollider;
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Weapon"))
