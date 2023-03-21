@@ -386,12 +386,22 @@ public class PlayerMovementController : NetworkBehaviour
         health -= damage;
         Debug.Log("Player took " + damage + " Damage");
 
-        // CameraShaker.HurtCameraShake(5.0f);
+        RpcHurtCameraShake();
+
         if (health <= 0)
             RpcDie();
         else
         {
             RpcHitColor();
+        }
+    }
+
+    [ClientRpc]
+    void RpcHurtCameraShake()
+    {
+        if (isLocalPlayer)
+        {
+            CameraShaker.HurtCameraShake(5.0f);
         }
     }
 
