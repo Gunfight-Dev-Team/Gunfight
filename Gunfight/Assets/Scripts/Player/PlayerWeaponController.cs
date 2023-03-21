@@ -91,33 +91,36 @@ public class PlayerWeaponController : NetworkBehaviour
     [ClientRpc]
     void RpcDropWeapon()
     {
-        // [ ] TODO: is it possible to make this more simple?
-        var weapons =
-            new Dictionary<WeaponID, GameObject>()
-            {
+        if (playerColliders.OtherCollider != null)
+        {
+            // [ ] TODO: is it possible to make this more simple?
+            var weapons =
+                new Dictionary<WeaponID, GameObject>()
+                {
                 { WeaponID.AK47, AK47 },
                 { WeaponID.Knife, Knife },
                 { WeaponID.Pistol, Pistol },
                 { WeaponID.Sniper, Sniper },
                 { WeaponID.Uzi, Uzi }
-            };
+                };
 
-        GameObject newWeapon =
-            Instantiate(weapons[playerInfo.weaponID],
-            playerRef.transform.position,
-            Quaternion.Euler(0, 0, Random.Range(0, 360)));
-        Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
-        weaponRigidbody.velocity = playerRef.transform.up * 10f;
-        weaponRigidbody.angularVelocity = -50f * 10f;
-        weaponRigidbody.drag = 3.5f;
-        weaponRigidbody.angularDrag = 1f;
-        newWeapon.GetComponent<Collider2D>().isTrigger = false;
-        StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
-        newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
-        newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
-        newWeapon.GetComponent<WeaponInfo>().damage = playerInfo.damage;
-        newWeapon.GetComponent<WeaponInfo>().speedOfPlayer =
-            playerInfo.speedOfPlayer;
+            GameObject newWeapon =
+                Instantiate(weapons[playerInfo.weaponID],
+                playerRef.transform.position,
+                Quaternion.Euler(0, 0, Random.Range(0, 360)));
+            Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
+            weaponRigidbody.velocity = playerRef.transform.up * 10f;
+            weaponRigidbody.angularVelocity = -50f * 10f;
+            weaponRigidbody.drag = 3.5f;
+            weaponRigidbody.angularDrag = 1f;
+            newWeapon.GetComponent<Collider2D>().isTrigger = false;
+            StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
+            newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
+            newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
+            newWeapon.GetComponent<WeaponInfo>().damage = playerInfo.damage;
+            newWeapon.GetComponent<WeaponInfo>().speedOfPlayer =
+                playerInfo.speedOfPlayer;
+        }
         //if(isServer)
         //NetworkServer.Spawn(newWeapon);
     }
@@ -158,29 +161,32 @@ public class PlayerWeaponController : NetworkBehaviour
         float speedOfPlayer
     )
     {
-        ChangeSprite (weapon);
-        AudioSource
-                .PlayClipAtPoint(pickupSound, transform.position, AudioListener.volume);
-        playerInfo.weaponID = weapon;
-        playerInfo.nAmmo = nAmmo;
-        playerInfo.range = range;
-        playerInfo.damage = damage;
-        playerInfo.cooldown = cooldown;
-        GetComponent<PlayerMovementController>().cooldownTimer = 0f;
-        GetComponent<PlayerMovementController>().isFiring = false;
-        if (weapon == WeaponID.AK47 || weapon == WeaponID.Uzi)
-            playerInfo.isAuto = true;
-        else
-            playerInfo.isAuto = false;
-        if (weapon == WeaponID.Knife)
-            playerInfo.isMelee = true;
-        else
-            playerInfo.isMelee = false;
-        playerInfo.speedOfPlayer = speedOfPlayer;
-        Destroy(playerColliders.OtherCollider.gameObject);
-        if (isServer)
-            NetworkServer.Destroy(playerColliders.OtherCollider.gameObject);
-        playerColliders.OtherCollider = null;
+        if (playerColliders.OtherCollider != null)
+        {
+            ChangeSprite(weapon);
+            AudioSource
+                    .PlayClipAtPoint(pickupSound, transform.position, AudioListener.volume);
+            playerInfo.weaponID = weapon;
+            playerInfo.nAmmo = nAmmo;
+            playerInfo.range = range;
+            playerInfo.damage = damage;
+            playerInfo.cooldown = cooldown;
+            GetComponent<PlayerMovementController>().cooldownTimer = 0f;
+            GetComponent<PlayerMovementController>().isFiring = false;
+            if (weapon == WeaponID.AK47 || weapon == WeaponID.Uzi)
+                playerInfo.isAuto = true;
+            else
+                playerInfo.isAuto = false;
+            if (weapon == WeaponID.Knife)
+                playerInfo.isMelee = true;
+            else
+                playerInfo.isMelee = false;
+            playerInfo.speedOfPlayer = speedOfPlayer;
+            Destroy(playerColliders.OtherCollider.gameObject);
+            if (isServer)
+                NetworkServer.Destroy(playerColliders.OtherCollider.gameObject);
+            playerColliders.OtherCollider = null;
+        }
     }
 
     void ChangeSprite(WeaponID weapon)
