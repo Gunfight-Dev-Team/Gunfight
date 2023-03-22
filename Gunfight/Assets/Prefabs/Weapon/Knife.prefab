@@ -106,7 +106,7 @@ MonoBehaviour:
   damage: 10
   range: 0.5
   speedOfPlayer: 10
-  cooldown: 1
+  cooldown: 0.5
   isAuto: 0
   isMelee: 1
 --- !u!61 &3116356718501793633
