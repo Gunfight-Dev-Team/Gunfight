@@ -66,11 +66,29 @@ public class PlayerMovementController : NetworkBehaviour
 
     private Vector2 mousePos;
 
-    public AudioClip gunshotSound;
+    public AudioClip PistolShotSound;
+
+    public AudioClip UziShotSound;
+
+    public AudioClip SniperShotSound;
+
+    public AudioClip AK47ShotSound;
+
+    public AudioClip KnifeSound;
+
+    public AudioClip Walk_1;
+
+    public AudioClip Walk_2;
+
+    public AudioClip Walk_3;
+
+    public AudioClip Walk_4;
 
     public AudioClip emptySound;
 
     public AudioClip breakSound;
+
+    public AudioClip[] HurtsSound;
 
     private AudioSource audioSource;
 
@@ -256,6 +274,51 @@ public class PlayerMovementController : NetworkBehaviour
         float xDirection = Input.GetAxis("Horizontal");
         float yDirection = Input.GetAxis("Vertical");
 
+        // if (xDirection != 0.0f || yDirection != 0.0f)
+        // {
+        //     if (PlayerModel.GetComponent<PlayerInfo>().isMelee)
+        //     {
+        //         AudioSource
+        //             .PlayClipAtPoint(Walk_4,
+        //             PlayerModel.transform.position,
+        //             AudioListener.volume);
+        //     }
+        //     else
+        //     {
+        //         if (
+        //             PlayerModel.GetComponent<PlayerInfo>().weaponID ==
+        //             WeaponID.AK47
+        //         )
+        //         {
+        //             AudioSource
+        //                 .PlayClipAtPoint(Walk_2,
+        //                 PlayerModel.transform.position,
+        //                 AudioListener.volume);
+        //         }
+        //         if (
+        //             PlayerModel.GetComponent<PlayerInfo>().weaponID ==
+        //             WeaponID.Uzi ||
+        //             PlayerModel.GetComponent<PlayerInfo>().weaponID ==
+        //             WeaponID.Pistol
+        //         )
+        //         {
+        //             AudioSource
+        //                 .PlayClipAtPoint(Walk_3,
+        //                 PlayerModel.transform.position,
+        //                 AudioListener.volume);
+        //         }
+        //         if (
+        //             PlayerModel.GetComponent<PlayerInfo>().weaponID ==
+        //             WeaponID.Sniper
+        //         )
+        //         {
+        //             AudioSource
+        //                 .PlayClipAtPoint(Walk_1,
+        //                 PlayerModel.transform.position,
+        //                 AudioListener.volume);
+        //         }
+        //     }
+        // }
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = cam.ScreenToWorldPoint(mousePosition);
 
@@ -279,14 +342,54 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
+        if (PlayerModel.GetComponent<PlayerInfo>().isMelee)
+        {
+            AudioSource
+                .PlayClipAtPoint(KnifeSound, startPos, AudioListener.volume);
+        }
+        else
+        {
+            if (PlayerModel.GetComponent<PlayerInfo>().weaponID == WeaponID.AK47
+            )
+            {
+                AudioSource
+                    .PlayClipAtPoint(AK47ShotSound,
+                    startPos,
+                    AudioListener.volume);
+            }
+            if (PlayerModel.GetComponent<PlayerInfo>().weaponID == WeaponID.Uzi)
+            {
+                AudioSource
+                    .PlayClipAtPoint(UziShotSound,
+                    startPos,
+                    AudioListener.volume);
+            }
+            if (
+                PlayerModel.GetComponent<PlayerInfo>().weaponID ==
+                WeaponID.Sniper
+            )
+            {
+                AudioSource
+                    .PlayClipAtPoint(SniperShotSound,
+                    startPos,
+                    AudioListener.volume);
+            }
+            if (
+                PlayerModel.GetComponent<PlayerInfo>().weaponID ==
+                WeaponID.Pistol
+            )
+            {
+                AudioSource
+                    .PlayClipAtPoint(PistolShotSound,
+                    startPos,
+                    AudioListener.volume);
+            }
+        }
         if (
             !PlayerModel.GetComponent<PlayerInfo>().isMelee &&
             PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0
         )
         {
-            AudioSource
-                .PlayClipAtPoint(gunshotSound, startPos, AudioListener.volume);
-
             Instantiate(bulletParticle.GetComponent<ParticleSystem>(),
             startPos,
             PlayerModel.transform.rotation);
@@ -333,6 +436,11 @@ public class PlayerMovementController : NetworkBehaviour
                         .TakeDamage(PlayerModel
                             .GetComponent<PlayerInfo>()
                             .damage);
+
+                    AudioSource
+                        .PlayClipAtPoint(HurtsSound[Random.Range(0, 1)],
+                        hit.point,
+                        AudioListener.volume);
                 }
 
                 if (hit.collider.gameObject.tag == "destroy")

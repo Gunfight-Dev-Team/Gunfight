@@ -399,9 +399,20 @@ MonoBehaviour:
   isDead: 0
   hitParticle: {fileID: 3070724589798040209, guid: 383d96aac74cf654b973f8fe364cf4d6, type: 3}
   bulletParticle: {fileID: 3070724589798040209, guid: 18f90b87657ad4646be3723c87ba90ae, type: 3}
-  gunshotSound: {fileID: 8300000, guid: 4e022ae902b32eb4588e274baead6ab2, type: 3}
+  PistolShotSound: {fileID: 8300000, guid: 4e022ae902b32eb4588e274baead6ab2, type: 3}
+  UziShotSound: {fileID: 8300000, guid: 0520fa86716ff49e69e4db800e6b1ff6, type: 3}
+  SniperShotSound: {fileID: 8300000, guid: cdca17854aa6745dab6eae9ef903ac0d, type: 3}
+  AK47ShotSound: {fileID: 8300000, guid: 741c322a8b5ae4f69824e4ed736d36cd, type: 3}
+  KnifeSound: {fileID: 8300000, guid: 75058c01873d74297bb76319e6803c5a, type: 3}
+  Walk_1: {fileID: 8300000, guid: 1fecaf8ae3f5849df9d3fa07a06db97a, type: 3}
+  Walk_2: {fileID: 8300000, guid: b7786aee941134bd9833cacf8f93fc20, type: 3}
+  Walk_3: {fileID: 8300000, guid: 21e8505aeb9634d54bc1cf26f97a352a, type: 3}
+  Walk_4: {fileID: 8300000, guid: 6ffaefc079cf843538c1ab5a2e0d2e87, type: 3}
   emptySound: {fileID: 8300000, guid: 60bc335360f0cc6488a77efe1103cc94, type: 3}
   breakSound: {fileID: 8300000, guid: da3f85b113bbbaf4ab706c7fe2fa3311, type: 3}
+  HurtsSound:
+  - {fileID: 8300000, guid: b5e7b7f23a3ee43d29e730eb2438b7c6, type: 3}
+  - {fileID: 8300000, guid: 70a115aeb7b844370bdf43194fb5f4ab, type: 3}
   ammo: {fileID: 5874581913501018297, guid: 3cc7416febf644efeaa2079cdd8d4437, type: 3}
 --- !u!114 &5201570048408056945
 MonoBehaviour:

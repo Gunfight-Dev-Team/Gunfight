@@ -221,5 +221,5 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  collectSound: {fileID: 8300000, guid: 9eabf45ffba992c48a2cd8d535904968, type: 3}
+  collectSound: {fileID: 8300000, guid: d1de5b00a60c143859166f4ef82085c2, type: 3}
   ammoToAdd: 10
