@@ -92,8 +92,7 @@ public class PlayerMovementController : NetworkBehaviour
 
     private AudioSource audioSource;
 
-    [SerializeField]
-    public GameObject ammo;
+    [SerializeField] public GameObject ammo;
 
     public override void OnStartLocalPlayer()
     {

@@ -6,6 +6,7 @@ public class PlayerInfo : MonoBehaviour
 {
     public WeaponID weaponID;
     public int nAmmo;
+    public int grenades;
     public float range;
     public int damage;
     public float cooldown;

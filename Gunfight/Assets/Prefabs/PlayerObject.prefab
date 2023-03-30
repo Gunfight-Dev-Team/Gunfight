@@ -441,6 +441,7 @@ MonoBehaviour:
   Pistol: {fileID: 222421779905360649, guid: 0bfa630724c5f46b69b36048d06b930c, type: 3}
   Sniper: {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
   Uzi: {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
+  Grenade: {fileID: 6672598589228257044, guid: 39ef0440d497842c4b03f8902e740512, type: 3}
 --- !u!114 &9040483129875215361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -729,6 +730,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponID: 1
   nAmmo: 1000
+  grenades: 0
   range: 0.5
   damage: 10
   cooldown: 1

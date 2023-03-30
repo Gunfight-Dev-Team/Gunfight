@@ -41,6 +41,9 @@ public class PlayerWeaponController : NetworkBehaviour
     [SerializeField]
     private GameObject Uzi;
 
+    [SerializeField]
+    private GameObject Grenade;
+
     private void Update()
     {
         if (!isLocalPlayer) return;
@@ -73,7 +76,34 @@ public class PlayerWeaponController : NetworkBehaviour
                     .GetComponent<WeaponInfo>()
                     .speedOfPlayer);
             }
+
+            if(Input.GetKeyDown(KeyCode.G))
+            {
+                playerInfo.grenades -= 1;
+                CmdThrowGrenade();
+            }
         }
+
+    }
+
+    [Command]
+    void CmdThrowGrenade()
+    {
+        RpcThrowGrenade();
+    }
+
+    [ClientRpc]
+    void RpcThrowGrenade()
+    {
+        GameObject newGrenade =
+                Instantiate(Grenade,
+                playerRef.transform.position,
+                Quaternion.Euler(0, 0, Random.Range(0, 360)));
+        Rigidbody2D weaponRigidbody = newGrenade.GetComponent<Rigidbody2D>();
+        weaponRigidbody.velocity = playerRef.transform.up * 30f;
+        weaponRigidbody.angularVelocity = -50f * 10f;
+        weaponRigidbody.drag = 3.0f;
+        weaponRigidbody.angularDrag = 1f;
     }
 
     [Command]
@@ -165,7 +195,7 @@ public class PlayerWeaponController : NetworkBehaviour
         {
             ChangeSprite(weapon);
             AudioSource
-                    .PlayClipAtPoint(pickupSound, transform.position, AudioListener.volume);
+                    .PlayClipAtPoint(pickupSound, playerInfo.transform.position, AudioListener.volume);
             playerInfo.weaponID = weapon;
             playerInfo.nAmmo = nAmmo;
             playerInfo.range = range;
