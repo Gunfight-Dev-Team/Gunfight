@@ -9,11 +9,8 @@ Gunfight is a **Top Down 2D shooter** where two teams fight each other to advanc
 We really took inspiration from three games and combined them into one.
 
 1. Impact Point
-   1. We liked the way this game did top-down weapons and shooting
 1. Hotline Miami
-   1. We liked the way this game was fast-paced and intense
-1. Call of Duty (game mode)
-   1. We liked the 2v2 tournament game mode in this game
+1. Call of Duty
 
 Our game is different because the gunfight tournament gameplay has never been done in 2D before. Basically, the only thing we are taking from the impact point is the movement and gunplay. Also, our art style is more cohesive and uses a **70’s vector art** style.
 
@@ -37,27 +34,23 @@ This game's technological implementation entails the use of multiple technologie
 
 1. Steamworks & Mirror
 
-Steamworks and Mirror API are two essential technologies used, allowing for smooth **multiplayer** functionality via the **Steam** platform. This enables users to easily connect and play with others online, boosting the game's replayability and social elements significantly.
+Steamworks and Mirror API are two essential technologies used, allowing for smooth **multiplayer** functionality via the **Steam** platform.
 
 2. Aseprite
 
-Another useful tool is the Aseprite, which generates the game's **map** and **assets**. This allows for efficient world creation in the game, as well as easy modification and iteration during development.
+Another useful tool is the Aseprite, which generates the game's **map** and **assets**.
 
 3. Universal Render Pipeline
 
-**Post-processing** using Universal Render Pipeline (URP) is used in the game to enhance its visual effects, creating a more immersive and engaging experience for the player. This includes effects such as motion blur, depth of field, and color grading, which can greatly enhance the game's overall aesthetic.
+**Post-processing** using Universal Render Pipeline (URP) is used in the game to enhance its visual effects, creating a more immersive and engaging experience for the player.
 
 4. Raycast
 
-The game employs raycast shooting for **weapon hit detection**, which enables for precise and accurate detection of hits and misses. This is critical for establishing a gratifying combat experience and giving players a sense of control over their attacks.
+The game employs raycast shooting for **weapon hit detection**, which enables for precise and accurate detection of hits and misses.
 
 5. Game Juice Techniques
 
-To create a sense of **impact** and **excitement** during gameplay, the game employs a range of game juice techniques such as particle systems, camera shakes, SFXs, and BGMs. This contributes to a more immersive and engaging experience for the player, as well as considerably improving the game's overall visual and feel.
-
-## Analysis / Verification
-
-The goals for this game that we wanted to accomplish were to create two game modes, team and free for all, implement different weapons, and have shooting mechanics. We were not able to implement the team game mode but we did implement a free for all game mode with rounds, multiple weapons to use in the game, and the shooting mechanics for those weapons. In the free for all game mode, weapons are randomly spawned throughout the map and the players fight to survive. Playtesters were pleased with this game mode and the overall quality of the game. They were pleased with the overall art style, the intuitiveness of the controls, and the fairness of the game. The playtesters also enjoyed the multiplayer aspect of the game, where they could play with their friends.
+To create a sense of **impact** and **excitement** during gameplay, the game employs a range of game juice techniques such as particle systems, camera shakes, SFXs, and BGMs.
 
 ## FutureWork
 
