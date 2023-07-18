@@ -16,6 +16,8 @@ public class SteamLobby : MonoBehaviour
     protected Callback<LobbyMatchList_t> LobbyList;
     protected Callback<LobbyDataUpdate_t> LobbyDataUpdated;
 
+    protected CallResult<NumberOfCurrentPlayers_t> PlayerCount;
+
     public List<CSteamID> lobbyIDs = new List<CSteamID>();
 
     public ulong CurrentLobbyID;
@@ -35,6 +37,18 @@ public class SteamLobby : MonoBehaviour
 
         LobbyList = Callback<LobbyMatchList_t>.Create(OnGetLobbyList);
         LobbyDataUpdated = Callback<LobbyDataUpdate_t>.Create(OnGetLobbyData);
+
+        PlayerCount = CallResult<NumberOfCurrentPlayers_t>.Create(OnNumberOfCurrentPlayers);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SteamAPICall_t handle = SteamUserStats.GetNumberOfCurrentPlayers();
+            PlayerCount.Set(handle);
+            Debug.Log("Called GetNumberOfCurrentPlayers()");
+        }
     }
 
     public void HostLobby()
@@ -99,6 +113,18 @@ public class SteamLobby : MonoBehaviour
     void OnGetLobbyData(LobbyDataUpdate_t result)
     {
         LobbiesListManager.instance.DisplayLobbies(lobbyIDs, result);
+    }
+
+    private void OnNumberOfCurrentPlayers(NumberOfCurrentPlayers_t pCallback, bool bIOFailure)
+    {
+        if (pCallback.m_bSuccess != 1 || bIOFailure)
+        {
+            Debug.Log("There was an error retrieving the NumberOfCurrentPlayers.");
+        }
+        else
+        {
+            Debug.Log("The number of players playing your game: " + pCallback.m_cPlayers);
+        }
     }
 }
 
