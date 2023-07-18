@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using Mirror;
 using Steamworks;
+using TMPro;
 
 public class SteamLobby : MonoBehaviour
 {
@@ -23,6 +25,11 @@ public class SteamLobby : MonoBehaviour
     public ulong CurrentLobbyID;
     private const string HostAddressKey = "HostAddress";
     private CustomNetworkManager manager;
+
+    public int numGlobalPlayers = 0;
+    private float timer = 5f;
+    private float interval = 5f;
+    public TextMeshProUGUI playerCountText;
     private void Start()
     {
         if (!SteamManager.Initialized) { return; }
@@ -43,11 +50,16 @@ public class SteamLobby : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        // Increment the timer with the time passed since the last frame
+        timer += Time.deltaTime;
+
+        // Check if 5 seconds have passed
+        if (SceneManager.GetActiveScene().name == "MainMenu" && timer >= interval)
         {
             SteamAPICall_t handle = SteamUserStats.GetNumberOfCurrentPlayers();
             PlayerCount.Set(handle);
-            Debug.Log("Called GetNumberOfCurrentPlayers()");
+            timer = 0f;
+            playerCountText.text = "Player Count: " + numGlobalPlayers.ToString();
         }
     }
 
@@ -123,7 +135,8 @@ public class SteamLobby : MonoBehaviour
         }
         else
         {
-            Debug.Log("The number of players playing your game: " + pCallback.m_cPlayers);
+            //Debug.Log("The number of players playing your game: " + pCallback.m_cPlayers);
+            numGlobalPlayers = pCallback.m_cPlayers;
         }
     }
 }
