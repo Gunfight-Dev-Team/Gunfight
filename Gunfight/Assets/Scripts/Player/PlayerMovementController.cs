@@ -9,6 +9,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public enum Team
 {
@@ -208,6 +209,7 @@ public class PlayerMovementController : NetworkBehaviour
                 }
 
                 cooldownTimer -= Time.deltaTime;
+                if (cooldownTimer < 0) cooldownTimer = 0;
             }
 
             if (Input.GetKeyDown(KeyCode.P)) CmdReset();

@@ -414,6 +414,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b5e7b7f23a3ee43d29e730eb2438b7c6, type: 3}
   - {fileID: 8300000, guid: 70a115aeb7b844370bdf43194fb5f4ab, type: 3}
   ammo: {fileID: 5874581913501018297, guid: 3cc7416febf644efeaa2079cdd8d4437, type: 3}
+  cooldownBar: {fileID: 8318191280089798805, guid: 457f6cefffb794eafb2a1d1f5e426797, type: 3}
 --- !u!114 &5201570048408056945
 MonoBehaviour:
   m_ObjectHideFlags: 0
