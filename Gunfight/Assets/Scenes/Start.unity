@@ -155,7 +155,7 @@ MonoBehaviour:
   StartButton: {fileID: 935691028}
   ControlsButton: {fileID: 897089076}
   QuitButton: {fileID: 110898300}
-  BackButton: {fileID: 0}
+  BackButton: {fileID: 51461750}
   Title: {fileID: 1055331421}
   ControlsImage: {fileID: 1192075448}
 --- !u!4 &50874506
