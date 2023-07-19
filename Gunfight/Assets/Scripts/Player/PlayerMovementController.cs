@@ -260,8 +260,8 @@ public class PlayerMovementController : NetworkBehaviour
             new Dictionary<Team, int>()
             {
                 { Team.Green, 0 },
-                { Team.Red, 1 },
-                { Team.Orange, 2 },
+                { Team.Orange, 1 },
+                { Team.Red, 2 },
                 { Team.White, 3 }
             };
 
