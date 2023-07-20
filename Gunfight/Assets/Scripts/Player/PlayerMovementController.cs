@@ -518,7 +518,7 @@ public class PlayerMovementController : NetworkBehaviour
             {
                 // If the object does not have authority, it's likely a remote player object, and we don't need to do anything on the client-side.
                 // The server will handle the death logic, and the state will be synchronized to this client automatically.
-                CmdReset();
+               RpcRespawn();
             }
         }
         else
