@@ -509,17 +509,7 @@ public class PlayerMovementController : NetworkBehaviour
         if (health <= 0)
         {
             RpcDie();
-            if (isOwned)
-            {
-                // If the object has authority (belongs to the local player), send a command to notify the server about the death
-                CmdPlayerDied();
-            }
-            else
-            {
-                // If the object does not have authority, it's likely a remote player object, and we don't need to do anything on the client-side.
-                // The server will handle the death logic, and the state will be synchronized to this client automatically.
-               RpcRespawn();
-            }
+            StartCoroutine(DelayedCmdPlayerDied());
         }
         else
         {
@@ -527,7 +517,23 @@ public class PlayerMovementController : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
+    private IEnumerator DelayedCmdPlayerDied()
+    {
+        yield return new WaitForSeconds(5f);
+        if (isOwned)
+        {
+            // If the object has authority (belongs to the local player), send a command to notify the server about the death
+            CmdPlayerDied();
+        }
+        else
+        {
+            // If the object does not have authority, it's likely a remote player object, and we don't need to do anything on the client-side.
+            // The server will handle the death logic, and the state will be synchronized to this client automatically.
+            RpcRespawn();
+        }
+    }
+
+        [ClientRpc]
     void RpcHurtCameraShake()
     {
         if (isLocalPlayer)
