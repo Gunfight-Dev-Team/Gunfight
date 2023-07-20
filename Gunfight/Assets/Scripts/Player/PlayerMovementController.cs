@@ -490,6 +490,13 @@ public class PlayerMovementController : NetworkBehaviour
         AudioSource.PlayClipAtPoint(emptySound, startPos, AudioListener.volume);
     }
 
+    [Command]
+    public void CmdPlayerDied()
+    {
+        // Call the PlayerDied function on the server
+        GameModeManager.instance.PlayerDied(this);
+    }
+
     public void TakeDamage(float damage)
     {
         if (!isServer) return;
@@ -502,7 +509,6 @@ public class PlayerMovementController : NetworkBehaviour
         if (health <= 0)
         {
             RpcDie();
-            GameModeManager.instance.PlayerDied(this);
         }
         else
         {
@@ -536,6 +542,8 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcDie()
     {
+
+        CmdPlayerDied();
         //gameObject.transform.Find("Player").gameObject.SetActive(false);
         // [ ] TODO: is it possible to make this more simple?
         var teamArray =
