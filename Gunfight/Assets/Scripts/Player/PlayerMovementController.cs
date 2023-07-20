@@ -59,7 +59,7 @@ public class PlayerMovementController : NetworkBehaviour
     [SyncVar]
     public float health = 10f;
 
-    public bool isDead = false;
+    public bool alive = true;
 
     public GameObject hitParticle;
 
@@ -110,6 +110,7 @@ public class PlayerMovementController : NetworkBehaviour
         LoadSprite();
         GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
         audioSource = GetComponent<AudioSource>();
+        GameModeManager.instance.AddPlayer(this);
     }
 
     void LoadSprite()
@@ -212,7 +213,7 @@ public class PlayerMovementController : NetworkBehaviour
                 if (cooldownTimer < 0) cooldownTimer = 0;
             }
 
-            if (Input.GetKeyDown(KeyCode.P)) CmdReset();
+            if (Input.GetKeyDown(KeyCode.P)) GameModeManager.instance.PlayerDied(this);
         }
     }
 
@@ -499,7 +500,10 @@ public class PlayerMovementController : NetworkBehaviour
         RpcHurtCameraShake();
 
         if (health <= 0)
+        {
             RpcDie();
+            GameModeManager.instance.PlayerDied(this);
+        }
         else
         {
             RpcHitColor();
@@ -554,7 +558,7 @@ public class PlayerMovementController : NetworkBehaviour
     }
 
     [Command]
-    void CmdReset()
+    public void CmdReset()
     {
         //test
         RpcRespawn();
@@ -572,7 +576,7 @@ public class PlayerMovementController : NetworkBehaviour
         PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 8;
         PlayerModel.GetComponent<PlayerInfo>().cooldown = 0.2f;
         PlayerModel.GetComponent<PlayerInfo>().isMelee = true;
-        spriteRenderer.color = Color.white;
+        spriteRenderer.color = Color.white; // prevents sprite from having the red damage on it forever
 
         GetComponent<PlayerWeaponController>().enabled = true;
     }
