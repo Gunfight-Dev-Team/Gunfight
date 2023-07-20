@@ -509,6 +509,7 @@ public class PlayerMovementController : NetworkBehaviour
         if (health <= 0)
         {
             RpcDie();
+            CmdPlayerDied();
         }
         else
         {
@@ -542,8 +543,6 @@ public class PlayerMovementController : NetworkBehaviour
     [ClientRpc]
     void RpcDie()
     {
-
-        CmdPlayerDied();
         //gameObject.transform.Find("Player").gameObject.SetActive(false);
         // [ ] TODO: is it possible to make this more simple?
         var teamArray =
