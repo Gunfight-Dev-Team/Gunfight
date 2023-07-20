@@ -582,7 +582,7 @@ public class PlayerMovementController : NetworkBehaviour
     }
 
     [ClientRpc]
-    void RpcRespawn()
+    public void RpcRespawn()
     {
         SetPosition();
         SetSprite();

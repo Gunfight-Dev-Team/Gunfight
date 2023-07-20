@@ -70,7 +70,7 @@ public class GameModeManager : NetworkBehaviour
         foreach (PlayerMovementController player in players)
         {
             Debug.Log(player.name);
-            player.CmdReset();
+            player.RpcRespawn();
 
             // You can add other reset logic specific to your game here
         }
