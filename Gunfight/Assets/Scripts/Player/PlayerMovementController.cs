@@ -509,7 +509,7 @@ public class PlayerMovementController : NetworkBehaviour
         if (health <= 0)
         {
             RpcDie();
-            if (hasAuthority)
+            if (isOwned)
             {
                 // If the object has authority (belongs to the local player), send a command to notify the server about the death
                 CmdPlayerDied();
