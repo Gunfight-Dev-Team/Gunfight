@@ -159,6 +159,13 @@ public class PlayerMovementController : NetworkBehaviour
             if (PlayerModel.activeSelf == false || resetGame == true)
             {
                 PlayerModel.SetActive(true);
+                PlayerModel.GetComponent<PlayerInfo>().weaponID = WeaponID.Knife;
+                PlayerModel.GetComponent<PlayerInfo>().nAmmo = 1000;
+                PlayerModel.GetComponent<PlayerInfo>().range = 0.5f;
+                PlayerModel.GetComponent<PlayerInfo>().damage = 10;
+                PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 10;
+                PlayerModel.GetComponent<PlayerInfo>().cooldown = 0.5f;
+                PlayerModel.GetComponent<PlayerInfo>().isMelee = true;
                 SetPosition();
                 SetTeam();
                 SetSprite();
