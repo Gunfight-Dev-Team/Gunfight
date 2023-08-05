@@ -93,7 +93,7 @@ public class PlayerController : NetworkBehaviour
 
     private AudioSource audioSource;
 
-    [SerializeField] public GameObject ammo;
+    [SerializeField] private GameObject ammo;
 
     public override void OnStartLocalPlayer()
     {
@@ -158,6 +158,8 @@ public class PlayerController : NetworkBehaviour
         {
             if (PlayerModel.activeSelf == false || resetGame == true)
             {
+                // Resets player stats to have a knife
+                //REFACTOR: move playerInfo setting to function
                 PlayerModel.SetActive(true);
                 PlayerModel.GetComponent<PlayerInfo>().weaponID = WeaponID.Knife;
                 PlayerModel.GetComponent<PlayerInfo>().nAmmo = 1000;
@@ -186,8 +188,10 @@ public class PlayerController : NetworkBehaviour
         {
             if (isLocalPlayer)
             {
+                // Check if you are firing your weapon and if the cooldown is 0
                 if (Input.GetButtonDown("Fire1") && cooldownTimer <= 0f)
                 {
+                    // Camera Shake
                     if (PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
                         CameraShaker.ShootCameraShake(5.0f);
 
@@ -201,25 +205,23 @@ public class PlayerController : NetworkBehaviour
                     else
                     {
                         // Fire a single shot
-                        cooldownTimer =
-                            PlayerModel.GetComponent<PlayerInfo>().cooldown;
+                        cooldownTimer = PlayerModel.GetComponent<PlayerInfo>().cooldown;
                         CmdShooting(shootPoint.position);
                     }
                 }
-                else if (
-                    Input.GetButtonUp("Fire1") &&
-                    PlayerModel.GetComponent<PlayerInfo>().isAuto
-                )
+                else if (Input.GetButtonUp("Fire1") && PlayerModel.GetComponent<PlayerInfo>().isAuto)
                 {
                     // Stop firing if the fire button is released and this weapon is automatic
                     isFiring = false;
                     StopCoroutine(ContinuousFire());
                 }
 
+                // updates weapon cooldown timer
                 cooldownTimer -= Time.deltaTime;
                 if (cooldownTimer < 0) cooldownTimer = 0;
             }
 
+            //TEST: player dies when pressing P
             if (Input.GetKeyDown(KeyCode.P)) GameModeManager.instance.PlayerDied(this);
         }
     }
@@ -239,6 +241,8 @@ public class PlayerController : NetworkBehaviour
 
     public void SetPosition()
     {
+        // Sets the inital Spawn Position for all four characters
+        //REFACTOR: Spawn points are gameObjects from the map class rather than vector3
         if (poc.PlayerIdNumber == 1)
             PlayerModel.transform.position = new Vector3(22.5f, 22.5f, 0.0f);
         if (poc.PlayerIdNumber == 2)
@@ -251,6 +255,7 @@ public class PlayerController : NetworkBehaviour
 
     public void SetTeam()
     {
+        //sets your team at the start of the game
         if (poc.PlayerIdNumber == 1)
             team = Team.Green;
         else if (poc.PlayerIdNumber == 2)
@@ -339,12 +344,10 @@ public class PlayerController : NetworkBehaviour
 
         Vector3 moveDirection = new Vector3(xDirection, yDirection, 0.0f);
 
-        rb
-            .MovePosition(PlayerModel.transform.position +
-            moveDirection *
-            PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer *
-            Time.deltaTime);
-        Physics2D.SyncTransforms();
+        rb.MovePosition(PlayerModel.transform.position + moveDirection *
+                        PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer *
+                        Time.deltaTime);
+                        Physics2D.SyncTransforms();
         //PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
     }
 
@@ -358,40 +361,21 @@ public class PlayerController : NetworkBehaviour
         }
         else
         {
-            if (PlayerModel.GetComponent<PlayerInfo>().weaponID == WeaponID.AK47
-            )
+            if (PlayerModel.GetComponent<PlayerInfo>().weaponID == WeaponID.AK47)
             {
-                AudioSource
-                    .PlayClipAtPoint(AK47ShotSound,
-                    startPos,
-                    AudioListener.volume);
+                AudioSource.PlayClipAtPoint(AK47ShotSound, startPos, AudioListener.volume);
             }
             if (PlayerModel.GetComponent<PlayerInfo>().weaponID == WeaponID.Uzi)
             {
-                AudioSource
-                    .PlayClipAtPoint(UziShotSound,
-                    startPos,
-                    AudioListener.volume);
+                AudioSource.PlayClipAtPoint(UziShotSound, startPos, AudioListener.volume);
             }
-            if (
-                PlayerModel.GetComponent<PlayerInfo>().weaponID ==
-                WeaponID.Sniper
-            )
+            if (PlayerModel.GetComponent<PlayerInfo>().weaponID == WeaponID.Sniper)
             {
-                AudioSource
-                    .PlayClipAtPoint(SniperShotSound,
-                    startPos,
-                    AudioListener.volume);
+                AudioSource.PlayClipAtPoint(SniperShotSound, startPos, AudioListener.volume);
             }
-            if (
-                PlayerModel.GetComponent<PlayerInfo>().weaponID ==
-                WeaponID.Pistol
-            )
+            if (PlayerModel.GetComponent<PlayerInfo>().weaponID == WeaponID.Pistol)
             {
-                AudioSource
-                    .PlayClipAtPoint(PistolShotSound,
-                    startPos,
-                    AudioListener.volume);
+                AudioSource.PlayClipAtPoint(PistolShotSound, startPos, AudioListener.volume);
             }
         }
         if (

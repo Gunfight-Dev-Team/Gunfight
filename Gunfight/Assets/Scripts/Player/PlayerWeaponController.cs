@@ -86,6 +86,14 @@ public class PlayerWeaponController : NetworkBehaviour
 
     }
 
+    void throwObject(Rigidbody2D rigidBody, Vector2 velocity, float angularVelocity, float drag, float angularDrag)
+    {
+        rigidBody.velocity = velocity;
+        rigidBody.angularVelocity = angularVelocity;
+        rigidBody.drag = drag;
+        rigidBody.angularDrag = angularDrag;
+    }
+
     [Command]
     void CmdThrowGrenade()
     {
@@ -100,10 +108,7 @@ public class PlayerWeaponController : NetworkBehaviour
                 playerRef.transform.position,
                 Quaternion.Euler(0, 0, Random.Range(0, 360)));
         Rigidbody2D weaponRigidbody = newGrenade.GetComponent<Rigidbody2D>();
-        weaponRigidbody.velocity = playerRef.transform.up * 30f;
-        weaponRigidbody.angularVelocity = -50f * 10f;
-        weaponRigidbody.drag = 3.0f;
-        weaponRigidbody.angularDrag = 1f;
+        throwObject(weaponRigidbody, playerRef.transform.up * 30f, -50f * 10f, 3.0f, 1f);
     }
 
     [Command]
