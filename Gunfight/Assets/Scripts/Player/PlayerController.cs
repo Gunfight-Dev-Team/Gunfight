@@ -19,7 +19,7 @@ public enum Team
     White
 }
 
-public class PlayerMovementController : NetworkBehaviour
+public class PlayerController : NetworkBehaviour
 {
     public bool resetGame = false;
 
@@ -441,7 +441,7 @@ public class PlayerMovementController : NetworkBehaviour
                         .transform
                         .parent
                         .gameObject
-                        .GetComponent<PlayerMovementController>()
+                        .GetComponent<PlayerController>()
                         .TakeDamage(PlayerModel
                             .GetComponent<PlayerInfo>()
                             .damage);

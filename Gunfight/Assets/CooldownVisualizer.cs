@@ -7,14 +7,14 @@ public class CooldownVisualizer : MonoBehaviour
 {
     public Image fill;
     public GameObject LocalPlayerObject;
-    private PlayerMovementController movementController;
+    private PlayerController movementController;
 
     // Start is called before the first frame update
     void Start()
     {
         LocalPlayerObject = GameObject.Find("LocalGamePlayer");
         movementController =
-            LocalPlayerObject.GetComponent<PlayerMovementController>();
+            LocalPlayerObject.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame

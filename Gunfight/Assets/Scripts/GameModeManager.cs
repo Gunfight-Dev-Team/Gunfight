@@ -7,7 +7,7 @@ public class GameModeManager : NetworkBehaviour
     public static GameModeManager instance;
 
     // List to keep track of all the players in the game
-    private List<PlayerMovementController> players = new List<PlayerMovementController>();
+    private List<PlayerController> players = new List<PlayerController>();
 
     private void Awake()
     {
@@ -22,18 +22,18 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
-    public void AddPlayer(PlayerMovementController player)
+    public void AddPlayer(PlayerController player)
     {
         players.Add(player);
     }
 
-    public void RemovePlayer(PlayerMovementController player)
+    public void RemovePlayer(PlayerController player)
     {
         players.Remove(player);
     }
 
     [Server]
-    public void PlayerDied(PlayerMovementController player)
+    public void PlayerDied(PlayerController player)
     {
         player.alive = false;
         CheckWinCondition();
@@ -43,10 +43,10 @@ public class GameModeManager : NetworkBehaviour
     private void CheckWinCondition()
     {
         int alivePlayers = 0;
-        PlayerMovementController lastAlivePlayer = null;
+        PlayerController lastAlivePlayer = null;
 
         // Count alive players and find the last alive player
-        foreach (PlayerMovementController player in players)
+        foreach (PlayerController player in players)
         {
             if (player.alive)
             {
@@ -67,7 +67,7 @@ public class GameModeManager : NetworkBehaviour
     {
         Debug.Log("Reseting");
         // Call the reset function for all players
-        foreach (PlayerMovementController player in players)
+        foreach (PlayerController player in players)
         {
             Debug.Log(player.name);
             player.RpcRespawn();

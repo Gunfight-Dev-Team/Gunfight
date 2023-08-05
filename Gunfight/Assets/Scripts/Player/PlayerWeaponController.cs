@@ -201,8 +201,8 @@ public class PlayerWeaponController : NetworkBehaviour
             playerInfo.range = range;
             playerInfo.damage = damage;
             playerInfo.cooldown = cooldown;
-            GetComponent<PlayerMovementController>().cooldownTimer = 0f;
-            GetComponent<PlayerMovementController>().isFiring = false;
+            GetComponent<PlayerController>().cooldownTimer = 0f;
+            GetComponent<PlayerController>().isFiring = false;
             if (weapon == WeaponID.AK47 || weapon == WeaponID.Uzi)
                 playerInfo.isAuto = true;
             else
