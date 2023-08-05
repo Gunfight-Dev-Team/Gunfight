@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
+
 public enum Team
 {
     Green,
@@ -263,6 +264,7 @@ public class PlayerController : NetworkBehaviour
         else if (poc.PlayerIdNumber == 3)
             team = Team.Orange;
         else if (poc.PlayerIdNumber == 4) team = Team.White;
+        //Refactor: get rid of extra team variable and only use PlayerController Team
         GetComponent<PlayerWeaponController>().team = team;
     }
 
@@ -348,7 +350,6 @@ public class PlayerController : NetworkBehaviour
                         PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer *
                         Time.deltaTime);
                         Physics2D.SyncTransforms();
-        //PlayerModel.transform.position += moveDirection * Speed * Time.deltaTime;
     }
 
     [ClientRpc]
@@ -535,6 +536,7 @@ public class PlayerController : NetworkBehaviour
 
     IEnumerator FlashSprite()
     {
+        // makes player flash red when hit
         Color temp = spriteRenderer.color;
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.1f);
@@ -550,7 +552,6 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     void RpcDie()
     {
-        //gameObject.transform.Find("Player").gameObject.SetActive(false);
         // [ ] TODO: is it possible to make this more simple?
         var teamArray =
             new Dictionary<Team, int>()

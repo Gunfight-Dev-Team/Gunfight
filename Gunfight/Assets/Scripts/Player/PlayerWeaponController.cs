@@ -103,10 +103,7 @@ public class PlayerWeaponController : NetworkBehaviour
     [ClientRpc]
     void RpcThrowGrenade()
     {
-        GameObject newGrenade =
-                Instantiate(Grenade,
-                playerRef.transform.position,
-                Quaternion.Euler(0, 0, Random.Range(0, 360)));
+        GameObject newGrenade = Instantiate(Grenade, playerRef.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360)));
         Rigidbody2D weaponRigidbody = newGrenade.GetComponent<Rigidbody2D>();
         throwObject(weaponRigidbody, playerRef.transform.up * 30f, -50f * 10f, 3.0f, 1f);
     }
@@ -144,22 +141,18 @@ public class PlayerWeaponController : NetworkBehaviour
                 playerRef.transform.position,
                 Quaternion.Euler(0, 0, Random.Range(0, 360)));
             Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
-            weaponRigidbody.velocity = playerRef.transform.up * 10f;
-            weaponRigidbody.angularVelocity = -50f * 10f;
-            weaponRigidbody.drag = 3.5f;
-            weaponRigidbody.angularDrag = 1f;
+            // throws object along the ground with a velocity and spin
+            throwObject(weaponRigidbody, playerRef.transform.up * 10f, -50f * 10f, 3.5f, 1f);
             newWeapon.GetComponent<Collider2D>().isTrigger = false;
             StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
             newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
             newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
             newWeapon.GetComponent<WeaponInfo>().damage = playerInfo.damage;
-            newWeapon.GetComponent<WeaponInfo>().speedOfPlayer =
-                playerInfo.speedOfPlayer;
+            newWeapon.GetComponent<WeaponInfo>().speedOfPlayer = playerInfo.speedOfPlayer;
         }
-        //if(isServer)
-        //NetworkServer.Spawn(newWeapon);
     }
 
+    // Refactor: Be able to have a collision order so the weapons collide with walls but not the player
     IEnumerator TurnOnTrigger(Collider2D collider)
     {
         yield return new WaitForSeconds(0.5f); // wait for half a second
@@ -198,9 +191,9 @@ public class PlayerWeaponController : NetworkBehaviour
     {
         if (playerColliders.OtherCollider != null)
         {
+            // picks up a weapon on the ground, changes sprite, updates changes player stats, and destroys the weapon
             ChangeSprite(weapon);
-            AudioSource
-                    .PlayClipAtPoint(pickupSound, playerInfo.transform.position, AudioListener.volume);
+            AudioSource.PlayClipAtPoint(pickupSound, playerInfo.transform.position, AudioListener.volume);
             playerInfo.weaponID = weapon;
             playerInfo.nAmmo = nAmmo;
             playerInfo.range = range;
