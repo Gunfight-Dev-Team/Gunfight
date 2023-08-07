@@ -36,7 +36,7 @@ public class CameraController : MonoBehaviour
     {
         target = GameObject.Find("LocalGamePlayer").GetComponent<PlayerController>();
         target.cam = cam;
-        target.CameraShaker = GetComponentInChildren<CameraShaker>();
+        target.CameraShaker = transform.Find("Camera").GetComponent<CameraShaker>();
         minBounds = boundBox.bounds.min;
         maxBounds = boundBox.bounds.max;
         halfHeight = cam.orthographicSize;
