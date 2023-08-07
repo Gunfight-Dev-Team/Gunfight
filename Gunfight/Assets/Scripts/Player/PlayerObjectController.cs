@@ -19,7 +19,7 @@ public class PlayerObjectController : NetworkBehaviour
     {
         get
         {
-            if(manager != null)
+            if (manager != null)
             {
                 return manager;
             }
@@ -34,11 +34,11 @@ public class PlayerObjectController : NetworkBehaviour
 
     private void PlayerReadyUpdate(bool oldValue, bool newValue)
     {
-        if(isServer)
+        if (isServer)
         {
             this.Ready = newValue;
         }
-        if(isClient)
+        if (isClient)
         {
             LobbyController.Instance.UpdatePlayerList();
         }
@@ -52,9 +52,9 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void ChangeReady()
     {
-        if(isOwned)
+        if (isOwned)
         {
-            CMDSetPlayerReady(); 
+            CMDSetPlayerReady();
         }
     }
 
@@ -88,11 +88,11 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void PlayerNameUpdate(string OldValue, string NewValue)
     {
-        if(isServer)
+        if (isServer)
         {
             this.PlayerName = NewValue;
         }
-        if(isClient)
+        if (isClient)
         {
             LobbyController.Instance.UpdatePlayerList();
         }
@@ -100,7 +100,7 @@ public class PlayerObjectController : NetworkBehaviour
 
     public void CanStartGame(string SceneName)
     {
-        if(isOwned)
+        if (isOwned)
         {
             CmdCanStartGame(SceneName);
         }

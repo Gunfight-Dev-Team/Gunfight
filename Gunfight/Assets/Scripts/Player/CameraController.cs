@@ -55,7 +55,7 @@ public class CameraController : NetworkBehaviour
             float clampedX = Mathf.Clamp(cameraHolder.transform.position.x, minBounds.x + halfWidth, maxBounds.x - halfWidth);
             float clampedY = Mathf.Clamp(cameraHolder.transform.position.y, minBounds.y + halfHeight, maxBounds.y - halfHeight);
 
-            Vector3 clampedPos = new Vector3(clampedX,clampedY,cameraHolder.transform.position.z);
+            Vector3 clampedPos = new Vector3(clampedX, clampedY, cameraHolder.transform.position.z);
 
             float mouseDistance = Vector3.Distance(clampedPos, trackedPosition);
 
@@ -63,9 +63,9 @@ public class CameraController : NetworkBehaviour
             mousePosition = cam.ScreenToWorldPoint(mousePosition);
 
             float curRadius = mouseRangeRadius / (1 / mouseDistance);
-            
+
             float subDistances = curRadius / mouseDistance;
-            trackedPosition.x = ((1.0f - subDistances)* target.transform.position.x + (subDistances*mousePosition.x));
+            trackedPosition.x = ((1.0f - subDistances) * target.transform.position.x + (subDistances * mousePosition.x));
             trackedPosition.y = ((1.0f - subDistances) * target.transform.position.y + (subDistances * mousePosition.y));
 
             float distance = Vector3.Distance(clampedPos, trackedPosition);
@@ -73,7 +73,7 @@ public class CameraController : NetworkBehaviour
             if (distance > deadzoneRadius)
             {
                 //Vector3 smoothedPosition = Vector3.SmoothDamp(cameraHolder.transform.position, trackedPosition, ref velocity, damping);
-                Vector3 smoothedPosition = Vector3.Lerp(clampedPos, trackedPosition, 10f*Time.deltaTime);
+                Vector3 smoothedPosition = Vector3.Lerp(clampedPos, trackedPosition, 10f * Time.deltaTime);
                 rb.MovePosition(smoothedPosition);
                 //cameraHolder.transform.position = smoothedPosition;
             }

@@ -349,7 +349,7 @@ public class PlayerController : NetworkBehaviour
         rb.MovePosition(PlayerModel.transform.position + moveDirection *
                         PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer *
                         Time.deltaTime);
-                        Physics2D.SyncTransforms();
+        Physics2D.SyncTransforms();
     }
 
     [ClientRpc]
@@ -403,7 +403,7 @@ public class PlayerController : NetworkBehaviour
         if (PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
         {
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mousePos - (Vector2) shootPoint).normalized;
+            Vector2 direction = (mousePos - (Vector2)shootPoint).normalized;
             RaycastHit2D hit =
                 Physics2D
                     .Raycast(shootPoint,
@@ -447,7 +447,7 @@ public class PlayerController : NetworkBehaviour
                     Vector3Int potPos =
                         collidableTileMap.WorldToCell(hit.point);
 
-                    RpcBreakPot (potPos);
+                    RpcBreakPot(potPos);
 
                     collidableTileMap.SetTile(potPos, null);
 
@@ -460,7 +460,7 @@ public class PlayerController : NetworkBehaviour
                     GameObject ammoInstance =
                         Instantiate(ammo, hit.point, Quaternion.identity);
 
-                    NetworkServer.Spawn (ammoInstance);
+                    NetworkServer.Spawn(ammoInstance);
                 }
             }
             else
@@ -470,7 +470,7 @@ public class PlayerController : NetworkBehaviour
                     PlayerModel.transform.up *
                     PlayerModel.GetComponent<PlayerInfo>().range;
             }
-            RpcSpawnBulletTrail (shootPoint, endPos);
+            RpcSpawnBulletTrail(shootPoint, endPos);
         }
         else if (!PlayerModel.GetComponent<PlayerInfo>().isMelee)
             RpcPlayEmptySound(shootPoint);
@@ -525,7 +525,7 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-        [ClientRpc]
+    [ClientRpc]
     void RpcHurtCameraShake()
     {
         if (isLocalPlayer)

@@ -77,7 +77,7 @@ public class PlayerWeaponController : NetworkBehaviour
                     .speedOfPlayer);
             }
 
-            if(Input.GetKeyDown(KeyCode.G))
+            if (Input.GetKeyDown(KeyCode.G))
             {
                 playerInfo.grenades -= 1;
                 CmdThrowGrenade();
@@ -169,7 +169,7 @@ public class PlayerWeaponController : NetworkBehaviour
         float speedOfPlayer
     )
     {
-        RpcDestoryWeapon (
+        RpcDestoryWeapon(
             weapon,
             nAmmo,
             range,

@@ -16,10 +16,10 @@ public class WeaponSpawning : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(!isServer) { return; }
+        if (!isServer) { return; }
 
         List<Vector3> tileLoc = new List<Vector3>();
-        foreach(var pos in tileMap.cellBounds.allPositionsWithin)
+        foreach (var pos in tileMap.cellBounds.allPositionsWithin)
         {
             Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
             Vector3 place = tileMap.CellToWorld(localPlace);
@@ -29,7 +29,7 @@ public class WeaponSpawning : NetworkBehaviour
             }
         }
 
-        foreach(GameObject weapon in weapons)
+        foreach (GameObject weapon in weapons)
         {
             for (int i = 0; i < numWeapons; i++)
             {
