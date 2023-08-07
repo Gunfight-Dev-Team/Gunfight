@@ -13,8 +13,6 @@ public class PlayerWeaponController : NetworkBehaviour
 
     public PlayerInfo playerInfo;
 
-    public GameObject playerRef;
-
     //Sprite
     public SpriteRenderer spriteRenderer;
 
@@ -103,9 +101,9 @@ public class PlayerWeaponController : NetworkBehaviour
     [ClientRpc]
     void RpcThrowGrenade()
     {
-        GameObject newGrenade = Instantiate(Grenade, playerRef.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360)));
+        GameObject newGrenade = Instantiate(Grenade, transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360)));
         Rigidbody2D weaponRigidbody = newGrenade.GetComponent<Rigidbody2D>();
-        throwObject(weaponRigidbody, playerRef.transform.up * 30f, -50f * 10f, 3.0f, 1f);
+        throwObject(weaponRigidbody, transform.up * 30f, -50f * 10f, 3.0f, 1f);
     }
 
     [Command]
@@ -138,11 +136,11 @@ public class PlayerWeaponController : NetworkBehaviour
 
             GameObject newWeapon =
                 Instantiate(weapons[playerInfo.weaponID],
-                playerRef.transform.position,
+                transform.position,
                 Quaternion.Euler(0, 0, Random.Range(0, 360)));
             Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
             // throws object along the ground with a velocity and spin
-            throwObject(weaponRigidbody, playerRef.transform.up * 10f, -50f * 10f, 3.5f, 1f);
+            throwObject(weaponRigidbody, transform.up * 10f, -50f * 10f, 3.5f, 1f);
             newWeapon.GetComponent<Collider2D>().isTrigger = false;
             StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
             newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;

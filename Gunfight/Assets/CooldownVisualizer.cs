@@ -27,8 +27,8 @@ public class CooldownVisualizer : MonoBehaviour
         if (movementController.cooldownTimer > 0)
         {
             fill.enabled = true;
-            //Debug.Log(Mathf.Lerp(0, 1, movementController.cooldownTimer / movementController.PlayerModel.GetComponent<PlayerInfo>().cooldown));
-            GetComponent<Slider>().value = Mathf.Lerp(0, 1, movementController.cooldownTimer / movementController.PlayerModel.GetComponent<PlayerInfo>().cooldown);
+            //Debug.Log(Mathf.Lerp(0, 1, movementController.cooldownTimer / movementController.PlayerInfo.cooldown));
+            GetComponent<Slider>().value = Mathf.Lerp(0, 1, movementController.cooldownTimer / movementController.PlayerInfo.cooldown);
         }
         else
         {

@@ -2,20 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Mirror;
-using static UnityEngine.GraphicsBuffer;
-using TMPro;
-using UnityEngine.EventSystems;
-
-public class CameraController : NetworkBehaviour
+public class CameraController : MonoBehaviour
 {
-    public GameObject cameraHolder;
-
     public Rigidbody2D rb;
 
     public Camera cam;
 
-    public GameObject target;
+    public PlayerController target;
 
     public Vector3 offset;    // Offset to apply to camera position
 
@@ -39,9 +32,11 @@ public class CameraController : NetworkBehaviour
 
     private float halfWidth;
 
-    public override void OnStartAuthority()
+    public void Start()
     {
-        cameraHolder.SetActive(true);
+        target = GameObject.Find("LocalGamePlayer").GetComponent<PlayerController>();
+        target.cam = cam;
+        target.CameraShaker = GetComponentInChildren<CameraShaker>();
         minBounds = boundBox.bounds.min;
         maxBounds = boundBox.bounds.max;
         halfHeight = cam.orthographicSize;
@@ -52,10 +47,10 @@ public class CameraController : NetworkBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            float clampedX = Mathf.Clamp(cameraHolder.transform.position.x, minBounds.x + halfWidth, maxBounds.x - halfWidth);
-            float clampedY = Mathf.Clamp(cameraHolder.transform.position.y, minBounds.y + halfHeight, maxBounds.y - halfHeight);
+            float clampedX = Mathf.Clamp(transform.position.x, minBounds.x + halfWidth, maxBounds.x - halfWidth);
+            float clampedY = Mathf.Clamp(transform.position.y, minBounds.y + halfHeight, maxBounds.y - halfHeight);
 
-            Vector3 clampedPos = new Vector3(clampedX, clampedY, cameraHolder.transform.position.z);
+            Vector3 clampedPos = new Vector3(clampedX, clampedY, transform.position.z);
 
             float mouseDistance = Vector3.Distance(clampedPos, trackedPosition);
 
@@ -72,10 +67,10 @@ public class CameraController : NetworkBehaviour
 
             if (distance > deadzoneRadius)
             {
-                //Vector3 smoothedPosition = Vector3.SmoothDamp(cameraHolder.transform.position, trackedPosition, ref velocity, damping);
+                //Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, trackedPosition, ref velocity, damping);
                 Vector3 smoothedPosition = Vector3.Lerp(clampedPos, trackedPosition, 10f * Time.deltaTime);
                 rb.MovePosition(smoothedPosition);
-                //cameraHolder.transform.position = smoothedPosition;
+                //transform.position = smoothedPosition;
             }
         }
     }
@@ -83,6 +78,6 @@ public class CameraController : NetworkBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(cameraHolder.transform.position, deadzoneRadius);
+        Gizmos.DrawWireSphere(transform.position, deadzoneRadius);
     }
 }

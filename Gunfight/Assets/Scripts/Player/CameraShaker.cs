@@ -5,12 +5,13 @@ public class CameraShaker : MonoBehaviour
 {
     private Transform cameraTransform;
 
-    public GameObject target;
+    private GameObject target;
 
     public float shakeDuration = 0.1f;
 
     void Start()
     {
+        target = GameObject.Find("LocalGamePlayer");
         cameraTransform = GetComponent<Transform>();
     }
 

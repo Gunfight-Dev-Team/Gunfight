@@ -22,11 +22,11 @@ public enum Team
 
 public class PlayerController : NetworkBehaviour
 {
-    public bool resetGame = false;
+    public bool resetGame = true;
 
     public float Speed = 0.0f;
 
-    public GameObject PlayerModel;
+    public PlayerInfo PlayerInfo;
 
     public Rigidbody2D rb;
 
@@ -38,7 +38,6 @@ public class PlayerController : NetworkBehaviour
     public Team team;
 
     //Sprite
-    public GameObject player;
 
     public SpriteRenderer spriteRenderer;
 
@@ -101,12 +100,12 @@ public class PlayerController : NetworkBehaviour
         base.OnStartLocalPlayer();
 
         // Add an AudioListener component to the local player object
-        PlayerModel.AddComponent<AudioListener>();
+        gameObject.AddComponent<AudioListener>();
     }
 
     private void Start()
     {
-        PlayerModel.SetActive(false);
+        //gameObject.SetActive(false);
         poc = GetComponent<PlayerObjectController>();
         LoadSprite();
         GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
@@ -157,18 +156,17 @@ public class PlayerController : NetworkBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            if (PlayerModel.activeSelf == false || resetGame == true)
+            if (resetGame == true)
             {
                 // Resets player stats to have a knife
                 //REFACTOR: move playerInfo setting to function
-                PlayerModel.SetActive(true);
-                PlayerModel.GetComponent<PlayerInfo>().weaponID = WeaponID.Knife;
-                PlayerModel.GetComponent<PlayerInfo>().nAmmo = 1000;
-                PlayerModel.GetComponent<PlayerInfo>().range = 0.5f;
-                PlayerModel.GetComponent<PlayerInfo>().damage = 10;
-                PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 10;
-                PlayerModel.GetComponent<PlayerInfo>().cooldown = 0.5f;
-                PlayerModel.GetComponent<PlayerInfo>().isMelee = true;
+                PlayerInfo.weaponID = WeaponID.Knife;
+                PlayerInfo.nAmmo = 1000;
+                PlayerInfo.range = 0.5f;
+                PlayerInfo.damage = 10;
+                PlayerInfo.speedOfPlayer = 10;
+                PlayerInfo.cooldown = 0.5f;
+                PlayerInfo.isMelee = true;
                 SetPosition();
                 SetTeam();
                 SetSprite();
@@ -193,11 +191,11 @@ public class PlayerController : NetworkBehaviour
                 if (Input.GetButtonDown("Fire1") && cooldownTimer <= 0f)
                 {
                     // Camera Shake
-                    if (PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
+                    if (PlayerInfo.nAmmo > 0)
                         CameraShaker.ShootCameraShake(5.0f);
 
                     // Start firing if the fire button is pressed down and this weapon is automatic
-                    if (PlayerModel.GetComponent<PlayerInfo>().isAuto)
+                    if (PlayerInfo.isAuto)
                     {
                         // Set the isFiring flag to true and start firing
                         isFiring = true;
@@ -206,11 +204,11 @@ public class PlayerController : NetworkBehaviour
                     else
                     {
                         // Fire a single shot
-                        cooldownTimer = PlayerModel.GetComponent<PlayerInfo>().cooldown;
+                        cooldownTimer = PlayerInfo.cooldown;
                         CmdShooting(shootPoint.position);
                     }
                 }
-                else if (Input.GetButtonUp("Fire1") && PlayerModel.GetComponent<PlayerInfo>().isAuto)
+                else if (Input.GetButtonUp("Fire1") && PlayerInfo.isAuto)
                 {
                     // Stop firing if the fire button is released and this weapon is automatic
                     isFiring = false;
@@ -232,9 +230,9 @@ public class PlayerController : NetworkBehaviour
         while (isFiring && cooldownTimer <= 0f)
         {
             // Fire a shot and wait for the cooldown timer to expire
-            cooldownTimer = PlayerModel.GetComponent<PlayerInfo>().cooldown;
+            cooldownTimer = PlayerInfo.cooldown;
             CmdShooting(shootPoint.position);
-            if (PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
+            if (PlayerInfo.nAmmo > 0)
                 CameraShaker.ShootCameraShake(5.0f);
             yield return new WaitForSeconds(cooldownTimer);
         }
@@ -245,13 +243,13 @@ public class PlayerController : NetworkBehaviour
         // Sets the inital Spawn Position for all four characters
         //REFACTOR: Spawn points are gameObjects from the map class rather than vector3
         if (poc.PlayerIdNumber == 1)
-            PlayerModel.transform.position = new Vector3(22.5f, 22.5f, 0.0f);
+            transform.position = new Vector3(22.5f, 22.5f, 0.0f);
         if (poc.PlayerIdNumber == 2)
-            PlayerModel.transform.position = new Vector3(-22.5f, -22.5f, 0.0f);
+            transform.position = new Vector3(-22.5f, -22.5f, 0.0f);
         if (poc.PlayerIdNumber == 3)
-            PlayerModel.transform.position = new Vector3(-22.5f, 22.5f, 0.0f);
+            transform.position = new Vector3(-22.5f, 22.5f, 0.0f);
         if (poc.PlayerIdNumber == 4)
-            PlayerModel.transform.position = new Vector3(22.5f, -22.5f, 0.0f);
+            transform.position = new Vector3(22.5f, -22.5f, 0.0f);
     }
 
     public void SetTeam()
@@ -292,7 +290,7 @@ public class PlayerController : NetworkBehaviour
 
         // if (xDirection != 0.0f || yDirection != 0.0f)
         // {
-        //     if (PlayerModel.GetComponent<PlayerInfo>().isMelee)
+        //     if (PlayerInfo.isMelee)
         //     {
         //         AudioSource
         //             .PlayClipAtPoint(Walk_4,
@@ -302,7 +300,7 @@ public class PlayerController : NetworkBehaviour
         //     else
         //     {
         //         if (
-        //             PlayerModel.GetComponent<PlayerInfo>().weaponID ==
+        //             PlayerInfo.weaponID ==
         //             WeaponID.AK47
         //         )
         //         {
@@ -312,9 +310,9 @@ public class PlayerController : NetworkBehaviour
         //                 AudioListener.volume);
         //         }
         //         if (
-        //             PlayerModel.GetComponent<PlayerInfo>().weaponID ==
+        //             PlayerInfo.weaponID ==
         //             WeaponID.Uzi ||
-        //             PlayerModel.GetComponent<PlayerInfo>().weaponID ==
+        //             PlayerInfo.weaponID ==
         //             WeaponID.Pistol
         //         )
         //         {
@@ -324,7 +322,7 @@ public class PlayerController : NetworkBehaviour
         //                 AudioListener.volume);
         //         }
         //         if (
-        //             PlayerModel.GetComponent<PlayerInfo>().weaponID ==
+        //             PlayerInfo.weaponID ==
         //             WeaponID.Sniper
         //         )
         //         {
@@ -339,15 +337,15 @@ public class PlayerController : NetworkBehaviour
         mousePosition = cam.ScreenToWorldPoint(mousePosition);
 
         Vector2 direction =
-            new Vector2(mousePosition.x - PlayerModel.transform.position.x,
-                mousePosition.y - PlayerModel.transform.position.y);
+            new Vector2(mousePosition.x - transform.position.x,
+                mousePosition.y - transform.position.y);
 
-        PlayerModel.transform.up = direction;
+        transform.up = direction;
 
         Vector3 moveDirection = new Vector3(xDirection, yDirection, 0.0f);
 
-        rb.MovePosition(PlayerModel.transform.position + moveDirection *
-                        PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer *
+        rb.MovePosition(transform.position + moveDirection *
+                        PlayerInfo.speedOfPlayer *
                         Time.deltaTime);
         Physics2D.SyncTransforms();
     }
@@ -355,39 +353,39 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     void RpcSpawnBulletTrail(Vector2 startPos, Vector2 endPos)
     {
-        if (PlayerModel.GetComponent<PlayerInfo>().isMelee)
+        if (PlayerInfo.isMelee)
         {
             AudioSource
                 .PlayClipAtPoint(KnifeSound, startPos, AudioListener.volume);
         }
         else
         {
-            if (PlayerModel.GetComponent<PlayerInfo>().weaponID == WeaponID.AK47)
+            if (PlayerInfo.weaponID == WeaponID.AK47)
             {
                 AudioSource.PlayClipAtPoint(AK47ShotSound, startPos, AudioListener.volume);
             }
-            if (PlayerModel.GetComponent<PlayerInfo>().weaponID == WeaponID.Uzi)
+            if (PlayerInfo.weaponID == WeaponID.Uzi)
             {
                 AudioSource.PlayClipAtPoint(UziShotSound, startPos, AudioListener.volume);
             }
-            if (PlayerModel.GetComponent<PlayerInfo>().weaponID == WeaponID.Sniper)
+            if (PlayerInfo.weaponID == WeaponID.Sniper)
             {
                 AudioSource.PlayClipAtPoint(SniperShotSound, startPos, AudioListener.volume);
             }
-            if (PlayerModel.GetComponent<PlayerInfo>().weaponID == WeaponID.Pistol)
+            if (PlayerInfo.weaponID == WeaponID.Pistol)
             {
                 AudioSource.PlayClipAtPoint(PistolShotSound, startPos, AudioListener.volume);
             }
         }
         if (
-            !PlayerModel.GetComponent<PlayerInfo>().isMelee &&
-            PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0
+            !PlayerInfo.isMelee &&
+            PlayerInfo.nAmmo > 0
         )
         {
             Instantiate(bulletParticle.GetComponent<ParticleSystem>(),
             startPos,
-            PlayerModel.transform.rotation);
-            PlayerModel.GetComponent<PlayerInfo>().nAmmo--;
+            transform.rotation);
+            PlayerInfo.nAmmo--;
         }
 
         Vector2 newPoint = endPos + ((endPos - startPos).normalized * -0.2f);
@@ -400,15 +398,15 @@ public class PlayerController : NetworkBehaviour
     [Command]
     public void CmdShooting(Vector3 shootPoint)
     {
-        if (PlayerModel.GetComponent<PlayerInfo>().nAmmo > 0)
+        if (PlayerInfo.nAmmo > 0)
         {
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = (mousePos - (Vector2)shootPoint).normalized;
             RaycastHit2D hit =
                 Physics2D
                     .Raycast(shootPoint,
-                    PlayerModel.transform.up,
-                    PlayerModel.GetComponent<PlayerInfo>().range);
+                    transform.up,
+                    PlayerInfo.range);
 
             var endPos = hit.point;
 
@@ -427,9 +425,7 @@ public class PlayerController : NetworkBehaviour
                         .parent
                         .gameObject
                         .GetComponent<PlayerController>()
-                        .TakeDamage(PlayerModel
-                            .GetComponent<PlayerInfo>()
-                            .damage);
+                        .TakeDamage(PlayerInfo.damage);
 
                     AudioSource
                         .PlayClipAtPoint(HurtsSound[Random.Range(0, 1)],
@@ -467,12 +463,12 @@ public class PlayerController : NetworkBehaviour
             {
                 endPos =
                     shootPoint +
-                    PlayerModel.transform.up *
-                    PlayerModel.GetComponent<PlayerInfo>().range;
+                    transform.up *
+                    PlayerInfo.range;
             }
             RpcSpawnBulletTrail(shootPoint, endPos);
         }
-        else if (!PlayerModel.GetComponent<PlayerInfo>().isMelee)
+        else if (!PlayerInfo.isMelee)
             RpcPlayEmptySound(shootPoint);
     }
 
@@ -565,10 +561,10 @@ public class PlayerController : NetworkBehaviour
         int index = 5 * 4 + teamArray[team];
         spriteRenderer.sprite = spriteArray[index];
 
-        PlayerModel.GetComponent<PlayerInfo>().nAmmo = 0;
-        PlayerModel.GetComponent<PlayerInfo>().range = 0;
-        PlayerModel.GetComponent<PlayerInfo>().damage = 0;
-        PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 0;
+        PlayerInfo.nAmmo = 0;
+        PlayerInfo.range = 0;
+        PlayerInfo.damage = 0;
+        PlayerInfo.speedOfPlayer = 0;
         GetComponent<PlayerWeaponController>().enabled = false;
     }
 
@@ -585,12 +581,12 @@ public class PlayerController : NetworkBehaviour
         SetPosition();
         SetSprite();
         health = 10f;
-        PlayerModel.GetComponent<PlayerInfo>().nAmmo = 0;
-        PlayerModel.GetComponent<PlayerInfo>().range = 0.5f;
-        PlayerModel.GetComponent<PlayerInfo>().damage = 10;
-        PlayerModel.GetComponent<PlayerInfo>().speedOfPlayer = 8;
-        PlayerModel.GetComponent<PlayerInfo>().cooldown = 0.2f;
-        PlayerModel.GetComponent<PlayerInfo>().isMelee = true;
+        PlayerInfo.nAmmo = 0;
+        PlayerInfo.range = 0.5f;
+        PlayerInfo.damage = 10;
+        PlayerInfo.speedOfPlayer = 8;
+        PlayerInfo.cooldown = 0.2f;
+        PlayerInfo.isMelee = true;
         spriteRenderer.color = Color.white; // prevents sprite from having the red damage on it forever
 
         GetComponent<PlayerWeaponController>().enabled = true;
