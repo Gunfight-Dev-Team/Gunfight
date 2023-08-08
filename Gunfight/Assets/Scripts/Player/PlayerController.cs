@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading;
 using Mirror;
 using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -190,6 +191,7 @@ public class PlayerController : NetworkBehaviour
                 // Check if you are firing your weapon and if the cooldown is 0
                 if (Input.GetButtonDown("Fire1") && cooldownTimer <= 0f)
                 {
+                    Debug.Log("Clicked Fire");
                     // Camera Shake
                     if (PlayerInfo.nAmmo > 0)
                         CameraShaker.ShootCameraShake(5.0f);
@@ -205,7 +207,9 @@ public class PlayerController : NetworkBehaviour
                     {
                         // Fire a single shot
                         cooldownTimer = PlayerInfo.cooldown;
-                        CmdShooting(shootPoint.position);
+                        Debug.Log("Firing");
+                        Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+                        CmdShooting(shootPoint.position, mousePos);
                     }
                 }
                 else if (Input.GetButtonUp("Fire1") && PlayerInfo.isAuto)
@@ -231,7 +235,8 @@ public class PlayerController : NetworkBehaviour
         {
             // Fire a shot and wait for the cooldown timer to expire
             cooldownTimer = PlayerInfo.cooldown;
-            CmdShooting(shootPoint.position);
+            Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            CmdShooting(shootPoint.position, mousePos);
             if (PlayerInfo.nAmmo > 0)
                 CameraShaker.ShootCameraShake(5.0f);
             yield return new WaitForSeconds(cooldownTimer);
@@ -396,11 +401,12 @@ public class PlayerController : NetworkBehaviour
     }
 
     [Command]
-    public void CmdShooting(Vector3 shootPoint)
+    public void CmdShooting(Vector3 shootPoint, Vector2 mousePos)
     {
         if (PlayerInfo.nAmmo > 0)
         {
-            Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            Debug.Log("inside CMD");
+            Debug.Log("cam command");
             Vector2 direction = (mousePos - (Vector2)shootPoint).normalized;
             RaycastHit2D hit =
                 Physics2D
