@@ -424,14 +424,7 @@ public class PlayerController : NetworkBehaviour
                 if (hit.collider.gameObject.tag == "Player")
                 {
                     Debug.Log("Hit Player");
-                    hit
-                        .collider
-                        .gameObject
-                        .transform
-                        .parent
-                        .gameObject
-                        .GetComponent<PlayerController>()
-                        .TakeDamage(PlayerInfo.damage);
+                    hit.collider.gameObject.GetComponent<PlayerController>().TakeDamage(PlayerInfo.damage);
 
                     AudioSource
                         .PlayClipAtPoint(HurtsSound[Random.Range(0, 1)],
@@ -498,7 +491,7 @@ public class PlayerController : NetworkBehaviour
         health -= damage;
         Debug.Log("Player took " + damage + " Damage");
 
-        //RpcHurtCameraShake();
+        RpcHurtCameraShake();
 
         if (health <= 0)
         {
