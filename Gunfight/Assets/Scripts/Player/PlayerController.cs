@@ -498,7 +498,7 @@ public class PlayerController : NetworkBehaviour
         health -= damage;
         Debug.Log("Player took " + damage + " Damage");
 
-        RpcHurtCameraShake();
+        //RpcHurtCameraShake();
 
         if (health <= 0)
         {
