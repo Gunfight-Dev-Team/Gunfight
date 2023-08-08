@@ -125,16 +125,16 @@ GameObject:
   m_Component:
   - component: {fileID: 8189162925337818591}
   - component: {fileID: 8544065240725089489}
-  - component: {fileID: 9202434888575235624}
   - component: {fileID: 1455195145104011589}
+  - component: {fileID: 9202434888575235624}
   - component: {fileID: 5201570048408056945}
+  - component: {fileID: 1724671187577538036}
   - component: {fileID: 2587965880881467095}
   - component: {fileID: -1544771411420213927}
   - component: {fileID: 4657144043185810678}
   - component: {fileID: 6747868555270131913}
   - component: {fileID: 7365167262471752355}
   - component: {fileID: 1413340315125450619}
-  - component: {fileID: 1724671187577538036}
   - component: {fileID: 3538924275218208804}
   m_Layer: 0
   m_Name: PlayerObject
@@ -180,6 +180,29 @@ MonoBehaviour:
   PlayerSteamID: 0
   PlayerName: 
   Ready: 0
+--- !u!114 &1455195145104011589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5128584884438735198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79d062394567c4549b1ac299a4ac3da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponID: 1
+  nAmmo: 1000
+  grenades: 0
+  range: 0.5
+  damage: 10
+  cooldown: 1
+  isAuto: 0
+  isMelee: 1
+  speedOfPlayer: 10
+  health: 10
+  equipments: 
 --- !u!114 &9202434888575235624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,29 +252,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b5e7b7f23a3ee43d29e730eb2438b7c6, type: 3}
   - {fileID: 8300000, guid: 70a115aeb7b844370bdf43194fb5f4ab, type: 3}
   ammo: {fileID: 5874581913501018297, guid: 3cc7416febf644efeaa2079cdd8d4437, type: 3}
---- !u!114 &1455195145104011589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5128584884438735198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79d062394567c4549b1ac299a4ac3da4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponID: 1
-  nAmmo: 1000
-  grenades: 0
-  range: 0.5
-  damage: 10
-  cooldown: 1
-  isAuto: 0
-  isMelee: 1
-  speedOfPlayer: 10
-  health: 10
-  equipments: 
 --- !u!114 &5201570048408056945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,6 +279,20 @@ MonoBehaviour:
   Sniper: {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
   Uzi: {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
   Grenade: {fileID: 6672598589228257044, guid: 39ef0440d497842c4b03f8902e740512, type: 3}
+--- !u!114 &1724671187577538036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5128584884438735198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5112bfb2491039040843d0ab0d07ee27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPickup: 0
+  OtherCollider: {fileID: 0}
 --- !u!114 &2587965880881467095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,20 +505,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &1724671187577538036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5128584884438735198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5112bfb2491039040843d0ab0d07ee27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canPickup: 0
-  OtherCollider: {fileID: 0}
 --- !u!210 &3538924275218208804
 SortingGroup:
   m_ObjectHideFlags: 0

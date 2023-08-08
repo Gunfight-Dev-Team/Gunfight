@@ -191,7 +191,6 @@ public class PlayerController : NetworkBehaviour
                 // Check if you are firing your weapon and if the cooldown is 0
                 if (Input.GetButtonDown("Fire1") && cooldownTimer <= 0f)
                 {
-                    Debug.Log("Clicked Fire");
                     // Camera Shake
                     if (PlayerInfo.nAmmo > 0)
                         CameraShaker.ShootCameraShake(5.0f);
@@ -207,7 +206,6 @@ public class PlayerController : NetworkBehaviour
                     {
                         // Fire a single shot
                         cooldownTimer = PlayerInfo.cooldown;
-                        Debug.Log("Firing");
                         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
                         CmdShooting(shootPoint.position, mousePos);
                     }
@@ -405,8 +403,6 @@ public class PlayerController : NetworkBehaviour
     {
         if (PlayerInfo.nAmmo > 0)
         {
-            Debug.Log("inside CMD");
-            Debug.Log("cam command");
             Vector2 direction = (mousePos - (Vector2)shootPoint).normalized;
             RaycastHit2D hit =
                 Physics2D
@@ -416,9 +412,7 @@ public class PlayerController : NetworkBehaviour
 
             var endPos = hit.point;
 
-            if (
-                hit.collider != null && !hit.collider.CompareTag("Uncolliable") //&& hit.collider.CompareTag("Enemy")
-            )
+            if (hit.collider != null && !hit.collider.CompareTag("Uncolliable"))
             {
                 Debug.Log("hit");
                 if (hit.collider.gameObject.tag == "Player")
