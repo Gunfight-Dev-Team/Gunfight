@@ -116,7 +116,8 @@ public class PlayerWeaponController : NetworkBehaviour
                 Instantiate(weapons[weaponInfo.id],
                 transform.position,
                 Quaternion.Euler(0, 0, Random.Range(0, 360)));
-            NetworkServer.Spawn(newWeapon);
+            if(isServer)
+                NetworkServer.Spawn(newWeapon);
             Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
             // throws object along the ground with a velocity and spin
             throwObject(weaponRigidbody, transform.up * 10f, -50f * 10f, 3.5f, 1f);
