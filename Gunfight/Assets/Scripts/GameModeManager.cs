@@ -65,7 +65,7 @@ public class GameModeManager : NetworkBehaviour
     [ClientRpc]
     private void RpcResetGame()
     {
-        Debug.Log("Reseting");
+        Debug.Log("Resetting");
         // Call the reset function for all players
         foreach (PlayerController player in players)
         {

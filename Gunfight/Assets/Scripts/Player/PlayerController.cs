@@ -23,9 +23,7 @@ public enum Team
 
 public class PlayerController : NetworkBehaviour
 {
-    public bool resetGame = true;
-
-    public float Speed = 0.0f;
+    private bool hasSpawned = false;
 
     public PlayerInfo PlayerInfo;
 
@@ -35,7 +33,7 @@ public class PlayerController : NetworkBehaviour
 
     public PlayerObjectController poc;
 
-    [SerializeField]
+    [SerializeField] 
     public Team team;
 
     //Sprite
@@ -46,10 +44,6 @@ public class PlayerController : NetworkBehaviour
 
     //Shooting
     public Transform shootPoint;
-
-    public float bulletTrailSpeed;
-
-    public GameObject bulletTrail;
 
     public float cooldownTimer = 0;
 
@@ -65,8 +59,6 @@ public class PlayerController : NetworkBehaviour
     public GameObject hitParticle;
 
     public GameObject bulletParticle;
-
-    private Vector2 mousePos;
 
     public AudioClip PistolShotSound;
 
@@ -112,6 +104,7 @@ public class PlayerController : NetworkBehaviour
         GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
         audioSource = GetComponent<AudioSource>();
         GameModeManager.instance.AddPlayer(this);
+        Debug.Log("PlayerStarted");
     }
 
     void LoadSprite()
@@ -157,7 +150,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            if (resetGame == true)
+            if (!hasSpawned)
             {
                 // Resets player stats to have a knife
                 //REFACTOR: move playerInfo setting to function
@@ -172,7 +165,7 @@ public class PlayerController : NetworkBehaviour
                 SetTeam();
                 SetSprite();
                 health = 10f;
-                resetGame = false;
+                hasSpawned = true;
             }
 
             if (isLocalPlayer)
@@ -404,11 +397,7 @@ public class PlayerController : NetworkBehaviour
         if (PlayerInfo.nAmmo > 0)
         {
             Vector2 direction = (mousePos - (Vector2)shootPoint).normalized;
-            RaycastHit2D hit =
-                Physics2D
-                    .Raycast(shootPoint,
-                    transform.up,
-                    PlayerInfo.range);
+            RaycastHit2D hit = Physics2D.Raycast(shootPoint, transform.up, PlayerInfo.range);
 
             var endPos = hit.point;
 
@@ -574,7 +563,8 @@ public class PlayerController : NetworkBehaviour
         SetPosition();
         SetSprite();
         health = 10f;
-        PlayerInfo.nAmmo = 0;
+        PlayerInfo.weaponID = WeaponID.Knife;
+        PlayerInfo.nAmmo = 1000;
         PlayerInfo.range = 0.5f;
         PlayerInfo.damage = 10;
         PlayerInfo.speedOfPlayer = 8;
