@@ -26,7 +26,7 @@ public class PlayerController : NetworkBehaviour
     public WeaponInfo weaponInfo;
     public int grenades;
 
-    private bool hasSpawned = false;
+    public bool hasSpawned = false;
 
     public Rigidbody2D rb;
 
