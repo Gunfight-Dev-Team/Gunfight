@@ -154,6 +154,7 @@ public class PlayerController : NetworkBehaviour
             {
                 // Resets player stats to have a knife
                 //REFACTOR: move playerInfo setting to function
+                Debug.Log("Spawning");
                 weaponInfo.setDefault();
                 SetPosition();
                 SetTeam();
@@ -232,6 +233,7 @@ public class PlayerController : NetworkBehaviour
     {
         // Sets the inital Spawn Position for all four characters
         //REFACTOR: Spawn points are gameObjects from the map class rather than vector3
+        Debug.Log("Set POS ID: " + poc.PlayerIdNumber);
         if (poc.PlayerIdNumber == 1)
             transform.position = new Vector3(22.5f, 22.5f, 0.0f);
         if (poc.PlayerIdNumber == 2)
