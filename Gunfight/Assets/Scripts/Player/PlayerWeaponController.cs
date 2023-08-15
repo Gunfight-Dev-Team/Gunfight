@@ -5,6 +5,7 @@ using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using UnityEngine.AddressableAssets;
 
 public class PlayerWeaponController : NetworkBehaviour
 {

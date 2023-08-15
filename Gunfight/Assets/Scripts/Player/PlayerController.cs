@@ -41,6 +41,8 @@ public class PlayerController : NetworkBehaviour
 
     public SpriteRenderer spriteRenderer;
 
+    public AssetReference[] spriteReferences;
+
     public List<Sprite> spriteArray;
 
     //Shooting
@@ -92,14 +94,10 @@ public class PlayerController : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
-
-        // Add an AudioListener component to the local player object
-        //gameObject.AddComponent<AudioListener>();
     }
 
     private void Start()
     {
-        //gameObject.SetActive(false);
         poc = GetComponent<PlayerObjectController>();
         LoadSprite();
         GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
@@ -109,33 +107,13 @@ public class PlayerController : NetworkBehaviour
 
     void LoadSprite()
     {
-        AsyncOperationHandle<Sprite[]> spriteHandle =
-            Addressables
-                .LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_AK47.png");
-        spriteHandle.WaitForCompletion();
-        spriteHandle.Completed += LoadSpritesWhenReady;
-        spriteHandle =
-            Addressables
-                .LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Knife.png");
-        spriteHandle.Completed += LoadSpritesWhenReady;
-        spriteHandle =
-            Addressables
-                .LoadAssetAsync
-                <Sprite[]>("Assets/Art/Player/Player_Pistol.png");
-        spriteHandle.Completed += LoadSpritesWhenReady;
-        spriteHandle =
-            Addressables
-                .LoadAssetAsync
-                <Sprite[]>("Assets/Art/Player/Player_Sniper.png");
-        spriteHandle.Completed += LoadSpritesWhenReady;
-        spriteHandle =
-            Addressables
-                .LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Uzi.png");
-        spriteHandle.Completed += LoadSpritesWhenReady;
-        spriteHandle =
-            Addressables
-                .LoadAssetAsync<Sprite[]>("Assets/Art/Player/Player_Death.png");
-        spriteHandle.Completed += LoadSpritesWhenReady;
+        AsyncOperationHandle<Sprite[]> spriteHandle;
+        for (int i = 0; i < spriteReferences.Length; i++)
+        {
+            spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spriteReferences[i]);
+            spriteHandle.WaitForCompletion();
+            spriteHandle.Completed += LoadSpritesWhenReady;
+        }
     }
 
     void LoadSpritesWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
@@ -152,8 +130,7 @@ public class PlayerController : NetworkBehaviour
         {
             if (!hasSpawned)
             {
-                // Resets player stats to have a knife
-                //REFACTOR: move playerInfo setting to function
+                // Spawns player with knife, sets position, team, and sprite
                 Debug.Log("Spawning");
                 weaponInfo.setDefault();
                 SetPosition();

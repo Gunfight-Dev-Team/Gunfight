@@ -197,11 +197,37 @@ MonoBehaviour:
   syncInterval: 0.1
   weaponInfo: {fileID: 759817034069872918}
   grenades: 0
+  hasSpawned: 0
   rb: {fileID: 1413340315125450619}
   cam: {fileID: 0}
   poc: {fileID: 8544065240725089489}
   team: 0
   spriteRenderer: {fileID: 5891011091002882805}
+  spriteReferences:
+  - m_AssetGUID: 4bbe6c2970dda4ebaa84b43638bdfabf
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: d22a9804159504ac18c004d76e425e42
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 341650319fed14e399a261df191e77d8
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 97ed5b8f7f7694df390eae63fe2aa800
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 88246d8b03dfa42eea1835f10405572b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: ed03495e8075d45d4a902910418a42f0
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   spriteArray: []
   shootPoint: {fileID: 4178969342016999261}
   cooldownTimer: 0
