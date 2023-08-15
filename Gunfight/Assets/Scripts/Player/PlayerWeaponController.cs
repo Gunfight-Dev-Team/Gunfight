@@ -111,22 +111,23 @@ public class PlayerWeaponController : NetworkBehaviour
                 { WeaponID.Sniper, Sniper },
                 { WeaponID.Uzi, Uzi }
                 };
-
-            GameObject newWeapon =
+            if (isServer)
+            {
+                GameObject newWeapon =
                 Instantiate(weapons[weaponInfo.id],
                 transform.position,
                 Quaternion.Euler(0, 0, Random.Range(0, 360)));
-            if (isServer)
-            {
+
                 Debug.Log("spawning Weapon to network");
                 NetworkServer.Spawn(newWeapon);
+
+                Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
+                // throws object along the ground with a velocity and spin
+                throwObject(weaponRigidbody, transform.up * 10f, -50f * 10f, 3.5f, 1f);
+                newWeapon.GetComponent<Collider2D>().isTrigger = false;
+                StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
+                newWeapon.GetComponent<WeaponInfo>().setWeaponInfo(weaponInfo);
             }
-            Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
-            // throws object along the ground with a velocity and spin
-            throwObject(weaponRigidbody, transform.up * 10f, -50f * 10f, 3.5f, 1f);
-            newWeapon.GetComponent<Collider2D>().isTrigger = false;
-            StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
-            newWeapon.GetComponent<WeaponInfo>().setWeaponInfo(weaponInfo);
         }
     }
 
