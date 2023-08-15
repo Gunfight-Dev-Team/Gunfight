@@ -116,7 +116,7 @@ public class PlayerWeaponController : NetworkBehaviour
                 Instantiate(weapons[weaponInfo.id],
                 transform.position,
                 Quaternion.Euler(0, 0, Random.Range(0, 360)));
-            if (isServer)
+            if (isClient)
             {
                 Debug.Log("spawning Weapon to network");
                 NetworkServer.Spawn(newWeapon);
