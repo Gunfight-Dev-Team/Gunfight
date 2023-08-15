@@ -105,7 +105,6 @@ public class PlayerController : NetworkBehaviour
         GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
         audioSource = GetComponent<AudioSource>();
         //GameModeManager.instance.AddPlayer(this);
-        Debug.Log("PlayerStarted");
     }
 
     void LoadSprite()
@@ -325,7 +324,8 @@ public class PlayerController : NetworkBehaviour
         //     }
         // }
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition = cam.ScreenToWorldPoint(mousePosition);
+        if(cam != null)
+            mousePosition = cam.ScreenToWorldPoint(mousePosition);
 
         Vector2 direction =
             new Vector2(mousePosition.x - transform.position.x,
