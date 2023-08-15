@@ -398,10 +398,8 @@ public class PlayerController : NetworkBehaviour
 
             if (hit.collider != null && !hit.collider.CompareTag("Uncolliable"))
             {
-                Debug.Log("hit");
                 if (hit.collider.gameObject.tag == "Player")
                 {
-                    Debug.Log("Hit Player");
                     hit.collider.gameObject.GetComponent<PlayerController>().TakeDamage(weaponInfo.damage);
 
                     AudioSource
