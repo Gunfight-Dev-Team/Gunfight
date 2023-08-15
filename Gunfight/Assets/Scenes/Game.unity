@@ -31436,7 +31436,6 @@ MonoBehaviour:
   syncInterval: 0.1
   weapons:
   - {fileID: 4542724738798047833, guid: efc55c34014bb429f9bc3e7f34407cb8, type: 3}
-  - {fileID: 4434992512352626665, guid: 14bd63210f2db4523b027bf496721467, type: 3}
   - {fileID: 222421779905360649, guid: 0bfa630724c5f46b69b36048d06b930c, type: 3}
   - {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
   - {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}

@@ -52,12 +52,13 @@ public class PlayerWeaponController : NetworkBehaviour
             if (playerColliders.canPickup && Input.GetKeyDown(KeyCode.Mouse1))
             {
                 // Pick up the weapon
-                Debug.Log("Weapon picked up!");
-
-                CmdDrop(player.weaponInfo);
-                Debug.Log("Weapon Dropped!");
+                if(player.weaponInfo.id != WeaponID.Knife)
+                    CmdDrop(player.weaponInfo);
                 CmdPickUp(playerColliders.OtherCollider.GetComponent<WeaponInfo>());
-                Debug.Log("Done!");
+            }
+            else if(player.weaponInfo.id != WeaponID.Knife && !playerColliders.canPickup && Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                CmdDrop(player.weaponInfo);
             }
 
             if (Input.GetKeyDown(KeyCode.G))
@@ -100,34 +101,38 @@ public class PlayerWeaponController : NetworkBehaviour
     [ClientRpc]
     void RpcDropWeapon(WeaponInfo weaponInfo)
     {
-        if (playerColliders.OtherCollider != null)
-        {
-            // [ ] TODO: is it possible to make this more simple?
-            var weapons =
-                new Dictionary<WeaponID, GameObject>()
-                {
-                { WeaponID.AK47, AK47 },
-                { WeaponID.Knife, Knife },
-                { WeaponID.Pistol, Pistol },
-                { WeaponID.Sniper, Sniper },
-                { WeaponID.Uzi, Uzi }
-                };
-            if (isServer)
+        // [ ] TODO: is it possible to make this more simple?
+        var weapons =
+            new Dictionary<WeaponID, GameObject>()
             {
-                GameObject newWeapon =
-                Instantiate(weapons[weaponInfo.id],
-                transform.position,
-                Quaternion.Euler(0, 0, Random.Range(0, 360)));
+            { WeaponID.AK47, AK47 },
+            { WeaponID.Knife, Knife },
+            { WeaponID.Pistol, Pistol },
+            { WeaponID.Sniper, Sniper },
+            { WeaponID.Uzi, Uzi }
+            };
+        if (isServer)
+        {
+            GameObject newWeapon =
+            Instantiate(weapons[weaponInfo.id],
+            transform.position,
+            Quaternion.Euler(0, 0, Random.Range(0, 360)));
 
-                NetworkServer.Spawn(newWeapon);
+            NetworkServer.Spawn(newWeapon);
 
-                Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
-                // throws object along the ground with a velocity and spin
-                throwObject(weaponRigidbody, transform.up * 10f, -50f * 10f, 3.5f, 1f);
-                newWeapon.GetComponent<Collider2D>().isTrigger = false;
-                StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
-                newWeapon.GetComponent<WeaponInfo>().setWeaponInfo(weaponInfo);
-            }
+            Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
+            // throws object along the ground with a velocity and spin
+            throwObject(weaponRigidbody, transform.up * 10f, -50f * 10f, 3.5f, 1f);
+            newWeapon.GetComponent<Collider2D>().isTrigger = false;
+            StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
+            newWeapon.GetComponent<WeaponInfo>().setWeaponInfo(weaponInfo);
+        }
+        // if you want to throw your weapon and equip a knife
+        if (playerColliders.canPickup == false)
+        {
+            player.weaponInfo.setDefault();
+            player.isFiring = false;
+            ChangeSprite(WeaponID.Knife);
         }
     }
 
