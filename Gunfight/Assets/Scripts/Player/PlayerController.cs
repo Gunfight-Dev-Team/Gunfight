@@ -94,7 +94,7 @@ public class PlayerController : NetworkBehaviour
         base.OnStartLocalPlayer();
 
         // Add an AudioListener component to the local player object
-        gameObject.AddComponent<AudioListener>();
+        //gameObject.AddComponent<AudioListener>();
     }
 
     private void Start()
