@@ -172,7 +172,7 @@ public class PlayerController : NetworkBehaviour
                         // Fire a single shot
                         cooldownTimer = weaponInfo.cooldown;
                         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-                        CmdShooting(shootPoint.position, mousePos);
+                        CmdShoot(shootPoint.position, mousePos);
                     }
                 }
                 else if (Input.GetButtonUp("Fire1") && weaponInfo.isAuto)
@@ -199,7 +199,7 @@ public class PlayerController : NetworkBehaviour
             // Fire a shot and wait for the cooldown timer to expire
             cooldownTimer = weaponInfo.cooldown;
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-            CmdShooting(shootPoint.position, mousePos);
+            CmdShoot(shootPoint.position, mousePos);
             if (weaponInfo.nAmmo > 0)
                 CameraShaker.ShootCameraShake(5.0f);
             yield return new WaitForSeconds(cooldownTimer);
@@ -366,7 +366,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     [Command]
-    public void CmdShooting(Vector3 shootPoint, Vector2 mousePos)
+    public void CmdShoot(Vector3 shootPoint, Vector2 mousePos)
     {
         if (weaponInfo.nAmmo > 0)
         {
