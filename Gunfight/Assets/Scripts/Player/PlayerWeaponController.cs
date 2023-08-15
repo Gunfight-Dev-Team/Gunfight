@@ -11,7 +11,7 @@ public class PlayerWeaponController : NetworkBehaviour
     [SerializeField]
     internal Team team;
 
-    public PlayerInfo playerInfo;
+    public PlayerController player;
 
     //Sprite
     public SpriteRenderer spriteRenderer;
@@ -53,31 +53,15 @@ public class PlayerWeaponController : NetworkBehaviour
                 // Pick up the weapon
                 Debug.Log("Weapon picked up!");
 
-                CmdDrop(playerInfo.weaponID,
-                playerInfo.nAmmo,
-                playerInfo.range,
-                playerInfo.damage,
-                playerInfo.speedOfPlayer);
-                CmdPickUp(playerColliders
-                    .OtherCollider
-                    .GetComponent<WeaponInfo>()
-                    .id,
-                playerColliders.OtherCollider.GetComponent<WeaponInfo>().nAmmo,
-                playerColliders.OtherCollider.GetComponent<WeaponInfo>().range,
-                playerColliders.OtherCollider.GetComponent<WeaponInfo>().damage,
-                playerColliders
-                    .OtherCollider
-                    .GetComponent<WeaponInfo>()
-                    .cooldown,
-                playerColliders
-                    .OtherCollider
-                    .GetComponent<WeaponInfo>()
-                    .speedOfPlayer);
+                CmdDrop(player.weaponInfo);
+                Debug.Log("Weapon Dropped!");
+                CmdPickUp(playerColliders.OtherCollider.GetComponent<WeaponInfo>());
+                Debug.Log("Done!");
             }
 
             if (Input.GetKeyDown(KeyCode.G))
             {
-                playerInfo.grenades -= 1;
+                player.grenades -= 1;
                 CmdThrowGrenade();
             }
         }
@@ -107,19 +91,13 @@ public class PlayerWeaponController : NetworkBehaviour
     }
 
     [Command]
-    void CmdDrop(
-        WeaponID newWeaponID,
-        int nAmmo,
-        float range,
-        int damage,
-        float speedOfPlayer
-    )
+    void CmdDrop(WeaponInfo weaponInfo)
     {
-        RpcDropWeapon();
+        RpcDropWeapon(weaponInfo);
     }
 
     [ClientRpc]
-    void RpcDropWeapon()
+    void RpcDropWeapon(WeaponInfo weaponInfo)
     {
         if (playerColliders.OtherCollider != null)
         {
@@ -135,18 +113,16 @@ public class PlayerWeaponController : NetworkBehaviour
                 };
 
             GameObject newWeapon =
-                Instantiate(weapons[playerInfo.weaponID],
+                Instantiate(weapons[weaponInfo.id],
                 transform.position,
                 Quaternion.Euler(0, 0, Random.Range(0, 360)));
+            NetworkServer.Spawn(newWeapon);
             Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
             // throws object along the ground with a velocity and spin
             throwObject(weaponRigidbody, transform.up * 10f, -50f * 10f, 3.5f, 1f);
             newWeapon.GetComponent<Collider2D>().isTrigger = false;
             StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
-            newWeapon.GetComponent<WeaponInfo>().nAmmo = playerInfo.nAmmo;
-            newWeapon.GetComponent<WeaponInfo>().range = playerInfo.range;
-            newWeapon.GetComponent<WeaponInfo>().damage = playerInfo.damage;
-            newWeapon.GetComponent<WeaponInfo>().speedOfPlayer = playerInfo.speedOfPlayer;
+            newWeapon.GetComponent<WeaponInfo>().setWeaponInfo(weaponInfo);
         }
     }
 
@@ -158,56 +134,22 @@ public class PlayerWeaponController : NetworkBehaviour
     }
 
     [Command]
-    void CmdPickUp(
-        WeaponID weapon,
-        int nAmmo,
-        float range,
-        int damage,
-        float cooldown,
-        float speedOfPlayer
-    )
+    void CmdPickUp(WeaponInfo weaponInfo)
     {
-        RpcDestoryWeapon(
-            weapon,
-            nAmmo,
-            range,
-            damage,
-            cooldown,
-            speedOfPlayer
-        );
+        RpcDestoryWeapon(weaponInfo);
     }
 
     [ClientRpc]
-    void RpcDestoryWeapon(
-        WeaponID weapon,
-        int nAmmo,
-        float range,
-        int damage,
-        float cooldown,
-        float speedOfPlayer
-    )
+    void RpcDestoryWeapon(WeaponInfo weaponInfo)
     {
         if (playerColliders.OtherCollider != null)
         {
             // picks up a weapon on the ground, changes sprite, updates changes player stats, and destroys the weapon
-            ChangeSprite(weapon);
-            AudioSource.PlayClipAtPoint(pickupSound, playerInfo.transform.position, AudioListener.volume);
-            playerInfo.weaponID = weapon;
-            playerInfo.nAmmo = nAmmo;
-            playerInfo.range = range;
-            playerInfo.damage = damage;
-            playerInfo.cooldown = cooldown;
+            ChangeSprite(weaponInfo.id);
+            AudioSource.PlayClipAtPoint(pickupSound, player.transform.position, AudioListener.volume);
+            player.weaponInfo.setWeaponInfo(weaponInfo);
             GetComponent<PlayerController>().cooldownTimer = 0f;
             GetComponent<PlayerController>().isFiring = false;
-            if (weapon == WeaponID.AK47 || weapon == WeaponID.Uzi)
-                playerInfo.isAuto = true;
-            else
-                playerInfo.isAuto = false;
-            if (weapon == WeaponID.Knife)
-                playerInfo.isMelee = true;
-            else
-                playerInfo.isMelee = false;
-            playerInfo.speedOfPlayer = speedOfPlayer;
             Destroy(playerColliders.OtherCollider.gameObject);
             if (isServer)
                 NetworkServer.Destroy(playerColliders.OtherCollider.gameObject);

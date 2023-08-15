@@ -36,12 +36,12 @@ public class Collectable : NetworkBehaviour
         if (!isServer) return;
 
         // Check if the player collided with this collectable
-        PlayerInfo playerInfo = collision.GetComponent<PlayerInfo>();
-        if (playerInfo != null)
+        PlayerController player = collision.GetComponent<PlayerController>();
+        if (player != null)
         {
             AudioSource.PlayClipAtPoint(collectSound, transform.position, AudioListener.volume);
             // Add ammo to the player's count
-            playerInfo.nAmmo += 10;
+            player.weaponInfo.nAmmo += 10;
 
             // Destroy the collectable on all clients
             NetworkServer.Destroy(gameObject);

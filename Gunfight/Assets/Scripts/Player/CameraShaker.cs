@@ -19,7 +19,7 @@ public class CameraShaker : MonoBehaviour
     {
         float shakeIntensity = Mathf.Clamp01(velocity / 20f);
         StartCoroutine(ShootShake(shakeDuration,
-        target.GetComponent<PlayerInfo>().range / 15.0f * shakeIntensity));
+        target.GetComponent<PlayerController>().weaponInfo.range / 15.0f * shakeIntensity));
     }
 
     public void HurtCameraShake(float velocity)

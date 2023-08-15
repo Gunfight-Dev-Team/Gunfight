@@ -28,7 +28,7 @@ public class CooldownVisualizer : MonoBehaviour
         {
             fill.enabled = true;
             //Debug.Log(Mathf.Lerp(0, 1, movementController.cooldownTimer / movementController.PlayerInfo.cooldown));
-            GetComponent<Slider>().value = Mathf.Lerp(0, 1, movementController.cooldownTimer / movementController.PlayerInfo.cooldown);
+            GetComponent<Slider>().value = Mathf.Lerp(0, 1, movementController.cooldownTimer / movementController.weaponInfo.cooldown);
         }
         else
         {
