@@ -25,6 +25,7 @@ public class PlayerWeaponController : NetworkBehaviour
 
     public AudioClip pickupSound;
 
+    // prefab array of weapons
     [SerializeField]
     private GameObject [] weapons;
 
@@ -115,7 +116,9 @@ public class PlayerWeaponController : NetworkBehaviour
         //     { WeaponID.Uzi, Uzi }
         //     };
 
+        // gets int value of weapon enum
         int index = (int) weaponInfo.id;
+        // gets the actual weapon GameObject
         var weapon = weapons[index];
 
         if (isServer)
@@ -202,7 +205,7 @@ public class PlayerWeaponController : NetworkBehaviour
         //         { Team.White, 3 }
         //     };
 
-        //gets int value of Team enum
+        // gets int value of Team enum
         int teamVal = (int) team;
 
         if (weapon == (WeaponID)(-1))

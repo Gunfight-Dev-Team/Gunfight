@@ -246,6 +246,8 @@ public class PlayerController : NetworkBehaviour
         //         { Team.Red, 2 },
         //         { Team.White, 3 }
         //     };
+
+        // gets int value of Team enum
         int teamVal = (int) team;
 
         // change sprite
@@ -514,7 +516,7 @@ public class PlayerController : NetworkBehaviour
         //         { Team.White, 3 }
         //     };
 
-        //gets int value of Team enum
+        // gets int value of Team enum
         int teamVal = (int) team;
 
         // int index = 5 * 4 + teamArray[team];
