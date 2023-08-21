@@ -273,11 +273,12 @@ MonoBehaviour:
   spriteArray: []
   playerColliders: {fileID: 1724671187577538036}
   pickupSound: {fileID: 8300000, guid: edfaddaa10fdc554a9084b9f29972f7d, type: 3}
-  AK47: {fileID: 4542724738798047833, guid: efc55c34014bb429f9bc3e7f34407cb8, type: 3}
-  Knife: {fileID: 4434992512352626665, guid: 14bd63210f2db4523b027bf496721467, type: 3}
-  Pistol: {fileID: 222421779905360649, guid: 0bfa630724c5f46b69b36048d06b930c, type: 3}
-  Sniper: {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
-  Uzi: {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
+  weapons:
+  - {fileID: 4542724738798047833, guid: efc55c34014bb429f9bc3e7f34407cb8, type: 3}
+  - {fileID: 4434992512352626665, guid: 14bd63210f2db4523b027bf496721467, type: 3}
+  - {fileID: 222421779905360649, guid: 0bfa630724c5f46b69b36048d06b930c, type: 3}
+  - {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
+  - {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
   Grenade: {fileID: 6672598589228257044, guid: 39ef0440d497842c4b03f8902e740512, type: 3}
 --- !u!114 &1724671187577538036
 MonoBehaviour:

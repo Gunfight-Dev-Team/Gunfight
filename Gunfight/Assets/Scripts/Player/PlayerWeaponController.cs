@@ -26,19 +26,22 @@ public class PlayerWeaponController : NetworkBehaviour
     public AudioClip pickupSound;
 
     [SerializeField]
-    private GameObject AK47;
+    private GameObject [] weapons;
 
-    [SerializeField]
-    private GameObject Knife;
+    // [SerializeField]
+    // private GameObject AK47;
 
-    [SerializeField]
-    private GameObject Pistol;
+    // [SerializeField]
+    // private GameObject Knife;
 
-    [SerializeField]
-    private GameObject Sniper;
+    // [SerializeField]
+    // private GameObject Pistol;
 
-    [SerializeField]
-    private GameObject Uzi;
+    // [SerializeField]
+    // private GameObject Sniper;
+
+    // [SerializeField]
+    // private GameObject Uzi;
 
     [SerializeField]
     private GameObject Grenade;
@@ -102,21 +105,27 @@ public class PlayerWeaponController : NetworkBehaviour
     void RpcDropWeapon(WeaponInfo weaponInfo)
     {
         // [ ] TODO: is it possible to make this more simple?
-        var weapons =
-            new Dictionary<WeaponID, GameObject>()
-            {
-            { WeaponID.AK47, AK47 },
-            { WeaponID.Knife, Knife },
-            { WeaponID.Pistol, Pistol },
-            { WeaponID.Sniper, Sniper },
-            { WeaponID.Uzi, Uzi }
-            };
+        // var weapons =
+        //     new Dictionary<WeaponID, GameObject>()
+        //     {
+        //     { WeaponID.AK47, AK47 },
+        //     { WeaponID.Knife, Knife },
+        //     { WeaponID.Pistol, Pistol },
+        //     { WeaponID.Sniper, Sniper },
+        //     { WeaponID.Uzi, Uzi }
+        //     };
+
+        int index = (int) weaponInfo.id;
+        var weapon = weapons[index];
+
         if (isServer)
         {
-            GameObject newWeapon =
-            Instantiate(weapons[weaponInfo.id],
-            transform.position,
-            Quaternion.Euler(0, 0, Random.Range(0, 360)));
+            // GameObject newWeapon =
+            // Instantiate(weapons[weaponInfo.id],
+            // transform.position,
+            // Quaternion.Euler(0, 0, Random.Range(0, 360)));
+
+            GameObject newWeapon = Instantiate(weapon, transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360)));
 
             NetworkServer.Spawn(newWeapon);
 
@@ -179,6 +188,8 @@ public class PlayerWeaponController : NetworkBehaviour
         //         { WeaponID.Sniper, 3 },
         //         { WeaponID.Uzi, 4 }
         //     };
+        
+        // gets int value of WeaponId enum
         int weaponVal = (int) weapon;
 
         // [ ] TODO: is it possible to make this more simple?
@@ -190,6 +201,8 @@ public class PlayerWeaponController : NetworkBehaviour
         //         { Team.Red, 2 },
         //         { Team.White, 3 }
         //     };
+
+        //gets int value of Team enum
         int teamVal = (int) team;
 
         if (weapon == (WeaponID)(-1))

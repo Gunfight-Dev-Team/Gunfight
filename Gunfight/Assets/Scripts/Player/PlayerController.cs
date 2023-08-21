@@ -513,6 +513,8 @@ public class PlayerController : NetworkBehaviour
         //         { Team.Orange, 2 },
         //         { Team.White, 3 }
         //     };
+
+        //gets int value of Team enum
         int teamVal = (int) team;
 
         // int index = 5 * 4 + teamArray[team];
