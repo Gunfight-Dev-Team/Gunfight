@@ -170,15 +170,16 @@ public class PlayerWeaponController : NetworkBehaviour
     void ChangeSprite(WeaponID weapon)
     {
         // [ ] TODO: is it possible to make this more simple?
-        var weaponArray =
-            new Dictionary<WeaponID, int>()
-            {
-                { WeaponID.AK47, 0 },
-                { WeaponID.Knife, 1 },
-                { WeaponID.Pistol, 2 },
-                { WeaponID.Sniper, 3 },
-                { WeaponID.Uzi, 4 }
-            };
+        // var weaponArray =
+        //     new Dictionary<WeaponID, int>()
+        //     {
+        //         { WeaponID.AK47, 0 },
+        //         { WeaponID.Knife, 1 },
+        //         { WeaponID.Pistol, 2 },
+        //         { WeaponID.Sniper, 3 },
+        //         { WeaponID.Uzi, 4 }
+        //     };
+        int weaponVal = (int) weapon;
 
         // [ ] TODO: is it possible to make this more simple?
         // var teamArray =
@@ -201,7 +202,7 @@ public class PlayerWeaponController : NetworkBehaviour
         {
             // change sprite
             // int index = weaponArray[weapon] * 4 + teamArray[team];
-            int index = weaponArray[weapon] * 4 + teamVal;
+            int index = weaponVal * 4 + teamVal;
             spriteRenderer.sprite = spriteArray[index];
         }
     }

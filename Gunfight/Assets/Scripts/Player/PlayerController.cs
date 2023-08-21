@@ -16,8 +16,8 @@ using UnityEngine.UI;
 public enum Team
 {
     Green,
-    Red,
     Orange,
+    Red,
     White
 }
 
