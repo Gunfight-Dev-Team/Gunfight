@@ -181,24 +181,27 @@ public class PlayerWeaponController : NetworkBehaviour
             };
 
         // [ ] TODO: is it possible to make this more simple?
-        var teamArray =
-            new Dictionary<Team, int>()
-            {
-                { Team.Green, 0 },
-                { Team.Orange, 1 },
-                { Team.Red, 2 },
-                { Team.White, 3 }
-            };
+        // var teamArray =
+        //     new Dictionary<Team, int>()
+        //     {
+        //         { Team.Green, 0 },
+        //         { Team.Orange, 1 },
+        //         { Team.Red, 2 },
+        //         { Team.White, 3 }
+        //     };
+        int teamVal = (int) team;
 
         if (weapon == (WeaponID)(-1))
         {
-            int index = 5 * 4 + teamArray[team];
+            // int index = 5 * 4 + teamArray[team];
+            int index = 5 * 4 + teamVal;
             spriteRenderer.sprite = spriteArray[index];
         }
         else
         {
             // change sprite
-            int index = weaponArray[weapon] * 4 + teamArray[team];
+            // int index = weaponArray[weapon] * 4 + teamArray[team];
+            int index = weaponArray[weapon] * 4 + teamVal;
             spriteRenderer.sprite = spriteArray[index];
         }
     }

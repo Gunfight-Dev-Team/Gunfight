@@ -238,17 +238,19 @@ public class PlayerController : NetworkBehaviour
     public void SetSprite()
     {
         // [ ] TODO: is it possible to make this more simple?
-        var teamArray =
-            new Dictionary<Team, int>()
-            {
-                { Team.Green, 0 },
-                { Team.Orange, 1 },
-                { Team.Red, 2 },
-                { Team.White, 3 }
-            };
+        // var teamArray =
+        //     new Dictionary<Team, int>()
+        //     {
+        //         { Team.Green, 0 },
+        //         { Team.Orange, 1 },
+        //         { Team.Red, 2 },
+        //         { Team.White, 3 }
+        //     };
+        int teamVal = (int) team;
 
         // change sprite
-        int index = 4 + teamArray[team];
+        // int index = 4 + teamArray[team];
+        int index = 4 + teamVal;
         spriteRenderer.sprite = spriteArray[index];
     }
 
@@ -503,16 +505,18 @@ public class PlayerController : NetworkBehaviour
     void RpcDie()
     {
         // [ ] TODO: is it possible to make this more simple?
-        var teamArray =
-            new Dictionary<Team, int>()
-            {
-                { Team.Green, 0 },
-                { Team.Red, 1 },
-                { Team.Orange, 2 },
-                { Team.White, 3 }
-            };
+        // var teamArray =
+        //     new Dictionary<Team, int>()
+        //     {
+        //         { Team.Green, 0 },
+        //         { Team.Red, 1 },
+        //         { Team.Orange, 2 },
+        //         { Team.White, 3 }
+        //     };
+        int teamVal = (int) team;
 
-        int index = 5 * 4 + teamArray[team];
+        // int index = 5 * 4 + teamArray[team];
+        int index = 5 *4 + teamVal;
         spriteRenderer.sprite = spriteArray[index];
 
         weaponInfo.nAmmo = 0;
