@@ -24,6 +24,7 @@ public enum Team
 public class PlayerController : NetworkBehaviour
 {
     public WeaponInfo weaponInfo;
+    public GameObject weapon;
     public int grenades;
 
     public bool hasSpawned = false;
@@ -237,18 +238,9 @@ public class PlayerController : NetworkBehaviour
 
     public void SetSprite()
     {
-        // [ ] TODO: is it possible to make this more simple?
-        var teamArray =
-            new Dictionary<Team, int>()
-            {
-                { Team.Green, 0 },
-                { Team.Orange, 1 },
-                { Team.Red, 2 },
-                { Team.White, 3 }
-            };
-
+        int teamIndex = (int)team;
         // change sprite
-        int index = 4 + teamArray[team];
+        int index = 4 + teamIndex;
         spriteRenderer.sprite = spriteArray[index];
     }
 
@@ -257,60 +249,21 @@ public class PlayerController : NetworkBehaviour
         float xDirection = Input.GetAxis("Horizontal");
         float yDirection = Input.GetAxis("Vertical");
 
-        // if (xDirection != 0.0f || yDirection != 0.0f)
-        // {
-        //     if (PlayerInfo.isMelee)
-        //     {
-        //         AudioSource
-        //             .PlayClipAtPoint(Walk_4,
-        //             PlayerModel.transform.position,
-        //             AudioListener.volume);
-        //     }
-        //     else
-        //     {
-        //         if (
-        //             PlayerInfo.weaponID ==
-        //             WeaponID.AK47
-        //         )
-        //         {
-        //             AudioSource
-        //                 .PlayClipAtPoint(Walk_2,
-        //                 PlayerModel.transform.position,
-        //                 AudioListener.volume);
-        //         }
-        //         if (
-        //             PlayerInfo.weaponID ==
-        //             WeaponID.Uzi ||
-        //             PlayerInfo.weaponID ==
-        //             WeaponID.Pistol
-        //         )
-        //         {
-        //             AudioSource
-        //                 .PlayClipAtPoint(Walk_3,
-        //                 PlayerModel.transform.position,
-        //                 AudioListener.volume);
-        //         }
-        //         if (
-        //             PlayerInfo.weaponID ==
-        //             WeaponID.Sniper
-        //         )
-        //         {
-        //             AudioSource
-        //                 .PlayClipAtPoint(Walk_1,
-        //                 PlayerModel.transform.position,
-        //                 AudioListener.volume);
-        //         }
-        //     }
-        // }
         Vector3 mousePosition = Input.mousePosition;
         if(cam != null)
             mousePosition = cam.ScreenToWorldPoint(mousePosition);
 
-        Vector2 direction =
-            new Vector2(mousePosition.x - transform.position.x,
-                mousePosition.y - transform.position.y);
+        if ((mousePosition.x > transform.position.x && spriteRenderer.flipX) ||
+            (mousePosition.x < transform.position.x && !spriteRenderer.flipX))
+        {
+            // Toggle the FlipX value of the SpriteRenderer.
+            spriteRenderer.flipX = !spriteRenderer.flipX;
+        }
 
-        transform.up = direction;
+        Vector3 direction = (mousePosition - weapon.transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        weapon.transform.eulerAngles = new Vector3(0, 0, angle);
+        //weapon.transform.up = direction; 
 
         Vector3 moveDirection = new Vector3(xDirection, yDirection, 0.0f);
 
