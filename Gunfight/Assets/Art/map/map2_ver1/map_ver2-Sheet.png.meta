@@ -117,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: map_ver2-Sheet_0
+      name: floor
       rect:
         serializedVersion: 2
         x: 16
@@ -138,7 +138,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: map_ver2-Sheet_1
+      name: table
       rect:
         serializedVersion: 2
         x: 76
@@ -201,7 +201,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: map_ver2-Sheet_4
+      name: chair1
       rect:
         serializedVersion: 2
         x: 77
@@ -222,7 +222,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: map_ver2-Sheet_5
+      name: fireplace
       rect:
         serializedVersion: 2
         x: 79
@@ -243,7 +243,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: map_ver2-Sheet_6
+      name: chair2
       rect:
         serializedVersion: 2
         x: 92
@@ -285,7 +285,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: map_ver2-Sheet_8
+      name: wall
       rect:
         serializedVersion: 2
         x: 16
@@ -306,7 +306,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: map_ver2-Sheet_9
+      name: left_wall
       rect:
         serializedVersion: 2
         x: 64
@@ -327,7 +327,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: map_ver2-Sheet_10
+      name: right_wall
       rect:
         serializedVersion: 2
         x: 78
@@ -390,7 +390,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: map_ver2-Sheet_13
+      name: horizontal_door
       rect:
         serializedVersion: 2
         x: 91
@@ -411,7 +411,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: map_ver2-Sheet_14
+      name: box
       rect:
         serializedVersion: 2
         x: 17
@@ -516,7 +516,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: map_ver2-Sheet_19
+      name: large_carpet
       rect:
         serializedVersion: 2
         x: 19
@@ -537,7 +537,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: map_ver2-Sheet_20
+      name: small_carpet
       rect:
         serializedVersion: 2
         x: 63
@@ -557,6 +557,384 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: broken_box
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 134
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fc5f15e8ced99449b89983013d3701c
+      internalID: -306558179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vertical_door
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 164
+        width: 8
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fe650f93adf0bd4ca1c498e212ea005
+      internalID: 1003701081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vertical_connector
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 179
+        width: 4
+        height: 3
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08dfd9dbe1cdd0141b4d4349ff1261be
+      internalID: 1534337588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: horizontal_connector
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 173
+        width: 1
+        height: 3
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2503546b18b0d249bedc52237e24c75
+      internalID: -525596189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chimney1
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 209
+        width: 2
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5a904e83db4fea4893f3bbeceefbe98
+      internalID: 572930072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chimney2
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 224
+        width: 3
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1dcd3c174db15949b6c639531e9557f
+      internalID: 2137722395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chair3
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 246
+        width: 13
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c707db86f9f25ec41bf496e35627e9be
+      internalID: 39342763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: border
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 251
+        width: 15
+        height: 3
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9ab383812c9e704a9157f8420a5657b
+      internalID: 618671698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: light
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 240
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a67c51e0f5f7900449ce39b3976da377
+      internalID: 278595664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: void
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 224
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96614909e270fe645922529c6a913bfb
+      internalID: -951502844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: border_wall
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 224
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7242371887cf4a44a93b2a9b74e64719
+      internalID: -1975739426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: corner_wall
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 224
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1af15752ae3fb5147a6afd84b3d00f05
+      internalID: -899533897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wood_wall3
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 209
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbfd6db1a97debc4fa648c3210f4133f
+      internalID: -949306953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wood_wall2
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 209
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab73d497234a3104da03cdf4cb56ec02
+      internalID: -344086475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wood_wall
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 209
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 220ad4079ff5511448c0340f3ebbce10
+      internalID: 857174116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_wall2
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 209
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0aff5bfe989a1a743a1ef162e0028bee
+      internalID: -555186384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_wall
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 224
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 772510a58e3a64740ac011590b01a437
+      internalID: 1948815051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wood
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 283
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14f9c4f413a96154caf10607172afe8a
+      internalID: 1311393425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -568,27 +946,45 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      map_ver2-Sheet_0: -377260974
-      map_ver2-Sheet_1: -1943531412
-      map_ver2-Sheet_10: 1767819988
+      border: 618671698
+      border_wall: -1975739426
+      box: -414720789
+      broken_box: -306558179
+      chair1: 1220842267
+      chair2: 1593535923
+      chair3: 39342763
+      chimney1: 572930072
+      chimney2: 2137722395
+      corner_wall: -899533897
+      fireplace: 2093406497
+      floor: -377260974
+      green_wall: 1948815051
+      green_wall2: -555186384
+      horizontal_connector: -525596189
+      horizontal_door: -1450599533
+      large_carpet: -1523488806
+      left_wall: -898950525
+      light: 278595664
       map_ver2-Sheet_11: -421385524
       map_ver2-Sheet_12: -1906519691
-      map_ver2-Sheet_13: -1450599533
-      map_ver2-Sheet_14: -414720789
       map_ver2-Sheet_15: 574886481
       map_ver2-Sheet_16: 169640044
       map_ver2-Sheet_17: 1154415420
       map_ver2-Sheet_18: -2116889946
-      map_ver2-Sheet_19: -1523488806
       map_ver2-Sheet_2: 2037974880
-      map_ver2-Sheet_20: 1187022432
       map_ver2-Sheet_3: -182385775
-      map_ver2-Sheet_4: 1220842267
-      map_ver2-Sheet_5: 2093406497
-      map_ver2-Sheet_6: 1593535923
       map_ver2-Sheet_7: -1932825438
-      map_ver2-Sheet_8: 1940532251
-      map_ver2-Sheet_9: -898950525
+      right_wall: 1767819988
+      small_carpet: 1187022432
+      table: -1943531412
+      vertical_connector: 1534337588
+      vertical_door: 1003701081
+      void: -951502844
+      wall: 1940532251
+      wood: 1311393425
+      wood_wall: 857174116
+      wood_wall2: -344086475
+      wood_wall3: -949306953
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
