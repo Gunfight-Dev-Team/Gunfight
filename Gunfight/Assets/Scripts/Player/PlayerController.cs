@@ -250,51 +250,6 @@ public class PlayerController : NetworkBehaviour
         float xDirection = Input.GetAxis("Horizontal");
         float yDirection = Input.GetAxis("Vertical");
 
-        // if (xDirection != 0.0f || yDirection != 0.0f)
-        // {
-        //     if (PlayerInfo.isMelee)
-        //     {
-        //         AudioSource
-        //             .PlayClipAtPoint(Walk_4,
-        //             PlayerModel.transform.position,
-        //             AudioListener.volume);
-        //     }
-        //     else
-        //     {
-        //         if (
-        //             PlayerInfo.weaponID ==
-        //             WeaponID.AK47
-        //         )
-        //         {
-        //             AudioSource
-        //                 .PlayClipAtPoint(Walk_2,
-        //                 PlayerModel.transform.position,
-        //                 AudioListener.volume);
-        //         }
-        //         if (
-        //             PlayerInfo.weaponID ==
-        //             WeaponID.Uzi ||
-        //             PlayerInfo.weaponID ==
-        //             WeaponID.Pistol
-        //         )
-        //         {
-        //             AudioSource
-        //                 .PlayClipAtPoint(Walk_3,
-        //                 PlayerModel.transform.position,
-        //                 AudioListener.volume);
-        //         }
-        //         if (
-        //             PlayerInfo.weaponID ==
-        //             WeaponID.Sniper
-        //         )
-        //         {
-        //             AudioSource
-        //                 .PlayClipAtPoint(Walk_1,
-        //                 PlayerModel.transform.position,
-        //                 AudioListener.volume);
-        //         }
-        //     }
-        // }
         Vector3 mousePosition = Input.mousePosition;
         if(cam != null)
             mousePosition = cam.ScreenToWorldPoint(mousePosition);
