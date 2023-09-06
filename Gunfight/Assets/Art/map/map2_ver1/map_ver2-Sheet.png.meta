@@ -623,7 +623,7 @@ TextureImporter:
       name: left_wall2
       rect:
         serializedVersion: 2
-        x: 61
+        x: 62
         y: 179
         width: 15
         height: 15
@@ -638,12 +638,12 @@ TextureImporter:
         - {x: 7.5, y: 3.5}
         - {x: 3.5, y: 7.5}
       physicsShape:
-      - - {x: -2.5, y: 7.5}
-        - {x: -4.5, y: 5.5}
-        - {x: -4.5, y: -7.5}
-        - {x: 5.5, y: -7.5}
-        - {x: 5.5, y: 3.5}
-        - {x: 1.5, y: 7.5}
+      - - {x: -3.5, y: 7.5}
+        - {x: -5.5, y: 5.5}
+        - {x: -5.5, y: -7.5}
+        - {x: 4.5, y: -7.5}
+        - {x: 4.5, y: 3.5}
+        - {x: 0.5, y: 7.5}
       tessellationDetail: 0
       bones: []
       spriteID: fd7d1673c63f1490a9da739b086b2ad4
@@ -656,7 +656,7 @@ TextureImporter:
       name: left_wall3
       rect:
         serializedVersion: 2
-        x: 61
+        x: 62
         y: 164
         width: 15
         height: 15
@@ -669,10 +669,10 @@ TextureImporter:
         - {x: 7.5, y: -7.5}
         - {x: 7.5, y: 7.5}
       physicsShape:
-      - - {x: 5.5, y: -7.5}
-        - {x: 5.5, y: 7.5}
-        - {x: -4.5, y: 7.5}
-        - {x: -4.5, y: -7.5}
+      - - {x: 4.5, y: -7.5}
+        - {x: 4.5, y: 7.5}
+        - {x: -5.5, y: 7.5}
+        - {x: -5.5, y: -7.5}
       tessellationDetail: 0
       bones: []
       spriteID: 13ac8c8d20c754bc691528604552ae21
@@ -685,7 +685,7 @@ TextureImporter:
       name: left_wall4
       rect:
         serializedVersion: 2
-        x: 61
+        x: 62
         y: 149
         width: 15
         height: 15
@@ -700,12 +700,12 @@ TextureImporter:
         - {x: 7.5, y: -3.5}
         - {x: 7.5, y: 7.5}
       physicsShape:
-      - - {x: -4.5, y: 7.5}
-        - {x: -4.5, y: -5.5}
-        - {x: -2.5, y: -7.5}
-        - {x: 1.5, y: -7.5}
-        - {x: 5.5, y: -3.5}
-        - {x: 5.5, y: 7.5}
+      - - {x: -5.5, y: 7.5}
+        - {x: -5.5, y: -5.5}
+        - {x: -3.5, y: -7.5}
+        - {x: 0.5, y: -7.5}
+        - {x: 4.5, y: -3.5}
+        - {x: 4.5, y: 7.5}
       tessellationDetail: 0
       bones: []
       spriteID: a6b6503965c5e4b5385f3b54c44fb1a0
@@ -1086,7 +1086,7 @@ TextureImporter:
       name: left_bottom_corner
       rect:
         serializedVersion: 2
-        x: 16
+        x: 17
         y: 150
         width: 15
         height: 15
@@ -1100,11 +1100,13 @@ TextureImporter:
         - {x: 7.5, y: -7.5}
         - {x: 7.5, y: 7.5}
       physicsShape:
-      - - {x: -4.5, y: 7.5}
-        - {x: -4.5, y: -2.5}
+      - - {x: -5.5, y: 7.5}
+        - {x: -5.5, y: -2.5}
         - {x: -1.5, y: -5.5}
         - {x: 7.5, y: -5.5}
-        - {x: 7.5, y: 7.5}
+        - {x: 7.5, y: 4.5}
+        - {x: 4.5, y: 4.5}
+        - {x: 4.5, y: 7.5}
       tessellationDetail: 0
       bones: []
       spriteID: b1fbf450ed5284fed8a816e6f2140bd1
@@ -1117,7 +1119,7 @@ TextureImporter:
       name: right_bottom_corner
       rect:
         serializedVersion: 2
-        x: 31
+        x: 30
         y: 150
         width: 15
         height: 15
@@ -1130,7 +1132,14 @@ TextureImporter:
         - {x: 1.5, y: -7.5}
         - {x: 6.5, y: -2.5}
         - {x: 6.5, y: 7.5}
-      physicsShape: []
+      physicsShape:
+      - - {x: -4.5, y: 7.5}
+        - {x: -4.5, y: 4.5}
+        - {x: -7.5, y: 4.5}
+        - {x: -7.5, y: -5.5}
+        - {x: 2.5, y: -5.5}
+        - {x: 5.5, y: -2.5}
+        - {x: 5.5, y: 7.5}
       tessellationDetail: 0
       bones: []
       spriteID: 6180ece61fbd5498596ffbe2d6c8149d
@@ -1143,7 +1152,7 @@ TextureImporter:
       name: right_top_corner
       rect:
         serializedVersion: 2
-        x: 31
+        x: 30
         y: 165
         width: 15
         height: 15
@@ -1159,11 +1168,13 @@ TextureImporter:
         - {x: 0.5, y: 5.5}
       physicsShape:
       - - {x: -7.5, y: 3.5}
-        - {x: -7.5, y: -7.5}
-        - {x: 4.5, y: -7.5}
-        - {x: 4.5, y: -0.5}
-        - {x: 2.5, y: 2.5}
-        - {x: 0.5, y: 3.5}
+        - {x: -7.5, y: -6.5}
+        - {x: -4.5, y: -6.5}
+        - {x: -4.5, y: -7.5}
+        - {x: 5.5, y: -7.5}
+        - {x: 5.5, y: -0.5}
+        - {x: 3.5, y: 2.5}
+        - {x: 1.5, y: 3.5}
       tessellationDetail: 0
       bones: []
       spriteID: 2abb4045f4bc941299b7ff26f833ecf6
@@ -1176,7 +1187,7 @@ TextureImporter:
       name: left_top_corner
       rect:
         serializedVersion: 2
-        x: 16
+        x: 17
         y: 165
         width: 15
         height: 15
@@ -1190,11 +1201,13 @@ TextureImporter:
         - {x: 7.5, y: 5.5}
         - {x: -0.5, y: 5.5}
       physicsShape:
-      - - {x: -4.5, y: -0.5}
-        - {x: -4.5, y: -7.5}
-        - {x: 7.5, y: -7.5}
+      - - {x: -5.5, y: -0.5}
+        - {x: -5.5, y: -7.5}
+        - {x: 4.5, y: -7.5}
+        - {x: 4.5, y: -6.5}
+        - {x: 7.5, y: -6.5}
         - {x: 7.5, y: 3.5}
-        - {x: -0.5, y: 3.5}
+        - {x: -1.5, y: 3.5}
       tessellationDetail: 0
       bones: []
       spriteID: fa3fbd7b8445f4df791320eb8a082742
@@ -1514,6 +1527,31 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: wall5
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 181
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -7.5, y: -6.5}
+        - {x: 7.5, y: -6.5}
+        - {x: 7.5, y: 3.5}
+        - {x: -7.5, y: 3.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 906b60ef55b101048a87e395af1ff068
+      internalID: 1725068050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1579,6 +1617,7 @@ TextureImporter:
       wall2: -1443368065
       wall3: 152722601
       wall4: -487925566
+      wall5: 1725068050
       wallpaper: -1478462384
       wallpaper2: -1522533596
       wood: 1311393425
