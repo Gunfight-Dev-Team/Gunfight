@@ -1552,6 +1552,64 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: wall6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 181
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -7.5, y: 1.5}
+        - {x: -7.5, y: -1.5}
+        - {x: -4.5, y: -6.5}
+        - {x: 7.5, y: -6.5}
+        - {x: 7.5, y: 3.5}
+        - {x: -5.5, y: 3.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: beae2bf83a741ab4f8d574ed2d35650a
+      internalID: -1860726555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wall7
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 181
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -7.5, y: 3.5}
+        - {x: -7.5, y: -6.5}
+        - {x: 4.5, y: -6.5}
+        - {x: 7.5, y: -1.5}
+        - {x: 7.5, y: 1.5}
+        - {x: 5.5, y: 3.5}
+      - - {x: 5.5, y: 3.5}
+        - {x: 5.5, y: 3.5}
+        - {x: 5.5, y: 3.5}
+        - {x: 5.5, y: 3.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3ed2daf8f5ae76439bd1832b18063fd
+      internalID: 46136848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1618,6 +1676,8 @@ TextureImporter:
       wall3: 152722601
       wall4: -487925566
       wall5: 1725068050
+      wall6: -1860726555
+      wall7: 46136848
       wallpaper: -1478462384
       wallpaper2: -1522533596
       wood: 1311393425
