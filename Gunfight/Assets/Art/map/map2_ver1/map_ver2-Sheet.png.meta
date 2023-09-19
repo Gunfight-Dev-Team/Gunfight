@@ -367,7 +367,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -6.5, y: 2.5}
+        - {x: -6.5, y: -10.5}
+        - {x: 6.5, y: -10.5}
+        - {x: 6.5, y: 2.5}
       tessellationDetail: 0
       bones: []
       spriteID: a2e720f6895d149ff9e26c86d2ac331b
@@ -409,7 +413,14 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -6.5, y: 11}
+        - {x: -6.5, y: -11}
+        - {x: 6.5, y: -11}
+        - {x: 6.5, y: 1}
+        - {x: 4.5, y: 3}
+        - {x: -3.5, y: 3}
+        - {x: -3.5, y: 11}
       tessellationDetail: 0
       bones: []
       spriteID: 1d7af813d06e446f081a4a5dc220046c
@@ -989,7 +1000,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -5.5, y: -7.5}
+        - {x: -5.5, y: 7.5}
+        - {x: -7.5, y: 7.5}
+        - {x: -7.5, y: -7.5}
       tessellationDetail: 0
       bones: []
       spriteID: 510804aa1f5174f168f60e823aea31a4
@@ -1010,7 +1025,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: 4.5, y: 7.5}
+        - {x: 4.5, y: -7.5}
+        - {x: 7.5, y: -7.5}
+        - {x: 7.5, y: 7.5}
       tessellationDetail: 0
       bones: []
       spriteID: 1c32b369fa31b4e42a012112379ea7ab
@@ -1031,7 +1050,13 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -5.5, y: 9.5}
+        - {x: -6.5, y: 6.5}
+        - {x: -6.5, y: -9.5}
+        - {x: 6.5, y: -9.5}
+        - {x: 6.5, y: 6.5}
+        - {x: 5.5, y: 9.5}
       tessellationDetail: 0
       bones: []
       spriteID: 2fa38b958980e449892db4dfb0dff01a
@@ -1238,10 +1263,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: vertical_connector
+      name: vertical_connector_right
       rect:
         serializedVersion: 2
-        x: 106
+        x: 104
         y: 179
         width: 15
         height: 15
@@ -1486,12 +1511,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: vertical_door2
+      name: right_vertical_door2
       rect:
         serializedVersion: 2
-        x: 94
+        x: 91
         y: 179
-        width: 9
+        width: 11
         height: 15
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1507,12 +1532,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: vertical_door3
+      name: right_vertical_door3
       rect:
         serializedVersion: 2
-        x: 94
+        x: 91
         y: 164
-        width: 9
+        width: 11
         height: 15
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1610,6 +1635,176 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: left_vertical_door2
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 179
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2800f7c27e19db147943c1d08abab958
+      internalID: 1828719198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: left_vertical_door3
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 164
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e03aa87e590b7b42bc2b07638efd233
+      internalID: 283548744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vertical_connector_left
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 179
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a32a53b7fea70543a997d4993c0c379
+      internalID: -423715077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fireplace2
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 209
+        width: 15
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 4.5, y: 15}
+        - {x: 4.5, y: 6}
+        - {x: -2.5, y: 6}
+        - {x: -3.5, y: 5}
+        - {x: -3.5, y: 0}
+        - {x: -2.5, y: 0}
+        - {x: -2.5, y: -8}
+        - {x: -4.5, y: -8}
+        - {x: -4.5, y: -13}
+        - {x: -3.5, y: -14}
+        - {x: 7.5, y: -14}
+        - {x: 7.5, y: 15}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04c767625b061a04cac6d06351948167
+      internalID: -359910612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fireplace3
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 209
+        width: 15
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -5.5, y: 15}
+        - {x: -7.5, y: 15}
+        - {x: -7.5, y: -14}
+        - {x: 3.5, y: -14}
+        - {x: 3.5, y: -8}
+        - {x: 1.5, y: -8}
+        - {x: 1.5, y: 0}
+        - {x: 2.5, y: 0}
+        - {x: 2.5, y: 5}
+        - {x: 1.5, y: 6}
+        - {x: -5.5, y: 6}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d1635268e481c44cb6780275494b5b4
+      internalID: 1512937062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: small_carpet3
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 104
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f33f488dee9901f4580700d0c2842592
+      internalID: 1077789856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: small_carpet2
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 119
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b1e25e93b933b9479f74d1cef13e88d
+      internalID: 2089279090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1629,6 +1824,8 @@ TextureImporter:
       chair3: 39342763
       cornr_wall: 2056937360
       fireplace: 2093406497
+      fireplace2: -359910612
+      fireplace3: 1512937062
       floor: -377260974
       floor2: 1203689105
       floor3: 1889122811
@@ -1642,6 +1839,8 @@ TextureImporter:
       left_bottom_corner: -445440972
       left_chimney: -1816918901
       left_top_corner: 1265217392
+      left_vertical_door2: 1828719198
+      left_vertical_door3: 283548744
       left_wall: -898950525
       left_wall2: -71469885
       left_wall3: 1459238978
@@ -1659,17 +1858,20 @@ TextureImporter:
       right_bottom_corner: -584911661
       right_chimney: 1771859597
       right_top_corner: 1184313159
+      right_vertical_door2: 1377320237
+      right_vertical_door3: -1966130077
       right_wall: 1767819988
       right_wall2: 535706049
       right_wall3: 1510385777
       right_wall4: -202263243
       small_carpet: 1187022432
+      small_carpet2: 2089279090
+      small_carpet3: 1077789856
       table: -1943531412
       top_wall: 244357330
-      vertical_connector: 1534337588
+      vertical_connector_left: -423715077
+      vertical_connector_right: 1534337588
       vertical_door: 1003701081
-      vertical_door2: 1377320237
-      vertical_door3: -1966130077
       void: -951502844
       wall: 1940532251
       wall2: -1443368065
