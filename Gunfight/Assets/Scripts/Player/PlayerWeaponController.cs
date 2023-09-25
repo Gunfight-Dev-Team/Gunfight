@@ -14,8 +14,8 @@ public class PlayerWeaponController : NetworkBehaviour
 
     public PlayerController player;
 
-    //Sprite
-    public SpriteRenderer spriteRenderer;
+    [SerializeField]
+    public Sprite[] weaponSpriteArray;
 
     [SerializeField]
     internal List<Sprite> spriteArray;
@@ -59,9 +59,9 @@ public class PlayerWeaponController : NetworkBehaviour
 
     }
 
-    void throwObject(Rigidbody2D rigidBody, Vector2 velocity, float angularVelocity, float drag, float angularDrag)
+    void throwObject(Rigidbody2D rigidBody, float velocity, float angularVelocity, float drag, float angularDrag)
     {
-        rigidBody.velocity = velocity;
+        rigidBody.velocity = velocity * (player.shootPoint.transform.position - transform.position);
         rigidBody.angularVelocity = angularVelocity;
         rigidBody.drag = drag;
         rigidBody.angularDrag = angularDrag;
@@ -78,7 +78,7 @@ public class PlayerWeaponController : NetworkBehaviour
     {
         GameObject newGrenade = Instantiate(Grenade, transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360)));
         Rigidbody2D weaponRigidbody = newGrenade.GetComponent<Rigidbody2D>();
-        throwObject(weaponRigidbody, transform.up * 30f, -50f * 10f, 3.0f, 1f);
+        throwObject(weaponRigidbody, 30f, -50f * 10f, 3.0f, 1f);
     }
 
     [Command]
@@ -103,9 +103,9 @@ public class PlayerWeaponController : NetworkBehaviour
 
             Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
             // throws object along the ground with a velocity and spin
-            throwObject(weaponRigidbody, transform.up * 10f, -50f * 10f, 3.5f, 1f);
-            newWeapon.GetComponent<Collider2D>().isTrigger = false;
-            StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
+            throwObject(weaponRigidbody, 10f, -50f * 10f, 3.5f, 1f);
+            //newWeapon.GetComponent<Collider2D>().isTrigger = false;
+            //StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
             newWeapon.GetComponent<WeaponInfo>().setWeaponInfo(weaponInfo);
         }
         // if you want to throw your weapon and equip a knife
@@ -159,13 +159,13 @@ public class PlayerWeaponController : NetworkBehaviour
         if (weapon == (WeaponID)(-1))
         {
             int index = 5 * 4 + teamVal;
-            spriteRenderer.sprite = spriteArray[index];
+            player.weaponSpriteRenderer.sprite = weaponSpriteArray[(int)weapon];
         }
         else
         {
             // change sprite
             int index = weaponVal * 4 + teamVal;
-            spriteRenderer.sprite = spriteArray[index];
+            player.weaponSpriteRenderer.sprite = weaponSpriteArray[(int)weapon];
         }
     }
 }

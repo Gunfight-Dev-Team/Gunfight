@@ -10,6 +10,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
 
@@ -24,6 +25,7 @@ public enum Team
 public class PlayerController : NetworkBehaviour
 {
     public WeaponInfo weaponInfo;
+    public GameObject weapon;
     public int grenades;
 
     public bool hasSpawned = false;
@@ -40,6 +42,9 @@ public class PlayerController : NetworkBehaviour
     //Sprite
 
     public SpriteRenderer spriteRenderer;
+    public SpriteRenderer weaponSpriteRenderer;
+
+    public Animator playerAnimator;
 
     public AssetReference[] spriteReferences;
 
@@ -91,6 +96,20 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private GameObject ammo;
 
+    public SpriteLibrary spriteLibrary;
+    public string skinCategory;
+
+    public void SwitchSkin(string newSkinCategory)
+    {
+        skinCategory = newSkinCategory;
+        SpriteResolver[] spriteResolvers = GetComponentsInChildren<SpriteResolver>();
+        foreach (SpriteResolver spriteResolver in spriteResolvers)
+        {
+            string currentLabel = spriteResolver.GetLabel();
+            spriteResolver.SetCategoryAndLabel(skinCategory, currentLabel);
+        }
+    }
+
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
@@ -103,6 +122,7 @@ public class PlayerController : NetworkBehaviour
         GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
         audioSource = GetComponent<AudioSource>();
         //GameModeManager.instance.AddPlayer(this);
+        SwitchSkin("skin2");
     }
 
     void LoadSprite()
@@ -254,14 +274,39 @@ public class PlayerController : NetworkBehaviour
         if(cam != null)
             mousePosition = cam.ScreenToWorldPoint(mousePosition);
 
-        Vector2 direction =
-            new Vector2(mousePosition.x - transform.position.x,
-                mousePosition.y - transform.position.y);
+        if ((mousePosition.x > transform.position.x && spriteRenderer.flipX) ||
+            (mousePosition.x < transform.position.x && !spriteRenderer.flipX))
+        {
+            //Toggle sprite flip when your mouse moves across the character
+            spriteRenderer.flipX = !spriteRenderer.flipX;
+        }
 
-        transform.up = direction;
+        Vector2 direction = (mousePosition - weapon.transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        weapon.transform.eulerAngles = new Vector3(0, 0, angle);
+
+        Vector3 localScale = Vector3.one;
+        if(angle > 90 || angle < -90)
+        {
+            localScale.y = -1f;
+        }
+        else
+        {
+            localScale.y = +1f;
+        }
+        weapon.transform.localScale = localScale;
 
         Vector3 moveDirection = new Vector3(xDirection, yDirection, 0.0f);
-
+        //animate player running if they are moving
+        if(moveDirection != new Vector3(0, 0, 0))
+        {
+            playerAnimator.SetBool("isRunning", true);
+        }
+        else
+        {
+            playerAnimator.SetBool("isRunning", false);
+        }
+        //apply the movement
         rb.MovePosition(transform.position + moveDirection *
                         weaponInfo.speedOfPlayer *
                         Time.deltaTime);
@@ -302,7 +347,7 @@ public class PlayerController : NetworkBehaviour
         {
             Instantiate(bulletParticle.GetComponent<ParticleSystem>(),
             startPos,
-            transform.rotation);
+            Quaternion.FromToRotation(Vector2.up, endPos-startPos));
             weaponInfo.nAmmo--;
         }
 
@@ -314,12 +359,12 @@ public class PlayerController : NetworkBehaviour
     }
 
     [Command]
-    public void CmdShoot(Vector3 shootPoint, Vector2 mousePos)
+    public void CmdShoot(Vector2 shootPoint, Vector2 mousePos)
     {
         if (weaponInfo.nAmmo > 0)
         {
-            Vector2 direction = (mousePos - (Vector2)shootPoint).normalized;
-            RaycastHit2D hit = Physics2D.Raycast(shootPoint, transform.up, weaponInfo.range);
+            Vector2 direction = (mousePos - shootPoint).normalized;
+            RaycastHit2D hit = Physics2D.Raycast(shootPoint, direction, weaponInfo.range);
 
             var endPos = hit.point;
 
@@ -365,7 +410,7 @@ public class PlayerController : NetworkBehaviour
             {
                 endPos =
                     shootPoint +
-                    transform.up *
+                    direction *
                     weaponInfo.range;
             }
             RpcSpawnBulletTrail(shootPoint, endPos);
