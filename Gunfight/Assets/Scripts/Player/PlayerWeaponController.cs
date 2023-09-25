@@ -104,7 +104,7 @@ public class PlayerWeaponController : NetworkBehaviour
             Rigidbody2D weaponRigidbody = newWeapon.GetComponent<Rigidbody2D>();
             // throws object along the ground with a velocity and spin
             throwObject(weaponRigidbody, 10f, -50f * 10f, 3.5f, 1f);
-            //newWeapon.GetComponent<Collider2D>().isTrigger = false;
+            //newWeapon.GetComponent<Collider2D>().isTrigger = false; // NEED A BETTER SOLUTION: weapons should be able to hit walls but the player can still walk over them
             //StartCoroutine(TurnOnTrigger(newWeapon.GetComponent<Collider2D>()));
             newWeapon.GetComponent<WeaponInfo>().setWeaponInfo(weaponInfo);
         }
