@@ -261,6 +261,7 @@ public class PlayerController : NetworkBehaviour
             //spriteRenderer.flipX = !spriteRenderer.flipX;
             //weapon.transform.localScale = new Vector3(1, -weapon.transform.localScale.y, 1);
             CmdFlipPlayer();
+            Debug.Log("Flipping" + team.ToString());
         }
 
         Vector2 direction = (mousePosition - weapon.transform.position).normalized;
