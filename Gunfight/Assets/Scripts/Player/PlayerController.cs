@@ -258,23 +258,14 @@ public class PlayerController : NetworkBehaviour
             (mousePosition.x < transform.position.x && !spriteRenderer.flipX))
         {
             //Toggle sprite flip when your mouse moves across the character
-            spriteRenderer.flipX = !spriteRenderer.flipX;
+            //spriteRenderer.flipX = !spriteRenderer.flipX;
+            //weapon.transform.localScale = new Vector3(1, -weapon.transform.localScale.y, 1);
+            CmdFlipPlayer();
         }
 
         Vector2 direction = (mousePosition - weapon.transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         weapon.transform.eulerAngles = new Vector3(0, 0, angle);
-
-        Vector3 localScale = Vector3.one;
-        if(angle > 90 || angle < -90)
-        {
-            localScale.y = -1f;
-        }
-        else
-        {
-            localScale.y = +1f;
-        }
-        weapon.transform.localScale = localScale;
 
         Vector3 moveDirection = new Vector3(xDirection, yDirection, 0.0f);
         //animate player running if they are moving
@@ -291,6 +282,19 @@ public class PlayerController : NetworkBehaviour
                         weaponInfo.speedOfPlayer *
                         Time.deltaTime);
         Physics2D.SyncTransforms();
+    }
+
+    [Command]
+    void CmdFlipPlayer()
+    {
+        RpcFlipPlayer();
+    }
+
+    [ClientRpc]
+    void RpcFlipPlayer()
+    {
+        spriteRenderer.flipX = !spriteRenderer.flipX;
+        weapon.transform.localScale = new Vector3(1, -weapon.transform.localScale.y, 1);
     }
 
     [ClientRpc]
