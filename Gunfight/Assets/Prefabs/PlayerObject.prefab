@@ -107,7 +107,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 1471095437, guid: bbfdc818964322d4ab83e2f908512013, type: 3}
+  m_Sprite: {fileID: 2127631229, guid: 1367dc62587ce214491a2e3c96ec487e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 0c1efcd6404dc3a449591677b82bb75a, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 18d19f3609efba2478c76642fcf1c36e, type: 3}
 --- !u!114 &8668164169632825145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,32 +291,11 @@ MonoBehaviour:
   spriteRenderer: {fileID: 5891011091002882805}
   weaponSpriteRenderer: {fileID: 2758576559856900219}
   playerAnimator: {fileID: 1096459085743473670}
-  spriteReferences:
-  - m_AssetGUID: 4bbe6c2970dda4ebaa84b43638bdfabf
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: d22a9804159504ac18c004d76e425e42
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: 341650319fed14e399a261df191e77d8
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: 97ed5b8f7f7694df390eae63fe2aa800
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: 88246d8b03dfa42eea1835f10405572b
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: ed03495e8075d45d4a902910418a42f0
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  spriteArray: []
+  spriteLibraryArray:
+  - {fileID: 7108339969198208228, guid: 0c1efcd6404dc3a449591677b82bb75a, type: 3}
+  - {fileID: 7108339969198208228, guid: 18d19f3609efba2478c76642fcf1c36e, type: 3}
+  - {fileID: 7108339969198208228, guid: 4eda1fbdcef4bc14cb8d2943a1a93aac, type: 3}
+  - {fileID: 7108339969198208228, guid: 5d3952770ceac7143ae34bfa29242c99, type: 3}
   shootPoint: {fileID: 2953357421772792125}
   cooldownTimer: 0
   isFiring: 0

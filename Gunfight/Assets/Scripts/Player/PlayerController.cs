@@ -46,9 +46,7 @@ public class PlayerController : NetworkBehaviour
 
     public Animator playerAnimator;
 
-    public AssetReference[] spriteReferences;
-
-    public List<Sprite> spriteArray;
+    public SpriteLibraryAsset[] spriteLibraryArray;
 
     //Shooting
     public Transform shootPoint;
@@ -99,15 +97,9 @@ public class PlayerController : NetworkBehaviour
     public SpriteLibrary spriteLibrary;
     public string skinCategory;
 
-    public void SwitchSkin(string newSkinCategory)
+    public void SwitchSkin(Team team)
     {
-        skinCategory = newSkinCategory;
-        SpriteResolver[] spriteResolvers = GetComponentsInChildren<SpriteResolver>();
-        foreach (SpriteResolver spriteResolver in spriteResolvers)
-        {
-            string currentLabel = spriteResolver.GetLabel();
-            spriteResolver.SetCategoryAndLabel(skinCategory, currentLabel);
-        }
+        spriteLibrary.spriteLibraryAsset = spriteLibraryArray[(int)team];
     }
 
     public override void OnStartLocalPlayer()
@@ -118,30 +110,8 @@ public class PlayerController : NetworkBehaviour
     private void Start()
     {
         poc = GetComponent<PlayerObjectController>();
-        LoadSprite();
-        GetComponent<PlayerWeaponController>().spriteArray = spriteArray;
         audioSource = GetComponent<AudioSource>();
-        //GameModeManager.instance.AddPlayer(this);
-        SwitchSkin("skin2");
-    }
-
-    void LoadSprite()
-    {
-        AsyncOperationHandle<Sprite[]> spriteHandle;
-        for (int i = 0; i < spriteReferences.Length; i++)
-        {
-            spriteHandle = Addressables.LoadAssetAsync<Sprite[]>(spriteReferences[i]);
-            spriteHandle.WaitForCompletion();
-            spriteHandle.Completed += LoadSpritesWhenReady;
-        }
-    }
-
-    void LoadSpritesWhenReady(AsyncOperationHandle<Sprite[]> handleToCheck)
-    {
-        if (handleToCheck.Status == AsyncOperationStatus.Succeeded)
-        {
-            spriteArray.AddRange(handleToCheck.Result);
-        }
+        //GameModeManager.instance.AddPlayer(this); // used for resetting game
     }
 
     private void FixedUpdate()
@@ -155,7 +125,7 @@ public class PlayerController : NetworkBehaviour
                 weaponInfo.setDefault();
                 SetPosition();
                 SetTeam();
-                SetSprite();
+                SwitchSkin(team);
                 health = 10f;
                 hasSpawned = true;
             }
@@ -173,6 +143,26 @@ public class PlayerController : NetworkBehaviour
         {
             if (isLocalPlayer)
             {
+
+                // temp test code
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    SwitchSkin(Team.Green);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    SwitchSkin(Team.Orange);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    SwitchSkin(Team.Red);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha4))
+                {
+                    SwitchSkin(Team.White);
+                }
+                // end of test
+
                 // Check if you are firing your weapon and if the cooldown is 0
                 if (Input.GetButtonDown("Fire1") && cooldownTimer <= 0f)
                 {
@@ -253,16 +243,6 @@ public class PlayerController : NetworkBehaviour
         else if (poc.PlayerIdNumber == 4) team = Team.White;
         //Refactor: get rid of extra team variable and only use PlayerController Team
         GetComponent<PlayerWeaponController>().team = team;
-    }
-
-    public void SetSprite()
-    {
-        // gets int value of Team enum
-        int teamVal = (int) team;
-
-        // change sprite
-        int index = 4 + teamVal;
-        spriteRenderer.sprite = spriteArray[index];
     }
 
     public void Movement()
@@ -499,7 +479,7 @@ public class PlayerController : NetworkBehaviour
         int teamVal = (int) team;
 
         int index = 5 *4 + teamVal;
-        spriteRenderer.sprite = spriteArray[index];
+        //spriteRenderer.sprite = spriteArray[index]; old way of sprites
 
         weaponInfo.nAmmo = 0;
         weaponInfo.range = 0;
@@ -519,7 +499,6 @@ public class PlayerController : NetworkBehaviour
     public void RpcRespawn()
     {
         SetPosition();
-        SetSprite();
         health = 10f;
         weaponInfo.setDefault();
         spriteRenderer.color = Color.white; // prevents sprite from having the red damage on it forever

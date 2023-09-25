@@ -16,31 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 813922b7244bf4b00950b0d391f16af8
-  m_SerializeEntries:
-  - m_GUID: 4bbe6c2970dda4ebaa84b43638bdfabf
-    m_Address: Assets/Art/Player/Player_AK47.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: d22a9804159504ac18c004d76e425e42
-    m_Address: Assets/Art/Player/Player_Knife.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 341650319fed14e399a261df191e77d8
-    m_Address: Assets/Art/Player/Player_Pistol.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 97ed5b8f7f7694df390eae63fe2aa800
-    m_Address: Assets/Art/Player/Player_Sniper.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 88246d8b03dfa42eea1835f10405572b
-    m_Address: Assets/Art/Player/Player_Uzi.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: ed03495e8075d45d4a902910418a42f0
-    m_Address: Assets/Art/Player/Player_Death.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b17999920d26b4954b7732664849b50f, type: 2}
   m_SchemaSet:
