@@ -118,6 +118,17 @@ public class PlayerController : NetworkBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
+            if (isLocalPlayer)
+            {
+                Movement();
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
             if (!hasSpawned)
             {
                 // Spawns player with knife, sets position, team, and sprite
@@ -130,17 +141,6 @@ public class PlayerController : NetworkBehaviour
                 hasSpawned = true;
             }
 
-            if (isLocalPlayer)
-            {
-                Movement();
-            }
-        }
-    }
-
-    private void Update()
-    {
-        if (SceneManager.GetActiveScene().name == "Game")
-        {
             if (isLocalPlayer)
             {
 

@@ -294,10 +294,10 @@ MonoBehaviour:
   weaponSpriteRenderer: {fileID: 2758576559856900219}
   playerAnimator: {fileID: 1096459085743473670}
   spriteLibraryArray:
-  - {fileID: 7108339969198208228, guid: 0c1efcd6404dc3a449591677b82bb75a, type: 3}
-  - {fileID: 7108339969198208228, guid: 18d19f3609efba2478c76642fcf1c36e, type: 3}
   - {fileID: 7108339969198208228, guid: 4eda1fbdcef4bc14cb8d2943a1a93aac, type: 3}
   - {fileID: 7108339969198208228, guid: 5d3952770ceac7143ae34bfa29242c99, type: 3}
+  - {fileID: 7108339969198208228, guid: 0c1efcd6404dc3a449591677b82bb75a, type: 3}
+  - {fileID: 7108339969198208228, guid: 18d19f3609efba2478c76642fcf1c36e, type: 3}
   shootPoint: {fileID: 2953357421772792125}
   cooldownTimer: 0
   isFiring: 0
