@@ -294,8 +294,11 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     void RpcFlipPlayer()
     {
-        spriteRenderer.flipX = !spriteRenderer.flipX;
-        weapon.transform.localScale = new Vector3(1, -weapon.transform.localScale.y, 1);
+        if (!isLocalPlayer)
+        {
+            spriteRenderer.flipX = !spriteRenderer.flipX;
+            weapon.transform.localScale = new Vector3(1, -weapon.transform.localScale.y, 1);
+        }
     }
 
     [ClientRpc]
