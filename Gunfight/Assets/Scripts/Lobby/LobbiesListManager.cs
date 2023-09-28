@@ -14,7 +14,7 @@ public class LobbiesListManager : MonoBehaviour
 
     public GameObject title;
 
-    public GameObject lobbiesButton, hostButton;
+    public GameObject lobbiesButton, hostButton, quickstartButton;
 
     public List<GameObject> listOfLobbies = new List<GameObject> ();
 
@@ -41,6 +41,11 @@ public class LobbiesListManager : MonoBehaviour
         lobbiesMenu.SetActive(false);
 
         DestroyLobbies();
+    }
+
+    public void BackPage()
+    {
+        SceneManager.LoadScene("Start");
     }
 
     public void DisplayLobbies(List<CSteamID> lobbyIDs, LobbyDataUpdate_t result)
