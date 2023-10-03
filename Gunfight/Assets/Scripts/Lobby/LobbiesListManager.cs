@@ -89,9 +89,9 @@ public class LobbiesListManager : MonoBehaviour
         foreach (GameObject lobby in listOfLobbies)
         {
             searchedLobbies++;
-            if (lobby.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text.Length >= searchLength)
+            if (lobby.GetComponent<LobbyDataEntry>().lobbyName.Length >= searchLength)
             {
-                if (searchText.ToLower() == lobby.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text.Substring(0, searchLength).ToLower())
+                if (searchText.ToLower() == lobby.GetComponent<LobbyDataEntry>().lobbyName.Substring(0, searchLength).ToLower())
                 {
                     lobby.SetActive(true);
                 }

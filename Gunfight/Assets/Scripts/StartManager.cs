@@ -17,7 +17,7 @@ public class StartManager : MonoBehaviour
             BackButton,
             Title;
 
-    public GameObject ControlsImage;
+    public GameObject ControlsPage;
 
     public GameObject SettingPage;
 
@@ -47,12 +47,8 @@ public class StartManager : MonoBehaviour
 
     public void toControl()
     {
-        Title.SetActive(false);
-        StartButton.SetActive(false);
-        ControlsButton.SetActive(false);
-        SettingsButton.SetActive(false);
-        QuitButton.SetActive(false);
-        ControlsImage.SetActive(true);
+        SettingPage.SetActive(false);
+        ControlsPage.SetActive(true);
         BackButton.SetActive(true);
         inControl = true;
     }
@@ -61,7 +57,6 @@ public class StartManager : MonoBehaviour
     {
         Title.SetActive(false);
         StartButton.SetActive(false);
-        ControlsButton.SetActive(false);
         SettingsButton.SetActive(false);
         QuitButton.SetActive(false);
         SettingPage.SetActive(true);
@@ -80,15 +75,21 @@ public class StartManager : MonoBehaviour
         GraphicPage.SetActive(true);
     }
 
+    public void toDiscord()
+    {
+        Application.OpenURL("https://discord.gg/pweP89xGts");
+    }
+
     public void Back()
     {
-        if (SoundPage.activeSelf || GraphicPage.activeSelf)
+        if (SoundPage.activeSelf || GraphicPage.activeSelf || ControlsPage.activeSelf)
         {
             toSetting();
             SoundPage.SetActive(false);
             GraphicPage.SetActive(false);
+            ControlsPage.SetActive(false);
         }
-        else if (SettingPage.activeSelf || ControlsImage.activeSelf)
+        else if (SettingPage.activeSelf)
         {
             init();
             SettingPage.SetActive(false);
@@ -105,7 +106,7 @@ public class StartManager : MonoBehaviour
         SettingsButton.SetActive(true);
         QuitButton.SetActive(true);
         SettingPage.SetActive(false);
-        ControlsImage.SetActive(false);
+        ControlsPage.SetActive(false);
         BackButton.SetActive(false);
         inControl = false;
     }
