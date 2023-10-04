@@ -116,7 +116,7 @@ public class PlayerController : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (SceneManager.GetActiveScene().name == "Game")
+        if (SceneManager.GetActiveScene().name != "Lobby")
         {
             if (isLocalPlayer)
             {
@@ -127,7 +127,7 @@ public class PlayerController : NetworkBehaviour
 
     private void Update()
     {
-        if (SceneManager.GetActiveScene().name == "Game")
+        if (SceneManager.GetActiveScene().name != "Lobby")
         {
             if (!hasSpawned)
             {

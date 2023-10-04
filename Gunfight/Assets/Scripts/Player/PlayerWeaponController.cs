@@ -36,7 +36,7 @@ public class PlayerWeaponController : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
-        if (SceneManager.GetActiveScene().name == "Game")
+        if (SceneManager.GetActiveScene().name != "Lobby")
         {
             if (playerColliders.canPickup && Input.GetKeyDown(KeyCode.Mouse1))
             {
