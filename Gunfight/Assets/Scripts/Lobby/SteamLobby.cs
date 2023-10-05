@@ -33,7 +33,7 @@ public class SteamLobby : MonoBehaviour
 
     public bool isJoining = false;
 
-    public int lobbyMemberLimit = 1000;
+    public int lobbyMemberLimit = 4;
 
     private void Start()
     {
