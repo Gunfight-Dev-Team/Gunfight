@@ -143,26 +143,6 @@ public class PlayerController : NetworkBehaviour
 
             if (isLocalPlayer)
             {
-
-                // temp test code
-                if (Input.GetKeyDown(KeyCode.Alpha1))
-                {
-                    SwitchSkin(Team.Green);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
-                {
-                    SwitchSkin(Team.Orange);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha3))
-                {
-                    SwitchSkin(Team.Red);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha4))
-                {
-                    SwitchSkin(Team.White);
-                }
-                // end of test
-
                 // Check if you are firing your weapon and if the cooldown is 0
                 if (Input.GetButtonDown("Fire1") && cooldownTimer <= 0f)
                 {

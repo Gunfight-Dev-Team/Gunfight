@@ -20,12 +20,13 @@ public class CharacterChanger : MonoBehaviour
         currentColorImage.color = playerColors[currentColorIndex];
         currentColorText.text = playerColors[currentColorIndex].ToString();
         LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerColor(currentColorIndex);
-        GameObject player = GameObject.Find("LocalGamePlayer");
+        player = GameObject.Find("LocalGamePlayer");
+        player = player.transform.Find("Sprite").gameObject;
     }
 
     private void Update()
     {
-        //displaySprite.sprite = player.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite;
+        displaySprite.sprite = player.GetComponent<SpriteRenderer>().sprite;
     }
 
     public void NextColor()
