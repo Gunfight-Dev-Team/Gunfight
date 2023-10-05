@@ -23,7 +23,6 @@ public class CharacterChanger : MonoBehaviour
         currentColorText.text = colorNames[currentColorIndex];
         LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerColor(currentColorIndex);
         player = GameObject.Find("LocalGamePlayer").GetComponent<PlayerController>();
-        player.SwitchSkin(currentColorIndex);
         playerSprite = player.transform.Find("Sprite").gameObject;
     }
 

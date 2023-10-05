@@ -127,7 +127,6 @@ public class PlayerController : NetworkBehaviour
                 weaponInfo.setDefault();
                 SetPosition();
                 SetTeam();
-                SwitchSkin(team);
                 health = 10f;
                 hasSpawned = true;
             }
