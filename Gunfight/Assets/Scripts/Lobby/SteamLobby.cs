@@ -127,6 +127,7 @@ public class SteamLobby : MonoBehaviour
 
     void OnGetLobbyData(LobbyDataUpdate_t result)
     {
+        Debug.Log("BOOL: " + isJoining);
         if (SceneManager.GetActiveScene().name != "Lobby" || isJoining == false)
         {
             LobbiesListManager.instance.DisplayLobbies(lobbyIDs, result);
