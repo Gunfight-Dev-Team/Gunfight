@@ -30,6 +30,7 @@ public class SteamLobby : MonoBehaviour
     private float timer = 5f;
     private float interval = 5f;
     public TextMeshProUGUI playerCountText;
+
     private void Start()
     {
         if (!SteamManager.Initialized) { return; }
@@ -65,7 +66,7 @@ public class SteamLobby : MonoBehaviour
 
     public void HostLobby()
     {
-        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, manager.maxConnections);
+        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, manager.maxConnections);
     }
 
     private void OnLobbyCreated(LobbyCreated_t callback)

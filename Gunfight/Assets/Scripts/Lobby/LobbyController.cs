@@ -22,7 +22,10 @@ public class LobbyController : MonoBehaviour
     public PlayerObjectController LocalPlayerController;
 
     public Button StartGameButton;
+    public GameObject publicToggle;
     public Text ReadyButtonText;
+
+    public bool isPublic = false;
 
     private CustomNetworkManager manager;
 
@@ -44,6 +47,14 @@ public class LobbyController : MonoBehaviour
     private void Awake()
     {
         if(Instance == null) { Instance = this; }
+    }
+
+    private void Start()
+    {
+        if (LocalPlayerController.PlayerIdNumber == 1)
+        {
+            publicToggle.SetActive(true);
+        }
     }
 
     public void ReadyPlayer()
@@ -209,5 +220,18 @@ public class LobbyController : MonoBehaviour
     public void StartGame()
     {
         LocalPlayerController.CanStartGame(MapName);
+    }
+
+    public void TogglePublic()
+    {
+        if (!isPublic)
+        {
+            SteamMatchmaking.SetLobbyType(new CSteamID(CurrentLobbyID), ELobbyType.k_ELobbyTypePublic);
+        }
+        else
+        {
+            SteamMatchmaking.SetLobbyType(new CSteamID(CurrentLobbyID), ELobbyType.k_ELobbyTypeFriendsOnly);
+        }
+        isPublic = !isPublic;
     }
 }
