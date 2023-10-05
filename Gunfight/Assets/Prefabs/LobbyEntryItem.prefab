@@ -348,6 +348,8 @@ MonoBehaviour:
     m_SteamID: 0
   lobbyName: 
   lobbyNameText: {fileID: 4168074866960611375}
+  lobbyPlayerCountText: {fileID: 4310082842167261865}
+  lobbyPlayerCount: 0
 --- !u!1 &3536483512238668668
 GameObject:
   m_ObjectHideFlags: 0
