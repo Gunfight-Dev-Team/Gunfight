@@ -86,7 +86,6 @@ public class SteamLobby : MonoBehaviour
     private void OnJoinRequest(GameLobbyJoinRequested_t callback)
     {
         Debug.Log("Request to Join Lobby");
-        isJoining = true;
         SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
     }
 
@@ -103,6 +102,7 @@ public class SteamLobby : MonoBehaviour
 
     public void JoinLobby(CSteamID lobbyID)
     {
+        isJoining = true;
         SteamMatchmaking.JoinLobby(lobbyID);
     }
 
