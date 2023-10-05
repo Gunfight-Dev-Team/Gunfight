@@ -125,7 +125,10 @@ public class SteamLobby : MonoBehaviour
 
     void OnGetLobbyData(LobbyDataUpdate_t result)
     {
-        LobbiesListManager.instance.DisplayLobbies(lobbyIDs, result);
+        if (SceneManager.GetActiveScene().name != "Lobby")
+        {
+            LobbiesListManager.instance.DisplayLobbies(lobbyIDs, result);
+        }
     }
 
     private void OnNumberOfCurrentPlayers(NumberOfCurrentPlayers_t pCallback, bool bIOFailure)
