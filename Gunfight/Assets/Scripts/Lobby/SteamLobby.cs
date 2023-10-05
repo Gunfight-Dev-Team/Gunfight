@@ -31,8 +31,6 @@ public class SteamLobby : MonoBehaviour
     private float interval = 5f;
     public TextMeshProUGUI playerCountText;
 
-    private bool isJoining = false;
-
     private void Start()
     {
         if (!SteamManager.Initialized) { return; }
@@ -102,7 +100,6 @@ public class SteamLobby : MonoBehaviour
 
     public void JoinLobby(CSteamID lobbyID)
     {
-        isJoining = true;
         SteamMatchmaking.JoinLobby(lobbyID);
     }
 
@@ -123,12 +120,13 @@ public class SteamLobby : MonoBehaviour
             CSteamID lobbyID = SteamMatchmaking.GetLobbyByIndex(i);
             lobbyIDs.Add(lobbyID);
             SteamMatchmaking.RequestLobbyData(lobbyID);
+            Debug.Log("LOB ID: " + lobbyID);
         }
     }
 
     void OnGetLobbyData(LobbyDataUpdate_t result)
     {
-        if (SceneManager.GetActiveScene().name != "Lobby" || isJoining == false)
+        if (SceneManager.GetActiveScene().name != "Lobby" )
         {
             LobbiesListManager.instance.DisplayLobbies(lobbyIDs, result);
         }
