@@ -68,6 +68,9 @@ public class LobbiesListManager : MonoBehaviour
                 createdItem.GetComponent<LobbyDataEntry>().lobbyName =
                     SteamMatchmaking.GetLobbyData((CSteamID)lobbyIDs[i].m_SteamID, "name");
 
+                createdItem.GetComponent<LobbyDataEntry>().lobbyPlayerCount = 
+                    SteamMatchmaking.GetNumLobbyMembers((CSteamID)lobbyIDs[i].m_SteamID);
+
                 createdItem.GetComponent<LobbyDataEntry>().SetLobbyData();
 
                 createdItem.transform.SetParent(lobbyListContent.transform);
@@ -110,5 +113,11 @@ public class LobbiesListManager : MonoBehaviour
             Destroy(l);
         }
         listOfLobbies.Clear();
+    }
+
+    public void RefreshLobbies()
+    {
+        DestroyLobbies();
+        SteamLobby.Instance.GetLobbiesList();
     }
 }

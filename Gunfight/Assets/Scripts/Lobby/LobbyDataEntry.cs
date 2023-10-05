@@ -9,10 +9,12 @@ public class LobbyDataEntry : MonoBehaviour
     public CSteamID lobbyID;
     public string lobbyName;
     public Text lobbyNameText;
+    private Text lobbyPlayerCountText;
+    public int lobbyPlayerCount;
 
     public void SetLobbyData()
     {
-        if(lobbyName == "")
+        if (lobbyName == "")
         {
             lobbyNameText.text = "Empty";
         }
@@ -20,6 +22,8 @@ public class LobbyDataEntry : MonoBehaviour
         {
             lobbyNameText.text = lobbyName;
         }
+
+        lobbyPlayerCountText.text = lobbyPlayerCount.ToString() + "/4";
     }
 
     public void JoinLobby()
