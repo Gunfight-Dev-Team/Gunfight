@@ -13,15 +13,6 @@ using UnityEngine.Tilemaps;
 using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
-
-public enum Team
-{
-    Green,
-    Orange,
-    Red,
-    White
-}
-
 public class PlayerController : NetworkBehaviour
 {
     public WeaponInfo weaponInfo;
@@ -37,7 +28,7 @@ public class PlayerController : NetworkBehaviour
     public PlayerObjectController poc;
 
     [SerializeField] 
-    public Team team;
+    public int team;
 
     //Sprite
 
@@ -97,9 +88,9 @@ public class PlayerController : NetworkBehaviour
     public SpriteLibrary spriteLibrary;
     public string skinCategory;
 
-    public void SwitchSkin(Team team)
+    public void SwitchSkin(int team)
     {
-        spriteLibrary.spriteLibraryAsset = spriteLibraryArray[(int)team];
+        spriteLibrary.spriteLibraryAsset = spriteLibraryArray[GetComponent<PlayerObjectController>().PlayerColor];
     }
 
     public override void OnStartLocalPlayer()
@@ -213,17 +204,8 @@ public class PlayerController : NetworkBehaviour
 
     public void SetTeam()
     {
-        //sets your team at the start of the game
-        if (poc.PlayerIdNumber == 1)
-            team = Team.Green;
-        else if (poc.PlayerIdNumber == 2)
-            team = Team.Red;
-        else if (poc.PlayerIdNumber == 3)
-            team = Team.Orange;
-        else if (poc.PlayerIdNumber == 4) team = Team.White;
-        team = (Team)GetComponent<PlayerObjectController>().PlayerColor;
-        Debug.Log("TESTING: " + GetComponent<PlayerObjectController>().PlayerColor);
-        //Refactor: get rid of extra team variable and only use PlayerController Team
+        team = poc.PlayerIdNumber-1;
+        team = GetComponent<PlayerObjectController>().PlayerColor;
         GetComponent<PlayerWeaponController>().team = team;
     }
 

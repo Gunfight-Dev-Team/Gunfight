@@ -10,7 +10,7 @@ using UnityEngine.AddressableAssets;
 public class PlayerWeaponController : NetworkBehaviour
 {
     [SerializeField]
-    internal Team team;
+    internal int team;
 
     public PlayerController player;
 

@@ -306,6 +306,11 @@ MonoBehaviour:
   - {r: 1, g: 0.5197941, b: 0, a: 1}
   - {r: 1, g: 0.1197183, b: 0, a: 1}
   - {r: 0, g: 0.11565781, b: 1, a: 1}
+  colorNames:
+  - Goblin Green
+  - Pumpkin
+  - Blood Red
+  - Ocean Blue
   currentColorImage: {fileID: 552265952}
   displaySprite: {fileID: 1322713976}
   currentColorText: {fileID: 1226221415}
