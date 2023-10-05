@@ -205,7 +205,6 @@ public class PlayerController : NetworkBehaviour
     public void SetTeam()
     {
         team = poc.PlayerIdNumber-1;
-        team = GetComponent<PlayerObjectController>().PlayerColor;
         GetComponent<PlayerWeaponController>().team = team;
     }
 
