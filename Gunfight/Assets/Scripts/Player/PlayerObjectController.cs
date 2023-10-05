@@ -135,5 +135,8 @@ public class PlayerObjectController : NetworkBehaviour
 
     //separte function because buggy if not
     void UpdateColor(int message)
-    { PlayerColor = message; }
+    { 
+        PlayerColor = message;
+        GetComponent<PlayerController>().SwitchSkin(PlayerColor);
+    }
 }

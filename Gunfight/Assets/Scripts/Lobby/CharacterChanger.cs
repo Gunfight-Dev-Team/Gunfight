@@ -41,7 +41,6 @@ public class CharacterChanger : MonoBehaviour
             currentColorImage.color = playerColors[currentColorIndex];
             currentColorText.text = colorNames[currentColorIndex];
             LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerColor(currentColorIndex);
-            player.SwitchSkin(currentColorIndex);
         }
     }
 
@@ -54,7 +53,6 @@ public class CharacterChanger : MonoBehaviour
             currentColorImage.color = playerColors[currentColorIndex];
             currentColorText.text = colorNames[currentColorIndex];
             LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerColor(currentColorIndex);
-            player.SwitchSkin(currentColorIndex);
         }
     }
 }

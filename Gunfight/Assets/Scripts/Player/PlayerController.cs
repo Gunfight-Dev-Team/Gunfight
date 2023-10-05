@@ -88,9 +88,9 @@ public class PlayerController : NetworkBehaviour
     public SpriteLibrary spriteLibrary;
     public string skinCategory;
 
-    public void SwitchSkin(int team)
+    public void SwitchSkin(int index)
     {
-        spriteLibrary.spriteLibraryAsset = spriteLibraryArray[GetComponent<PlayerObjectController>().PlayerColor];
+        spriteLibrary.spriteLibraryAsset = spriteLibraryArray[index];
     }
 
     public override void OnStartLocalPlayer()
