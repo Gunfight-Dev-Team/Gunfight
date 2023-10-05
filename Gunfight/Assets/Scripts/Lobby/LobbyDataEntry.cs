@@ -23,7 +23,7 @@ public class LobbyDataEntry : MonoBehaviour
             lobbyNameText.text = lobbyName;
         }
 
-        lobbyPlayerCountText.text = lobbyPlayerCount.ToString() + "/4";
+        lobbyPlayerCountText.text = lobbyPlayerCount.ToString() + "/" + SteamLobby.Instance.lobbyMemberLimit;
     }
 
     public void JoinLobby()

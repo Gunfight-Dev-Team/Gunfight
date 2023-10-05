@@ -33,6 +33,8 @@ public class SteamLobby : MonoBehaviour
 
     public bool isJoining = false;
 
+    public int lobbyMemberLimit = 4;
+
     private void Start()
     {
         if (!SteamManager.Initialized) { return; }
@@ -70,7 +72,6 @@ public class SteamLobby : MonoBehaviour
     {
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, manager.maxConnections);
     }
-
     private void OnLobbyCreated(LobbyCreated_t callback)
     {
         if (callback.m_eResult != EResult.k_EResultOK) { return; }
@@ -81,6 +82,7 @@ public class SteamLobby : MonoBehaviour
 
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAddressKey, SteamUser.GetSteamID().ToString());
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "name", SteamFriends.GetPersonaName().ToString() + "'s Lobby");
+        SteamMatchmaking.SetLobbyMemberLimit(new CSteamID(callback.m_ulSteamIDLobby), lobbyMemberLimit);
     }
 
     private void OnJoinRequest(GameLobbyJoinRequested_t callback)
