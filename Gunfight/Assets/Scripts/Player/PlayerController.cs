@@ -241,6 +241,8 @@ public class PlayerController : NetworkBehaviour
         else if (poc.PlayerIdNumber == 3)
             team = Team.Orange;
         else if (poc.PlayerIdNumber == 4) team = Team.White;
+        team = (Team)GetComponent<PlayerObjectController>().PlayerColor;
+        Debug.Log("TESTING: " + GetComponent<PlayerObjectController>().PlayerColor);
         //Refactor: get rid of extra team variable and only use PlayerController Team
         GetComponent<PlayerWeaponController>().team = team;
     }

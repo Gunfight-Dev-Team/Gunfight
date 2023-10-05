@@ -13,6 +13,9 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar(hook = nameof(PlayerNameUpdate))] public string PlayerName;
     [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool Ready;
 
+    //Cosmestics / Team
+    [SyncVar(hook = nameof(SendPlayerColor))] public int PlayerColor;
+
     private CustomNetworkManager manager;
 
     private CustomNetworkManager Manager
@@ -111,4 +114,26 @@ public class PlayerObjectController : NetworkBehaviour
     {
         manager.StartGame(SceneName);
     }
+
+    [Command]
+    public void CmdUpdatePlayerColor(int newValue)
+    {
+        SendPlayerColor(PlayerColor, newValue);
+    }
+
+    public void SendPlayerColor(int oldValue, int newValue)
+    {
+        if(isServer)
+        {
+            PlayerColor = newValue;
+        }
+        if (isClient && (oldValue != newValue))
+        {
+            UpdateColor(newValue);
+        }
+    }
+
+    //separte function because buggy if not
+    void UpdateColor(int message)
+    { PlayerColor = message; }
 }
