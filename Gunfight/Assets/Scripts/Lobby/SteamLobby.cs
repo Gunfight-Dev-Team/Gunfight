@@ -68,6 +68,18 @@ public class SteamLobby : MonoBehaviour
         }
     }
 
+    public void QuickStart()
+    {
+        if(lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
+
+        SteamMatchmaking.AddRequestLobbyListFilterSlotsAvailable(1);
+        SteamMatchmaking.AddRequestLobbyListResultCountFilter(60);
+        SteamMatchmaking.RequestLobbyList();
+
+        CSteamID lobbyID = SteamMatchmaking.GetLobbyByIndex(0);
+        SteamMatchmaking.JoinLobby(lobbyID);
+    }
+
     public void HostLobby()
     {
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, manager.maxConnections);
