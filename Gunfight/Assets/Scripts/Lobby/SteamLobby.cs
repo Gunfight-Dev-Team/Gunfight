@@ -77,6 +77,9 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.RequestLobbyList();
 
         CSteamID lobbyID = SteamMatchmaking.GetLobbyByIndex(0);
+        manager.networkAddress = SteamMatchmaking.GetLobbyData(lobbyID, HostAddressKey);
+
+        manager.StartClient();
         SteamMatchmaking.JoinLobby(lobbyID);
     }
 
