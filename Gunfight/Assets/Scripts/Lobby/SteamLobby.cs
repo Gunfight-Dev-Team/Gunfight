@@ -73,8 +73,15 @@ public class SteamLobby : MonoBehaviour
         //if(lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
 
         //SteamMatchmaking.AddRequestLobbyListFilterSlotsAvailable(1);
-        SteamMatchmaking.AddRequestLobbyListResultCountFilter(60);
-        SteamMatchmaking.RequestLobbyList();
+        // SteamMatchmaking.AddRequestLobbyListResultCountFilter(60);
+        // SteamMatchmaking.RequestLobbyList();
+        GetLobbiesList();
+
+        if(lobbyIDs.Count == 0) { GetLobbiesList(); }
+
+        Debug.Log(lobbyIDs.Count);
+
+        //LobbiesListManager.instance.DisplayLobbies(lobbyIDs, );
 
         CSteamID lobbyID = SteamMatchmaking.GetLobbyByIndex(0);
         Debug.Log(lobbyID);
