@@ -70,16 +70,21 @@ public class SteamLobby : MonoBehaviour
 
     public void QuickStart()
     {
-        if(lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
+        //if(lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
 
-        SteamMatchmaking.AddRequestLobbyListFilterSlotsAvailable(1);
+        //SteamMatchmaking.AddRequestLobbyListFilterSlotsAvailable(1);
         SteamMatchmaking.AddRequestLobbyListResultCountFilter(60);
         SteamMatchmaking.RequestLobbyList();
 
         CSteamID lobbyID = SteamMatchmaking.GetLobbyByIndex(0);
+        Debug.Log(lobbyID);
         manager.networkAddress = SteamMatchmaking.GetLobbyData(lobbyID, HostAddressKey);
 
+        Debug.Log("network address: " + manager.networkAddress);
+
         manager.StartClient();
+        isJoining = true;
+        //JoinLobby(lobbyID);
         SteamMatchmaking.JoinLobby(lobbyID);
     }
 
