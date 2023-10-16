@@ -120,6 +120,7 @@ public class SteamLobby : MonoBehaviour
     {
         if(lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
 
+        // Add filters and then tell steam to get lobbyIds within a CALLBACK
         SteamMatchmaking.AddRequestLobbyListResultCountFilter(60);
         SteamMatchmaking.RequestLobbyList();
     }

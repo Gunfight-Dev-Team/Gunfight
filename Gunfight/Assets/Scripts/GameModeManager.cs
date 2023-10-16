@@ -11,9 +11,11 @@ public class GameModeManager : NetworkBehaviour
 
     public enum GameMode
     {
-        FreeForAll = 0,    // "free for all"
-        Gunfight = 1       // "gunfight"
+        FreeForAll = 0,
+        Gunfight = 1
     }
+
+    public GameMode gameMode;
 
     private void Awake()
     {
