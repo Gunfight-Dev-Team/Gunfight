@@ -9,6 +9,12 @@ public class GameModeManager : NetworkBehaviour
     // List to keep track of all the players in the game
     private List<PlayerController> players = new List<PlayerController>();
 
+    public enum GameMode
+    {
+        FreeForAll = 0,    // "free for all"
+        Gunfight = 1       // "gunfight"
+    }
+
     private void Awake()
     {
         if (instance == null)
