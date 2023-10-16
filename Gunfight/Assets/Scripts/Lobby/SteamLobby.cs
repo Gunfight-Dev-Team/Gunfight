@@ -146,7 +146,14 @@ public class SteamLobby : MonoBehaviour
         if(isQuickStart == true)
         {
             isQuickStart = false;
-            SteamMatchmaking.JoinLobby(lobbyIDs[0]);
+            if (lobbyIDs.Count != 0)
+            {
+                SteamMatchmaking.JoinLobby(lobbyIDs[0]);
+            }
+            else
+            {
+                SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, manager.maxConnections);
+            }
         }
         
     }
