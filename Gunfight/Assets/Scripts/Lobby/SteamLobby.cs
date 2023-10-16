@@ -6,6 +6,7 @@ using UnityEngine;
 using Mirror;
 using Steamworks;
 using TMPro;
+using UnityEngine.Rendering.UI;
 
 public class SteamLobby : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class SteamLobby : MonoBehaviour
     public TextMeshProUGUI playerCountText;
 
     public bool isJoining = false;
+
+    public bool isQuickStart = false;
 
     public int lobbyMemberLimit = 4;
 
@@ -70,29 +73,8 @@ public class SteamLobby : MonoBehaviour
 
     public void QuickStart()
     {
-        //if(lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
-
-        //SteamMatchmaking.AddRequestLobbyListFilterSlotsAvailable(1);
-        // SteamMatchmaking.AddRequestLobbyListResultCountFilter(60);
-        // SteamMatchmaking.RequestLobbyList();
-        GetLobbiesList();
-
-        if(lobbyIDs.Count == 0) { GetLobbiesList(); }
-
-        Debug.Log(lobbyIDs.Count);
-
-        //LobbiesListManager.instance.DisplayLobbies(lobbyIDs, );
-
-        CSteamID lobbyID = SteamMatchmaking.GetLobbyByIndex(0);
-        Debug.Log(lobbyID);
-        manager.networkAddress = SteamMatchmaking.GetLobbyData(lobbyID, HostAddressKey);
-
-        Debug.Log("network address: " + manager.networkAddress);
-
-        manager.StartClient();
-        isJoining = true;
-        //JoinLobby(lobbyID);
-        SteamMatchmaking.JoinLobby(lobbyID);
+        isQuickStart = true;
+        GetLobbiesListFiltered();
     }
 
     public void HostLobby()
@@ -142,6 +124,13 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.RequestLobbyList();
     }
 
+    public void GetLobbiesListFiltered()
+    {
+        if (lobbyIDs.Count > 0) { lobbyIDs.Clear(); }
+
+        SteamMatchmaking.RequestLobbyList();
+    }
+
     void OnGetLobbyList(LobbyMatchList_t result)
     {
         if(LobbiesListManager.instance.listOfLobbies.Count > 0) { LobbiesListManager.instance.DestroyLobbies(); }
@@ -152,6 +141,13 @@ public class SteamLobby : MonoBehaviour
             lobbyIDs.Add(lobbyID);
             SteamMatchmaking.RequestLobbyData(lobbyID);
         }
+
+        if(isQuickStart == true)
+        {
+            isQuickStart = false;
+            SteamMatchmaking.JoinLobby(lobbyIDs[0]);
+        }
+        
     }
 
     void OnGetLobbyData(LobbyDataUpdate_t result)
