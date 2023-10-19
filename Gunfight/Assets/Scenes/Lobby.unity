@@ -230,10 +230,11 @@ MonoBehaviour:
   CurrentLobbyID: 0
   PlayerItemCreated: 0
   LocalPlayerController: {fileID: 0}
-  StartGameButton: {fileID: 783860236}
+  ReadyButton: {fileID: 1886785874}
   publicToggle: {fileID: 360413123}
-  ReadyButtonText: {fileID: 0}
+  ReadyButtonText: {fileID: 1809209953}
   isPublic: 0
+  AllReady: 0
   MapName: 
 --- !u!4 &41049953
 Transform:
@@ -1580,7 +1581,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &783860233
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3572,8 +3573,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -125, y: 100}
-  m_SizeDelta: {x: 250, y: 125}
+  m_AnchoredPosition: {x: 0, y: 100}
+  m_SizeDelta: {x: 350, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1886785874
 MonoBehaviour:
@@ -3633,7 +3634,31 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 41049952}
         m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
-        m_MethodName: ReadyPlayer
+        m_MethodName: CheckIfAllReady
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 41049952}
+        m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
+        m_MethodName: UpdateButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 41049952}
+        m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
+        m_MethodName: PrepareToStartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

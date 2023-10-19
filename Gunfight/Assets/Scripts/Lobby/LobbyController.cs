@@ -6,6 +6,7 @@ using Steamworks;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LobbyController : MonoBehaviour
 {
@@ -22,11 +23,12 @@ public class LobbyController : MonoBehaviour
     private List<PlayerListItem> PlayerListItems = new List<PlayerListItem>();
     public PlayerObjectController LocalPlayerController;
 
-    public Button StartGameButton;
+    public Button ReadyButton;
     public GameObject publicToggle;
-    public Text ReadyButtonText;
+    public TMP_Text ReadyButtonText;
 
     public bool isPublic = false;
+    public bool AllReady = false;
 
     private CustomNetworkManager manager;
 
@@ -58,6 +60,19 @@ public class LobbyController : MonoBehaviour
         }
     }
 
+    public void PrepareToStartGame()
+    {
+        if(LocalPlayerController.PlayerIdNumber == 1 && AllReady)
+        {
+            // if host, should be able to start the game
+            StartGame();
+        }
+        else
+        {
+            ReadyPlayer();
+        }
+    }
+
     public void ReadyPlayer()
     {
         LocalPlayerController.ChangeReady();
@@ -65,48 +80,69 @@ public class LobbyController : MonoBehaviour
 
     public void UpdateButton()
     {
-        if(LocalPlayerController.Ready)
+        if(LocalPlayerController.Ready && LocalPlayerController.PlayerIdNumber != 1)
         {
-            ReadyButtonText.text = "Unready";
-        }
-        else
-        {
+            Debug.Log("1");
             ReadyButtonText.text = "Ready";
+        }
+        else if(AllReady && LocalPlayerController.PlayerIdNumber == 1)
+        {
+            Debug.Log("2");
+            ReadyButtonText.text = "Start";
+            ReadyButton.interactable = true;
+        }
+        else if (!LocalPlayerController.Ready && LocalPlayerController.PlayerIdNumber != 1)
+        {
+            Debug.Log("3");
+            ReadyButtonText.text = "Unready";
         }
     }
 
     public void CheckIfAllReady()
     {
-        bool AllReady = false;
-
+        bool isReady = true;
         foreach(PlayerObjectController player in Manager.GamePlayers)
         {
-            if(player.Ready)
+            if(player.PlayerIdNumber != 1)
             {
-                AllReady = true;
-            }
-            else
-            {
-                AllReady = false;
-                break;
+                if (player.Ready)
+                {
+                    isReady = true;
+                }
+                else
+                {
+                    isReady = false;
+                    break;
+                }
             }
         }
 
-        if (AllReady)
+        if (isReady)
         {
-            if(LocalPlayerController.PlayerIdNumber == 1)
-            {
-                StartGameButton.interactable = true;
-            }
-            else
-            {
-                StartGameButton.interactable = false;
-            }
+            AllReady = true;
         }
         else
         {
-            StartGameButton.interactable = false;
+            AllReady = false;
+            ReadyButton.interactable = false;
         }
+
+        //if (AllReady)
+        //{
+        //    if(LocalPlayerController.PlayerIdNumber == 1)
+        //    {
+        //        ReadyButton.interactable = true;
+        //        ReadyButtonText.text = "Start";
+        //    }
+        //    else
+        //    {
+        //        ReadyButtonText.text = "Unready";
+        //    }
+        //}
+        //else
+        //{
+        //    ReadyButtonText.text = "Unready";
+        //}
     }
 
     public void UpdateLobbyName()
@@ -184,10 +220,10 @@ public class LobbyController : MonoBehaviour
                     PlayerListItemScript.PlayerName = player.PlayerName;
                     PlayerListItemScript.Ready = player.Ready;
                     PlayerListItemScript.SetPlayerValues();
-                    // if(player == LocalPlayerController)
-                    // {
-                    //     UpdateButton();
-                    // }
+                    if (player == LocalPlayerController)
+                    {
+                        UpdateButton();
+                    }
                 }
             }
         }
