@@ -124,7 +124,10 @@ public class LobbyController : MonoBehaviour
         else
         {
             AllReady = false;
-            ReadyButton.interactable = false;
+            if(LocalPlayerController.PlayerIdNumber == 1)
+            {
+                ReadyButton.interactable = false;
+            }
         }
 
         //if (AllReady)
