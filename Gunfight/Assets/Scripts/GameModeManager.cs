@@ -18,7 +18,7 @@ public class GameModeManager : NetworkBehaviour
 
     [SyncVar]
     private int currentRound = 1;
-    private int totalRounds = 3;
+    private int totalRounds = 2;
 
     // List to keep track of all the players in the game
     private List<PlayerController> players = new List<PlayerController>();
@@ -65,7 +65,6 @@ public class GameModeManager : NetworkBehaviour
             Debug.Log("End of round");
             for(int i = 0; i < 5; i++){}
             currentRound++;
-            RpcResetGame();
             StartRound();
         }
         else // ended final round
@@ -80,6 +79,7 @@ public class GameModeManager : NetworkBehaviour
     public void RoundCompleted()
     {
         RpcEndRound();
+        RpcResetGame();
         EndRound();
     }
 
@@ -87,7 +87,6 @@ public class GameModeManager : NetworkBehaviour
     {
         while (countdownTimer > 0)
         {
-            
             countdownText.text = countdownTimer.ToString();
             Debug.Log("Countdown: " + countdownTimer);
             yield return new WaitForSeconds(1);
@@ -158,6 +157,7 @@ public class GameModeManager : NetworkBehaviour
             // yield return new WaitForSeconds(5);
             countdownText.text = "Round over";
             RoundCompleted();
+            //RpcResetGame();
         }
     }
 
