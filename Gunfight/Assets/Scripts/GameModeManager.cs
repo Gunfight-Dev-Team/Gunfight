@@ -37,8 +37,8 @@ public class GameModeManager : NetworkBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            //StartRound();
-            RpcStartRound();
+            StartRound();
+            //RpcStartRound();
         }
         else if (instance != this)
         {
@@ -46,7 +46,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
-    //[Server]
+    [Server]
     public void StartRound()
     {
         // setup for round
@@ -67,7 +67,7 @@ public class GameModeManager : NetworkBehaviour
             for(int i = 0; i < 5; i++){}
             currentRound++;
             RpcResetGame();
-            //StartRound();
+            StartRound();
             RpcStartRound();
         }
         else // ended final round
@@ -110,8 +110,8 @@ public class GameModeManager : NetworkBehaviour
     private void RpcStartRound()
     {
         // start the round on all clients
-        //StartCoroutine(StartRoundCountdown());
-        StartRound();
+        StartCoroutine(StartRoundCountdown());
+        //StartRound();
     }
 
     [ClientRpc]
