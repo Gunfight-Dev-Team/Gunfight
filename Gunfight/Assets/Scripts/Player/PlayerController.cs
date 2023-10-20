@@ -102,7 +102,7 @@ public class PlayerController : NetworkBehaviour
     {
         poc = GetComponent<PlayerObjectController>();
         audioSource = GetComponent<AudioSource>();
-        //GameModeManager.instance.AddPlayer(this); // used for resetting game
+        GameModeManager.instance.AddPlayer(this); // used for resetting game
     }
 
     private void FixedUpdate()
