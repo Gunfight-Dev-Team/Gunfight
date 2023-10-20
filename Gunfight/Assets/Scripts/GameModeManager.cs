@@ -45,7 +45,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
-    // [Server]
+    [Server]
     public void StartRound()
     {
         // setup for round
