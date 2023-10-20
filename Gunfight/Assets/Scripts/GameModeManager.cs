@@ -53,7 +53,7 @@ public class GameModeManager : NetworkBehaviour
         //activeRound = true;
         countdownTimer = 3;
         countdownText.gameObject.SetActive(true);
-        StartCoroutine(StartRoundCountdown());
+        //StartCoroutine(StartRoundCountdown());
         RpcStartRound();
     }
 
@@ -80,7 +80,7 @@ public class GameModeManager : NetworkBehaviour
     {
         RpcEndRound();
         RpcResetGame();
-        EndRound();
+        // EndRound();
     }
 
     private IEnumerator StartRoundCountdown()
@@ -108,12 +108,14 @@ public class GameModeManager : NetworkBehaviour
     {
         // start the round on all clients
         StartCoroutine(StartRoundCountdown());
+        //StartRound();
     }
 
     [ClientRpc]
     private void RpcEndRound()
     {
         // end round on all clients
+        EndRound();
     }
 
     public void AddPlayer(PlayerController player)
