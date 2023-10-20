@@ -64,7 +64,7 @@ public class GameModeManager : NetworkBehaviour
             Debug.Log("End of round");
             for(int i = 0; i < 5; i++){}
             currentRound++;
-            RpcResetGame();
+            //RpcResetGame();
             StartRound();
         }
         else // ended final round
@@ -156,21 +156,28 @@ public class GameModeManager : NetworkBehaviour
             countdownText.gameObject.SetActive(true);
             // yield return new WaitForSeconds(5);
             countdownText.text = "Round over";
+
+            //changed this
+            foreach (PlayerController player in players)
+            {
+                player.RpcRespawn();
+            }
+
             RoundCompleted();
         }
     }
 
-    [ClientRpc]
-    private void RpcResetGame()
-    {
-        Debug.Log("Resetting");
-        // Call the reset function for all players
-        foreach (PlayerController player in players)
-        {
-            Debug.Log(player.name);
-            player.RpcRespawn();
+    // [ClientRpc]
+    // private void RpcResetGame()
+    // {
+    //     Debug.Log("Resetting");
+    //     // Call the reset function for all players
+    //     foreach (PlayerController player in players)
+    //     {
+    //         Debug.Log(player.name);
+    //         player.RpcRespawn();
 
-            // You can add other reset logic specific to your game here
-        }
-    }
+    //         // You can add other reset logic specific to your game here
+    //     }
+    // }
 }
