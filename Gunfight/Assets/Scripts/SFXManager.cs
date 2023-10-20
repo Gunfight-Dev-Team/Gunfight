@@ -8,6 +8,21 @@ using UnityEngine.Audio;
 public class SFXManager : MonoBehaviour
 {
     public Sound[] sounds;
+    public float destroyDelay = 2.0f;
+
+    void Start()
+    {
+        SFXManager[] sfxManagersInScene = FindObjectsOfType<SFXManager>();
+
+        foreach (SFXManager sfxManager in sfxManagersInScene)
+        {
+            if (sfxManager != this)
+            {
+                // Another SFXManager object was found in the scene
+                Destroy(sfxManager.gameObject, destroyDelay);
+            }
+        }
+    }
 
     // Start is called before the first frame update
     void Awake()
