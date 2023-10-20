@@ -7,7 +7,7 @@ using UnityEngine.Rendering.UI;
 
 public class GameModeManager : NetworkBehaviour
 {
-    public static GameModeManager instance;
+    public static GameModeManager Instance;
 
     [SyncVar]
     private float countdownTimer;
@@ -33,20 +33,19 @@ public class GameModeManager : NetworkBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
             StartRound();
-            //RpcStartRound();
         }
-        else if (instance != this)
+        else if (Instance != this)
         {
             Destroy(gameObject);
         }
     }
 
-    [Server]
+    // [Server]
     public void StartRound()
     {
         // setup for round
@@ -55,7 +54,6 @@ public class GameModeManager : NetworkBehaviour
         countdownTimer = 3;
         countdownText.gameObject.SetActive(true);
         StartCoroutine(StartRoundCountdown());
-        RpcStartRound();
     }
 
     [Server]
@@ -68,7 +66,6 @@ public class GameModeManager : NetworkBehaviour
             currentRound++;
             RpcResetGame();
             StartRound();
-            //RpcStartRound();
         }
         else // ended final round
         {
@@ -78,18 +75,18 @@ public class GameModeManager : NetworkBehaviour
         Debug.Log("winner: ");
     }
 
-    // [Server]
-    // public void RoundCompleted()
-    // {
-    //     RpcEndRound();
-    //     RpcResetGame();
-    //     // EndRound();
-    // }
+    [Server]
+    public void RoundCompleted()
+    {
+        RpcEndRound();
+        EndRound();
+    }
 
     private IEnumerator StartRoundCountdown()
     {
         while (countdownTimer > 0)
         {
+            
             countdownText.text = countdownTimer.ToString();
             Debug.Log("Countdown: " + countdownTimer);
             yield return new WaitForSeconds(1);
@@ -103,7 +100,7 @@ public class GameModeManager : NetworkBehaviour
         }
 
         //activeRound = true;
-        //RpcStartRound();
+        RpcStartRound();
     }
 
     [ClientRpc]
@@ -111,14 +108,12 @@ public class GameModeManager : NetworkBehaviour
     {
         // start the round on all clients
         StartCoroutine(StartRoundCountdown());
-        //StartRound();
     }
 
     [ClientRpc]
     private void RpcEndRound()
     {
         // end round on all clients
-        EndRound();
     }
 
     public void AddPlayer(PlayerController player)
@@ -161,9 +156,7 @@ public class GameModeManager : NetworkBehaviour
             countdownText.gameObject.SetActive(true);
             // yield return new WaitForSeconds(5);
             countdownText.text = "Round over";
-            //RoundCompleted();
-            //RpcResetGame();
-            RpcEndRound();
+            RoundCompleted();
         }
     }
 

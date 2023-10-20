@@ -102,7 +102,7 @@ public class PlayerController : NetworkBehaviour
     {
         poc = GetComponent<PlayerObjectController>();
         audioSource = GetComponent<AudioSource>();
-        GameModeManager.instance.AddPlayer(this); // used for resetting game
+        GameModeManager.Instance.AddPlayer(this); // used for resetting game
     }
 
     private void FixedUpdate()
@@ -168,7 +168,7 @@ public class PlayerController : NetworkBehaviour
             }
 
             //TEST: player dies when pressing P
-            if (Input.GetKeyDown(KeyCode.P)) GameModeManager.instance.PlayerDied(this);
+            if (Input.GetKeyDown(KeyCode.P)) GameModeManager.Instance.PlayerDied(this);
         }
     }
 
@@ -376,7 +376,7 @@ public class PlayerController : NetworkBehaviour
     public void CmdPlayerDied()
     {
         // Call the PlayerDied function on the server
-        GameModeManager.instance.PlayerDied(this);
+        GameModeManager.Instance.PlayerDied(this);
     }
 
     public void TakeDamage(float damage)
@@ -411,7 +411,7 @@ public class PlayerController : NetworkBehaviour
         {
             // If the object does not have authority, it's likely a remote player object, and we don't need to do anything on the client-side.
             // The server will handle the death logic, and the state will be synchronized to this client automatically.
-            GameModeManager.instance.PlayerDied(this);
+            GameModeManager.Instance.PlayerDied(this);
         }
     }
 
