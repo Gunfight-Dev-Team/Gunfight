@@ -45,7 +45,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
-    [Server]
+    //[Server]
     public void StartRound()
     {
         // setup for round
@@ -65,6 +65,7 @@ public class GameModeManager : NetworkBehaviour
             Debug.Log("End of round");
             for(int i = 0; i < 5; i++){}
             currentRound++;
+            RpcResetGame();
             StartRound();
         }
         else // ended final round
@@ -75,13 +76,13 @@ public class GameModeManager : NetworkBehaviour
         Debug.Log("winner: ");
     }
 
-    [Server]
-    public void RoundCompleted()
-    {
-        RpcEndRound();
-        RpcResetGame();
-        // EndRound();
-    }
+    // [Server]
+    // public void RoundCompleted()
+    // {
+    //     RpcEndRound();
+    //     RpcResetGame();
+    //     // EndRound();
+    // }
 
     private IEnumerator StartRoundCountdown()
     {
@@ -158,8 +159,9 @@ public class GameModeManager : NetworkBehaviour
             countdownText.gameObject.SetActive(true);
             // yield return new WaitForSeconds(5);
             countdownText.text = "Round over";
-            RoundCompleted();
+            //RoundCompleted();
             //RpcResetGame();
+            RpcEndRound();
         }
     }
 
