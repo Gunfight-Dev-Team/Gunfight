@@ -53,7 +53,7 @@ public class GameModeManager : NetworkBehaviour
         //activeRound = true;
         countdownTimer = 3;
         countdownText.gameObject.SetActive(true);
-        //StartCoroutine(StartRoundCountdown());
+        StartCoroutine(StartRoundCountdown());
         RpcStartRound();
     }
 
@@ -66,7 +66,8 @@ public class GameModeManager : NetworkBehaviour
             for(int i = 0; i < 5; i++){}
             currentRound++;
             RpcResetGame();
-            StartRound();
+            //StartRound();
+            RpcStartRound();
         }
         else // ended final round
         {
@@ -108,8 +109,8 @@ public class GameModeManager : NetworkBehaviour
     private void RpcStartRound()
     {
         // start the round on all clients
-        StartCoroutine(StartRoundCountdown());
-        //StartRound();
+        //StartCoroutine(StartRoundCountdown());
+        StartRound();
     }
 
     [ClientRpc]
