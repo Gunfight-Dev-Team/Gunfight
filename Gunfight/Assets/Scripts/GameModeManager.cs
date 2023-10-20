@@ -62,7 +62,9 @@ public class GameModeManager : NetworkBehaviour
         if (currentRound < totalRounds) // still more rounds to go
         {
             Debug.Log("End of round");
+            for(int i = 0; i < 5; i++){}
             currentRound++;
+            RpcResetGame();
             StartRound();
         }
         else // ended final round
@@ -154,7 +156,6 @@ public class GameModeManager : NetworkBehaviour
             // yield return new WaitForSeconds(5);
             countdownText.text = "Round over";
             RoundCompleted();
-            RpcResetGame();
         }
     }
 
