@@ -37,7 +37,8 @@ public class GameModeManager : NetworkBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            StartRound();
+            //StartRound();
+            RpcStartRound();
         }
         else if (instance != this)
         {
@@ -54,7 +55,7 @@ public class GameModeManager : NetworkBehaviour
         countdownTimer = 3;
         countdownText.gameObject.SetActive(true);
         StartCoroutine(StartRoundCountdown());
-        RpcStartRound();
+        //RpcStartRound();
     }
 
     [Server]
