@@ -58,7 +58,7 @@ public class GameModeManager : NetworkBehaviour
         activeRound = true;
         countdownTimer = 3; 
         countdownText.gameObject.SetActive(true);
-        StartCoroutine(StartRoundCountdown());
+        // StartCoroutine(StartRoundCountdown());
         RpcStartRound();
     }
 
