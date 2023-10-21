@@ -56,7 +56,7 @@ public class GameModeManager : NetworkBehaviour
         // setup for round
         Debug.Log("Round: " + currentRound);
         activeRound = true;
-        countdownTimer = 3; 
+        // countdownTimer = 3; 
         countdownText.gameObject.SetActive(true);
         // StartCoroutine(StartRoundCountdown());
         RpcStartRound();
@@ -64,10 +64,10 @@ public class GameModeManager : NetworkBehaviour
 
     private IEnumerator StartRoundCountdown()
     {
+        countdownTimer = 3; 
         // starts the countdown sequence then starts the round
         while (countdownTimer > 0)
         {
-            
             countdownText.text = countdownTimer.ToString();
             Debug.Log("Countdown: " + countdownTimer);
             yield return new WaitForSeconds(1);
