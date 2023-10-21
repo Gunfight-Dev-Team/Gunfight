@@ -20,8 +20,7 @@ public class GameModeManager : NetworkBehaviour
     private int currentRound = 1; // keeps track of the current round
     private int totalRounds = 3; // keeps track of total amount of rounds
 
-    // List to keep track of all the players in the game
-    private List<PlayerController> players = new List<PlayerController>();
+    private CustomNetworkManager manager;
 
     public enum GameMode
     {
@@ -45,6 +44,18 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    private CustomNetworkManager Manager
+    {
+        get
+        {
+            if (manager != null)
+            {
+                return manager;
+            }
+            return manager = CustomNetworkManager.singleton as CustomNetworkManager;
+        }
+    }
+
     private void Start()
     {
         StartRound(); // starts the first round after Awake
@@ -53,6 +64,7 @@ public class GameModeManager : NetworkBehaviour
     // [Server]
     public void StartRound()
     {
+        Debug.Log("Players num: " + Manager.GamePlayers.Count);
         // setup for round
         Debug.Log("Round: " + currentRound);
         //activeRound = true;
@@ -132,16 +144,6 @@ public class GameModeManager : NetworkBehaviour
         // card mechanic handled
     }
 
-    public void AddPlayer(PlayerController player)
-    {
-        players.Add(player);
-    }
-
-    public void RemovePlayer(PlayerController player)
-    {
-        players.Remove(player);
-    }
-
     [Server]
     public void PlayerDied(PlayerController player)
     {
@@ -156,7 +158,7 @@ public class GameModeManager : NetworkBehaviour
         PlayerController lastAlivePlayer = null;
 
         // Count alive players and find the last alive player
-        foreach (PlayerController player in players)
+        foreach (PlayerObjectController player in Manager.GamePlayers)
         {
             if (player.alive)
             {
@@ -182,7 +184,7 @@ public class GameModeManager : NetworkBehaviour
     {
         Debug.Log("Resetting");
         // Call the reset function for all players
-        foreach (PlayerController player in players)
+        foreach (PlayerObjectController player in Manager.GamePlayers)
         {
             Debug.Log(player.name);
             player.RpcRespawn();
