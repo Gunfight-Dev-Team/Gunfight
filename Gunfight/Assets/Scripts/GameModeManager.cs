@@ -120,8 +120,8 @@ public class GameModeManager : NetworkBehaviour
     private IEnumerator EndRoundRoutine()
     {
         countdownText.gameObject.SetActive(true);
-        // yield return new WaitForSeconds(5);
         countdownText.text = "Round over";
+        yield return new WaitForSeconds(5);
     }
 
     [ClientRpc]
