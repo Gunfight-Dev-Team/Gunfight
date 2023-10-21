@@ -10,15 +10,15 @@ public class GameModeManager : NetworkBehaviour
     public static GameModeManager Instance;
 
     [SyncVar]
-    private float countdownTimer;
+    private float countdownTimer; // keeps track of the timer
 
-    public TextMeshProUGUI countdownText;
+    public TextMeshProUGUI countdownText; // shows UI of timer in scene
 
-    //private bool activeRound = false;
+    private bool activeRound = false; // keeps track if the round is active
 
     [SyncVar]
-    private int currentRound = 1;
-    private int totalRounds = 3;
+    private int currentRound = 1; // keeps track of the current round
+    private int totalRounds = 3; // keeps track of total amount of rounds
 
     // List to keep track of all the players in the game
     private List<PlayerController> players = new List<PlayerController>();
@@ -37,7 +37,7 @@ public class GameModeManager : NetworkBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            StartRound();
+            // StartRound();
         }
         else if (Instance != this)
         {
@@ -45,45 +45,25 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    private void Start()
+    {
+        StartRound(); // starts the first round after Awake
+    } 
+
     // [Server]
     public void StartRound()
     {
         // setup for round
         Debug.Log("Round: " + currentRound);
-        //activeRound = true;
-        countdownTimer = 3;
+        activeRound = true;
+        countdownTimer = 3; 
         countdownText.gameObject.SetActive(true);
         StartCoroutine(StartRoundCountdown());
     }
 
-    [Server]
-    public void EndRound()
-    {
-        if (currentRound < totalRounds) // still more rounds to go
-        {
-            Debug.Log("End of round");
-            for(int i = 0; i < 5; i++){}
-            currentRound++;
-            //RpcResetGame();
-            StartRound();
-        }
-        else // ended final round
-        {
-            Debug.Log("End of game");
-        }
-
-        Debug.Log("winner: ");
-    }
-
-    [Server]
-    public void RoundCompleted()
-    {
-        RpcEndRound();
-        EndRound();
-    }
-
     private IEnumerator StartRoundCountdown()
     {
+        // starts the countdown sequence then starts the round
         while (countdownTimer > 0)
         {
             
@@ -110,10 +90,37 @@ public class GameModeManager : NetworkBehaviour
         StartCoroutine(StartRoundCountdown());
     }
 
+    [Server]
+    public void RoundCompleted()
+    {
+        RpcEndRound();
+        EndRound();
+    }
+
+    [Server]
+    public void EndRound()
+    {
+        if (currentRound < totalRounds) // still more rounds to go
+        {
+            Debug.Log("End of round");
+            // for(int i = 0; i < 5; i++){}
+            currentRound++;
+            RpcResetGame();
+            StartRound();
+        }
+        else if (currentRound == totalRounds)// ended final round
+        {
+            Debug.Log("End of game");
+        }
+
+        Debug.Log("winner: ");
+    }
+
     [ClientRpc]
     private void RpcEndRound()
     {
         // end round on all clients
+        // card mechanic handled
     }
 
     public void AddPlayer(PlayerController player)
@@ -152,32 +159,26 @@ public class GameModeManager : NetworkBehaviour
         // If only one player is alive, call the reset function for all players
         if (alivePlayers <= 1)
         {
-            //activeRound = false;
+            activeRound = false;
             countdownText.gameObject.SetActive(true);
             // yield return new WaitForSeconds(5);
             countdownText.text = "Round over";
-
-            //changed this
-            foreach (PlayerController player in players)
-            {
-                player.RpcRespawn();
-            }
 
             RoundCompleted();
         }
     }
 
-    // [ClientRpc]
-    // private void RpcResetGame()
-    // {
-    //     Debug.Log("Resetting");
-    //     // Call the reset function for all players
-    //     foreach (PlayerController player in players)
-    //     {
-    //         Debug.Log(player.name);
-    //         player.RpcRespawn();
+    [ClientRpc]
+    private void RpcResetGame()
+    {
+        Debug.Log("Resetting");
+        // Call the reset function for all players
+        foreach (PlayerController player in players)
+        {
+            Debug.Log(player.name);
+            player.RpcRespawn();
 
-    //         // You can add other reset logic specific to your game here
-    //     }
-    // }
+            // You can add other reset logic specific to your game here
+        }
+    }
 }
