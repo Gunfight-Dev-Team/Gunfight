@@ -13,6 +13,7 @@ public class LobbyController : MonoBehaviour
     public static LobbyController Instance;
 
     public Text LobbyNameText;
+    public InputField LobbyNameInput;
 
     public GameObject PlayerListViewContent;
     public GameObject PlayerListItemPrefab;
@@ -57,6 +58,23 @@ public class LobbyController : MonoBehaviour
         if (LocalPlayerController.PlayerIdNumber == 1)
         {
             publicToggle.SetActive(true);
+            // Disable the input field for non-host players
+            LobbyNameInput.interactable = true;
+            LobbyNameInput.onEndEdit.AddListener(OnEndEdit);
+        }
+        else 
+        {
+            LobbyNameInput.interactable = false;
+        }
+    }
+
+    private void OnEndEdit(string newName)
+    {
+        // Ensure the lobby name is not empty
+        if (!string.IsNullOrEmpty(newName))
+        {
+            // Update the lobby name using Steamworks
+            SteamMatchmaking.SetLobbyData((CSteamID)CurrentLobbyID, "name", newName);
         }
     }
 
@@ -151,7 +169,7 @@ public class LobbyController : MonoBehaviour
     public void UpdateLobbyName()
     {
         CurrentLobbyID = Manager.GetComponent<SteamLobby>().CurrentLobbyID;
-        LobbyNameText.text = SteamMatchmaking.GetLobbyData(new CSteamID(CurrentLobbyID), "name");
+        LobbyNameInput.text = SteamMatchmaking.GetLobbyData(new CSteamID(CurrentLobbyID), "name");
     }
 
     public void UpdatePlayerList()
