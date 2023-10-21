@@ -117,10 +117,18 @@ public class GameModeManager : NetworkBehaviour
         Debug.Log("winner: ");
     }
 
+    private IEnumerator EndRoundRoutine()
+    {
+        countdownText.gameObject.SetActive(true);
+        // yield return new WaitForSeconds(5);
+        countdownText.text = "Round over";
+    }
+
     [ClientRpc]
     private void RpcEndRound()
     {
         // end round on all clients
+        StartCoroutine(EndRoundRoutine());
         // card mechanic handled
     }
 
