@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using Steamworks;
+using UnityEngine.SceneManagement;
 
 public class PlayerObjectController : NetworkBehaviour
 {
@@ -138,5 +139,29 @@ public class PlayerObjectController : NetworkBehaviour
     { 
         PlayerColor = message;
         GetComponent<PlayerController>().SwitchSkin(PlayerColor);
+    }
+
+    public void Quit()
+    {
+        //Set the offline scene to null
+        manager.offlineScene = "";
+
+        //Make the active scene the offline scene
+        SceneManager.LoadScene("MainMenu");
+
+        //Leave Steam Lobby
+        SteamLobby.Instance.LeaveLobby();
+
+        if (isOwned)
+        {
+            if (isServer)
+            {
+                manager.StopHost();
+            }
+            else
+            {
+                manager.StopClient();
+            }
+        }
     }
 }

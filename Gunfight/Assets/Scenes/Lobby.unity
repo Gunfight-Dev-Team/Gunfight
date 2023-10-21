@@ -2228,7 +2228,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: back
+  m_text: LEAVE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9aabe271635134bbba95a03dc9004841, type: 2}
   m_sharedMaterial: {fileID: -3943927870626390900, guid: 9aabe271635134bbba95a03dc9004841, type: 2}
@@ -3006,6 +3006,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 7655fcb8220fc4308b9a464e246efdb1, type: 3}
     volume: 1
     source: {fileID: 0}
+  destroyDelay: 2
 --- !u!4 &1747915741
 Transform:
   m_ObjectHideFlags: 0
@@ -3327,7 +3328,7 @@ GameObject:
   - component: {fileID: 1810743728}
   - component: {fileID: 1810743727}
   m_Layer: 5
-  m_Name: BackButton
+  m_Name: LeaveButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3412,7 +3413,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 41049952}
         m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
-        m_MethodName: Back
+        m_MethodName: Leave
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

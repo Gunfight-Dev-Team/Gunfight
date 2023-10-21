@@ -116,6 +116,11 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.JoinLobby(lobbyID);
     }
 
+    public void LeaveLobby()
+    {
+        SteamMatchmaking.LeaveLobby((CSteamID)CurrentLobbyID);
+    }
+
     public void GetLobbiesList()
     {
         if(lobbyIDs.Count > 0) { lobbyIDs.Clear(); }

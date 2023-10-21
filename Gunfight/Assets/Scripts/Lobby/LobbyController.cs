@@ -275,8 +275,8 @@ public class LobbyController : MonoBehaviour
         isPublic = !isPublic;
     }
 
-    public void Back()
+    public void Leave()
     {
-        SceneManager.LoadScene("MainMenu");
+        LocalPlayerController.Quit();
     }
 }
