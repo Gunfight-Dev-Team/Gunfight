@@ -155,12 +155,12 @@ public class GameModeManager : NetworkBehaviour
     private void CheckWinCondition()
     {
         int alivePlayers = 0;
-        PlayerController lastAlivePlayer = null;
+        PlayerObjectController lastAlivePlayer = null;
 
         // Count alive players and find the last alive player
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
-            if (player.alive)
+            if (player.GetComponent<PlayerController>().alive)
             {
                 alivePlayers++;
                 lastAlivePlayer = player;
@@ -187,7 +187,7 @@ public class GameModeManager : NetworkBehaviour
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
             Debug.Log(player.name);
-            player.RpcRespawn();
+            player.GetComponent<PlayerController>().RpcRespawn();
 
             // You can add other reset logic specific to your game here
         }
