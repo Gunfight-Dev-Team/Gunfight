@@ -14,7 +14,7 @@ public class GameModeManager : NetworkBehaviour
 
     public TextMeshProUGUI countdownText; // shows UI of timer in scene
 
-    private bool activeRound = false; // keeps track if the round is active
+    //private bool activeRound = false; // keeps track if the round is active
 
     [SyncVar]
     private int currentRound = 1; // keeps track of the current round
@@ -55,19 +55,19 @@ public class GameModeManager : NetworkBehaviour
     {
         // setup for round
         Debug.Log("Round: " + currentRound);
-        activeRound = true;
-        // countdownTimer = 3; 
+        //activeRound = true;
+        countdownTimer = 3; 
         countdownText.gameObject.SetActive(true);
-        // StartCoroutine(StartRoundCountdown());
+        StartCoroutine(StartRoundCountdown());
         RpcStartRound();
     }
 
     private IEnumerator StartRoundCountdown()
     {
-        countdownTimer = 3; 
         // starts the countdown sequence then starts the round
         while (countdownTimer > 0)
         {
+            
             countdownText.text = countdownTimer.ToString();
             Debug.Log("Countdown: " + countdownTimer);
             yield return new WaitForSeconds(1);
@@ -160,7 +160,7 @@ public class GameModeManager : NetworkBehaviour
         // If only one player is alive, call the reset function for all players
         if (alivePlayers <= 1)
         {
-            activeRound = false;
+            //activeRound = false;
             countdownText.gameObject.SetActive(true);
             // yield return new WaitForSeconds(5);
             countdownText.text = "Round over";
