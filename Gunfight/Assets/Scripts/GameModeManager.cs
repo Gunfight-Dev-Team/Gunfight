@@ -58,10 +58,13 @@ public class GameModeManager : NetworkBehaviour
 
     private void Start()
     {
-        StartRound(); // starts the first round after Awake
+        if (isServer)
+        {
+            StartRound(); // starts the first round after Awake
+        }
     } 
 
-    // [Server]
+    [Server]
     public void StartRound()
     {
         Debug.Log("Players num: " + Manager.GamePlayers.Count);
@@ -71,7 +74,7 @@ public class GameModeManager : NetworkBehaviour
         countdownTimer = 3; 
         countdownText.gameObject.SetActive(true);
         StartCoroutine(StartRoundCountdown());
-        CmdStartRound();
+        RpcStartRound();
     }
 
     private IEnumerator StartRoundCountdown()
