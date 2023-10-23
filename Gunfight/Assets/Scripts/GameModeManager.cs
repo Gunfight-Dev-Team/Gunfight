@@ -203,7 +203,7 @@ public class GameModeManager : NetworkBehaviour
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
             Debug.Log(player.name);
-            player.GetComponent<PlayerController>().RpcRespawn();
+            player.GetComponent<PlayerController>().CmdReset();
 
             // You can add other reset logic specific to your game here
         }
