@@ -144,7 +144,7 @@ public class GameModeManager : NetworkBehaviour
         yield return new WaitForSeconds(5);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdEndRound()
     {
         // end the round on all clients
