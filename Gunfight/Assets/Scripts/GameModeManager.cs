@@ -118,8 +118,9 @@ public class GameModeManager : NetworkBehaviour
         if (isServer)
         {
             CmdEndRound();
-            EndRound();
         }
+
+        EndRound();
     }
 
     [Server]
@@ -205,9 +206,8 @@ public class GameModeManager : NetworkBehaviour
         // Call the reset function for all players
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
-            Debug.Log(player.name);
-            if (isLocalPlayer)
-                player.GetComponent<PlayerController>().CmdReset();
+            Debug.Log(player.PlayerName);
+            player.GetComponent<PlayerController>().CmdReset();
 
             // You can add other reset logic specific to your game here
         }
