@@ -100,18 +100,15 @@ public class LobbyController : MonoBehaviour
     {
         if(LocalPlayerController.Ready && LocalPlayerController.PlayerIdNumber != 1)
         {
-            Debug.Log("1");
             ReadyButtonText.text = "Ready";
         }
         else if(AllReady && LocalPlayerController.PlayerIdNumber == 1)
         {
-            Debug.Log("2");
             ReadyButtonText.text = "Start";
             ReadyButton.interactable = true;
         }
         else if (!LocalPlayerController.Ready && LocalPlayerController.PlayerIdNumber != 1)
         {
-            Debug.Log("3");
             ReadyButtonText.text = "Unready";
         }
     }

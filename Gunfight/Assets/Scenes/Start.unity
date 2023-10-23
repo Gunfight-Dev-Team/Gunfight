@@ -1095,6 +1095,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 7655fcb8220fc4308b9a464e246efdb1, type: 3}
     volume: 1
     source: {fileID: 0}
+  destroyDelay: 2
 --- !u!4 &101157890
 Transform:
   m_ObjectHideFlags: 0
