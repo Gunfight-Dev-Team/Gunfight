@@ -75,7 +75,7 @@ public class GameModeManager : NetworkBehaviour
         countdownTimer = 3; 
         countdownText.gameObject.SetActive(true);
         StartCoroutine(StartRoundCountdown());
-        RpcStartRound();
+        CmdStartRound();
     }
 
     private IEnumerator StartRoundCountdown()
@@ -115,7 +115,7 @@ public class GameModeManager : NetworkBehaviour
     [Server]
     public void RoundCompleted()
     {
-        RpcEndRound();
+        CmdEndRound();
         EndRound();
     }
 
@@ -143,6 +143,13 @@ public class GameModeManager : NetworkBehaviour
         countdownText.gameObject.SetActive(true);
         countdownText.text = "Round over";
         yield return new WaitForSeconds(5);
+    }
+
+    [Command]
+    private void CmdEndRound()
+    {
+        // start the round on all clients
+        RpcEndRound();
     }
 
     [ClientRpc]
