@@ -103,6 +103,7 @@ public class GameModeManager : NetworkBehaviour
     private void RpcStartRound()
     {
         // start the round on all clients
+        Debug.Log("RpcStartRound");
         StartCoroutine(StartRoundCountdown());
     }
 
@@ -111,27 +112,29 @@ public class GameModeManager : NetworkBehaviour
         if (isServer)
         {
             CmdEndRound();
+            EndRound();
         }
-
-        EndRound();
     }
 
     [Server]
     public void EndRound()
     {
-        if (currentRound < totalRounds) // still more rounds to go
+        if (isServer)
         {
-            Debug.Log("End of round");
-            currentRound++;
-            RpcResetGame();
-            StartRound();
-        }
-        else if (currentRound > totalRounds)// ended final round
-        {
-            Debug.Log("End of game");
-        }
+            if (currentRound < totalRounds) // still more rounds to go
+            {
+                Debug.Log("End of round");
+                currentRound++;
+                RpcResetGame();
+                StartRound();
+            }
+            else if (currentRound > totalRounds)// ended final round
+            {
+                Debug.Log("End of game");
+            }
 
-        Debug.Log("winner: ");
+            Debug.Log("winner: ");
+        }
     }
 
     private IEnumerator EndRoundRoutine()
@@ -152,6 +155,7 @@ public class GameModeManager : NetworkBehaviour
     private void RpcEndRound()
     {
         // end round on all clients
+        Debug.Log("RpcEndRound");
         StartCoroutine(EndRoundRoutine());
         // card mechanic handled
     }
@@ -160,7 +164,8 @@ public class GameModeManager : NetworkBehaviour
     public void PlayerDied(PlayerController player)
     {
         player.alive = false;
-        CheckWinCondition();
+        if (isServer)
+            CheckWinCondition();
     }
 
     [Server]
