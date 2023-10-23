@@ -15,10 +15,8 @@ public class GameModeManager : NetworkBehaviour
 
     public TextMeshProUGUI countdownText; // shows UI of timer in scene
 
-    //private bool activeRound = false; // keeps track if the round is active
-
     [SyncVar]
-    private int currentRound = 1; // keeps track of the current round
+    private int currentRound = 0; // keeps track of the current round
     private int totalRounds = 3; // keeps track of total amount of rounds
 
     private CustomNetworkManager manager;
@@ -37,7 +35,6 @@ public class GameModeManager : NetworkBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            // StartRound();
         }
         else if (Instance != this)
         {
@@ -71,11 +68,9 @@ public class GameModeManager : NetworkBehaviour
         Debug.Log("Players num: " + Manager.GamePlayers.Count);
         // setup for round
         Debug.Log("Round: " + currentRound);
-        //activeRound = true;
         countdownTimer = 3; 
-        
-        StartCoroutine(StartRoundCountdown());
         CmdStartRound();
+        StartCoroutine(StartRoundCountdown());
     }
 
     private IEnumerator StartRoundCountdown()
@@ -95,8 +90,6 @@ public class GameModeManager : NetworkBehaviour
                 break;
             }   
         }
-
-        //activeRound = true;
     }
 
     [Command]
@@ -129,7 +122,6 @@ public class GameModeManager : NetworkBehaviour
         if (currentRound < totalRounds) // still more rounds to go
         {
             Debug.Log("End of round");
-            // for(int i = 0; i < 5; i++){}
             currentRound++;
             RpcResetGame();
             StartRound();
@@ -190,9 +182,7 @@ public class GameModeManager : NetworkBehaviour
         // If only one player is alive, call the reset function for all players
         if (alivePlayers <= 1)
         {
-            //activeRound = false;
             countdownText.gameObject.SetActive(true);
-            // yield return new WaitForSeconds(5);
             countdownText.text = "Round over";
 
             RoundCompleted();
