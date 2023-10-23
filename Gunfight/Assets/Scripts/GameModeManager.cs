@@ -113,7 +113,6 @@ public class GameModeManager : NetworkBehaviour
         StartCoroutine(StartRoundCountdown());
     }
 
-    [Server]
     public void RoundCompleted()
     {
         if (isServer)
@@ -126,7 +125,7 @@ public class GameModeManager : NetworkBehaviour
     [Server]
     public void EndRound()
     {
-        if (currentRound <= totalRounds) // still more rounds to go
+        if (currentRound < totalRounds) // still more rounds to go
         {
             Debug.Log("End of round");
             // for(int i = 0; i < 5; i++){}
@@ -207,7 +206,8 @@ public class GameModeManager : NetworkBehaviour
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
             Debug.Log(player.name);
-            player.GetComponent<PlayerController>().CmdReset();
+            if (isLocalPlayer)
+                player.GetComponent<PlayerController>().CmdReset();
 
             // You can add other reset logic specific to your game here
         }
