@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using TMPro;
 using UnityEngine.Rendering.UI;
+using UnityEngine.SceneManagement;
 
 public class GameModeManager : NetworkBehaviour
 {
@@ -58,7 +59,7 @@ public class GameModeManager : NetworkBehaviour
 
     private void Start()
     {
-        if (isServer)
+        if (isServer & (SceneManager.GetActiveScene().name == "Game"))
         {
             StartRound(); // starts the first round after Awake
         }
@@ -82,7 +83,6 @@ public class GameModeManager : NetworkBehaviour
         // starts the countdown sequence then starts the round
         while (countdownTimer > 0)
         {
-            
             countdownText.text = countdownTimer.ToString();
             Debug.Log("Countdown: " + countdownTimer);
             yield return new WaitForSeconds(1);
@@ -96,7 +96,6 @@ public class GameModeManager : NetworkBehaviour
         }
 
         //activeRound = true;
-        
     }
 
     [Command]

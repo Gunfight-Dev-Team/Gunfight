@@ -40347,6 +40347,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoundManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8034345409140366858, guid: 0176a78dff9851c439f64a7ea651c3bb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8034345409140366859, guid: 0176a78dff9851c439f64a7ea651c3bb, type: 3}
       propertyPath: countdownText
       value: 
