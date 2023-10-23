@@ -92,7 +92,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdStartRound()
     {
         // start the round on all clients
@@ -147,7 +147,7 @@ public class GameModeManager : NetworkBehaviour
     [Command]
     private void CmdEndRound()
     {
-        // start the round on all clients
+        // end the round on all clients
         RpcEndRound();
     }
 
