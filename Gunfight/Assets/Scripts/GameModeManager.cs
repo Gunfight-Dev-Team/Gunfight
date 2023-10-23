@@ -116,14 +116,17 @@ public class GameModeManager : NetworkBehaviour
     [Server]
     public void RoundCompleted()
     {
-        CmdEndRound();
-        EndRound();
+        if (isServer)
+        {
+            CmdEndRound();
+            EndRound();
+        }
     }
 
     [Server]
     public void EndRound()
     {
-        if (currentRound < totalRounds) // still more rounds to go
+        if (currentRound <= totalRounds) // still more rounds to go
         {
             Debug.Log("End of round");
             // for(int i = 0; i < 5; i++){}
@@ -131,7 +134,7 @@ public class GameModeManager : NetworkBehaviour
             RpcResetGame();
             StartRound();
         }
-        else if (currentRound == totalRounds)// ended final round
+        else if (currentRound > totalRounds)// ended final round
         {
             Debug.Log("End of game");
         }
