@@ -73,13 +73,14 @@ public class GameModeManager : NetworkBehaviour
         Debug.Log("Round: " + currentRound);
         //activeRound = true;
         countdownTimer = 3; 
-        countdownText.gameObject.SetActive(true);
+        
         StartCoroutine(StartRoundCountdown());
         CmdStartRound();
     }
 
     private IEnumerator StartRoundCountdown()
     {
+        countdownText.gameObject.SetActive(true);
         // starts the countdown sequence then starts the round
         while (countdownTimer > 0)
         {
