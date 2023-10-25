@@ -22,10 +22,12 @@ public class ChatController : NetworkBehaviour
         if(isLeftAligned)
         {
             chatTextLeft.text += '\n' + "<b>" + name + "</b>: " + message;
+            chatTextRight.text += '\n';
         }
         else
         {
             chatTextRight.text += '\n' + "<b>" + name + "</b>: " + message;
+            chatTextLeft.text += '\n';
         }
         
     }
