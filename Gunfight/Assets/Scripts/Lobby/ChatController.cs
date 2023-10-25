@@ -6,13 +6,22 @@ using Steamworks;
 
 public class ChatController : NetworkBehaviour
 {
-    [SerializeField] private Text chatText = null;
+    [SerializeField] private Text chatTextLeft = null;
+    [SerializeField] private Text chatTextRight = null;
     [SerializeField] private InputField inputField = null;
 
     // When a new message is added, update the Scroll View's Text to include the new message
-    private void HandleNewMessage(string message)
+    private void HandleNewMessage(string message, bool isLeftAligned)
     {
-        chatText.text += '\n' + message;
+        if(isLeftAligned)
+        {
+            chatTextLeft.text += '\n' + message;
+        }
+        else
+        {
+            chatTextRight.text += '\n' + message;
+        }
+        
     }
 
     // When a client hits the enter button, send the message in the InputField
@@ -28,15 +37,21 @@ public class ChatController : NetworkBehaviour
     [Command(requiresAuthority = false)]
     private void CmdSendMessage(string message, string name)
     {
-        // Validate message
-        Debug.Log("Command" + message);
-        RpcHandleMessage("<b>" + name + "</b>: " + message);
+        if(isServer)
+        {
+            RpcHandleMessage("<b>" + name + "</b>: " + message, false);
+        }
+        else
+        {
+            RpcHandleMessage("<b>" + name + "</b>: " + message, true);
+        }
+        
     }
 
     [ClientRpc]
-    private void RpcHandleMessage(string message)
+    private void RpcHandleMessage(string message, bool isLeftAligned)
     {
-        HandleNewMessage(message);
+        HandleNewMessage(message, isLeftAligned);
     }
 
 }
