@@ -10,12 +10,8 @@ public class ChatController : NetworkBehaviour
     [SerializeField] private InputField inputField = null;
 
     // When a new message is added, update the Scroll View's Text to include the new message
-    private void HandleNewMessage(string message, bool alignedLeft)
+    private void HandleNewMessage(string message)
     {
-        if (alignedLeft)
-            chatText.alignment = TextAnchor.MiddleLeft;
-        else
-            chatText.alignment = TextAnchor.MiddleRight;
         chatText.text += message + '\n';
     }
 
@@ -25,29 +21,22 @@ public class ChatController : NetworkBehaviour
     {
         if (!Input.GetKeyDown(KeyCode.Return)) { return; }
         if (string.IsNullOrWhiteSpace(inputField.text)) { return; }
-        CmdSendMessage(inputField.text);
+        CmdSendMessage(inputField.text, SteamFriends.GetPersonaName().ToString());
         inputField.text = string.Empty;
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdSendMessage(string message)
+    private void CmdSendMessage(string message, string name)
     {
         // Validate message
         Debug.Log("Command" + message);
-        RpcHandleMessage("<b>" + SteamFriends.GetPersonaName().ToString() + "</b>: " + message);
+        RpcHandleMessage("<b>" + name + "</b>: " + message);
     }
 
     [ClientRpc]
     private void RpcHandleMessage(string message)
     {
-        if (isServer)
-        {
-            HandleNewMessage(message, false);
-        }
-        else
-        {
-            HandleNewMessage(message, true);
-        }
+        HandleNewMessage(message);
     }
 
 }
