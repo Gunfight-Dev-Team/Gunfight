@@ -37,21 +37,18 @@ public class ChatController : NetworkBehaviour
     [Command(requiresAuthority = false)]
     private void CmdSendMessage(string message, string name)
     {
-        if(isServer)
-        {
-            RpcHandleMessage("<b>" + name + "</b>: " + message, false);
-        }
-        else
-        {
-            RpcHandleMessage("<b>" + name + "</b>: " + message, true);
-        }
+        Debug.Log("Local in command: " + isLocalPlayer);
+        RpcHandleMessage("<b>" + name + "</b>: " + message);
         
     }
 
     [ClientRpc]
-    private void RpcHandleMessage(string message, bool isLeftAligned)
+    private void RpcHandleMessage(string message)
     {
-        HandleNewMessage(message, isLeftAligned);
+        if(isLocalPlayer)
+            HandleNewMessage(message, false);
+        else
+            HandleNewMessage(message, true);
     }
 
 }
