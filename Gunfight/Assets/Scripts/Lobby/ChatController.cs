@@ -40,6 +40,7 @@ public class ChatController : NetworkBehaviour
         if (string.IsNullOrWhiteSpace(inputField.text)) { return; }
         CmdSendMessage(inputField.text, myName);
         inputField.text = string.Empty;
+        inputField.ActivateInputField();
     }
 
     [Command(requiresAuthority = false)]
