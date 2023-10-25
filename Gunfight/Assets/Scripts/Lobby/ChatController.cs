@@ -9,17 +9,23 @@ public class ChatController : NetworkBehaviour
     [SerializeField] private Text chatTextLeft = null;
     [SerializeField] private Text chatTextRight = null;
     [SerializeField] private InputField inputField = null;
+    private string myName = "";
+
+    private void Start()
+    {
+        myName = SteamFriends.GetPersonaName().ToString();
+    }
 
     // When a new message is added, update the Scroll View's Text to include the new message
-    private void HandleNewMessage(string message, bool isLeftAligned)
+    private void HandleNewMessage(string message, string name, bool isLeftAligned)
     {
         if(isLeftAligned)
         {
-            chatTextLeft.text += '\n' + message;
+            chatTextLeft.text += '\n' + "<b>" + name + "</b>: " + message;
         }
         else
         {
-            chatTextRight.text += '\n' + message;
+            chatTextRight.text += '\n' + "<b>" + name + "</b>: " + message;
         }
         
     }
@@ -30,25 +36,24 @@ public class ChatController : NetworkBehaviour
     {
         if (!Input.GetKeyDown(KeyCode.Return)) { return; }
         if (string.IsNullOrWhiteSpace(inputField.text)) { return; }
-        CmdSendMessage(inputField.text, SteamFriends.GetPersonaName().ToString());
+        CmdSendMessage(inputField.text, myName);
         inputField.text = string.Empty;
     }
 
     [Command(requiresAuthority = false)]
     private void CmdSendMessage(string message, string name)
     {
-        Debug.Log("Local in command: " + isLocalPlayer);
-        RpcHandleMessage("<b>" + name + "</b>: " + message);
+        RpcHandleMessage(message, name);
         
     }
 
     [ClientRpc]
-    private void RpcHandleMessage(string message)
+    private void RpcHandleMessage(string message, string name)
     {
-        if(isLocalPlayer)
-            HandleNewMessage(message, false);
+        if (name == myName)
+            HandleNewMessage(message, name, false);
         else
-            HandleNewMessage(message, true);
+            HandleNewMessage(message, name, true);
     }
 
 }
