@@ -12,7 +12,7 @@ public class ChatController : NetworkBehaviour
     // When a new message is added, update the Scroll View's Text to include the new message
     private void HandleNewMessage(string message)
     {
-        chatText.text += message + '\n';
+        chatText.text += '\n' + message;
     }
 
     // When a client hits the enter button, send the message in the InputField
