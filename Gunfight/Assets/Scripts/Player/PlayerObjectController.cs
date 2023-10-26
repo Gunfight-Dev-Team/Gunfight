@@ -71,7 +71,7 @@ public class PlayerObjectController : NetworkBehaviour
         }
         if (isClient)
         {
-            LobbyController.Instance.UpdatePlayerTeam(newValue);
+            LobbyController.Instance.UpdatePlayerList();
         }
     }
 

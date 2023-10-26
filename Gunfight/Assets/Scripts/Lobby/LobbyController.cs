@@ -187,29 +187,6 @@ public class LobbyController : MonoBehaviour
         if(PlayerListItems.Count == Manager.GamePlayers.Count) { UpdatePlayerItem(); }
     }
 
-    public void UpdatePlayerTeam(int newTeam)
-    {
-        foreach (PlayerObjectController player in Manager.GamePlayers)
-        {
-            foreach (PlayerListItem PlayerListItemScript in PlayerListItems)
-            {
-                if (PlayerListItemScript.ConnectionID == player.ConnectionID)
-                {
-                    if (newTeam == 2)
-                    {
-                        PlayerListItemScript.gameObject.transform.SetParent(PlayerList2ViewContent.transform);
-                    }
-                    else
-                    {
-                        PlayerListItemScript.gameObject.transform.SetParent(PlayerListViewContent.transform);
-                    }
-                    PlayerListItemScript.gameObject.transform.localScale = Vector3.one;
-                    PlayerListItemScript.Team = newTeam;
-                }
-            }
-        }
-    }
-
     public void FindLocalPlayer()
     {
         LocalPlayerObject = GameObject.Find("LocalGamePlayer");
@@ -288,7 +265,19 @@ public class LobbyController : MonoBehaviour
                 {
                     PlayerListItemScript.PlayerName = player.PlayerName;
                     PlayerListItemScript.Ready = player.Ready;
+                    PlayerListItemScript.Team = player.Team;
                     PlayerListItemScript.SetPlayerValues();
+
+                    if (player.Team == 2)
+                    {
+                        PlayerListItemScript.transform.SetParent(PlayerList2ViewContent.transform);
+                    }
+                    else
+                    {
+                        PlayerListItemScript.transform.SetParent(PlayerListViewContent.transform);
+                    }
+                    PlayerListItemScript.transform.localScale = Vector3.one;
+
                     if (player == LocalPlayerController)
                     {
                         UpdateButton();
