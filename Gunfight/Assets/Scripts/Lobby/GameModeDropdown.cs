@@ -10,14 +10,15 @@ public class GameModeDropdown : NetworkBehaviour
 
     public void OnDropdownValueChanged()
     {
+        Debug.Log("1");
         // Call a command to change the Dropdown value on the server
-        if(isOwned)
-            CmdChangeDropdownValue(dropdown.value);
+        CmdChangeDropdownValue(dropdown.value);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     void CmdChangeDropdownValue(int value)
     {
+        Debug.Log("2");
         // Change the Dropdown value on the server
         RpcSyncDropdownValue(value);
     }
@@ -25,6 +26,7 @@ public class GameModeDropdown : NetworkBehaviour
     [ClientRpc]
     void RpcSyncDropdownValue(int value)
     {
+        Debug.Log("3");
         // Change the Dropdown value on all clients
         dropdown.value = value;
     }
