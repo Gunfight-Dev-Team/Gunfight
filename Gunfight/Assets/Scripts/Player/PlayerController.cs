@@ -216,17 +216,18 @@ public class PlayerController : NetworkBehaviour
         if(cam != null)
             mousePosition = cam.ScreenToWorldPoint(mousePosition);
 
-        if ((mousePosition.x > transform.position.x && spriteRenderer.flipX) ||
-            (mousePosition.x < transform.position.x && !spriteRenderer.flipX))
+        if (mousePosition.x > transform.position.x && spriteRenderer.flipX)
         {
-            //Toggle sprite flip when your mouse moves across the character
-            //spriteRenderer.flipX = !spriteRenderer.flipX;
-            //weapon.transform.localScale = new Vector3(1, -weapon.transform.localScale.y, 1);
+            CmdFlipPlayer();
+            Debug.Log("Flipping" + team.ToString());
+        }
+        else if (mousePosition.x < transform.position.x && !spriteRenderer.flipX)
+        {
             CmdFlipPlayer();
             Debug.Log("Flipping" + team.ToString());
         }
 
-        Vector2 direction = (mousePosition - weapon.transform.position).normalized;
+            Vector2 direction = (mousePosition - weapon.transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         weapon.transform.eulerAngles = new Vector3(0, 0, angle);
 
