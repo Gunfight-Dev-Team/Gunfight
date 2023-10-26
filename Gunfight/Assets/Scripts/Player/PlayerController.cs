@@ -219,13 +219,7 @@ public class PlayerController : NetworkBehaviour
         if ((mousePosition.x > transform.position.x && spriteRenderer.flipX) ||
             (mousePosition.x < transform.position.x && !spriteRenderer.flipX))
         {
-            if (isClient)
-                Debug.Log("Client");
-            if (isServer)
-                Debug.Log("Server");
-            if (isLocalPlayer)
-                Debug.Log("Local");
-            CmdFlipPlayer();
+            CmdFlipPlayer(spriteRenderer.flipX);
             Debug.Log("Flipping" + team.ToString());
         }
 
@@ -251,17 +245,20 @@ public class PlayerController : NetworkBehaviour
     }
 
     [Command]
-    void CmdFlipPlayer()
+    void CmdFlipPlayer(bool flipped)
     {
-        RpcFlipPlayer();
+        RpcFlipPlayer(flipped);
     }
 
     [ClientRpc]
-    void RpcFlipPlayer()
+    void RpcFlipPlayer(bool flipped)
     {
         Debug.Log("Flipping in RPC" + team.ToString());
-        spriteRenderer.flipX = !spriteRenderer.flipX;
-        weapon.transform.localScale = new Vector3(1, -weapon.transform.localScale.y, 1);
+        if (flipped == spriteRenderer.flipX)
+        {
+            spriteRenderer.flipX = !spriteRenderer.flipX;
+            weapon.transform.localScale = new Vector3(1, -weapon.transform.localScale.y, 1);
+        }
     }
 
     [ClientRpc]
