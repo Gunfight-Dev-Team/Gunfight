@@ -216,18 +216,20 @@ public class PlayerController : NetworkBehaviour
         if(cam != null)
             mousePosition = cam.ScreenToWorldPoint(mousePosition);
 
-        if (mousePosition.x > transform.position.x && spriteRenderer.flipX)
+        if ((mousePosition.x > transform.position.x && spriteRenderer.flipX) ||
+            (mousePosition.x < transform.position.x && !spriteRenderer.flipX))
         {
-            CmdFlipPlayer();
-            Debug.Log("Flipping" + team.ToString());
-        }
-        else if (mousePosition.x < transform.position.x && !spriteRenderer.flipX)
-        {
+            if (isClient)
+                Debug.Log("Client");
+            if (isServer)
+                Debug.Log("Server");
+            if (isLocalPlayer)
+                Debug.Log("Local");
             CmdFlipPlayer();
             Debug.Log("Flipping" + team.ToString());
         }
 
-            Vector2 direction = (mousePosition - weapon.transform.position).normalized;
+        Vector2 direction = (mousePosition - weapon.transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         weapon.transform.eulerAngles = new Vector3(0, 0, angle);
 
@@ -257,6 +259,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     void RpcFlipPlayer()
     {
+        Debug.Log("Flipping in RPC" + team.ToString());
         spriteRenderer.flipX = !spriteRenderer.flipX;
         weapon.transform.localScale = new Vector3(1, -weapon.transform.localScale.y, 1);
     }
