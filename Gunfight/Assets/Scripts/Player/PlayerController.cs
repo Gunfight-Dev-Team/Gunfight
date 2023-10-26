@@ -254,7 +254,7 @@ public class PlayerController : NetworkBehaviour
     void RpcFlipPlayer(bool flipped)
     {
         Debug.Log("Flipping in RPC" + team.ToString());
-        if (flipped == spriteRenderer.flipX)
+        if (flipped == spriteRenderer.flipX) // Fixes BUG: Flips switch on Client for some reason? better solution...?
         {
             spriteRenderer.flipX = !spriteRenderer.flipX;
             weapon.transform.localScale = new Vector3(1, -weapon.transform.localScale.y, 1);
