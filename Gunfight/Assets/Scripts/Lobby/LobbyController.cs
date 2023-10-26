@@ -7,6 +7,8 @@ using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System;
+using Unity.VisualScripting;
 
 public class LobbyController : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class LobbyController : MonoBehaviour
     public GameObject PlayerList2ViewContent;
     public GameObject PlayerListItemPrefab;
     public GameObject LocalPlayerObject;
+    public GameObject PlayerList2;
+    public GameObject ChatBox;
 
     public ulong CurrentLobbyID;
     public bool PlayerItemCreated = false;
@@ -27,6 +31,7 @@ public class LobbyController : MonoBehaviour
     public Button ReadyButton;
     public GameObject publicToggle;
     public TMP_Text ReadyButtonText;
+    public Dropdown GameModeChooser;
 
     public bool isPublic = false;
     public bool AllReady = false;
@@ -328,6 +333,20 @@ public class LobbyController : MonoBehaviour
             SteamMatchmaking.SetLobbyType(new CSteamID(CurrentLobbyID), ELobbyType.k_ELobbyTypeFriendsOnly);
         }
         isPublic = !isPublic;
+    }
+
+    public void SwitchGameModes()
+    {
+        if(GameModeChooser.value == 0)
+        {
+            PlayerList2.SetActive(false);
+            ChatBox.SetActive(true);
+        }
+        else if(GameModeChooser.value == 1)
+        {
+            PlayerList2.SetActive(true);
+            ChatBox.SetActive(false);
+        }
     }
 
     public void Leave()
