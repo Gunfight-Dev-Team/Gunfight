@@ -18,7 +18,6 @@ public class GameModeDropdown : NetworkBehaviour
     [ClientRpc]
     void RpcSyncDropdownValue(int value)
     {
-        Debug.Log("2");
         // Change the Dropdown value on all clients
         dropdown.value = value;
     }
