@@ -468,6 +468,7 @@ public class PlayerController : NetworkBehaviour
         SetPosition();
         health = 10f;
         weaponInfo.setDefault();
+        GetComponent<PlayerWeaponController>().ChangeSprite(WeaponID.Knife);
         spriteRenderer.color = Color.white; // prevents sprite from having the red damage on it forever
 
         GetComponent<PlayerWeaponController>().enabled = true;

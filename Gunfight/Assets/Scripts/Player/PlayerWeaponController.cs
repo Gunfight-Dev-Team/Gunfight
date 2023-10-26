@@ -148,7 +148,7 @@ public class PlayerWeaponController : NetworkBehaviour
         }
     }
 
-    void ChangeSprite(WeaponID weapon)
+    public void ChangeSprite(WeaponID weapon)
     {
         // gets int value of WeaponId enum
         int weaponVal = (int) weapon;
