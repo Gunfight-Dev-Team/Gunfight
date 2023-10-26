@@ -13,6 +13,7 @@ public class PlayerObjectController : NetworkBehaviour
     [SyncVar] public ulong PlayerSteamID;
     [SyncVar(hook = nameof(PlayerNameUpdate))] public string PlayerName;
     [SyncVar(hook = nameof(PlayerReadyUpdate))] public bool Ready;
+    [SyncVar(hook = nameof(PlayerTeamUpdate))] public int Team = 1;
 
     //Cosmestics / Team
     [SyncVar(hook = nameof(SendPlayerColor))] public int PlayerColor;
@@ -59,6 +60,32 @@ public class PlayerObjectController : NetworkBehaviour
         if (isOwned)
         {
             CMDSetPlayerReady();
+        }
+    }
+
+    private void PlayerTeamUpdate(int oldValue, int newValue)
+    {
+        if (isServer)
+        {
+            this.Team = newValue;
+        }
+        if (isClient)
+        {
+            LobbyController.Instance.UpdatePlayerTeam(newValue);
+        }
+    }
+
+    [Command]
+    private void CMDSetPlayerTeam(int newTeam)
+    {
+        this.PlayerTeamUpdate(this.Team, newTeam);
+    }
+
+    public void ChangeTeam(int newTeam)
+    {
+        if (isOwned)
+        {
+            CMDSetPlayerTeam(newTeam);
         }
     }
 

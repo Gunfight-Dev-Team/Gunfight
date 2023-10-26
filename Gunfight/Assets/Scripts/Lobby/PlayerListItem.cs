@@ -15,6 +15,7 @@ public class PlayerListItem : MonoBehaviour
     public RawImage PlayerIcon;
     public Text PlayerReadyText;
     public bool Ready;
+    public int Team;
 
     protected Callback<AvatarImageLoaded_t> ImageLoaded;
 

@@ -12,10 +12,10 @@ public class LobbyController : MonoBehaviour
 {
     public static LobbyController Instance;
 
-    public Text LobbyNameText;
     public InputField LobbyNameInput;
 
     public GameObject PlayerListViewContent;
+    public GameObject PlayerList2ViewContent;
     public GameObject PlayerListItemPrefab;
     public GameObject LocalPlayerObject;
 
@@ -94,6 +94,16 @@ public class LobbyController : MonoBehaviour
     public void ReadyPlayer()
     {
         LocalPlayerController.ChangeReady();
+    }
+
+    public void ChangeToTeamOne()
+    {
+        LocalPlayerController.ChangeTeam(1);
+    }
+
+    public void ChangeToTeamTwo()
+    {
+        LocalPlayerController.ChangeTeam(2);
     }
 
     public void UpdateButton()
@@ -177,6 +187,29 @@ public class LobbyController : MonoBehaviour
         if(PlayerListItems.Count == Manager.GamePlayers.Count) { UpdatePlayerItem(); }
     }
 
+    public void UpdatePlayerTeam(int newTeam)
+    {
+        foreach (PlayerObjectController player in Manager.GamePlayers)
+        {
+            foreach (PlayerListItem PlayerListItemScript in PlayerListItems)
+            {
+                if (PlayerListItemScript.ConnectionID == player.ConnectionID)
+                {
+                    if (newTeam == 2)
+                    {
+                        PlayerListItemScript.gameObject.transform.SetParent(PlayerList2ViewContent.transform);
+                    }
+                    else
+                    {
+                        PlayerListItemScript.gameObject.transform.SetParent(PlayerListViewContent.transform);
+                    }
+                    PlayerListItemScript.gameObject.transform.localScale = Vector3.one;
+                    PlayerListItemScript.Team = newTeam;
+                }
+            }
+        }
+    }
+
     public void FindLocalPlayer()
     {
         LocalPlayerObject = GameObject.Find("LocalGamePlayer");
@@ -194,9 +227,18 @@ public class LobbyController : MonoBehaviour
             NewPlayerItemScript.ConnectionID = player.ConnectionID;
             NewPlayerItemScript.PlayerSteamID = player.PlayerSteamID;
             NewPlayerItemScript.Ready = player.Ready;
+            NewPlayerItemScript.Team = player.Team;
+
             NewPlayerItemScript.SetPlayerValues();
 
-            NewPlayerItem.transform.SetParent(PlayerListViewContent.transform);
+            if (player.Team == 2)
+            {
+                NewPlayerItem.transform.SetParent(PlayerList2ViewContent.transform);
+            }
+            else
+            {
+                NewPlayerItem.transform.SetParent(PlayerListViewContent.transform);
+            }
             NewPlayerItem.transform.localScale = Vector3.one;
 
             PlayerListItems.Add(NewPlayerItemScript);
@@ -217,9 +259,18 @@ public class LobbyController : MonoBehaviour
                 NewPlayerItemScript.ConnectionID = player.ConnectionID;
                 NewPlayerItemScript.PlayerSteamID = player.PlayerSteamID;
                 NewPlayerItemScript.Ready = player.Ready;
+                NewPlayerItemScript.Team = player.Team;
+
                 NewPlayerItemScript.SetPlayerValues();
 
-                NewPlayerItem.transform.SetParent(PlayerListViewContent.transform);
+                if (player.Team == 2)
+                {
+                    NewPlayerItem.transform.SetParent(PlayerList2ViewContent.transform);
+                }
+                else
+                {
+                    NewPlayerItem.transform.SetParent(PlayerListViewContent.transform);
+                }
                 NewPlayerItem.transform.localScale = Vector3.one;
 
                 PlayerListItems.Add(NewPlayerItemScript);
