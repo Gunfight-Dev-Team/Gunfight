@@ -8,18 +8,11 @@ public class GameModeDropdown : NetworkBehaviour
 {
     public Dropdown dropdown;
 
-    public void Start()
-    {
-        if (isLocalPlayer)
-        {
-            dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
-        }
-    }
-
-    public void OnDropdownValueChanged(int value)
+    public void OnDropdownValueChanged()
     {
         // Call a command to change the Dropdown value on the server
-        CmdChangeDropdownValue(value);
+        if(isOwned)
+            CmdChangeDropdownValue(dropdown.value);
     }
 
     [Command]
