@@ -70,16 +70,19 @@ public class GameModeManager : NetworkBehaviour
 
     public void EndRound()
     {
-        if (currentRound < totalRounds) // if current round is less than total rounds
+        if(isServer)
         {
-            currentRound++; // increase round count
-            //yield return WaitForSeconds(5);
-            RpcResetGame();
-            StartRound();
-        }
-        else // if the current round equals the total round
-        {
+            if (currentRound < totalRounds) // if current round is less than total rounds
+            {
+                currentRound++; // increase round count
+                //yield return WaitForSeconds(5);
+                RpcResetGame();
+                StartRound();
+            }
+            else // if the current round equals the total round
+            {
 
+            }
         }
     }
 
