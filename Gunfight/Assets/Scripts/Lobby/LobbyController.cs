@@ -66,9 +66,11 @@ public class LobbyController : MonoBehaviour
             // Disable the input field for non-host players
             LobbyNameInput.interactable = true;
             LobbyNameInput.onEndEdit.AddListener(OnEndEdit);
+            GameModeChooser.interactable = true;
         }
         else 
         {
+            GameModeChooser.interactable = false;
             LobbyNameInput.interactable = false;
         }
     }
