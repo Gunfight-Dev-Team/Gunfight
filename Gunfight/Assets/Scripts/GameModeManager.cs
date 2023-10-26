@@ -11,7 +11,7 @@ public class GameModeManager : NetworkBehaviour
     public static GameModeManager Instance;
 
     [SyncVar]
-    private int currentRound = 0; // keeps track of the current round
+    private int currentRound = 1; // keeps track of the current round
 
     // get this from lobby
     private int totalRounds = 3; // keeps track of total amount of rounds
