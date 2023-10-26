@@ -11,7 +11,7 @@ public class GameModeManager : NetworkBehaviour
     public static GameModeManager Instance;
 
     [SyncVar]
-    private int currentRound = 1; // keeps track of the current round
+    private int currentRound = 0; // keeps track of the current round
 
     // get this from lobby
     private int totalRounds = 3; // keeps track of total amount of rounds
@@ -65,6 +65,7 @@ public class GameModeManager : NetworkBehaviour
     public void StartRound()
     {
         // setup for round
+        currentRound++; // increase round count
         Debug.Log("Round started: " + currentRound);
     }
 
@@ -72,8 +73,6 @@ public class GameModeManager : NetworkBehaviour
     {
         if (currentRound < totalRounds) // if current round is less than total rounds
         {
-            currentRound++; // increase round count
-            //yield return WaitForSeconds(5);
             RpcResetGame();
             StartRound();
         }
