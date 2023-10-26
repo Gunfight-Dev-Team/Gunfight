@@ -11,13 +11,13 @@ public class GameModeManager : NetworkBehaviour
     public static GameModeManager Instance;
 
     [SyncVar]
-    private float countdownTimer; // keeps track of the timer
-
-    public TextMeshProUGUI countdownText; // shows UI of timer in scene
-
-    [SyncVar]
     private int currentRound = 0; // keeps track of the current round
+
+    // get this from lobby
     private int totalRounds = 3; // keeps track of total amount of rounds
+
+    [SyncVar(hook = nameof(CheckWinCondition))]
+    public int aliveNum = 0; // get this from lobby
 
     private CustomNetworkManager manager;
 
@@ -27,7 +27,7 @@ public class GameModeManager : NetworkBehaviour
         Gunfight = 1
     }
 
-    public GameMode gameMode;
+    public GameMode gameMode; // get this from lobby
 
     private void Awake()
     {
@@ -56,141 +56,47 @@ public class GameModeManager : NetworkBehaviour
 
     private void Start()
     {
-        if (isServer & (SceneManager.GetActiveScene().name == "Game"))
+        if (isServer & (SceneManager.GetActiveScene().name != "Lobby"))
         {
             StartRound(); // starts the first round after Awake
         }
     } 
 
-    [Server]
     public void StartRound()
     {
-        Debug.Log("Players num: " + Manager.GamePlayers.Count);
         // setup for round
-        Debug.Log("Round: " + currentRound);
-        countdownTimer = 3; 
-        CmdStartRound();
-        StartCoroutine(StartRoundCountdown());
+        Debug.Log("Round started: " + currentRound);
     }
 
-    private IEnumerator StartRoundCountdown()
-    {
-        countdownText.gameObject.SetActive(true);
-        // starts the countdown sequence then starts the round
-        while (countdownTimer > 0)
-        {
-            countdownText.text = countdownTimer.ToString();
-            Debug.Log("Countdown: " + countdownTimer);
-            yield return new WaitForSeconds(1);
-            countdownTimer--;
-            if (countdownTimer == 0)
-            {
-                Debug.Log("Round started");
-                countdownText.gameObject.SetActive(false);
-                break;
-            }   
-        }
-    }
-
-    [Command(requiresAuthority = false)]
-    private void CmdStartRound()
-    {
-        // start the round on all clients
-        RpcStartRound();
-    }
-
-    [ClientRpc]
-    private void RpcStartRound()
-    {
-        // start the round on all clients
-        Debug.Log("RpcStartRound");
-        StartCoroutine(StartRoundCountdown());
-    }
-
-    public void RoundCompleted()
-    {
-        if (isServer)
-        {
-            CmdEndRound();
-            EndRound();
-        }
-    }
-
-    [Server]
     public void EndRound()
     {
-        if (isServer)
+        if (currentRound < totalRounds) // if current round is less than total rounds
         {
-            if (currentRound < totalRounds) // still more rounds to go
-            {
-                Debug.Log("End of round");
-                currentRound++;
-                RpcResetGame();
-                StartRound();
-            }
-            else if (currentRound > totalRounds)// ended final round
-            {
-                Debug.Log("End of game");
-            }
+            currentRound++; // increase round count
+            //yield return WaitForSeconds(5);
+            RpcResetGame();
+            StartRound();
+        }
+        else // if the current round equals the total round
+        {
 
-            Debug.Log("winner: ");
         }
     }
 
-    private IEnumerator EndRoundRoutine()
-    {
-        countdownText.gameObject.SetActive(true);
-        countdownText.text = "Round over";
-        yield return new WaitForSeconds(5);
-    }
-
-    [Command(requiresAuthority = false)]
-    private void CmdEndRound()
-    {
-        // end the round on all clients
-        RpcEndRound();
-    }
-
-    [ClientRpc]
-    private void RpcEndRound()
-    {
-        // end round on all clients
-        Debug.Log("RpcEndRound");
-        StartCoroutine(EndRoundRoutine());
-        // card mechanic handled
-    }
-
-    [Server]
     public void PlayerDied(PlayerController player)
     {
-        player.alive = false;
-        if (isServer)
-            CheckWinCondition();
+       aliveNum--;
     }
 
-    [Server]
-    private void CheckWinCondition()
+    void CheckWinCondition(int oldAliveNum, int newAliveNum)
     {
-        int alivePlayers = 0;
-        PlayerObjectController lastAlivePlayer = null;
-
-        // Count alive players and find the last alive player
-        foreach (PlayerObjectController player in Manager.GamePlayers)
+        if (SceneManager.GetActiveScene().name != "Lobby")
         {
-            if (player.GetComponent<PlayerController>().alive)
+            // If only one player is alive, end round 
+            if (aliveNum <= 1)
             {
-                alivePlayers++;
-                lastAlivePlayer = player;
+                EndRound();
             }
-        }
-
-        // If only one player is alive, call the reset function for all players
-        if (alivePlayers <= 1)
-        {
-            countdownText.gameObject.SetActive(true);
-            countdownText.text = "Round over";
-
-            RoundCompleted();
         }
     }
 
@@ -203,8 +109,6 @@ public class GameModeManager : NetworkBehaviour
         {
             Debug.Log(player.PlayerName);
             player.GetComponent<PlayerController>().CmdReset();
-
-            // You can add other reset logic specific to your game here
         }
     }
 }

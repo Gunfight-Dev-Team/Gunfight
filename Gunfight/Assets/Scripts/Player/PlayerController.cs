@@ -455,7 +455,7 @@ public class PlayerController : NetworkBehaviour
         GetComponent<PlayerWeaponController>().enabled = false;
     }
 
-    [Command(requiresAuthority = false)]
+    [Command]
     public void CmdReset()
     {
         //test
