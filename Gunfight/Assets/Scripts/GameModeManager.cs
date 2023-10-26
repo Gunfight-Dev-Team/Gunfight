@@ -76,7 +76,7 @@ public class GameModeManager : NetworkBehaviour
             {
                 currentRound++; // increase round count
                 //yield return WaitForSeconds(5);
-                ResetGame();
+                RpcResetGame();
                 StartRound();
             }
             else // if the current round equals the total round
@@ -103,14 +103,15 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
-    private void ResetGame()
+    [ClientRpc]
+    private void RpcResetGame()
     {
         Debug.Log("Resetting");
         // Call the reset function for all players
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
             Debug.Log(player.PlayerName);
-            player.GetComponent<PlayerController>().CmdReset();
+            player.GetComponent<PlayerController>().RpcRespawn();
         }
     }
 }
