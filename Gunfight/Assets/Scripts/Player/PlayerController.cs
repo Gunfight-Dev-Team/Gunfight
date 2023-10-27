@@ -166,9 +166,6 @@ public class PlayerController : NetworkBehaviour
                 cooldownTimer -= Time.deltaTime;
                 if (cooldownTimer < 0) cooldownTimer = 0;
             }
-
-            //TEST: player dies when pressing P
-            if (Input.GetKeyDown(KeyCode.P)) GameModeManager.Instance.PlayerDied(this);
         }
     }
 
@@ -375,7 +372,7 @@ public class PlayerController : NetworkBehaviour
     public void CmdPlayerDied()
     {
         // Call the PlayerDied function on the server
-        GameModeManager.Instance.PlayerDied(this);
+        //GameModeManager.Instance.PlayerDied(this);
     }
 
     public void TakeDamage(float damage)
@@ -410,7 +407,7 @@ public class PlayerController : NetworkBehaviour
         {
             // If the object does not have authority, it's likely a remote player object, and we don't need to do anything on the client-side.
             // The server will handle the death logic, and the state will be synchronized to this client automatically.
-            GameModeManager.Instance.PlayerDied(this);
+            //GameModeManager.Instance.PlayerDied(this);
         }
     }
 

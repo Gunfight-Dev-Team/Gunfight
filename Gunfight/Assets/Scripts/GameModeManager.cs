@@ -8,8 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class GameModeManager : NetworkBehaviour
 {
-    public static GameModeManager Instance;
-
     [SyncVar]
     private int currentRound = 0; // keeps track of the current round
 
@@ -31,11 +29,7 @@ public class GameModeManager : NetworkBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+        DontDestroyOnLoad(gameObject);
     }
 
     private CustomNetworkManager Manager
