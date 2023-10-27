@@ -29,15 +29,6 @@ public class GameModeManager : NetworkBehaviour
 
     public GameMode gameMode; // get this from lobby
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-    }
-
     private CustomNetworkManager Manager
     {
         get
@@ -52,6 +43,12 @@ public class GameModeManager : NetworkBehaviour
 
     private void Start()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
         if (isServer & (SceneManager.GetActiveScene().name != "Lobby"))
         {
             StartRound(); // starts the first round after Awake
@@ -69,7 +66,8 @@ public class GameModeManager : NetworkBehaviour
     {
         if (currentRound < totalRounds) // if current round is less than total rounds
         {
-            RpcResetGame();
+            if(isServer)
+                RpcResetGame();
             StartRound();
         }
         else // if the current round equals the total round
@@ -98,11 +96,9 @@ public class GameModeManager : NetworkBehaviour
     [ClientRpc]
     private void RpcResetGame()
     {
-        Debug.Log("Resetting");
         // Call the reset function for all players
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
-            Debug.Log(player.PlayerName);
             player.GetComponent<PlayerController>().RpcRespawn();
         }
     }
