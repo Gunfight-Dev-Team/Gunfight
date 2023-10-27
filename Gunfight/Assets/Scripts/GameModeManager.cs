@@ -71,6 +71,7 @@ public class GameModeManager : NetworkBehaviour
                 RpcResetGame();
             SpawnWeaponsInGame();
             StartRound();
+            // TODO: Reset Map (pots / boxes)
         }
         else // if the current round equals the total round
         {
@@ -135,6 +136,18 @@ public class GameModeManager : NetworkBehaviour
         else
         {
             Debug.LogError("WeaponSpawning script not found in the 'game' scene.");
+        }
+    }
+
+    public void ShowWinner(string winner)
+    {
+        // Find the WeaponSpawning script in the "game" scene
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            // Call the DeleteWeapons method
+            gameModeUIController.DisplayWinner(winner);
         }
     }
 }
