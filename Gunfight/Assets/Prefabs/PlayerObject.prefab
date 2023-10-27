@@ -267,6 +267,8 @@ MonoBehaviour:
   PlayerSteamID: 0
   PlayerName: 
   Ready: 0
+  Team: 1
+  PlayerColor: 0
 --- !u!114 &9202434888575235624
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -443,16 +443,12 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     void RpcDie()
     {
-        // gets int value of Team enum
-        int teamVal = (int) team;
-
-        int index = 5 *4 + teamVal;
-        //spriteRenderer.sprite = spriteArray[index]; old way of sprites
-
         weaponInfo.nAmmo = 0;
         weaponInfo.range = 0;
         weaponInfo.damage = 0;
         weaponInfo.speedOfPlayer = 0;
+        weaponSpriteRenderer.enabled = false;
+        spriteRenderer.enabled = false;
         GetComponent<PlayerWeaponController>().enabled = false;
     }
 
@@ -473,6 +469,8 @@ public class PlayerController : NetworkBehaviour
         spriteRenderer.color = Color.white; // prevents sprite from having the red damage on it forever
 
         GetComponent<PlayerWeaponController>().enabled = true;
+        weaponSpriteRenderer.enabled = true;
+        spriteRenderer.enabled = true;
     }
 
     [ClientRpc]
