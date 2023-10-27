@@ -220,7 +220,6 @@ public class PlayerController : NetworkBehaviour
             (mousePosition.x < transform.position.x && !spriteRenderer.flipX))
         {
             CmdFlipPlayer(spriteRenderer.flipX);
-            Debug.Log("Flipping" + team.ToString());
         }
 
         Vector2 direction = (mousePosition - weapon.transform.position).normalized;
@@ -253,7 +252,6 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     void RpcFlipPlayer(bool flipped)
     {
-        Debug.Log("Flipping in RPC" + team.ToString());
         if (flipped == spriteRenderer.flipX) // Fixes BUG: Flips switch on Client for some reason? better solution...?
         {
             spriteRenderer.flipX = !spriteRenderer.flipX;

@@ -36,10 +36,6 @@ public class GameModeManager : NetworkBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-        }
     }
 
     private CustomNetworkManager Manager
