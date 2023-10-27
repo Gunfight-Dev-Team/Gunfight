@@ -66,8 +66,10 @@ public class GameModeManager : NetworkBehaviour
     {
         if (currentRound < totalRounds) // if current round is less than total rounds
         {
-            if(isServer)
+            DeleteWeaponsInGame();
+            if (isServer)
                 RpcResetGame();
+            SpawnWeaponsInGame();
             StartRound();
         }
         else // if the current round equals the total round
@@ -100,6 +102,39 @@ public class GameModeManager : NetworkBehaviour
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
             player.GetComponent<PlayerController>().Respawn();
+        }
+    }
+
+    public void SpawnWeaponsInGame()
+    {
+        // Find the WeaponSpawning script in the "game" scene
+        WeaponSpawning weaponSpawning = FindObjectOfType<WeaponSpawning>();
+
+        if (weaponSpawning != null)
+        {
+            // Call the SpawnWeapons method
+            weaponSpawning.SpawnWeapons();
+        }
+        else
+        {
+            Debug.LogError("WeaponSpawning script not found in the 'game' scene.");
+        }
+    }
+
+    // This method is called when you want to delete weapons in the "game" scene
+    public void DeleteWeaponsInGame()
+    {
+        // Find the WeaponSpawning script in the "game" scene
+        WeaponSpawning weaponSpawning = FindObjectOfType<WeaponSpawning>();
+
+        if (weaponSpawning != null)
+        {
+            // Call the DeleteWeapons method
+            weaponSpawning.DeleteWeapons();
+        }
+        else
+        {
+            Debug.LogError("WeaponSpawning script not found in the 'game' scene.");
         }
     }
 }
