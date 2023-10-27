@@ -75,6 +75,7 @@ public class LobbyController : MonoBehaviour
         }
         else 
         {
+            publicToggle.interactable = false;
             GameModeChooser.interactable = false;
             LobbyNameInput.interactable = false;
         }
@@ -134,6 +135,7 @@ public class LobbyController : MonoBehaviour
             ReadyButtonText.text = "Unready";
         }
     }
+
 
     public void CheckIfAllReady()
     {
