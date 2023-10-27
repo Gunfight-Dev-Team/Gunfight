@@ -99,8 +99,7 @@ public class GameModeManager : NetworkBehaviour
         // Call the reset function for all players
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
-            if(isServer)
-                player.GetComponent<PlayerController>().CmdReset();
+            player.GetComponent<PlayerController>().Respawn();
         }
     }
 }

@@ -447,15 +447,7 @@ public class PlayerController : NetworkBehaviour
         GetComponent<PlayerWeaponController>().enabled = false;
     }
 
-    [Command]
-    public void CmdReset()
-    {
-        //test
-        RpcRespawn();
-    }
-
-    [ClientRpc]
-    public void RpcRespawn()
+    public void Respawn()
     {
         SetPosition();
         health = 10f;
