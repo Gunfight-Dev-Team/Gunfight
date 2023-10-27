@@ -127,11 +127,11 @@ public class PlayerWeaponController : NetworkBehaviour
     [Command]
     void CmdPickUp(WeaponInfo weaponInfo)
     {
-        RpcDestoryWeapon(weaponInfo);
+        RpcDestroyWeapon(weaponInfo);
     }
 
     [ClientRpc]
-    void RpcDestoryWeapon(WeaponInfo weaponInfo)
+    void RpcDestroyWeapon(WeaponInfo weaponInfo)
     {
         if (playerColliders.OtherCollider != null)
         {
