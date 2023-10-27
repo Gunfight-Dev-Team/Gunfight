@@ -379,9 +379,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5214c395e57f68548bbdc7df40c0353c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0.1
   LobbyNameInput: {fileID: 1771474571}
   PlayerListViewContent: {fileID: 843987385}
   PlayerList2ViewContent: {fileID: 40938946}
@@ -1368,7 +1365,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 74181808}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9998548
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1633,7 +1630,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 41049952}
         m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
-        m_MethodName: ChangePrivacy
+        m_MethodName: TogglePublic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5167,7 +5164,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00079345703, y: -99.49369}
+  m_AnchoredPosition: {x: -0.00079345703, y: -99.49436}
   m_SizeDelta: {x: 495.0909, y: 0}
   m_Pivot: {x: 0.5, y: 0.01}
 --- !u!114 &1277608757
