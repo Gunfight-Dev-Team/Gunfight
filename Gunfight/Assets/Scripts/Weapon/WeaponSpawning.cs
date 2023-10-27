@@ -8,17 +8,55 @@ public class WeaponSpawning : NetworkBehaviour
 {
 
     [SerializeField] private GameObject[] weapons;
-
     [SerializeField] private Tilemap tileMap;
-
     [SerializeField] private int numWeapons;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (!isServer) { return; }
+    private List<Vector3> tileLoc = new List<Vector3>();
+    private List<GameObject> spawnedWeapons = new List<GameObject>();
 
-        List<Vector3> tileLoc = new List<Vector3>();
+    private void Start()
+    {
+        SpawnWeapons();
+    }
+
+    // Call this function to spawn weapons
+    public void SpawnWeapons()
+    {
+        if (!isServer)
+            return;
+
+        if (tileLoc.Count == 0)
+            FindTileLocations();
+
+        foreach (GameObject weapon in weapons)
+        {
+            for (int i = 0; i < numWeapons; i++)
+            {
+                Vector3 spawnPosition = tileLoc[Random.Range(0, tileLoc.Count)];
+                Quaternion spawnRotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
+                GameObject weaponInstance = Instantiate(weapon, spawnPosition, spawnRotation);
+                spawnedWeapons.Add(weaponInstance);
+                NetworkServer.Spawn(weaponInstance);
+            }
+        }
+    }
+
+    // Call this function to delete all weapons with the "Weapon" tag
+    public void DeleteWeapons()
+    {
+        foreach (GameObject weapon in spawnedWeapons)
+        {
+            if (weapon != null && weapon.CompareTag("Weapon"))
+            {
+                NetworkServer.Destroy(weapon);
+            }
+        }
+        spawnedWeapons.Clear();
+    }
+
+    private void FindTileLocations()
+    {
+        tileLoc.Clear();
         foreach (var pos in tileMap.cellBounds.allPositionsWithin)
         {
             Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
@@ -26,15 +64,6 @@ public class WeaponSpawning : NetworkBehaviour
             if (tileMap.HasTile(localPlace))
             {
                 tileLoc.Add(place);
-            }
-        }
-
-        foreach (GameObject weapon in weapons)
-        {
-            for (int i = 0; i < numWeapons; i++)
-            {
-                GameObject weaponInstance = Instantiate(weapon, tileLoc[Random.Range(0, tileLoc.Count)], Quaternion.Euler(0, 0, Random.Range(0, 360)));
-                NetworkServer.Spawn(weaponInstance);
             }
         }
     }
