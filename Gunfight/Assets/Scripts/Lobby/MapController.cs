@@ -6,15 +6,36 @@ using Mirror;
 
 public class MapController : NetworkBehaviour
 {
+    public GameObject LocalPlayerObject;
     public string[] mapNames;
     public int currentMapIndex;
     public Text currentMapText;
     [SyncVar(hook = nameof(UpdateMapName))] public string mapNameSynced = "Game";
 
+    private Button prevMap;
+    private Button nextMap;
+    private PlayerObjectController LocalPlayerController;
+
     private void Start()
     {
         currentMapIndex = 0;
         UpdateMapVariables();
+
+        LocalPlayerObject = GameObject.Find("LocalGamePlayer");
+        LocalPlayerController = LocalPlayerObject.GetComponent<PlayerObjectController>();
+        prevMap = GameObject.Find("PrevMapButton")?.GetComponent<Button>();
+        nextMap = GameObject.Find("NextMapButton")?.GetComponent<Button>();
+
+        if (LocalPlayerController.PlayerIdNumber == 1)
+        {
+            prevMap.interactable = true;
+            nextMap.interactable = true;
+        }
+        else
+        {
+            prevMap.interactable = false;
+            nextMap.interactable = false;
+        }
     }
 
     public void NextMap()

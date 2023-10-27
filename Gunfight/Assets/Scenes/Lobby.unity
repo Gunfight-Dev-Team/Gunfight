@@ -390,7 +390,7 @@ MonoBehaviour:
   PlayerItemCreated: 0
   LocalPlayerController: {fileID: 0}
   ReadyButton: {fileID: 1886785874}
-  publicToggle: {fileID: 360413123}
+  publicToggle: {fileID: 360413125}
   ReadyButtonText: {fileID: 1809209953}
   GameModeChooser: {fileID: 1115791304}
   isPublic: 0
@@ -426,6 +426,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+  LocalPlayerObject: {fileID: 0}
   mapNames:
   - Game
   - Map1
@@ -1364,7 +1365,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 74181808}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99995553
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1557,7 +1558,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &360413124
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1619,7 +1620,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1151265682}
   toggleTransition: 1
   graphic: {fileID: 1357857968}
@@ -5163,7 +5164,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00079345703, y: -99.49435}
+  m_AnchoredPosition: {x: -0.00079345703, y: -99.49371}
   m_SizeDelta: {x: 495.0909, y: 0}
   m_Pivot: {x: 0.5, y: 0.01}
 --- !u!114 &1277608757

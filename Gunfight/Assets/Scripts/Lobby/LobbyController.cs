@@ -29,7 +29,7 @@ public class LobbyController : MonoBehaviour
     public PlayerObjectController LocalPlayerController;
 
     public Button ReadyButton;
-    public GameObject publicToggle;
+    public Toggle publicToggle;
     public TMP_Text ReadyButtonText;
     public Dropdown GameModeChooser;
 
@@ -62,11 +62,16 @@ public class LobbyController : MonoBehaviour
     {
         if (LocalPlayerController.PlayerIdNumber == 1)
         {
-            publicToggle.SetActive(true);
-            // Disable the input field for non-host players
+            // if host
+            // able to control game access
+            publicToggle.interactable = true;
+            // able to edit lobby name
             LobbyNameInput.interactable = true;
             LobbyNameInput.onEndEdit.AddListener(OnEndEdit);
+            // able to choose gmae mode
             GameModeChooser.interactable = true;
+            // able to change map, this is handled in mapController
+            
         }
         else 
         {
@@ -161,23 +166,6 @@ public class LobbyController : MonoBehaviour
                 ReadyButton.interactable = false;
             }
         }
-
-        //if (AllReady)
-        //{
-        //    if(LocalPlayerController.PlayerIdNumber == 1)
-        //    {
-        //        ReadyButton.interactable = true;
-        //        ReadyButtonText.text = "Start";
-        //    }
-        //    else
-        //    {
-        //        ReadyButtonText.text = "Unready";
-        //    }
-        //}
-        //else
-        //{
-        //    ReadyButtonText.text = "Unready";
-        //}
     }
 
     public void UpdateLobbyName()

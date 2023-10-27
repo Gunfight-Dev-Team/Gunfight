@@ -95,7 +95,8 @@ public class PlayerObjectController : NetworkBehaviour
         gameObject.name = "LocalGamePlayer";
         LobbyController.Instance.FindLocalPlayer();
         LobbyController.Instance.UpdateLobbyName();
-        LobbyController.Instance.UpdateLobbyName();
+        // why are we calling this twice?
+        // LobbyController.Instance.UpdateLobbyName();
     }
 
     public override void OnStartClient()
