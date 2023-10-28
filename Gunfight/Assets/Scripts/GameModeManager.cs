@@ -14,7 +14,7 @@ public class GameModeManager : NetworkBehaviour
     private int currentRound = 0; // keeps track of the current round
 
     // get this from lobby
-    private int totalRounds = 3; // keeps track of total amount of rounds
+    public int totalRounds = 3; // keeps track of total amount of rounds
 
     [SyncVar(hook = nameof(CheckWinCondition))]
     public int aliveNum = 0; // get this from lobby

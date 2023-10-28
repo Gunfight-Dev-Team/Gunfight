@@ -1,0 +1,24 @@
+using Mirror;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class RoundDropdown : NetworkBehaviour
+{
+    public Dropdown dropdown;
+
+    public void OnDropdownValueChanged()
+    {
+        // Call a command to change the Dropdown value on the server
+        if(isServer)
+            RpcSyncDropdownValue(dropdown.value);
+    }
+
+    [ClientRpc]
+    void RpcSyncDropdownValue(int value)
+    {
+        // Change the Dropdown value on all clients
+        dropdown.value = value;
+    }
+}

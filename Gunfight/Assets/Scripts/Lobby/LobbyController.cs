@@ -32,6 +32,7 @@ public class LobbyController : MonoBehaviour
     public Toggle publicToggle;
     public TMP_Text ReadyButtonText;
     public Dropdown GameModeChooser;
+    public Dropdown RoundNumChooser;
 
     public bool isPublic = false;
     public bool AllReady = false;
@@ -70,13 +71,17 @@ public class LobbyController : MonoBehaviour
             LobbyNameInput.onEndEdit.AddListener(OnEndEdit);
             // able to choose gmae mode
             GameModeChooser.interactable = true;
+            //able to choose number of rounds
+            RoundNumChooser.interactable = true;
             // able to change map, this is handled in mapController
-            
+
+
         }
         else 
         {
             publicToggle.interactable = false;
             GameModeChooser.interactable = false;
+            RoundNumChooser.interactable = false;
             LobbyNameInput.interactable = false;
         }
     }
@@ -338,6 +343,16 @@ public class LobbyController : MonoBehaviour
         {
             PlayerList2.SetActive(true);
             ChatBox.SetActive(false);
+        }
+    }
+
+    public void SwitchRoundNum()
+    {
+        string selectedNum = RoundNumChooser.options[RoundNumChooser.value].text;
+
+        if(int.TryParse(selectedNum, out int intVal))
+        {
+            GameModeManager.Instance.totalRounds = intVal;
         }
     }
 
