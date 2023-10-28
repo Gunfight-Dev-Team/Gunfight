@@ -357,10 +357,10 @@ GameObject:
   - component: {fileID: 41049955}
   - component: {fileID: 41049952}
   - component: {fileID: 41049958}
+  - component: {fileID: 41049959}
   - component: {fileID: 41049957}
   - component: {fileID: 41049954}
   - component: {fileID: 41049956}
-  - component: {fileID: 41049959}
   m_Layer: 0
   m_Name: LobbyController
   m_TagString: Untagged
@@ -527,7 +527,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  dropdown: {fileID: 1115791304}
+  dropdown: {fileID: 1989389838}
 --- !u!1 &46754091
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,7 +1383,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 74181808}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9997322
+  m_Size: 0.9998449
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5918,7 +5918,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00079345703, y: -99.494316}
+  m_AnchoredPosition: {x: -0.00079345703, y: -99.49439}
   m_SizeDelta: {x: 495.0909, y: 0}
   m_Pivot: {x: 0.5, y: 0.01}
 --- !u!114 &1277608757
