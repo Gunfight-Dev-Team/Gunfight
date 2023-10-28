@@ -316,6 +316,7 @@ public class LobbyController : MonoBehaviour
 
     public void StartGame()
     {
+        GameModeManager.Instance.aliveNum = manager.GamePlayers.Count;
         LocalPlayerController.CanStartGame(MapName);
     }
 

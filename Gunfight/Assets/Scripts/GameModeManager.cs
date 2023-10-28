@@ -43,7 +43,6 @@ public class GameModeManager : NetworkBehaviour
 
     private void Start()
     {
-        aliveNum = manager.GamePlayers.Count;
         if (Instance == null)
         {
             Instance = this;
