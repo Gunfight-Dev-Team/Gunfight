@@ -13,7 +13,7 @@ public class GameModeManager : NetworkBehaviour
     [SyncVar]
     private int currentRound = 0; // keeps track of the current round
 
-    // get this from lobby
+
     public int totalRounds = 3; // keeps track of total amount of rounds
 
     [SyncVar(hook = nameof(CheckWinCondition))]
@@ -51,6 +51,8 @@ public class GameModeManager : NetworkBehaviour
 
         if (isServer & (SceneManager.GetActiveScene().name != "Lobby"))
         {
+            aliveNum = manager.GamePlayers.Count;
+
             StartRound(); // starts the first round after Awake
         }
     } 
