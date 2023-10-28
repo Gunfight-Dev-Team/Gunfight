@@ -21,6 +21,8 @@ public class GameModeManager : NetworkBehaviour
 
     private CustomNetworkManager manager;
 
+    private int playerCount;
+
     public enum GameMode
     {
         FreeForAll = 0,
@@ -51,6 +53,7 @@ public class GameModeManager : NetworkBehaviour
 
         if (isServer & (SceneManager.GetActiveScene().name != "Lobby"))
         {
+            playerCount = aliveNum;
             StartRound(); // starts the first round after Awake
         }
     } 
@@ -92,7 +95,7 @@ public class GameModeManager : NetworkBehaviour
             if (aliveNum <= 1)
             {
                 EndRound();
-                aliveNum = manager.GamePlayers.Count;
+                aliveNum = playerCount;
             }
         }
     }
