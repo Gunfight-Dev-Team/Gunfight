@@ -10,7 +10,7 @@ public class ButtonManager : MonoBehaviour
     [SerializeField]
     private string[] Infos =
     {
-        "...",
+        "",
         "Quick Start and Dive into the Action!",
         "Create a Lobby and Invite Players",
         "Join the Fun and Explore Existing Lobbies!",
