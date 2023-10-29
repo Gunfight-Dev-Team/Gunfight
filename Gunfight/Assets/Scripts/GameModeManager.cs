@@ -26,7 +26,8 @@ public class GameModeManager : NetworkBehaviour
     public enum GameMode
     {
         FreeForAll = 0,
-        Gunfight = 1
+        Gunfight = 1,
+        SinglePlayer = 2
     }
 
     public GameMode gameMode; // get this from lobby

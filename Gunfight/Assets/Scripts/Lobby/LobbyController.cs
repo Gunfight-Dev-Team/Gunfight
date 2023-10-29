@@ -74,8 +74,7 @@ public class LobbyController : MonoBehaviour
             //able to choose number of rounds
             RoundNumChooser.interactable = true;
             // able to change map, this is handled in mapController
-
-
+            
         }
         else 
         {
@@ -83,6 +82,12 @@ public class LobbyController : MonoBehaviour
             GameModeChooser.interactable = false;
             RoundNumChooser.interactable = false;
             LobbyNameInput.interactable = false;
+        }
+
+        if(PlayerPrefs.GetInt("isJoinedSingle") == 1)
+        {
+            // Joined single player
+            GameModeChooser.value = 2;
         }
     }
 
@@ -345,6 +350,12 @@ public class LobbyController : MonoBehaviour
             PlayerList2.SetActive(true);
             ChatBox.SetActive(false);
         }
+        else if (GameModeChooser.value == 2)
+        {
+            PlayerList2.SetActive(false);
+            ChatBox.SetActive(true);
+        }
+
     }
 
     public void SwitchRoundNum()
