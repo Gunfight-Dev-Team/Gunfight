@@ -23,6 +23,8 @@ public class GameModeManager : NetworkBehaviour
 
     private int playerCount;
 
+    private bool hasGameStarted = false;
+
     public enum GameMode
     {
         FreeForAll = 0,
@@ -51,13 +53,16 @@ public class GameModeManager : NetworkBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
 
-        if (isServer & (SceneManager.GetActiveScene().name != "Lobby"))
+    private void Update()
+    {
+        if (!hasGameStarted && isServer && (SceneManager.GetActiveScene().name != "Lobby"))
         {
             playerCount = aliveNum;
             StartRound(); // starts the first round after Awake
         }
-    } 
+    }
 
     public void StartRound()
     {
