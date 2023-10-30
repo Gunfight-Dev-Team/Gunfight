@@ -11,7 +11,7 @@ public class GameModeManager : NetworkBehaviour
     public static GameModeManager Instance;
 
     [SyncVar]
-    private int currentRound = 0; // keeps track of the current round
+    public int currentRound = 0; // keeps track of the current round
 
 
     public int totalRounds = 3; // keeps track of total amount of rounds
@@ -74,6 +74,7 @@ public class GameModeManager : NetworkBehaviour
             if (isServer)
                 RpcResetGame();
             SpawnWeaponsInGame();
+            aliveNum = playerCount;
             StartRound();
             // TODO: Reset Map (pots / boxes)
         }
@@ -90,13 +91,12 @@ public class GameModeManager : NetworkBehaviour
 
     void CheckWinCondition(int oldAliveNum, int newAliveNum)
     {
-        if (SceneManager.GetActiveScene().name != "Lobby")
+        if (isServer && SceneManager.GetActiveScene().name != "Lobby")
         {
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
                 EndRound();
-                aliveNum = playerCount;
             }
         }
     }
