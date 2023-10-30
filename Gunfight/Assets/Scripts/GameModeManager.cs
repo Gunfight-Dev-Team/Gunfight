@@ -74,7 +74,9 @@ public class GameModeManager : NetworkBehaviour
             if (isServer)
                 RpcResetGame();
             SpawnWeaponsInGame();
+            Debug.Log("AliveNum: " + aliveNum + " PlayerCount: " + playerCount);
             aliveNum = playerCount;
+            Debug.Log("AFTER AliveNum: " + aliveNum + " PlayerCount: " + playerCount);
             StartRound();
             // TODO: Reset Map (pots / boxes)
         }
