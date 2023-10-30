@@ -60,6 +60,7 @@ public class GameModeManager : NetworkBehaviour
         if (!hasGameStarted && isServer && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
             playerCount = aliveNum;
+            hasGameStarted = true;
             StartRound(); // starts the first round after Awake
         }
     }
