@@ -4,6 +4,7 @@ using UnityEngine;
 using Steamworks;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class LobbiesListManager : MonoBehaviour
 {
@@ -12,47 +13,59 @@ public class LobbiesListManager : MonoBehaviour
     public GameObject lobbiesMenu;
     public GameObject lobbyDataItemPrefab;
     public GameObject lobbyListContent;
+    public Text buttonText;
 
     public GameObject searchBar;
 
     public GameObject title;
 
-    public GameObject lobbiesButton, hostButton, quickstartButton, backButton;
+    public GameObject lobbiesButton, hostButton, quickstartButton, backButton, singleplayerButton;
 
     public List<GameObject> listOfLobbies = new List<GameObject> ();
 
     private int totalLobbies;
+
+    private bool inLobbyList = false;
 
     private void Awake()
     {
         if (instance == null) { instance = this; }
     }
 
-    public void GetListOfLobbies()
-    {
-        lobbiesButton.SetActive (false);
-        hostButton.SetActive (false);
-        title.SetActive(false);
-        lobbiesMenu.SetActive (true);
-        backButton.SetActive(false);
-
-        SteamLobby.Instance.GetLobbiesList();
-    }
-
     public void GoBack()
     {
-        lobbiesButton.SetActive(true);
-        hostButton.SetActive(true);
-        title.SetActive(true);
-        lobbiesMenu.SetActive(false);
-        backButton.SetActive(true);
-
-        DestroyLobbies();
+        if (inLobbyList)
+        {
+            lobbiesButton.SetActive(true);
+            hostButton.SetActive(true);
+            quickstartButton.SetActive(true);
+            title.SetActive(true);
+            singleplayerButton.SetActive(true);
+            lobbiesMenu.SetActive(false);
+            backButton.SetActive(true);
+            DestroyLobbies();
+            inLobbyList = false;
+            buttonText.enabled = true;
+        }
+        else
+        {
+            SceneManager.LoadScene("Start");
+        }
     }
 
-    public void BackPage()
+    public void toLobbyList()
     {
-        SceneManager.LoadScene("Start");
+        inLobbyList = true;
+        quickstartButton.SetActive(false);
+        hostButton.SetActive(false);
+        singleplayerButton.SetActive(false);
+        lobbiesButton.SetActive(false);
+        buttonText.enabled = false;
+        title.SetActive(false);
+
+        lobbiesMenu.SetActive(true);
+
+        SteamLobby.Instance.GetLobbiesList();
     }
 
     public void DisplayLobbies(List<CSteamID> lobbyIDs, LobbyDataUpdate_t result)
