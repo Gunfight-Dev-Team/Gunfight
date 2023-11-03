@@ -387,7 +387,7 @@ public class PlayerController : NetworkBehaviour
         if (health <= 0)
         {
             RpcDie();
-            StartCoroutine(DelayedCmdPlayerDied());
+            SendPlayerDeath();
         }
         else
         {
@@ -395,9 +395,8 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    private IEnumerator DelayedCmdPlayerDied()
+    private void SendPlayerDeath()
     {
-        yield return new WaitForSeconds(5f);
         if (isOwned)
         {
             // If the object has authority (belongs to the local player), send a command to notify the server about the death

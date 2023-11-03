@@ -80,15 +80,14 @@ public class GameModeManager : NetworkBehaviour
             if (isServer)
                 RpcResetGame();
             SpawnWeaponsInGame();
-            Debug.Log("AliveNum: " + aliveNum + " PlayerCount: " + playerCount);
             aliveNum = playerCount;
-            Debug.Log("AFTER AliveNum: " + aliveNum + " PlayerCount: " + playerCount);
             StartRound();
             // TODO: Reset Map (pots / boxes)
         }
         else // if the current round equals the total round
         {
-
+            //DisplayOverallWinner();
+            //GoToLobby();
         }
     }
 
@@ -97,16 +96,24 @@ public class GameModeManager : NetworkBehaviour
        aliveNum--;
     }
 
-    void CheckWinCondition(int oldAliveNum, int newAliveNum)
+    private IEnumerator DelayedEndRound()
     {
-        if (isServer && SceneManager.GetActiveScene().name != "Lobby")
+        if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
         {
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
+                ShowWinner("The Winner Is");
+                yield return new WaitForSeconds(5f);
+                StopShowWinner();
                 EndRound();
             }
         }
+    }
+
+    void CheckWinCondition(int oldAliveNum, int newAliveNum)
+    {       
+        StartCoroutine(DelayedEndRound());
     }
 
     [ClientRpc]
@@ -154,13 +161,21 @@ public class GameModeManager : NetworkBehaviour
 
     public void ShowWinner(string winner)
     {
-        // Find the WeaponSpawning script in the "game" scene
         GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
         if (gameModeUIController != null)
         {
-            // Call the DeleteWeapons method
             gameModeUIController.DisplayWinner(winner);
+        }
+    }
+
+    public void StopShowWinner()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayWinner();
         }
     }
 }
