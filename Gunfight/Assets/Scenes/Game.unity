@@ -18942,7 +18942,7 @@ GameObject:
   - component: {fileID: 233720696}
   - component: {fileID: 233720695}
   - component: {fileID: 233720699}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: destroyPots
   m_TagString: destroy
   m_Icon: {fileID: 0}
@@ -19432,7 +19432,7 @@ GameObject:
   - component: {fileID: 264589354}
   - component: {fileID: 264589356}
   - component: {fileID: 264589355}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
