@@ -8,14 +8,17 @@ using UnityEngine.SceneManagement;
 public class EnemyObjectController : NetworkBehaviour
 {
     public Pathfinding.AIDestinationSetter target;
+    public SpriteRenderer spriteRenderer;
 
-    //[SyncVar(hook = nameof(RoundUpdate))] public float speed = 1f;
-    //public float speedOffset = 0.1f;
+    [SyncVar(hook = nameof(RoundUpdate))] public float speed = 1f;
+    public float speedOffset = 0.1f;
     public GameObject closestPlayer;
     //private float closestDistance = float.MaxValue;
 
     //private GameObject[] players;
     //private Rigidbody2D rb;
+
+    private Vector3 previousPosition;
 
     void Start()
     {
@@ -24,35 +27,33 @@ public class EnemyObjectController : NetworkBehaviour
         //closestPlayer = GameObject.FindGameObjectWithTag("Player");
         target.target = GameObject.FindGameObjectWithTag("Player").transform;
         //InvokeRepeating("FindClosest", 0f, 3f);
+
+        previousPosition = transform.position;
     }
 
     void Update()
     {
-        /*transform.up = (closestPlayer.transform.position - transform.position).normalized;
-
-        rb.MovePosition(transform.position + transform.up * speed * Time.deltaTime);
-        Physics2D.SyncTransforms();*/
-        //target.target = GameObject.FindGameObjectWithTag("Player").transform;
+        updateFlip();
 
     }
 
-/*    private void FindClosest()
-    {
-
-        foreach (GameObject player in players)
+    /*    private void FindClosest()
         {
-            float distance = Vector3.Distance(transform.position, player.transform.position);
 
-            if (distance < closestDistance)
+            foreach (GameObject player in players)
             {
-                closestDistance = distance;
-                closestPlayer = player;
+                float distance = Vector3.Distance(transform.position, player.transform.position);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestPlayer = player;
+                }
             }
-        }
 
-    }*/
+        }*/
 
-/*    public void RoundUpdate(float OldValue, float NewValue)
+    public void RoundUpdate(float OldValue, float NewValue)
     {
         // TODO: if round ends, increase speed
         if (isServer)
@@ -64,7 +65,25 @@ public class EnemyObjectController : NetworkBehaviour
     [ClientRpc]
     private void increaseSpeed(float OldValue)
     {
-        float newSpeed = OldValue * (1 + Random.Range(-speedOffset, speedOffset));
+        float newSpeed = OldValue * (1 + speedOffset);
         RoundUpdate(OldValue, newSpeed);
-    }*/
+    }
+
+    void updateFlip()
+    {
+        // Calculate the change in position
+        Vector3 deltaPosition = transform.position - previousPosition;
+
+        // Update the previous position for the next frame
+        previousPosition = transform.position;
+
+        if (deltaPosition.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+        }
+    }
 }

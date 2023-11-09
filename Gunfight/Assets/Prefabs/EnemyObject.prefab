@@ -335,6 +335,8 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+  target: {fileID: 0}
+  spriteRenderer: {fileID: 5891011091002882805}
   speed: 6
   speedOffset: 0.5
   closestPlayer: {fileID: 0}
