@@ -7,33 +7,36 @@ using UnityEngine.SceneManagement;
 
 public class EnemyObjectController : NetworkBehaviour
 {
-    [SyncVar(hook = nameof(RoundUpdate))] public float speed = 1f;
-    public float speedOffset = 0.1f;
+    public Pathfinding.AIDestinationSetter target;
+
+    //[SyncVar(hook = nameof(RoundUpdate))] public float speed = 1f;
+    //public float speedOffset = 0.1f;
     public GameObject closestPlayer;
-    private float closestDistance = float.MaxValue;
+    //private float closestDistance = float.MaxValue;
 
-
-    private GameObject[] players;
-    private Rigidbody2D rb;
+    //private GameObject[] players;
+    //private Rigidbody2D rb;
 
     void Start()
     {
-        players = GameObject.FindGameObjectsWithTag("Player");
-        rb = GetComponent<Rigidbody2D>();
-        closestPlayer = GameObject.FindGameObjectWithTag("Player");
-        InvokeRepeating("FindClosest", 0f, 3f);
+        //players = GameObject.FindGameObjectsWithTag("Player");
+        //rb = GetComponent<Rigidbody2D>();
+        //closestPlayer = GameObject.FindGameObjectWithTag("Player");
+        target.target = GameObject.FindGameObjectWithTag("Player").transform;
+        //InvokeRepeating("FindClosest", 0f, 3f);
     }
 
     void Update()
     {
-        transform.up = (closestPlayer.transform.position - transform.position).normalized;
+        /*transform.up = (closestPlayer.transform.position - transform.position).normalized;
 
         rb.MovePosition(transform.position + transform.up * speed * Time.deltaTime);
-        Physics2D.SyncTransforms();
+        Physics2D.SyncTransforms();*/
+        //target.target = GameObject.FindGameObjectWithTag("Player").transform;
 
     }
 
-    private void FindClosest()
+/*    private void FindClosest()
     {
 
         foreach (GameObject player in players)
@@ -47,9 +50,9 @@ public class EnemyObjectController : NetworkBehaviour
             }
         }
 
-    }
+    }*/
 
-    public void RoundUpdate(float OldValue, float NewValue)
+/*    public void RoundUpdate(float OldValue, float NewValue)
     {
         // TODO: if round ends, increase speed
         if (isServer)
@@ -63,5 +66,5 @@ public class EnemyObjectController : NetworkBehaviour
     {
         float newSpeed = OldValue * (1 + Random.Range(-speedOffset, speedOffset));
         RoundUpdate(OldValue, newSpeed);
-    }
+    }*/
 }
