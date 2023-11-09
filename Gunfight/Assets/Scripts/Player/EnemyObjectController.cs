@@ -11,8 +11,8 @@ public class EnemyObjectController : NetworkBehaviour
     public Pathfinding.AIPath path;
     public SpriteRenderer spriteRenderer;
 
-    [SyncVar(hook = nameof(RoundUpdate))] public float speed;
-    public float speedOffset = 0.1f;
+    public float speed;
+    public float speedOffset = 0.0001f;
     public GameObject closestPlayer;
     private float closestDistance = float.MaxValue;
 
@@ -22,10 +22,9 @@ public class EnemyObjectController : NetworkBehaviour
 
     void Start()
     {
-
+        players = GameObject.FindGameObjectsWithTag("Player");
         target.target = GameObject.FindGameObjectWithTag("Player").transform;
         InvokeRepeating("FindClosest", 0f, 3f);
-        InvokeRepeating("increaseSpeed", 0f, 3f);
         path.maxSpeed *= speed;
         previousPosition = transform.position;
     }
@@ -51,21 +50,10 @@ public class EnemyObjectController : NetworkBehaviour
 
     }
 
-    public void RoundUpdate(float OldValue, float NewValue)
-    {
-        // TODO: if round ends, increase speed
-        if (isServer)
-        {
-            speed = NewValue;
-        }
-    }
-
-    [ClientRpc]
     private void increaseSpeed(float OldValue)
     {
         float newSpeed = OldValue * (1 + speedOffset);
-        RoundUpdate(OldValue, newSpeed);
-        path.maxSpeed *= speed;
+        path.maxSpeed = newSpeed;
     }
 
     void updateFlip()
