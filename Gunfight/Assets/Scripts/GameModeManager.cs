@@ -71,10 +71,16 @@ public class GameModeManager : NetworkBehaviour
             hasGameStarted = true;
             StartRound(); // starts the first round after Awake
 
+        }
+
+
+        if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby"))
+        {
             if (gameMode == GameMode.SinglePlayer)
             {
                 initEnemy();
             }
+
         }
     }
 
