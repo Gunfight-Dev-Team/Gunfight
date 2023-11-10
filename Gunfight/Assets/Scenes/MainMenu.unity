@@ -1899,6 +1899,7 @@ MonoBehaviour:
   - {fileID: 6672598589228257044, guid: 39ef0440d497842c4b03f8902e740512, type: 3}
   - {fileID: 5874581913501018297, guid: 3cc7416febf644efeaa2079cdd8d4437, type: 3}
   - {fileID: 1946748778305102385, guid: 70e9da1e0cc06034fb7dd32f01a3b636, type: 3}
+  - {fileID: 5128584884438735198, guid: 608ae7d5761017c469596d6818938927, type: 3}
   timeInterpolationGui: 0
   GamePlayerPrefab: {fileID: 8544065240725089489, guid: df340c9d318be6647b903dd6dae18029, type: 3}
 --- !u!4 &665717281
