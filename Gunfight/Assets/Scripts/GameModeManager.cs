@@ -65,23 +65,21 @@ public class GameModeManager : NetworkBehaviour
 
     private void Update()
     {
-        if (!hasGameStarted && isServer && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
-        {
-            playerCount = aliveNum;
-            hasGameStarted = true;
-            StartRound(); // starts the first round after Awake
-
-        }
-
-
-        if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby"))
+        if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
             if (gameMode == GameMode.SinglePlayer)
             {
                 initEnemy();
             }
 
+            if (isServer)
+            {
+                playerCount = aliveNum;
+                hasGameStarted = true;
+                StartRound(); // starts the first round after Awake
+            }
         }
+
     }
 
     private void initEnemy()
