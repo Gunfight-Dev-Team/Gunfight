@@ -34,6 +34,13 @@ public class GameModeManager : NetworkBehaviour
 
     public GameMode gameMode; // get this from lobby
 
+    [Tooltip("Below are used for Single Player")]
+    public GameObject enemyPrefab;
+    public int startingNumberOfEnemies = 4;
+    public int enemyMultiplier = 2;
+    public int currentRoundNumberOfEnemies;
+    public int currentNumberOfEnemies;
+
     private CustomNetworkManager Manager
     {
         get
@@ -62,6 +69,24 @@ public class GameModeManager : NetworkBehaviour
             playerCount = aliveNum;
             hasGameStarted = true;
             StartRound(); // starts the first round after Awake
+
+            if (gameMode == GameMode.SinglePlayer)
+            {
+                initEnemy();
+            }
+        }
+    }
+
+    private void initEnemy()
+    {
+        for (int i = 0; i < startingNumberOfEnemies; i++)
+        {
+            float x = (i % 2 == 0) ? 18 : -18;
+            float y = (i < 2) ? 22 : -22;
+
+            Vector3 spawnPos = new Vector3(x, y, 0);
+
+            GameObject enemyInstance = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
         }
     }
 

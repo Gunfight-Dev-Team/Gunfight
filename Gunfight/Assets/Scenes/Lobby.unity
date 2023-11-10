@@ -1384,7 +1384,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 74181808}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9991764
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5921,7 +5921,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00079345703, y: -99.494385}
+  m_AnchoredPosition: {x: -0.00079345703, y: -99.4937}
   m_SizeDelta: {x: 495.0909, y: 0}
   m_Pivot: {x: 0.5, y: 0.01}
 --- !u!114 &1277608757
@@ -8966,6 +8966,10 @@ PrefabInstance:
       propertyPath: sceneId
       value: 1851699330
       objectReference: {fileID: 0}
+    - target: {fileID: 3973911278848044931, guid: 9469b697d7451a648984cbcfc465c539, type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 5128584884438735198, guid: 608ae7d5761017c469596d6818938927, type: 3}
     - target: {fileID: 3973911278848044933, guid: 9469b697d7451a648984cbcfc465c539, type: 3}
       propertyPath: m_RootOrder
       value: 5

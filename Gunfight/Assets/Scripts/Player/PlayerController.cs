@@ -188,14 +188,29 @@ public class PlayerController : NetworkBehaviour
         // Sets the inital Spawn Position for all four characters
         //REFACTOR: Spawn points are gameObjects from the map class rather than vector3
         Debug.Log("Set POS ID: " + poc.PlayerIdNumber);
-        if (poc.PlayerIdNumber == 1)
-            transform.position = new Vector3(22.5f, 22.5f, 0.0f);
-        if (poc.PlayerIdNumber == 2)
-            transform.position = new Vector3(-22.5f, -22.5f, 0.0f);
-        if (poc.PlayerIdNumber == 3)
-            transform.position = new Vector3(-22.5f, 22.5f, 0.0f);
-        if (poc.PlayerIdNumber == 4)
-            transform.position = new Vector3(22.5f, -22.5f, 0.0f);
+
+        if(GameModeManager.Instance.gameMode != GameModeManager.GameMode.SinglePlayer)
+        {
+            if (poc.PlayerIdNumber == 1)
+                transform.position = new Vector3(22.5f, 22.5f, 0.0f);
+            if (poc.PlayerIdNumber == 2)
+                transform.position = new Vector3(-22.5f, -22.5f, 0.0f);
+            if (poc.PlayerIdNumber == 3)
+                transform.position = new Vector3(-22.5f, 22.5f, 0.0f);
+            if (poc.PlayerIdNumber == 4)
+                transform.position = new Vector3(22.5f, -22.5f, 0.0f);
+        }
+        else
+        {
+            if (poc.PlayerIdNumber == 1)
+                transform.position = new Vector3(3f, 2f, 0.0f);
+            if (poc.PlayerIdNumber == 2)
+                transform.position = new Vector3(-3f, -2f, 0.0f);
+            if (poc.PlayerIdNumber == 3)
+                transform.position = new Vector3(-3f, 2f, 0.0f);
+            if (poc.PlayerIdNumber == 4)
+                transform.position = new Vector3(3f, -2f, 0.0f);
+        }
     }
 
     public void SetTeam()
@@ -321,6 +336,11 @@ public class PlayerController : NetworkBehaviour
                         .PlayClipAtPoint(HurtsSound[Random.Range(0, 1)],
                         hit.point,
                         AudioListener.volume);
+                }
+
+                if (hit.collider.gameObject.tag == "Enemy")
+                {
+                    hit.collider.gameObject.GetComponent<EnemyObjectController>().TakeDamage(weaponInfo.damage);
                 }
 
                 if (hit.collider.gameObject.tag == "destroy")

@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using Steamworks;
-using UnityEngine.SceneManagement;
 
 public class EnemyObjectController : NetworkBehaviour
 {
@@ -11,8 +8,11 @@ public class EnemyObjectController : NetworkBehaviour
     public Pathfinding.AIPath path;
     public SpriteRenderer spriteRenderer;
 
+    public float health;
+
     public float speed;
-    public float speedOffset = 0.0001f;
+    public float speedOffset = 0.1f;
+    public float speedMultipiler = 0.5f;
     public GameObject closestPlayer;
 
 
@@ -22,10 +22,11 @@ public class EnemyObjectController : NetworkBehaviour
 
     void Start()
     {
+        health = 10.0f;
         players = GameObject.FindGameObjectsWithTag("Player");
         target.target = GameObject.FindGameObjectWithTag("Player").transform;
         InvokeRepeating("FindClosest", 0f, 3f);
-        path.maxSpeed *= speed;
+        path.maxSpeed *= speed + Random.Range(-speedOffset,speedOffset);
         previousPosition = transform.position;
     }
 
@@ -52,7 +53,7 @@ public class EnemyObjectController : NetworkBehaviour
 
     private void increaseSpeed(float OldValue)
     {
-        float newSpeed = OldValue * (1 + speedOffset);
+        float newSpeed = OldValue * (1 + speedMultipiler);
         path.maxSpeed = newSpeed;
     }
 
@@ -72,5 +73,42 @@ public class EnemyObjectController : NetworkBehaviour
         {
             spriteRenderer.flipX = false;
         }
+    }
+
+    public void TakeDamage(float damage)
+    {
+
+        health -= damage;
+        Debug.Log("Zombie took " + damage + " Damage");
+
+        if (health <= 0)
+        {
+            RpcDie();
+        }
+        else
+        {
+            RpcHitColor();
+        }
+    }
+
+    void RpcDie()
+    {
+        spriteRenderer.enabled = false;
+        Destroy(gameObject);
+    }
+
+    IEnumerator FlashSprite()
+    {
+        // makes player flash red when hit
+        Color temp = spriteRenderer.color;
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.color = Color.white;
+    }
+
+    [ClientRpc]
+    void RpcHitColor()
+    {
+        StartCoroutine(FlashSprite());
     }
 }
