@@ -13,6 +13,7 @@ using Unity.VisualScripting;
 public class LobbyController : MonoBehaviour
 {
     public static LobbyController Instance;
+    public GameModeManager gameModeManager;
 
     public InputField LobbyNameInput;
 
@@ -61,6 +62,7 @@ public class LobbyController : MonoBehaviour
 
     private void Start()
     {
+
         if (LocalPlayerController.PlayerIdNumber == 1)
         {
             // if host
@@ -344,16 +346,19 @@ public class LobbyController : MonoBehaviour
         {
             PlayerList2.SetActive(false);
             ChatBox.SetActive(true);
+            gameModeManager.gameMode = GameModeManager.GameMode.FreeForAll;
         }
         else if(GameModeChooser.value == 1)
         {
             PlayerList2.SetActive(true);
             ChatBox.SetActive(false);
+            gameModeManager.gameMode = GameModeManager.GameMode.Gunfight;
         }
         else if (GameModeChooser.value == 2)
         {
             PlayerList2.SetActive(false);
             ChatBox.SetActive(true);
+            gameModeManager.gameMode = GameModeManager.GameMode.SinglePlayer;
         }
 
     }
