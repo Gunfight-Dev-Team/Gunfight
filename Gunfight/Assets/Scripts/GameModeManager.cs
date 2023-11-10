@@ -35,7 +35,6 @@ public class GameModeManager : NetworkBehaviour
     public GameMode gameMode; // get this from lobby
 
     [Tooltip("Below are used for Single Player")]
-
     public GameObject enemyPrefab;
     public int startingNumberOfEnemies = 4;
     public int enemyMultiplier = 2;
@@ -65,24 +64,20 @@ public class GameModeManager : NetworkBehaviour
 
     private void Update()
     {
-        if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
+        if (!hasGameStarted && isServer && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
+            playerCount = aliveNum;
+            hasGameStarted = true;
+            StartRound(); // starts the first round after Awake
+
             if (gameMode == GameMode.SinglePlayer)
             {
                 initEnemy();
             }
-
-            hasGameStarted = true;
-
-            if (isServer)
-            {
-                playerCount = aliveNum;
-                StartRound(); // starts the first round after Awake
-            }
         }
-
     }
 
+    [ClientRpc]
     private void initEnemy()
     {
         for (int i = 0; i < startingNumberOfEnemies; i++)
