@@ -72,10 +72,11 @@ public class GameModeManager : NetworkBehaviour
                 initEnemy();
             }
 
+            hasGameStarted = true;
+
             if (isServer)
             {
                 playerCount = aliveNum;
-                hasGameStarted = true;
                 StartRound(); // starts the first round after Awake
             }
         }
