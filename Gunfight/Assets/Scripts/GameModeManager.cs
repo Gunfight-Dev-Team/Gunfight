@@ -35,6 +35,7 @@ public class GameModeManager : NetworkBehaviour
     public GameMode gameMode; // get this from lobby
 
     [Tooltip("Below are used for Single Player")]
+
     public GameObject enemyPrefab;
     public int startingNumberOfEnemies = 4;
     public int enemyMultiplier = 2;

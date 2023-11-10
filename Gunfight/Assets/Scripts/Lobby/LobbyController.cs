@@ -86,10 +86,12 @@ public class LobbyController : MonoBehaviour
             LobbyNameInput.interactable = false;
         }
 
+
         if(PlayerPrefs.GetInt("isJoinedSingle") == 1)
         {
             // Joined single player
             GameModeChooser.value = 2;
+            GameModeManager.Instance.gameMode = GameModeManager.GameMode.SinglePlayer;
         }
     }
 
