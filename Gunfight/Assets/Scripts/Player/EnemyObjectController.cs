@@ -14,7 +14,7 @@ public class EnemyObjectController : NetworkBehaviour
     public float speed;
     public float speedOffset = 0.0001f;
     public GameObject closestPlayer;
-    private float closestDistance = float.MaxValue;
+
 
     private GameObject[] players;
 
@@ -36,7 +36,7 @@ public class EnemyObjectController : NetworkBehaviour
 
     private void FindClosest()
     {
-        
+        float closestDistance = float.MaxValue;
         foreach (GameObject player in players)
         {
             float distance = Vector3.Distance(transform.position, player.transform.position);
