@@ -64,22 +64,28 @@ public class GameModeManager : NetworkBehaviour
 
     private void Update()
     {
-        if (!hasGameStarted && isServer && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
+        if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
-            playerCount = aliveNum;
-            hasGameStarted = true;
-            StartRound(); // starts the first round after Awake
-
             if (gameMode == GameMode.SinglePlayer)
             {
                 initEnemy();
             }
+
+            if (isServer)
+            {
+                playerCount = aliveNum;
+                hasGameStarted = true;
+                StartRound(); // starts the first round after Awake
+            }
         }
     }
 
-    [ClientRpc]
     private void initEnemy()
     {
+        if (!isServer)
+        {
+            return;
+        }
         for (int i = 0; i < startingNumberOfEnemies; i++)
         {
             float x = (i % 2 == 0) ? 18 : -18;
