@@ -94,6 +94,7 @@ public class GameModeManager : NetworkBehaviour
             Vector3 spawnPos = new Vector3(x, y, 0);
 
             GameObject enemyInstance = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+            NetworkServer.Spawn(enemyInstance);
         }
     }
 
