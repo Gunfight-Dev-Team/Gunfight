@@ -9,7 +9,7 @@ public class WeaponSpawning : NetworkBehaviour
 
     [SerializeField] private GameObject[] weapons;
     [SerializeField] private Tilemap tileMap;
-    [SerializeField] private int numWeapons;
+    [SerializeField] private int numPerWeapons;
 
     private List<Vector3> tileLoc = new List<Vector3>();
     private List<GameObject> spawnedWeapons = new List<GameObject>();
@@ -30,7 +30,7 @@ public class WeaponSpawning : NetworkBehaviour
 
         foreach (GameObject weapon in weapons)
         {
-            for (int i = 0; i < numWeapons; i++)
+            for (int i = 0; i < numPerWeapons; i++)
             {
                 Vector3 spawnPosition = tileLoc[Random.Range(0, tileLoc.Count)];
                 Quaternion spawnRotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
