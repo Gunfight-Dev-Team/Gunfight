@@ -330,7 +330,7 @@ public class PlayerController : NetworkBehaviour
                 if (hit.collider.gameObject.tag == "destroy")
                 {
                     Tilemap collidableTileMap =
-                        GameObject.Find("destroyPots").GetComponent<Tilemap>();
+                        GameObject.Find("destroyable").GetComponent<Tilemap>();
 
                     Debug.Log("Hit Pot");
 
@@ -340,6 +340,9 @@ public class PlayerController : NetworkBehaviour
                     RpcBreakPot(potPos);
 
                     collidableTileMap.SetTile(potPos, null);
+
+                    // disables collider
+                    // hit.collider.enabled = false;
 
                     AudioSource
                         .PlayClipAtPoint(breakSound,
@@ -467,7 +470,7 @@ public class PlayerController : NetworkBehaviour
     void RpcBreakPot(Vector3Int potPos)
     {
         Tilemap collidableTileMap =
-            GameObject.Find("destroyPots").GetComponent<Tilemap>();
+            GameObject.Find("destroyable").GetComponent<Tilemap>();
         collidableTileMap.SetTile(potPos, null);
         AudioSource.PlayClipAtPoint(breakSound, potPos, AudioListener.volume);
     }

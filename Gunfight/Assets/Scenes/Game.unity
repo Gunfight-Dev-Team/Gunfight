@@ -18997,7 +18997,7 @@ GameObject:
   - component: {fileID: 233720695}
   - component: {fileID: 233720699}
   m_Layer: 7
-  m_Name: destroyPots
+  m_Name: destroyable
   m_TagString: destroy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31302,7 +31302,7 @@ MonoBehaviour:
   - {fileID: 732958966662152150, guid: 89f3ccac7a4604a169bfc4d1c554d16d, type: 3}
   - {fileID: 4748079201462716690, guid: a55a7443c3aeb44dd893095318db3f34, type: 3}
   tileMap: {fileID: 46667692}
-  numPerWeapons: 0
+  numPerWeapons: 5
 --- !u!114 &501821809
 MonoBehaviour:
   m_ObjectHideFlags: 0
