@@ -185,32 +185,16 @@ public class PlayerController : NetworkBehaviour
 
     public void SetPosition()
     {
-        // Sets the inital Spawn Position for all four characters
-        //REFACTOR: Spawn points are gameObjects from the map class rather than vector3
-        Debug.Log("Set POS ID: " + poc.PlayerIdNumber);
+        // Determine the spawn points based on the game mode
+        Transform[] spawnPoints = GameModeManager.Instance.gameMode != GameModeManager.GameMode.SinglePlayer
+            ? MapManager.Instance.FFASpawnPoints
+            : MapManager.Instance.SPSpawnPoints;
 
-        if(GameModeManager.Instance.gameMode != GameModeManager.GameMode.SinglePlayer)
-        {
-            if (poc.PlayerIdNumber == 1)
-                transform.position = new Vector3(22.5f, 22.5f, 0.0f);
-            if (poc.PlayerIdNumber == 2)
-                transform.position = new Vector3(-22.5f, -22.5f, 0.0f);
-            if (poc.PlayerIdNumber == 3)
-                transform.position = new Vector3(-22.5f, 22.5f, 0.0f);
-            if (poc.PlayerIdNumber == 4)
-                transform.position = new Vector3(22.5f, -22.5f, 0.0f);
-        }
-        else
-        {
-            if (poc.PlayerIdNumber == 1)
-                transform.position = new Vector3(3f, 2f, 0.0f);
-            if (poc.PlayerIdNumber == 2)
-                transform.position = new Vector3(-3f, -2f, 0.0f);
-            if (poc.PlayerIdNumber == 3)
-                transform.position = new Vector3(-3f, 2f, 0.0f);
-            if (poc.PlayerIdNumber == 4)
-                transform.position = new Vector3(3f, -2f, 0.0f);
-        }
+        // Ensure that PlayerIdNumber is within a valid range
+        int playerId = Mathf.Clamp(poc.PlayerIdNumber, 1, spawnPoints.Length);
+
+        // Set the position based on the PlayerIdNumber
+        transform.position = spawnPoints[playerId - 1].position;
     }
 
     public void SetTeam()
