@@ -196,6 +196,14 @@ public class LobbyController : MonoBehaviour
         if(PlayerListItems.Count < Manager.GamePlayers.Count) { CreateClientPlayerItem(); }
         if(PlayerListItems.Count > Manager.GamePlayers.Count) { RemovePlayerItem(); }
         if(PlayerListItems.Count == Manager.GamePlayers.Count) { UpdatePlayerItem(); }
+        SyncLobbyData();
+    }
+
+    public void SyncLobbyData()
+    {
+        // Sync Gamemode Text
+        GetComponent<GameModeDropdown>().OnDropdownValueChanged();
+        SwitchGameModes();
     }
 
     public void FindLocalPlayer()
