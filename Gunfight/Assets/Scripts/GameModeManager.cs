@@ -150,11 +150,33 @@ public class GameModeManager : NetworkBehaviour
             if (aliveNum <= 1)
             {
                 RpcShowWinner("Winner: " + FindWinner());
+                StartCoroutine(Countdown());
                 yield return new WaitForSeconds(5f);
                 RpcStopShowWinner();
                 EndRound();
             }
         }
+    }
+
+    // Coroutine to handle the countdown visualization
+    private IEnumerator Countdown()
+    {
+        float countdownTime = 5f;
+
+        while (countdownTime > 0)
+        {
+            // Update the countdown text on the UI
+            RpcShowCount(Mathf.Ceil(countdownTime).ToString());
+
+            // Wait for the next frame
+            yield return null;
+
+            // Reduce the countdown time
+            countdownTime -= Time.deltaTime;
+        }
+
+        // Clear the countdown text when the countdown is complete
+        RpcStopShowCount();
     }
 
     private string FindWinner()
@@ -166,7 +188,7 @@ public class GameModeManager : NetworkBehaviour
                 return player.PlayerName;
             }
         }
-        return "No One :(";
+        return "No one";
     }
 
     void CheckWinCondition(int oldAliveNum, int newAliveNum)
@@ -237,6 +259,28 @@ public class GameModeManager : NetworkBehaviour
         if (gameModeUIController != null)
         {
             gameModeUIController.StopDisplayWinner();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcShowCount(string count)
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayCount(count);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcStopShowCount()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayCount();
         }
     }
 }
