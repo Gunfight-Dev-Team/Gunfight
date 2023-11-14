@@ -64,6 +64,10 @@ public class GameModeManager : NetworkBehaviour
 
     private void Update()
     {
+        if (!isServer)
+        {
+            return;
+        }
         if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
             if (gameMode == GameMode.SinglePlayer)
@@ -100,6 +104,10 @@ public class GameModeManager : NetworkBehaviour
 
     public void StartRound()
     {
+        if (!isServer)
+        {
+            return;
+        }
         // setup for round
         currentRound++; // increase round count
         Debug.Log("Round started: " + currentRound);
@@ -107,6 +115,10 @@ public class GameModeManager : NetworkBehaviour
 
     public void EndRound()
     {
+        if (!isServer)
+        {
+            return;
+        }
         if (currentRound < totalRounds) // if current round is less than total rounds
         {
             DeleteWeaponsInGame();
