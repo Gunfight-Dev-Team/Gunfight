@@ -138,7 +138,8 @@ public class GameModeManager : NetworkBehaviour
 
     public void PlayerDied(PlayerController player)
     {
-       aliveNum--;
+        player.poc.isAlive = false;
+        aliveNum--;
     }
 
     private IEnumerator DelayedEndRound()
@@ -148,12 +149,24 @@ public class GameModeManager : NetworkBehaviour
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
-                RpcShowWinner("The Winner Is");
+                RpcShowWinner("Winner: " + FindWinner());
                 yield return new WaitForSeconds(5f);
                 RpcStopShowWinner();
                 EndRound();
             }
         }
+    }
+
+    private string FindWinner()
+    {
+        foreach (PlayerObjectController player in Manager.GamePlayers)
+        {
+            if(player.isAlive)
+            {
+                return player.PlayerName;
+            }
+        }
+        return "No One :(";
     }
 
     void CheckWinCondition(int oldAliveNum, int newAliveNum)
@@ -168,6 +181,7 @@ public class GameModeManager : NetworkBehaviour
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
             player.GetComponent<PlayerController>().Respawn();
+            player.isAlive = true;
         }
     }
 
