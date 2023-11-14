@@ -8,6 +8,7 @@ public class MapController : NetworkBehaviour
 {
     public GameObject LocalPlayerObject;
     public string[] mapNames;
+    [SyncVar]
     public int currentMapIndex;
     public Text currentMapText;
 
@@ -21,6 +22,11 @@ public class MapController : NetworkBehaviour
         {
             currentMapIndex = 0;
             RpcUpdateMapVariables(mapNames[currentMapIndex]);
+        }
+        else
+        {
+            currentMapText.text = mapNames[currentMapIndex];
+            LobbyController.Instance.MapName = mapNames[currentMapIndex];
         }
 
         LocalPlayerObject = GameObject.Find("LocalGamePlayer");
