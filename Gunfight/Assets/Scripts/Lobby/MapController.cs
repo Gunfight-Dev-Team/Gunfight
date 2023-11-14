@@ -10,7 +10,6 @@ public class MapController : NetworkBehaviour
     public string[] mapNames;
     public int currentMapIndex;
     public Text currentMapText;
-    [SyncVar(hook = nameof(UpdateMapName))] public string mapNameSynced = "Game";
 
     private Button prevMap;
     private Button nextMap;
@@ -18,8 +17,11 @@ public class MapController : NetworkBehaviour
 
     private void Start()
     {
-        currentMapIndex = 0;
-        UpdateMapVariables();
+        if (isServer)
+        {
+            currentMapIndex = 0;
+            RpcUpdateMapVariables(mapNames[currentMapIndex]);
+        }
 
         LocalPlayerObject = GameObject.Find("LocalGamePlayer");
         LocalPlayerController = LocalPlayerObject.GetComponent<PlayerObjectController>();
@@ -43,8 +45,7 @@ public class MapController : NetworkBehaviour
         if(currentMapIndex < mapNames.Length-1)
         {
             currentMapIndex++;
-            UpdateMapVariables();
-            CmdSendMessageToPlayers(mapNames[currentMapIndex]);
+            RpcUpdateMapVariables(mapNames[currentMapIndex]);
         }
     }
 
@@ -53,32 +54,14 @@ public class MapController : NetworkBehaviour
         if (currentMapIndex > 0)
         {
             currentMapIndex--;
-            UpdateMapVariables();
-            CmdSendMessageToPlayers(mapNames[currentMapIndex]);
+            RpcUpdateMapVariables(mapNames[currentMapIndex]);
         }
     }
 
-    public void UpdateMapVariables()
+    [ClientRpc]
+    public void RpcUpdateMapVariables(string newMapName)
     {
-        currentMapText.text = mapNames[currentMapIndex];
-        LobbyController.Instance.MapName = mapNames[currentMapIndex];
-    }
-
-    public void UpdateMapName(string oldValue, string newValue)
-    {
-        if(isServer)
-        {
-            mapNameSynced = newValue;
-        }
-        if(isClient && (oldValue != newValue))
-        {
-            currentMapText.text = newValue;
-        }
-    }
-
-    [Command(requiresAuthority = false)]
-    void CmdSendMessageToPlayers(string newMessage)
-    {
-        UpdateMapName(mapNameSynced, newMessage);
+        currentMapText.text = newMapName;
+        LobbyController.Instance.MapName = newMapName;
     }
 }
