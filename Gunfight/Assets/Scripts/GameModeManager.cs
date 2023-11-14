@@ -136,9 +136,9 @@ public class GameModeManager : NetworkBehaviour
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
-                ShowWinner("The Winner Is");
+                RpcShowWinner("The Winner Is");
                 yield return new WaitForSeconds(5f);
-                StopShowWinner();
+                RpcStopShowWinner();
                 EndRound();
             }
         }
@@ -192,7 +192,8 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
-    public void ShowWinner(string winner)
+    [ClientRpc]
+    public void RpcShowWinner(string winner)
     {
         GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
@@ -202,7 +203,8 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
-    public void StopShowWinner()
+    [ClientRpc]
+    public void RpcStopShowWinner()
     {
         GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
