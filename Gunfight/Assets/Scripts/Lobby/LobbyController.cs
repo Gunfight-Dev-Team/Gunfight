@@ -201,6 +201,8 @@ public class LobbyController : MonoBehaviour
 
     public void SyncLobbyData()
     {
+        if (this == null)
+            return; // gets rid of error when shutting down the game and lobby controller has already been deleted.
         // Sync Gamemode Text
         GetComponent<GameModeDropdown>().OnDropdownValueChanged();
         SwitchGameModes();
@@ -323,10 +325,13 @@ public class LobbyController : MonoBehaviour
         {
             foreach(PlayerListItem playerlistItemToRemove in playerListItemToRemove)
             {
-                GameObject ObjectToRemove = playerlistItemToRemove.gameObject;
-                PlayerListItems.Remove(playerlistItemToRemove);
-                Destroy(ObjectToRemove);
-                ObjectToRemove = null;
+                if (playerlistItemToRemove != null)
+                {
+                    GameObject ObjectToRemove = playerlistItemToRemove.gameObject;
+                    PlayerListItems.Remove(playerlistItemToRemove);
+                    Destroy(ObjectToRemove);
+                    ObjectToRemove = null;
+                }
             }
         }
     }
