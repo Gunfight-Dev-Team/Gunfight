@@ -8,7 +8,11 @@ public class MapManager : MonoBehaviour
 
     public Transform[] FFASpawnPoints;
     public Transform[] SPSpawnPoints;
-
+    public int mapWidth;
+    public int mapHeight;
+    // this is used to make up difference between 
+    // tile height and walkable height duo to 75% top-down view
+    public int heightOffset;
     private void Start()
     {
         if (Instance == null)

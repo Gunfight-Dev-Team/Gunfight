@@ -162,6 +162,9 @@ MonoBehaviour:
   - {fileID: 372036881}
   - {fileID: 1742579005}
   - {fileID: 1915001325}
+  mapWidth: 45
+  mapHeight: 45
+  heightOffset: 0
 --- !u!4 &8338062
 Transform:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameModeManager : NetworkBehaviour
 {
     public static GameModeManager Instance;
+    public MapManager mapManager;
 
     [SyncVar]
     public int currentRound = 0; // keeps track of the current round
@@ -34,7 +35,7 @@ public class GameModeManager : NetworkBehaviour
 
     public GameMode gameMode; // get this from lobby
 
-    [Tooltip("Below are used for Single Player")]
+    [Header("Below are used for Single Player")]
     public GameObject enemyPrefab;
     public int startingNumberOfEnemies = 4;
     public int enemyMultiplier = 2;
@@ -70,6 +71,7 @@ public class GameModeManager : NetworkBehaviour
         }
         if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
+            mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
             if (gameMode == GameMode.SinglePlayer)
             {
                 initEnemy();
@@ -92,8 +94,8 @@ public class GameModeManager : NetworkBehaviour
         }
         for (int i = 0; i < startingNumberOfEnemies; i++)
         {
-            float x = (i % 2 == 0) ? 18 : -18;
-            float y = (i < 2) ? 22 : -22;
+            float x = (i % 2 == 0) ? mapManager.mapWidth / 2 : -mapManager.mapWidth / 2;
+            float y = (i < 2) ? (mapManager.mapHeight - mapManager.heightOffset) / 2 : -(mapManager.mapHeight - mapManager.heightOffset) / 2;
 
             Vector3 spawnPos = new Vector3(x, y, 0);
 

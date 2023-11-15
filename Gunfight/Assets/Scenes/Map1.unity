@@ -1794,7 +1794,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &447867715
 GameObject:
@@ -36096,6 +36096,9 @@ MonoBehaviour:
   - {fileID: 854384608}
   - {fileID: 640996892}
   - {fileID: 698010749}
+  mapWidth: 42
+  mapHeight: 50
+  heightOffset: 10
 --- !u!4 &1981130787
 Transform:
   m_ObjectHideFlags: 0
@@ -36109,7 +36112,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2007478036
 GameObject:
