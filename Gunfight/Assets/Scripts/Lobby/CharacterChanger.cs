@@ -33,25 +33,19 @@ public class CharacterChanger : MonoBehaviour
 
     public void NextColor()
     {
-        if(currentColorIndex < playerColors.Length -1)
-        {
-            currentColorIndex++;
-            PlayerPrefs.SetInt("currentColorIndex", currentColorIndex);
-            currentColorImage.color = playerColors[currentColorIndex];
-            currentColorText.text = colorNames[currentColorIndex];
-            LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerColor(currentColorIndex);
-        }
+        currentColorIndex = (currentColorIndex + 1) % playerColors.Length;
+        PlayerPrefs.SetInt("currentColorIndex", currentColorIndex);
+        currentColorImage.color = playerColors[currentColorIndex];
+        currentColorText.text = colorNames[currentColorIndex];
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerColor(currentColorIndex);
     }
 
     public void PrevColor()
     {
-        if (currentColorIndex > 0)
-        {
-            currentColorIndex--;
-            PlayerPrefs.SetInt("currentColorIndex", currentColorIndex);
-            currentColorImage.color = playerColors[currentColorIndex];
-            currentColorText.text = colorNames[currentColorIndex];
-            LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerColor(currentColorIndex);
-        }
+        currentColorIndex = (currentColorIndex - 1 + playerColors.Length) % playerColors.Length;
+        PlayerPrefs.SetInt("currentColorIndex", currentColorIndex);
+        currentColorImage.color = playerColors[currentColorIndex];
+        currentColorText.text = colorNames[currentColorIndex];
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerColor(currentColorIndex);
     }
 }

@@ -135,6 +135,7 @@ public class GameModeManager : NetworkBehaviour
         {
             //DisplayOverallWinner();
             //GoToLobby();
+            SceneManager.LoadScene("Lobby");
         }
     }
 
@@ -216,7 +217,6 @@ public class GameModeManager : NetworkBehaviour
 
         if (weaponSpawning != null)
         {
-            // Call the SpawnWeapons method
             weaponSpawning.SpawnWeapons();
         }
         else
@@ -233,7 +233,6 @@ public class GameModeManager : NetworkBehaviour
 
         if (weaponSpawning != null)
         {
-            // Call the DeleteWeapons method
             weaponSpawning.DeleteWeapons();
         }
         else

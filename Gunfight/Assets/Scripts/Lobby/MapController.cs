@@ -53,6 +53,11 @@ public class MapController : NetworkBehaviour
             currentMapIndex++;
             RpcUpdateMapVariables(mapNames[currentMapIndex]);
         }
+        else
+        {
+            currentMapIndex = 0;
+            RpcUpdateMapVariables(mapNames[currentMapIndex]);
+        }
     }
 
     public void PrevMap()
@@ -60,6 +65,11 @@ public class MapController : NetworkBehaviour
         if (currentMapIndex > 0)
         {
             currentMapIndex--;
+            RpcUpdateMapVariables(mapNames[currentMapIndex]);
+        }
+        else
+        {
+            currentMapIndex = mapNames.Length-1;
             RpcUpdateMapVariables(mapNames[currentMapIndex]);
         }
     }
