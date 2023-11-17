@@ -341,6 +341,14 @@ public class PlayerController : NetworkBehaviour
 
                     collidableTileMap.SetTile(potPos, null);
 
+                    // collidableTileMap.GetComponent<CompositeCollider2D>().GenerateGeometry();
+
+                    // TilemapCollider2D collider = collidableTileMap.GetComponent<TilemapCollider2D>();
+                    // if (collider.hasTilemapChanges)
+                    // {
+                    //     collidableTileMap. GetComponent<TilemapCollider2D>().ProcessTilemapChanges();
+                    // }
+
                     // disables collider
                     // hit.collider.enabled = false;
 
