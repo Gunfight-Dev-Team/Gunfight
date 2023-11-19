@@ -27,6 +27,7 @@ public class EnemyObjectController : NetworkBehaviour
         target.target = GameObject.FindGameObjectWithTag("Player").transform;
         InvokeRepeating("FindClosest", 0f, 3f);
         path.maxSpeed *= speed + Random.Range(-speedOffset,speedOffset);
+        speed = path.maxSpeed;
         previousPosition = transform.position;
     }
 
@@ -51,10 +52,11 @@ public class EnemyObjectController : NetworkBehaviour
 
     }
 
-    private void increaseSpeed(float OldValue)
+    public void updateSpeed()
     {
-        float newSpeed = OldValue * (1 + speedMultipiler);
+        float newSpeed = speed * (1 + speedMultipiler) + Random.Range(-speedOffset, speedOffset);
         path.maxSpeed = newSpeed;
+        speed = path.maxSpeed;
     }
 
     void updateFlip()
@@ -91,9 +93,16 @@ public class EnemyObjectController : NetworkBehaviour
         }
     }
 
+    [Command]
+    public void hitPlayer()
+    {
+        //TODO: attack players
+    }
+
     void RpcDie()
     {
         spriteRenderer.enabled = false;
+        GameModeManager.Instance.currentNumberOfEnemies--;
         Destroy(gameObject);
     }
 

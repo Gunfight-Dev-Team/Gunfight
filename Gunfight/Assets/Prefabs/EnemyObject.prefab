@@ -247,7 +247,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6, y: 0.8}
+  m_Size: {x: 0.8, y: 1}
   m_EdgeRadius: 0.1
 --- !u!210 &3538924275218208804
 SortingGroup:
@@ -296,7 +296,7 @@ MonoBehaviour:
   path: {fileID: 6508302605874293973}
   spriteRenderer: {fileID: 5891011091002882805}
   health: 10
-  speed: 6
+  speed: 1
   speedOffset: 0.1
   speedMultipiler: 0.5
   closestPlayer: {fileID: 0}
