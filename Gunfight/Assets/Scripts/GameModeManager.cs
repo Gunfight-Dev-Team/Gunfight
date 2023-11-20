@@ -129,6 +129,7 @@ public class GameModeManager : NetworkBehaviour
             NetworkServer.Spawn(enemyInstance);
         }
         increaseSpeed();
+        increaseDamage();
     }
 
     public void increaseSpeed()
@@ -142,7 +143,27 @@ public class GameModeManager : NetworkBehaviour
             if (controller != null)
             {
                 // Call the updateSpeed function
-                controller.updateSpeed();
+                controller.updateSpeed(currentRound);
+            }
+            else
+            {
+                Debug.LogWarning("EnemyObjectController script not found on GameObject: " + enemyObject.name);
+            }
+        }
+    }
+
+    public void increaseDamage()
+    {
+        GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemyObject in enemyObjects)
+        {
+            // Check if the GameObject has the EnemyObjectController script attached
+            EnemyObjectController controller = enemyObject.GetComponent<EnemyObjectController>();
+
+            if (controller != null)
+            {
+                // Call the updateSpeed function
+                controller.updateDamage(currentRound);
             }
             else
             {
@@ -196,6 +217,7 @@ public class GameModeManager : NetworkBehaviour
             SpawnWeaponsInGame();
             currentRoundNumberOfEnemies = Mathf.RoundToInt(currentRoundNumberOfEnemies * enemyMultiplier);
             currentNumberOfEnemies = currentRoundNumberOfEnemies;
+            StartRound();
             spawnEnemies();
         }
     }

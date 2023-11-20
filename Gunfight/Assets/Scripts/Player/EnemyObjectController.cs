@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Mirror;
+using Unity.Burst.CompilerServices;
 
 public class EnemyObjectController : NetworkBehaviour
 {
@@ -12,7 +13,9 @@ public class EnemyObjectController : NetworkBehaviour
 
     public float speed;
     public float speedOffset = 0.1f;
-    public float speedMultipiler = 0.5f;
+    public float speedMultipiler = 0.25f;
+    public float damage;
+    public float damageMultipiler = 0.5f;
     public GameObject closestPlayer;
 
 
@@ -52,11 +55,16 @@ public class EnemyObjectController : NetworkBehaviour
 
     }
 
-    public void updateSpeed()
+    public void updateSpeed(int currentRound)
     {
-        float newSpeed = speed * (1 + speedMultipiler) + Random.Range(-speedOffset, speedOffset);
+        float newSpeed = speed + (currentRound - 1) * speedMultipiler + Random.Range(-speedOffset, speedOffset);
         path.maxSpeed = newSpeed;
         speed = path.maxSpeed;
+    }
+
+    public void updateDamage(int currentRound)
+    {
+        damage = damage + (currentRound - 1) * damageMultipiler;
     }
 
     void updateFlip()
@@ -93,11 +101,20 @@ public class EnemyObjectController : NetworkBehaviour
         }
     }
 
-    [Command]
-    public void hitPlayer()
+/*    public void OnCollisionEnter2D(Collision2D collision)
     {
-        //TODO: attack players
+        hitPlayer(collision);
     }
+
+    [ClientRpc]
+    public void hitPlayer(Collision2D collision)
+    {
+        if (collision.collider.gameObject.tag == "Player")
+        {
+            collision.collider.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
+        }
+
+    }*/
 
     void RpcDie()
     {
