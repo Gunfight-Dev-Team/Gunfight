@@ -231,7 +231,7 @@ public class GameModeManager : NetworkBehaviour
     private IEnumerator DelayedEndRound()
     {
         yield return StartCoroutine(CardCountdown());
-        
+
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
         {
             // If only one player is alive, end round 
@@ -415,6 +415,7 @@ public class GameModeManager : NetworkBehaviour
             countdownTime -= Time.deltaTime;
         }
         RpcStopCardPanel();
+        yield return null;
     }
 
     [ClientRpc]
