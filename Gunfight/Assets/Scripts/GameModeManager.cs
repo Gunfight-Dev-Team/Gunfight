@@ -36,6 +36,8 @@ public class GameModeManager : NetworkBehaviour
     [SyncVar(hook = nameof(CheckWinConditionSingle))]
     public int currentNumberOfEnemies;
 
+    private bool cardFinished = false;
+
     private CustomNetworkManager Manager
     {
         get
@@ -78,6 +80,11 @@ public class GameModeManager : NetworkBehaviour
                 hasGameStarted = true;
                 StartRound(); // starts the first round after Awake
             }
+        }
+        if (cardFinished)
+        {
+            cardFinished = false;
+            StartCoroutine(DelayedEndRound());
         }
     }
 
@@ -415,7 +422,8 @@ public class GameModeManager : NetworkBehaviour
             countdownTime -= Time.deltaTime;
         }
         RpcStopCardPanel();
-        StartCoroutine(DelayedEndRound());
+
+        cardFinished = true;
     }
 
     [ClientRpc]
