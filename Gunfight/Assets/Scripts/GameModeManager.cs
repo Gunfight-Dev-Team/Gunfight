@@ -230,7 +230,7 @@ public class GameModeManager : NetworkBehaviour
 
     private IEnumerator DelayedEndRound()
     {
-        yield return StartCoroutine(CardCountdown());
+        // yield return StartCoroutine(CardCountdown());
 
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
         {
@@ -298,8 +298,8 @@ public class GameModeManager : NetworkBehaviour
     {
         if (gameMode != GameMode.SinglePlayer)
         {
-            // StartCoroutine(CardCountdown()); // card mechanic
-            StartCoroutine(DelayedEndRound());
+            StartCoroutine(CardCountdown()); // card mechanic
+            // StartCoroutine(DelayedEndRound());
         }
     }
 
@@ -409,13 +409,13 @@ public class GameModeManager : NetworkBehaviour
         while (countdownTime > 0)
         {
             // Wait for the next frame
-            // yield return null;
+            yield return null;
 
             // Reduce the countdown time
             countdownTime -= Time.deltaTime;
         }
         RpcStopCardPanel();
-        yield return null;
+        StartCoroutine(DelayedEndRound());
     }
 
     [ClientRpc]
