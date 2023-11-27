@@ -411,16 +411,18 @@ public class GameModeManager : NetworkBehaviour
     private IEnumerator CardCountdown()
     {
         RpcShowCardPanel();
-        float countdownTime = 10f;
 
-        while (countdownTime > 0)
-        {
-            // Wait for the next frame
-            yield return null;
+        yield return new WaitForSeconds(10.0f);
+        // float countdownTime = 10f;
 
-            // Reduce the countdown time
-            countdownTime -= Time.deltaTime;
-        }
+        // while (countdownTime > 0)
+        // {
+        //     // Wait for the next frame
+        //     yield return null;
+
+        //     // Reduce the countdown time
+        //     countdownTime -= Time.deltaTime;
+        // }
         RpcStopCardPanel();
 
         cardFinished = true;
