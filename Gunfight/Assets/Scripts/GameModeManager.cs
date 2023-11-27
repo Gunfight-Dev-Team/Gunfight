@@ -296,7 +296,8 @@ public class GameModeManager : NetworkBehaviour
     {
         if (gameMode != GameMode.SinglePlayer)
         {
-            StartCoroutine(DelayedEndRound());
+            StartCoroutine(CardCountdown()); // card mechanic
+            // StartCoroutine(DelayedEndRound());
         }
     }
 
@@ -388,6 +389,53 @@ public class GameModeManager : NetworkBehaviour
         if (gameModeUIController != null)
         {
             gameModeUIController.StopDisplayCount();
+        }
+    }
+
+    // public void StartCards()
+    // {
+    //     RpcShowCardPanel();
+    //     StartCoroutine(CardCountdown());
+    //     RpcStopCardPanel();
+    // }
+
+    private IEnumerator CardCountdown()
+    {
+        RpcShowCardPanel();
+        float countdownTime = 10f;
+
+        while (countdownTime > 0)
+        {
+            // Wait for the next frame
+            yield return null;
+
+            // Reduce the countdown time
+            countdownTime -= Time.deltaTime;
+        }
+        RpcStopCardPanel();
+
+        yield return StartCoroutine(DelayedEndRound());
+    }
+
+    [ClientRpc]
+    public void RpcShowCardPanel()
+    {
+        CardUIController cardUIController = FindObjectOfType<CardUIController>();
+
+        if (cardUIController != null)
+        {
+            cardUIController.DisplayCardPanel();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcStopCardPanel()
+    {
+        CardUIController cardUIController = FindObjectOfType<CardUIController>();
+
+        if (cardUIController != null)
+        {
+            cardUIController.StopDisplayCardPanel();
         }
     }
 }
