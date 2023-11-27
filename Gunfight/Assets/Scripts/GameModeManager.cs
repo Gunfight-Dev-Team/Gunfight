@@ -36,8 +36,6 @@ public class GameModeManager : NetworkBehaviour
     [SyncVar(hook = nameof(CheckWinConditionSingle))]
     public int currentNumberOfEnemies;
 
-    private bool cardFinished = false;
-
     private CustomNetworkManager Manager
     {
         get
@@ -81,11 +79,6 @@ public class GameModeManager : NetworkBehaviour
                 StartRound(); // starts the first round after Awake
             }
         }
-        // if (cardFinished)
-        // {
-        //     cardFinished = false;
-        //     StartCoroutine(DelayedEndRound());
-        // }
     }
 
     private void initEnemy()
@@ -205,7 +198,6 @@ public class GameModeManager : NetworkBehaviour
                     RpcResetGame();
                 SpawnWeaponsInGame();
                 aliveNum = playerCount;
-                // cardFinished = false;
                 StartRound();
                 // TODO: Reset Map (pots / boxes)
             }
@@ -238,13 +230,15 @@ public class GameModeManager : NetworkBehaviour
 
     private IEnumerator DelayedEndRound()
     {
-        // yield return StartCoroutine(CardCountdown());
-
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
         {
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
+                RpcShowCardPanel();
+                yield return new WaitForSeconds(10.0f); 
+                RpcStopCardPanel();
+                
                 RpcShowWinner("Winner: " + FindWinner());
                 StartCoroutine(Countdown());
                 yield return new WaitForSeconds(5f);
@@ -306,13 +300,13 @@ public class GameModeManager : NetworkBehaviour
     {
         if (gameMode != GameMode.SinglePlayer)
         {
-            StartCoroutine(CardCountdown(() =>
-            {
-                cardFinished = true;
-                if (!cardFinished)
-                    StartCoroutine(DelayedEndRound());
-            })); // card mechanic
-            // StartCoroutine(DelayedEndRound());
+            // StartCoroutine(CardCountdown(() =>
+            // {
+            //     cardFinished = true;
+            //     if (!cardFinished)
+            //         StartCoroutine(DelayedEndRound());
+            // })); // card mechanic
+            StartCoroutine(DelayedEndRound());
         }
     }
 
@@ -414,26 +408,26 @@ public class GameModeManager : NetworkBehaviour
     //     RpcStopCardPanel();
     // }
 
-    private IEnumerator CardCountdown(System.Action onFinish)
-    {
-        RpcShowCardPanel();
+    // private IEnumerator CardCountdown(System.Action onFinish)
+    // {
+    //     RpcShowCardPanel();
 
-        yield return new WaitForSeconds(10.0f);
-        // float countdownTime = 10f;
+    //     yield return new WaitForSeconds(1.0f);
+    //     // float countdownTime = 10f;
 
-        // while (countdownTime > 0)
-        // {
-        //     // Wait for the next frame
-        //     yield return null;
+    //     // while (countdownTime > 0)
+    //     // {
+    //     //     // Wait for the next frame
+    //     //     yield return null;
 
-        //     // Reduce the countdown time
-        //     countdownTime -= Time.deltaTime;
-        // }
-        RpcStopCardPanel();
+    //     //     // Reduce the countdown time
+    //     //     countdownTime -= Time.deltaTime;
+    //     // }
+    //     RpcStopCardPanel();
 
-        // cardFinished = true;
-        onFinish?.Invoke();
-    }
+    //     // cardFinished = true;
+    //     onFinish?.Invoke();
+    // }
 
     [ClientRpc]
     public void RpcShowCardPanel()
