@@ -235,10 +235,13 @@ public class GameModeManager : NetworkBehaviour
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
-                RpcShowCardPanel();
-                yield return new WaitForSeconds(10.0f); 
-                RpcStopCardPanel();
-                
+                if (currentRound < totalRounds)
+                {
+                    RpcShowCardPanel();
+                    yield return new WaitForSeconds(10.0f); 
+                    RpcStopCardPanel();
+                }
+
                 RpcShowWinner("Winner: " + FindWinner());
                 StartCoroutine(Countdown());
                 yield return new WaitForSeconds(5f);
@@ -300,12 +303,6 @@ public class GameModeManager : NetworkBehaviour
     {
         if (gameMode != GameMode.SinglePlayer)
         {
-            // StartCoroutine(CardCountdown(() =>
-            // {
-            //     cardFinished = true;
-            //     if (!cardFinished)
-            //         StartCoroutine(DelayedEndRound());
-            // })); // card mechanic
             StartCoroutine(DelayedEndRound());
         }
     }
@@ -400,34 +397,6 @@ public class GameModeManager : NetworkBehaviour
             gameModeUIController.StopDisplayCount();
         }
     }
-
-    // public void StartCards()
-    // {
-    //     RpcShowCardPanel();
-    //     StartCoroutine(CardCountdown());
-    //     RpcStopCardPanel();
-    // }
-
-    // private IEnumerator CardCountdown(System.Action onFinish)
-    // {
-    //     RpcShowCardPanel();
-
-    //     yield return new WaitForSeconds(1.0f);
-    //     // float countdownTime = 10f;
-
-    //     // while (countdownTime > 0)
-    //     // {
-    //     //     // Wait for the next frame
-    //     //     yield return null;
-
-    //     //     // Reduce the countdown time
-    //     //     countdownTime -= Time.deltaTime;
-    //     // }
-    //     RpcStopCardPanel();
-
-    //     // cardFinished = true;
-    //     onFinish?.Invoke();
-    // }
 
     [ClientRpc]
     public void RpcShowCardPanel()
