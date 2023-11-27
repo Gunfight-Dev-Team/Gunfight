@@ -409,7 +409,7 @@ public class GameModeManager : NetworkBehaviour
         while (countdownTime > 0)
         {
             // Wait for the next frame
-            yield return null;
+            // yield return null;
 
             // Reduce the countdown time
             countdownTime -= Time.deltaTime;
