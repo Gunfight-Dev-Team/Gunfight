@@ -205,6 +205,7 @@ public class GameModeManager : NetworkBehaviour
                     RpcResetGame();
                 SpawnWeaponsInGame();
                 aliveNum = playerCount;
+                cardFinished = false;
                 StartRound();
                 // TODO: Reset Map (pots / boxes)
             }
@@ -307,7 +308,9 @@ public class GameModeManager : NetworkBehaviour
         {
             StartCoroutine(CardCountdown(() =>
             {
-                StartCoroutine(DelayedEndRound());
+                cardFinished = true;
+                if (!cardFinished)
+                    StartCoroutine(DelayedEndRound());
             })); // card mechanic
             // StartCoroutine(DelayedEndRound());
         }
