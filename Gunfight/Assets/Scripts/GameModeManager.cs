@@ -205,7 +205,7 @@ public class GameModeManager : NetworkBehaviour
                     RpcResetGame();
                 SpawnWeaponsInGame();
                 aliveNum = playerCount;
-                cardFinished = false;
+                // cardFinished = false;
                 StartRound();
                 // TODO: Reset Map (pots / boxes)
             }
