@@ -81,11 +81,11 @@ public class GameModeManager : NetworkBehaviour
                 StartRound(); // starts the first round after Awake
             }
         }
-        if (cardFinished)
-        {
-            cardFinished = false;
-            StartCoroutine(DelayedEndRound());
-        }
+        // if (cardFinished)
+        // {
+        //     cardFinished = false;
+        //     StartCoroutine(DelayedEndRound());
+        // }
     }
 
     private void initEnemy()
@@ -305,7 +305,10 @@ public class GameModeManager : NetworkBehaviour
     {
         if (gameMode != GameMode.SinglePlayer)
         {
-            StartCoroutine(CardCountdown()); // card mechanic
+            StartCoroutine(CardCountdown(() =>
+            {
+                StartCoroutine(DelayedEndRound());
+            })); // card mechanic
             // StartCoroutine(DelayedEndRound());
         }
     }
@@ -408,7 +411,7 @@ public class GameModeManager : NetworkBehaviour
     //     RpcStopCardPanel();
     // }
 
-    private IEnumerator CardCountdown()
+    private IEnumerator CardCountdown(System.Action onFinish)
     {
         RpcShowCardPanel();
 
@@ -425,7 +428,8 @@ public class GameModeManager : NetworkBehaviour
         // }
         RpcStopCardPanel();
 
-        cardFinished = true;
+        // cardFinished = true;
+        onFinish?.Invoke();
     }
 
     [ClientRpc]
