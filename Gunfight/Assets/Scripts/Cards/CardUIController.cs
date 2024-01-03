@@ -25,4 +25,22 @@ public class CardUIController : MonoBehaviour
         card2.interactable = false;
         card3.interactable = false;
     }
+
+    public void DisableCards2and3()
+    {
+        card2.interactable = false;
+        card3.interactable = false;
+    }
+
+    public void DisableCards1and2()
+    {
+        card1.interactable = false;
+        card2.interactable = false;
+    }
+
+    public void DisableCards1and3()
+    {
+        card1.interactable = false;
+        card3.interactable = false;
+    }
 }

@@ -7,6 +7,7 @@ public class GameModeManager : NetworkBehaviour
 {
     public static GameModeManager Instance;
     public MapManager mapManager;
+    public CardManager cardManager;
 
     [SyncVar]
     public int currentRound = 0; // keeps track of the current round
@@ -35,6 +36,9 @@ public class GameModeManager : NetworkBehaviour
     public int currentRoundNumberOfEnemies;
     [SyncVar(hook = nameof(CheckWinConditionSingle))]
     public int currentNumberOfEnemies;
+
+    [Header("Card mechanic variables")]
+    [SyncVar(hook = nameof())]
 
     private CustomNetworkManager Manager
     {
@@ -66,6 +70,7 @@ public class GameModeManager : NetworkBehaviour
         if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
             mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+            cardManager = GameObject.Find("CardManager").GetComponent<CardManager>();
             if (gameMode == GameMode.SinglePlayer)
             {
                 totalRounds = 9999;
@@ -180,6 +185,11 @@ public class GameModeManager : NetworkBehaviour
         }
         // setup for round
         currentRound++; // increase round count
+        // resets votes
+        cardManager.totalVote = 0;
+        cardManager.card1Vote = 0;
+        cardManager.card2Vote = 0;
+        cardManager.card3Vote = 0;
         Debug.Log("Round started: " + currentRound);
     }
 
@@ -203,9 +213,9 @@ public class GameModeManager : NetworkBehaviour
             }
             else // if the current round equals the total round
             {
-                //DisplayOverallWinner();
+                RpcShowWinner("Overall Winner: " + FindOverallWinner());
                 //GoToLobby();
-                SceneManager.LoadScene("Lobby");
+                // SceneManager.LoadScene("Lobby");
             }
         }
         else
@@ -235,17 +245,16 @@ public class GameModeManager : NetworkBehaviour
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
-                if (currentRound < totalRounds)
+                if (CheckOverallWin())
                 {
                     RpcShowCardPanel();
+                    RpcShowWinner("Winner: " + FindWinner());
                     yield return new WaitForSeconds(10.0f); 
+                    RpcStopShowWinner();
                     RpcStopCardPanel();
+                    StartCoroutine(Countdown());
+                    yield return new WaitForSeconds(5f);
                 }
-
-                RpcShowWinner("Winner: " + FindWinner());
-                StartCoroutine(Countdown());
-                yield return new WaitForSeconds(5f);
-                RpcStopShowWinner();
                 EndRound();
             }
         }
@@ -259,10 +268,16 @@ public class GameModeManager : NetworkBehaviour
             // If no enemy, end round 
             if (currentNumberOfEnemies <= 0)
             {
+                RpcShowCardPanel();
+                RpcShowWinner("Round: " + currentRound);
+                yield return new WaitForSeconds(10.0f); 
+                RpcStopShowWinner();
+                RpcStopCardPanel();
+
                 StartCoroutine(Countdown());
                 yield return new WaitForSeconds(5f);
-                EndRound();
             }
+            EndRound();
         }
     }
 
@@ -293,10 +308,38 @@ public class GameModeManager : NetworkBehaviour
         {
             if(player.isAlive)
             {
+                player.wins++;
                 return player.PlayerName;
             }
         }
         return "No one";
+    }
+
+    private string FindOverallWinner()
+    {
+        foreach (PlayerObjectController player in Manager.GamePlayers)
+        {
+            if(player.wins == totalRounds)
+            {
+                return player.PlayerName;
+            }
+        }
+        return "No one";
+    }
+
+    private bool CheckOverallWin()
+    {
+        foreach (PlayerObjectController player in Manager.GamePlayers)
+        {
+            if(gameMode == GameMode.FreeForAll)
+            {
+                if(player.wins == totalRounds)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     void CheckWinCondition(int oldAliveNum, int newAliveNum)
