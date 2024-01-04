@@ -37,9 +37,6 @@ public class GameModeManager : NetworkBehaviour
     [SyncVar(hook = nameof(CheckWinConditionSingle))]
     public int currentNumberOfEnemies;
 
-    [Header("Card mechanic variables")]
-    [SyncVar(hook = nameof())]
-
     private CustomNetworkManager Manager
     {
         get
@@ -249,7 +246,28 @@ public class GameModeManager : NetworkBehaviour
                 {
                     RpcShowCardPanel();
                     RpcShowWinner("Winner: " + FindWinner());
-                    yield return new WaitForSeconds(10.0f); 
+                    while (!CheckAllVotes())
+                    {
+                        // if not everyone voted
+                        while (!CheckAllButOneVote())
+                        {
+                            // wait till more players vote
+                            yield return new WaitForSeconds(1f); 
+                        }
+
+                        int count = 0;
+                        while (CheckAllButOneVote() && count < 10)
+                        {
+                            // check if there is still one vote left
+                            yield return new WaitForSeconds(1f); 
+                            count++;
+                        }
+                        
+                        // if we ignore last player to vote
+                        continue;
+                    }
+                    RpcShowWinningCard();
+                    yield return new WaitForSeconds(2f);
                     RpcStopShowWinner();
                     RpcStopCardPanel();
                     StartCoroutine(Countdown());
@@ -302,6 +320,47 @@ public class GameModeManager : NetworkBehaviour
         RpcStopShowCount();
     }
 
+    private bool CheckAllVotes()
+    {
+        // checks if everyone has voted
+        if (playerCount == cardManager.totalVote)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private bool CheckAllButOneVote()
+    {
+        // check if there is one more player to vote
+        if ((playerCount - 1) == cardManager.totalVote)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private int FindWinningCard()
+    {
+        // check which card has the most votes
+        if (cardManager.card1Vote > cardManager.card2Vote && cardManager.card1Vote > cardManager.card3Vote)
+        {
+            return 1;
+        }
+        else if (cardManager.card2Vote > cardManager.card1Vote && cardManager.card2Vote > cardManager.card3Vote)
+        {
+            return 2;
+        }
+        else if (cardManager.card3Vote > cardManager.card1Vote && cardManager.card3Vote > cardManager.card2Vote)
+        {
+            return 3;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     private string FindWinner()
     {
         foreach (PlayerObjectController player in Manager.GamePlayers)
@@ -333,6 +392,7 @@ public class GameModeManager : NetworkBehaviour
         {
             if(gameMode == GameMode.FreeForAll)
             {
+                // checks if a player has the required amount of wins
                 if(player.wins == totalRounds)
                 {
                     return true;
@@ -460,6 +520,28 @@ public class GameModeManager : NetworkBehaviour
         if (cardUIController != null)
         {
             cardUIController.StopDisplayCardPanel();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcShowWinningCard()
+    {
+        CardUIController cardUIController = FindObjectOfType<CardUIController>();
+        if (cardUIController != null)
+        {
+            int winningCard = FindWinningCard();
+            switch(winningCard)
+            {
+                case 1:
+                    cardUIController.DisplayCard1();
+                    break;
+                case 2:
+                    cardUIController.DisplayCard2();
+                    break;
+                case 3:
+                    cardUIController.DisplayCard3();
+                    break;
+            }
         }
     }
 }

@@ -4,12 +4,13 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardManager : MonoBehaviour
+public class CardManager : NetworkBehaviour
 {
+    [SyncVar]
     public int card1Vote = 0;
     public int card2Vote = 0;
     public int card3Vote = 0;
-    // public int totalVote = 0;
+    public int totalVote = 0;
 
     public Button card1;
     public Button card2;
@@ -30,37 +31,43 @@ public class CardManager : MonoBehaviour
 
     void TaskOnClickBtn1()
     {
+        // when first card is clicked
         Debug.Log("Card 1 pressed");
         if (cardUIController != null)
         {
             cardUIController.DisableCards2and3();
         }
 
+        // increase votes
         card1Vote++;
-        // totalVote++;
+        totalVote++;
     }
 
     void TaskOnClickBtn2()
     {
+        // when second card is clicked
         Debug.Log("Card 2 pressed");
         if (cardUIController != null)
         {
             cardUIController.DisableCards1and3();
         }
 
+        // increase votes
         card2Vote++;
-        // totalVote++;
+        totalVote++;
     }
 
     void TaskOnClickBtn3()
     {
+        // when third card is clicked
         Debug.Log("Card 3 pressed");
         if (cardUIController != null)
         {
             cardUIController.DisableCards1and2();
         }
 
+        // increase votes
         card3Vote++;
-        // totalVote++;
+        totalVote++;
     }
 }
