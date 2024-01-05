@@ -7,10 +7,10 @@ using UnityEngine.UI;
 public class CardManager : NetworkBehaviour
 {
     [SyncVar]
-    public int card1Vote = 0;
-    public int card2Vote = 0;
-    public int card3Vote = 0;
-    public int totalVote = 0;
+    public int card1Vote;
+    public int card2Vote;
+    public int card3Vote;
+    public int totalVote;
 
     public Button card1;
     public Button card2;
@@ -27,6 +27,11 @@ public class CardManager : NetworkBehaviour
         btn1.onClick.AddListener(TaskOnClickBtn1);
         btn2.onClick.AddListener(TaskOnClickBtn2);
         btn3.onClick.AddListener(TaskOnClickBtn3);
+
+        card1Vote = 0;
+        card2Vote = 0;
+        card3Vote = 0;
+        totalVote = 0;
     }
 
     void TaskOnClickBtn1()
