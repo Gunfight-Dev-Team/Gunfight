@@ -13,6 +13,9 @@ public class CardUIController : MonoBehaviour
     public void DisplayCardPanel()
     {
         CardPanel.SetActive(true);
+        card1.gameObject.SetActive(true);
+        card2.gameObject.SetActive(true);
+        card3.gameObject.SetActive(true);
         card1.interactable = true;
         card2.interactable = true;
         card3.interactable = true;
