@@ -37,6 +37,8 @@ public class GameModeManager : NetworkBehaviour
     [SyncVar(hook = nameof(CheckWinConditionSingle))]
     public int currentNumberOfEnemies;
 
+    private int winningCard;
+
     private CustomNetworkManager Manager
     {
         get
@@ -513,7 +515,7 @@ public class GameModeManager : NetworkBehaviour
         CardUIController cardUIController = FindObjectOfType<CardUIController>();
         if (cardUIController != null)
         {
-            int winningCard = cardManager.FindWinningCard();
+            winningCard = cardManager.FindWinningCard();
             switch(winningCard)
             {
                 case 1:
