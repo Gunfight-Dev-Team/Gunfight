@@ -273,7 +273,8 @@ public class GameModeManager : NetworkBehaviour
                         // if we ignore last player to vote
                         break;
                     }
-                    RpcShowWinningCard();
+                    winningCard = cardManager.FindWinningCard();
+                    RpcShowWinningCard(winningCard);
                     yield return new WaitForSeconds(2f);
                     RpcStopShowWinner();
                     RpcStopCardPanel();
@@ -510,12 +511,11 @@ public class GameModeManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcShowWinningCard()
+    public void RpcShowWinningCard(int winningCard)
     {
         CardUIController cardUIController = FindObjectOfType<CardUIController>();
         if (cardUIController != null)
         {
-            winningCard = cardManager.FindWinningCard();
             switch(winningCard)
             {
                 case 1:
