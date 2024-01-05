@@ -48,17 +48,20 @@ public class CardUIController : MonoBehaviour
     {
         card2.gameObject.SetActive(false);
         card3.gameObject.SetActive(false);
+        card1.interactable = false;
     }
 
     public void DisplayCard2()
     {
         card1.gameObject.SetActive(false);
         card3.gameObject.SetActive(false);
+        card2.interactable = false;
     }
 
     public void DisplayCard3()
     {
         card1.gameObject.SetActive(false);
         card2.gameObject.SetActive(false);
+        card3.interactable = false;
     }
 }

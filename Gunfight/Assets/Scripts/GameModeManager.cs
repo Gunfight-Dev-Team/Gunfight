@@ -198,7 +198,8 @@ public class GameModeManager : NetworkBehaviour
         }
         if (gameMode != GameMode.SinglePlayer)
         {
-            if (currentRound < totalRounds) // if current round is less than total rounds
+            //if (currentRound < totalRounds) // if current round is less than total rounds
+            if (!CheckOverallWin()) // if there is not an overall winner
             {
                 DeleteWeaponsInGame();
                 if (isServer)
@@ -208,7 +209,7 @@ public class GameModeManager : NetworkBehaviour
                 StartRound();
                 // TODO: Reset Map (pots / boxes)
             }
-            else // if the current round equals the total round
+            else // if there is an overall winner
             {
                 RpcShowWinner("Overall Winner: " + FindOverallWinner());
                 //GoToLobby();
@@ -242,7 +243,7 @@ public class GameModeManager : NetworkBehaviour
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
-                if (CheckOverallWin())
+                if (!CheckOverallWin())
                 {
                     RpcShowCardPanel();
                     RpcShowWinner("Winner: " + FindWinner());

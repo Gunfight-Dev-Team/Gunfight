@@ -92,7 +92,59 @@ public class CardManager : NetworkBehaviour
         else
         {   
             // check if there is a tie
-            return 0;
+            int tie = Random.Range(0,1);
+            if ((card1Vote == card2Vote) && (card1Vote != card3Vote))
+            {
+                // if card 1 and 2 are equal but not 3
+                if (tie < 0.5)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 2;
+                }
+            }
+            else if ((card1Vote == card3Vote) && (card1Vote != card2Vote))
+            {
+                // if card 1 and 3 are equal but not 2
+                if (tie < 0.5)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 3;
+                }
+            }
+            else if ((card2Vote == card3Vote) && (card2Vote != card1Vote))
+            {
+                // if card 2 and 3 are equal but not 1
+                if (tie < 0.5)
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 3;
+                }
+            }
+            else
+            {
+                // if all cards are equal
+                if (tie < 0.25)
+                {
+                    return 1;
+                }
+                else if (tie <= 0.5 && tie >= 0.25)
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 3;
+                }
+            }
         }
     }
 }
