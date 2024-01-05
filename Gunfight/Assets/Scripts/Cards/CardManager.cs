@@ -6,11 +6,10 @@ using UnityEngine.UI;
 
 public class CardManager : NetworkBehaviour
 {
-    [SyncVar]
-    public int card1Vote;
-    public int card2Vote;
-    public int card3Vote;
-    public int totalVote;
+    [SyncVar] public int card1Vote;
+    [SyncVar] public int card2Vote;
+    [SyncVar] public int card3Vote;
+    [SyncVar] public int totalVote;
 
     public Button card1;
     public Button card2;
