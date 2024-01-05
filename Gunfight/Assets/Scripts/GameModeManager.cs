@@ -249,9 +249,11 @@ public class GameModeManager : NetworkBehaviour
                     RpcShowWinner("Winner: " + FindWinner());
                     while (!CheckAllVotes())
                     {
+                        Debug.Log("Inside not check all votes loop");
                         // if not everyone voted
                         while (!CheckAllButOneVote())
                         {
+                            Debug.Log("Inside not check all but one vote loop");
                             // wait till more players vote
                             yield return new WaitForSeconds(1f); 
                         }
@@ -259,13 +261,15 @@ public class GameModeManager : NetworkBehaviour
                         int count = 0;
                         while (CheckAllButOneVote() && count < 10)
                         {
+                            Debug.Log("Inside check all but one and counter loop");
                             // check if there is still one vote left
                             yield return new WaitForSeconds(1f); 
                             count++;
                         }
                         
+                        Debug.Log("end of not check all votes loop");
                         // if we ignore last player to vote
-                        continue;
+                        break;
                     }
                     RpcShowWinningCard();
                     yield return new WaitForSeconds(2f);
