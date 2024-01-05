@@ -18,6 +18,20 @@ public class CardManager : NetworkBehaviour
 
     private CardUIController cardUIController;
 
+    private CustomNetworkManager manager;
+
+    private CustomNetworkManager Manager
+    {
+        get
+        {
+            if (manager != null)
+            {
+                return manager;
+            }
+            return manager = CustomNetworkManager.singleton as CustomNetworkManager;
+        }
+    }
+
     void Start()
     {
         cardUIController = FindObjectOfType<CardUIController>();
