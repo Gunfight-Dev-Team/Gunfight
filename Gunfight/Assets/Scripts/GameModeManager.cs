@@ -340,27 +340,6 @@ public class GameModeManager : NetworkBehaviour
         return false;
     }
 
-    private int FindWinningCard()
-    {
-        // check which card has the most votes
-        if (cardManager.card1Vote > cardManager.card2Vote && cardManager.card1Vote > cardManager.card3Vote)
-        {
-            return 1;
-        }
-        else if (cardManager.card2Vote > cardManager.card1Vote && cardManager.card2Vote > cardManager.card3Vote)
-        {
-            return 2;
-        }
-        else if (cardManager.card3Vote > cardManager.card1Vote && cardManager.card3Vote > cardManager.card2Vote)
-        {
-            return 3;
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
     private string FindWinner()
     {
         foreach (PlayerObjectController player in Manager.GamePlayers)
@@ -529,7 +508,7 @@ public class GameModeManager : NetworkBehaviour
         CardUIController cardUIController = FindObjectOfType<CardUIController>();
         if (cardUIController != null)
         {
-            int winningCard = FindWinningCard();
+            int winningCard = cardManager.FindWinningCard();
             switch(winningCard)
             {
                 case 1:

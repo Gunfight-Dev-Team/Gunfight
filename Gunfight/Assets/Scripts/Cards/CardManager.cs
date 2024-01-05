@@ -70,4 +70,29 @@ public class CardManager : NetworkBehaviour
         card3Vote++;
         totalVote++;
     }
+
+    public int FindWinningCard()
+    {
+        // check which card has the most votes
+        if (card1Vote > card2Vote && card1Vote > card3Vote)
+        {
+            // if card 1 has the most votes
+            return 1;
+        }
+        else if (card2Vote > card1Vote && card2Vote > card3Vote)
+        {
+            // if card 2 has the most votes
+            return 2;
+        }
+        else if (card3Vote > card1Vote && card3Vote > card2Vote)
+        {
+            // if card 3 has the most votes
+            return 3;
+        }
+        else
+        {   
+            // check if there is a tie
+            return 0;
+        }
+    }
 }
