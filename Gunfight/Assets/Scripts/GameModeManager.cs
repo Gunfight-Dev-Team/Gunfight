@@ -527,7 +527,11 @@ public class GameModeManager : NetworkBehaviour
                 case 3:
                     cardUIController.DisplayCard3();
                     break;
+                default:
+                    break;
             }
+
+            winningCard = 0;
         }
     }
 }

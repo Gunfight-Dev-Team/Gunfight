@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class CardManager : NetworkBehaviour
 {
-    [SyncVar] public int card1Vote;
-    [SyncVar] public int card2Vote;
-    [SyncVar] public int card3Vote;
-    [SyncVar] public int totalVote;
+    [SyncVar] public int card1Vote = 0;
+    [SyncVar] public int card2Vote = 0;
+    [SyncVar] public int card3Vote = 0;
+    [SyncVar] public int totalVote = 0;
 
     public Button card1;
     public Button card2;
@@ -40,11 +40,6 @@ public class CardManager : NetworkBehaviour
         btn1.onClick.AddListener(TaskOnClickBtn1);
         btn2.onClick.AddListener(TaskOnClickBtn2);
         btn3.onClick.AddListener(TaskOnClickBtn3);
-
-        card1Vote = 0;
-        card2Vote = 0;
-        card3Vote = 0;
-        totalVote = 0;
     }
 
     void TaskOnClickBtn1()
@@ -57,8 +52,8 @@ public class CardManager : NetworkBehaviour
         }
 
         // increase votes
-        card1Vote++;
-        totalVote++;
+        CmdCard1Vote();
+        CmdTotalVote();
     }
 
     void TaskOnClickBtn2()
@@ -71,8 +66,8 @@ public class CardManager : NetworkBehaviour
         }
 
         // increase votes
-        card2Vote++;
-        totalVote++;
+        CmdCard2Vote();
+        CmdTotalVote();
     }
 
     void TaskOnClickBtn3()
@@ -85,84 +80,115 @@ public class CardManager : NetworkBehaviour
         }
 
         // increase votes
+        CmdCard3Vote();
+        CmdTotalVote();
+    }
+
+    [Command]
+    private void CmdCard1Vote()
+    {
+        card1Vote++;
+    }
+
+    [Command]
+    private void CmdCard2Vote()
+    {
+        card2Vote++;
+    }
+
+    [Command]
+    private void CmdCard3Vote()
+    {
         card3Vote++;
+    }
+
+    [Command]
+    private void CmdTotalVote()
+    {
         totalVote++;
     }
 
     public int FindWinningCard()
     {
-        // check which card has the most votes
-        if (card1Vote > card2Vote && card1Vote > card3Vote)
+        if (isServer)
         {
-            // if card 1 has the most votes
-            return 1;
-        }
-        else if (card2Vote > card1Vote && card2Vote > card3Vote)
-        {
-            // if card 2 has the most votes
-            return 2;
-        }
-        else if (card3Vote > card1Vote && card3Vote > card2Vote)
-        {
-            // if card 3 has the most votes
-            return 3;
-        }
-        else
-        {   
-            // check if there is a tie
-            int tie = Random.Range(0,1);
-            if ((card1Vote == card2Vote) && (card1Vote != card3Vote))
+            // check which card has the most votes
+            if (card1Vote > card2Vote && card1Vote > card3Vote)
             {
-                // if card 1 and 2 are equal but not 3
-                if (tie < 0.5)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 2;
-                }
+                // if card 1 has the most votes
+                return 1;
             }
-            else if ((card1Vote == card3Vote) && (card1Vote != card2Vote))
+            else if (card2Vote > card1Vote && card2Vote > card3Vote)
             {
-                // if card 1 and 3 are equal but not 2
-                if (tie < 0.5)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 3;
-                }
+                // if card 2 has the most votes
+                return 2;
             }
-            else if ((card2Vote == card3Vote) && (card2Vote != card1Vote))
+            else if (card3Vote > card1Vote && card3Vote > card2Vote)
             {
-                // if card 2 and 3 are equal but not 1
-                if (tie < 0.5)
-                {
-                    return 2;
-                }
-                else
-                {
-                    return 3;
-                }
+                // if card 3 has the most votes
+                return 3;
             }
             else
-            {
-                // if all cards are equal
-                if (tie < 0.25)
+            {   
+                // check if there is a tie
+                int tie = Random.Range(0,1);
+                if ((card1Vote == card2Vote) && (card1Vote != card3Vote))
                 {
-                    return 1;
+                    // if card 1 and 2 are equal but not 3
+                    if (tie < 0.5)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 2;
+                    }
                 }
-                else if (tie <= 0.5 && tie >= 0.25)
+                else if ((card1Vote == card3Vote) && (card1Vote != card2Vote))
                 {
-                    return 2;
+                    // if card 1 and 3 are equal but not 2
+                    if (tie < 0.5)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 3;
+                    }
+                }
+                else if ((card2Vote == card3Vote) && (card2Vote != card1Vote))
+                {
+                    // if card 2 and 3 are equal but not 1
+                    if (tie < 0.5)
+                    {
+                        return 2;
+                    }
+                    else
+                    {
+                        return 3;
+                    }
                 }
                 else
                 {
-                    return 3;
+                    // if all cards are equal
+                    if (tie < 0.25)
+                    {
+                        return 1;
+                    }
+                    else if (tie <= 0.5 && tie >= 0.25)
+                    {
+                        return 2;
+                    }
+                    else
+                    {
+                        return 3;
+                    }
                 }
             }
+        }
+        else
+        {
+            return 0;
         }
     }
 }
