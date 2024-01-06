@@ -51,9 +51,14 @@ public class CardManager : NetworkBehaviour
             cardUIController.DisableCards2and3();
         }
 
-        // increase votes
-        CmdCard1Vote();
-        CmdTotalVote();
+        if (isLocalPlayer)
+        {
+            // increase votes
+            // card1Vote++;
+            // totalVote++;
+            CMDCard1Vote();
+            CMDTotalVote();
+        }
     }
 
     void TaskOnClickBtn2()
@@ -65,9 +70,14 @@ public class CardManager : NetworkBehaviour
             cardUIController.DisableCards1and3();
         }
 
-        // increase votes
-        CmdCard2Vote();
-        CmdTotalVote();
+        if (isLocalPlayer)
+        {
+            // increase votes
+            // card2Vote++;
+            // totalVote++;
+            CMDCard2Vote();
+            CMDTotalVote();
+        }
     }
 
     void TaskOnClickBtn3()
@@ -79,31 +89,36 @@ public class CardManager : NetworkBehaviour
             cardUIController.DisableCards1and2();
         }
 
-        // increase votes
-        CmdCard3Vote();
-        CmdTotalVote();
+        if (isLocalPlayer)
+        {
+            // increase votes
+            // card3Vote++;
+            // totalVote++;
+            CMDCard3Vote();
+            CMDTotalVote();
+        }
     }
 
     [Command]
-    private void CmdCard1Vote()
+    private void CMDCard1Vote()
     {
         card1Vote++;
     }
 
     [Command]
-    private void CmdCard2Vote()
+    private void CMDCard2Vote()
     {
         card2Vote++;
     }
 
     [Command]
-    private void CmdCard3Vote()
+    private void CMDCard3Vote()
     {
         card3Vote++;
     }
 
     [Command]
-    private void CmdTotalVote()
+    private void CMDTotalVote()
     {
         totalVote++;
     }
