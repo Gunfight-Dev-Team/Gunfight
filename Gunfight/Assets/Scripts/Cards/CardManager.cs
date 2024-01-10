@@ -51,13 +51,13 @@ public class CardManager : NetworkBehaviour
             cardUIController.DisableCards2and3();
         }
 
-        if (isLocalPlayer)
+        if (isServer)
         {
             // increase votes
-            // card1Vote++;
-            // totalVote++;
-            CMDCard1Vote();
-            CMDTotalVote();
+            card1Vote++;
+            totalVote++;
+            // CMDCard1Vote();
+            // CMDTotalVote();
         }
     }
 
