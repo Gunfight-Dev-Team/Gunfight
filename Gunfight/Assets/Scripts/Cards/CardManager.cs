@@ -51,12 +51,12 @@ public class CardManager : NetworkBehaviour
             cardUIController.DisableCards2and3();
         }
 
-        if (isServer)
-        {
-            // increase votes
-            card1Vote++;
-            totalVote++;
-        }
+        // if (isServer)
+        // {
+        //     // increase votes
+        //     card1Vote++;
+        //     totalVote++;
+        // }
 
         RpcCard1Vote();
         RpcTotalVote();
@@ -77,8 +77,8 @@ public class CardManager : NetworkBehaviour
             cardUIController.DisableCards1and3();
         }
         // increase votes
-        card2Vote++;
-        totalVote++;
+        // card2Vote++;
+        // totalVote++;
         RpcCard2Vote();
         RpcTotalVote();
         // CMDCard2Vote();
@@ -94,15 +94,15 @@ public class CardManager : NetworkBehaviour
             cardUIController.DisableCards1and2();
         }
         // increase votes
-        card3Vote++;
-        totalVote++;
+        // card3Vote++;
+        // totalVote++;
         RpcCard3Vote();
         RpcTotalVote();
         // CMDCard3Vote();
         // CMDTotalVote();
     }
 
-    [ClientRpc]
+    [ServerRpc]
     void RpcCard1Vote()
     {
         card1Vote++;
@@ -115,7 +115,7 @@ public class CardManager : NetworkBehaviour
     //     RpcCard1Vote();
     // }
 
-    [ClientRpc]
+    [ServerRpc]
     void RpcCard2Vote()
     {
         card2Vote++;
@@ -128,7 +128,7 @@ public class CardManager : NetworkBehaviour
     //     RpcCard2Vote();
     // }
 
-    [ClientRpc]
+    [ServerRpc]
     void RpcCard3Vote()
     {
         card3Vote++;
