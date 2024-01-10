@@ -39,10 +39,10 @@ public class GameModeManager : NetworkBehaviour
 
     [Header("Below are used for cards")]
     private int winningCard;
-    // public int card1Votes;
-    // public int card2Votes;
-    // public int card3Votes;
-    // public int totalVotes;
+    public int card1Votes = 0;
+    public int card2Votes = 0;
+    public int card3Votes = 0;
+    public int totalVotes = 0;
 
     private CustomNetworkManager Manager
     {
@@ -210,10 +210,14 @@ public class GameModeManager : NetworkBehaviour
                 SpawnWeaponsInGame();
                 aliveNum = playerCount;
                 // resets votes
-                cardManager.totalVote = 0;
-                cardManager.card1Vote = 0;
-                cardManager.card2Vote = 0;
-                cardManager.card3Vote = 0;
+                // cardManager.totalVote = 0;
+                // cardManager.card1Vote = 0;
+                // cardManager.card2Vote = 0;
+                // cardManager.card3Vote = 0;
+                card1Votes = 0;
+                card2Votes = 0;
+                card3Votes = 0;
+                totalVotes = 0;
                 StartRound();
                 // TODO: Reset Map (pots / boxes)
             }
@@ -350,7 +354,7 @@ public class GameModeManager : NetworkBehaviour
     private bool CheckAllVotes()
     {
         // checks if everyone has voted
-        if (playerCount == cardManager.totalVote)
+        if (playerCount == totalVotes) // cardManager.totalVote
         {
             return true;
         }
@@ -360,7 +364,7 @@ public class GameModeManager : NetworkBehaviour
     private bool CheckAllButOneVote()
     {
         // check if there is one more player to vote
-        if ((playerCount - 1) == cardManager.totalVote)
+        if ((playerCount - 1) == totalVotes) // cardManager.totalVote
         {
             return true;
         }

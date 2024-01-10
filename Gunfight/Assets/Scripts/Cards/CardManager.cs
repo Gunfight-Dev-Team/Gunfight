@@ -6,10 +6,13 @@ using UnityEngine.UI;
 
 public class CardManager : NetworkBehaviour
 {
-    [SyncVar] public int card1Vote = 0;
-    [SyncVar] public int card2Vote = 0;
-    [SyncVar] public int card3Vote = 0;
-    [SyncVar] public int totalVote = 0;
+    // [SyncVar] public int card1Vote = 0;
+    // [SyncVar] public int card2Vote = 0;
+    // [SyncVar] public int card3Vote = 0;
+    // [SyncVar] public int totalVote = 0;
+    public int card1Vote = 0;
+    public int card2Vote = 0;
+    public int card3Vote = 0;
 
     public Button card1;
     public Button card2;
@@ -61,11 +64,13 @@ public class CardManager : NetworkBehaviour
         // Card1VoteRpc();
         // TotalVoteRpc();
 
-        if (isLocalPlayer)
-        {
-            CMDCard1Vote();
-            CMDTotalVote();
-        }
+        // if (isLocalPlayer)
+        // {
+        //     CMDCard1Vote();
+        //     CMDTotalVote();
+        // }
+        GameModeManager.Instance.card1Votes++;
+        GameModeManager.Instance.totalVotes++;
     }
 
     void TaskOnClickBtn2()
@@ -81,11 +86,13 @@ public class CardManager : NetworkBehaviour
         // totalVote++;
         // RpcCard2Vote();
         // RpcTotalVote();
-        if (isLocalPlayer)
-        {
-            CMDCard2Vote();
-            CMDTotalVote();
-        }
+        // if (isLocalPlayer)
+        // {
+        //     CMDCard2Vote();
+        //     CMDTotalVote();
+        // }
+        GameModeManager.Instance.card1Votes++;
+        GameModeManager.Instance.totalVotes++;
     }
 
     void TaskOnClickBtn3()
@@ -101,11 +108,13 @@ public class CardManager : NetworkBehaviour
         // totalVote++;
         // RpcCard3Vote();
         // RpcTotalVote();
-        if (isLocalPlayer)
-        {
-            CMDCard3Vote();
-            CMDTotalVote();
-        }
+        // if (isLocalPlayer)
+        // {
+        //     CMDCard3Vote();
+        //     CMDTotalVote();
+        // }
+        GameModeManager.Instance.card1Votes++;
+        GameModeManager.Instance.totalVotes++;
     }
 
     // [ServerRpc]
@@ -170,23 +179,27 @@ public class CardManager : NetworkBehaviour
 
     public int FindWinningCard()
     {
+        int cardVal = 0;
         if (isServer)
         {
+            card1Vote = GameModeManager.Instance.card1Votes;
+            card2Vote = GameModeManager.Instance.card2Votes;
+            card3Vote = GameModeManager.Instance.card3Votes;
             // check which card has the most votes
             if (card1Vote > card2Vote && card1Vote > card3Vote)
             {
                 // if card 1 has the most votes
-                return 1;
+                cardVal = 1;
             }
             else if (card2Vote > card1Vote && card2Vote > card3Vote)
             {
                 // if card 2 has the most votes
-                return 2;
+                cardVal = 2;
             }
             else if (card3Vote > card1Vote && card3Vote > card2Vote)
             {
                 // if card 3 has the most votes
-                return 3;
+                cardVal = 3;
             }
             else
             {   
@@ -197,11 +210,11 @@ public class CardManager : NetworkBehaviour
                     // if card 1 and 2 are equal but not 3
                     if (tie < 0.5)
                     {
-                        return 1;
+                        cardVal = 1;
                     }
                     else
                     {
-                        return 2;
+                        cardVal = 2;
                     }
                 }
                 else if ((card1Vote == card3Vote) && (card1Vote != card2Vote))
@@ -209,11 +222,11 @@ public class CardManager : NetworkBehaviour
                     // if card 1 and 3 are equal but not 2
                     if (tie < 0.5)
                     {
-                        return 1;
+                        cardVal = 1;
                     }
                     else
                     {
-                        return 3;
+                        cardVal = 3;
                     }
                 }
                 else if ((card2Vote == card3Vote) && (card2Vote != card1Vote))
@@ -221,11 +234,11 @@ public class CardManager : NetworkBehaviour
                     // if card 2 and 3 are equal but not 1
                     if (tie < 0.5)
                     {
-                        return 2;
+                        cardVal = 2;
                     }
                     else
                     {
-                        return 3;
+                        cardVal = 3;
                     }
                 }
                 else
@@ -233,22 +246,24 @@ public class CardManager : NetworkBehaviour
                     // if all cards are equal
                     if (tie < 0.25)
                     {
-                        return 1;
+                        cardVal = 1;
                     }
                     else if (tie <= 0.5 && tie >= 0.25)
                     {
-                        return 2;
+                        cardVal = 2;
                     }
                     else
                     {
-                        return 3;
+                        cardVal = 3;
                     }
                 }
             }
         }
-        else
-        {
-            return 0;
-        }
+
+        card1Vote = 0;
+        card2Vote = 0;
+        card3Vote = 0;
+
+        return cardVal;
     }
 }
