@@ -50,11 +50,15 @@ public class CardManager : NetworkBehaviour
         {
             cardUIController.DisableCards2and3();
         }
-        // increase votes
-        // card1Vote++;
-        // totalVote++;
-        CMDCard1Vote();
-        CMDTotalVote();
+
+        if (isLocalPlayer)
+        {
+            // increase votes
+            // card1Vote++;
+            // totalVote++;
+            CMDCard1Vote();
+            CMDTotalVote();
+        }
     }
 
     void TaskOnClickBtn2()
