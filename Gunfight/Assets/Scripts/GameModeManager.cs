@@ -282,7 +282,7 @@ public class GameModeManager : NetworkBehaviour
                         int count = 0;
                         while (CheckAllButOneVote() && count < 10)
                         {
-                            Debug.Log("Inside check all but one and counter loop " + count);
+                            Debug.Log("Inside check all but one and counter loop " + count);  
                             // check if there is still one vote left
                             yield return new WaitForSeconds(1f); 
                             count++;

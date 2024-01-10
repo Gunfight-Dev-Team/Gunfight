@@ -77,8 +77,10 @@ public class CardManager : NetworkBehaviour
             cardUIController.DisableCards1and3();
         }
         // increase votes
-        // card2Vote++;
-        // totalVote++;
+        card2Vote++;
+        totalVote++;
+        RpcCard2Vote();
+        RpcTotalVote();
         // CMDCard2Vote();
         // CMDTotalVote();
     }
@@ -92,8 +94,10 @@ public class CardManager : NetworkBehaviour
             cardUIController.DisableCards1and2();
         }
         // increase votes
-        // card3Vote++;
-        // totalVote++;
+        card3Vote++;
+        totalVote++;
+        RpcCard3Vote();
+        RpcTotalVote();
         // CMDCard3Vote();
         // CMDTotalVote();
     }
