@@ -78,8 +78,8 @@ public class CardManager : NetworkBehaviour
         // increase votes
         // card2Vote++;
         // totalVote++;
-        CMDCard2Vote();
-        CMDTotalVote();
+        // CMDCard2Vote();
+        // CMDTotalVote();
     }
 
     void TaskOnClickBtn3()
@@ -93,8 +93,8 @@ public class CardManager : NetworkBehaviour
         // increase votes
         // card3Vote++;
         // totalVote++;
-        CMDCard3Vote();
-        CMDTotalVote();
+        // CMDCard3Vote();
+        // CMDTotalVote();
     }
 
     [ClientRpc]
