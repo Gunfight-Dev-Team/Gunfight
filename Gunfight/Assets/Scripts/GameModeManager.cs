@@ -426,7 +426,7 @@ public class GameModeManager : NetworkBehaviour
         // Call the disable game interaction for all players
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
-            player.enabled = false;
+            player.GetComponent<PlayerController>().enabled = false;
         }
     }
 
@@ -437,7 +437,7 @@ public class GameModeManager : NetworkBehaviour
         // Call the reset function for all players
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
-            player.enabled = true;
+            player.GetComponent<PlayerController>().enabled = true;
             player.GetComponent<PlayerController>().Respawn();
             player.isAlive = true;
         }
