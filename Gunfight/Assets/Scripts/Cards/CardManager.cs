@@ -59,6 +59,7 @@ public class CardManager : NetworkBehaviour
         }
 
         RpcCard1Vote();
+        RpcTotalVote();
 
         // if (isLocalPlayer)
         // {
