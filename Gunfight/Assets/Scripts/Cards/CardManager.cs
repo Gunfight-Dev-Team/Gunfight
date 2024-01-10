@@ -169,13 +169,13 @@ public class CardManager : NetworkBehaviour
     //     Debug.Log("Total votes: " + totalVote);
     // }
 
-    [Command]
-    private void CMDTotalVote()
-    {
-        totalVote++;
-        Debug.Log("Total votes: " + totalVote);
-        // RpcTotalVote();
-    }
+    // [Command]
+    // private void CMDTotalVote()
+    // {
+    //     totalVote++;
+    //     Debug.Log("Total votes: " + totalVote);
+    //     // RpcTotalVote();
+    // }
 
     public int FindWinningCard()
     {
