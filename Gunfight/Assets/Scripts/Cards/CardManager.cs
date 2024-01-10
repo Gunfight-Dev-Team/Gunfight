@@ -58,13 +58,13 @@ public class CardManager : NetworkBehaviour
         //     totalVote++;
         // }
 
-        RpcCard1Vote();
-        RpcTotalVote();
+        // Card1VoteRpc();
+        // TotalVoteRpc();
 
         // if (isLocalPlayer)
         // {
-        //     CMDCard1Vote();
-        //     CMDTotalVote();
+            CMDCard1Vote();
+            CMDTotalVote();
         // }
     }
 
@@ -79,10 +79,10 @@ public class CardManager : NetworkBehaviour
         // increase votes
         // card2Vote++;
         // totalVote++;
-        RpcCard2Vote();
-        RpcTotalVote();
-        // CMDCard2Vote();
-        // CMDTotalVote();
+        // RpcCard2Vote();
+        // RpcTotalVote();
+        CMDCard2Vote();
+        CMDTotalVote();
     }
 
     void TaskOnClickBtn3()
@@ -96,63 +96,71 @@ public class CardManager : NetworkBehaviour
         // increase votes
         // card3Vote++;
         // totalVote++;
-        RpcCard3Vote();
-        RpcTotalVote();
-        // CMDCard3Vote();
-        // CMDTotalVote();
+        // RpcCard3Vote();
+        // RpcTotalVote();
+        CMDCard3Vote();
+        CMDTotalVote();
     }
 
-    [ServerRpc]
-    void RpcCard1Vote()
+    // [ServerRpc]
+    // void Card1VoteRpc()
+    // {
+    //     card1Vote++;
+    //     Debug.Log("Card 1 votes: " + card1Vote);
+    // }
+
+    [Command]
+    private void CMDCard1Vote()
     {
+        // RpcCard1Vote();
         card1Vote++;
         Debug.Log("Card 1 votes: " + card1Vote);
     }
 
-    // [Command]
-    // private void CMDCard1Vote()
+    // [ServerRpc]
+    // void RpcCard2Vote()
     // {
-    //     RpcCard1Vote();
+    //     card2Vote++;
+    //     Debug.Log("Card 2 votes: " + card2Vote);
     // }
 
-    [ServerRpc]
-    void RpcCard2Vote()
+    [Command]
+    private void CMDCard2Vote()
     {
+        // RpcCard2Vote();
         card2Vote++;
         Debug.Log("Card 2 votes: " + card2Vote);
     }
 
-    // [Command]
-    // private void CMDCard2Vote()
+    // [ServerRpc]
+    // void RpcCard3Vote()
     // {
-    //     RpcCard2Vote();
+    //     card3Vote++;
+    //     Debug.Log("Card 3 votes: " + card3Vote);
     // }
 
-    [ServerRpc]
-    void RpcCard3Vote()
+    [Command]
+    private void CMDCard3Vote()
     {
         card3Vote++;
         Debug.Log("Card 3 votes: " + card3Vote);
+        // RpcCard3Vote();
     }
 
-    // [Command]
-    // private void CMDCard3Vote()
+    // [ClientRpc]
+    // void RpcTotalVote()
     // {
-    //     RpcCard3Vote();
+    //     totalVote++;
+    //     Debug.Log("Total votes: " + totalVote);
     // }
 
-    [ClientRpc]
-    void RpcTotalVote()
+    [Command]
+    private void CMDTotalVote()
     {
         totalVote++;
         Debug.Log("Total votes: " + totalVote);
+        // RpcTotalVote();
     }
-
-    // [Command]
-    // private void CMDTotalVote()
-    // {
-    //     RpcTotalVote();
-    // }
 
     public int FindWinningCard()
     {
