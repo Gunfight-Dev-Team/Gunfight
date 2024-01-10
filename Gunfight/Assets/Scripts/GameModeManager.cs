@@ -37,7 +37,12 @@ public class GameModeManager : NetworkBehaviour
     [SyncVar(hook = nameof(CheckWinConditionSingle))]
     public int currentNumberOfEnemies;
 
+    [Header("Below are used for cards")]
     private int winningCard;
+    public int card1Votes;
+    public int card2Votes;
+    public int card3Votes;
+    public int totalVotes;
 
     private CustomNetworkManager Manager
     {
@@ -69,7 +74,33 @@ public class GameModeManager : NetworkBehaviour
         if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
             mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
-            cardManager = GameObject.Find("CardManager").GetComponent<CardManager>();
+            //cardManager = GameObject.Find("CardManager").GetComponent<CardManager>();
+
+            // if (cardManager == null)
+            // {
+            //     GameObject myCardManager = GameObject.Find("CardManager");
+            //     if (myCardManager == null)
+            //     {
+            //         Debug.Log("Cant find gameobject");
+            //     }
+            //     cardManager = myCardManager.GetComponent<CardManager>();
+            //     if (cardManager == null)
+            //     {
+            //         Debug.Log("Cant find card manager");
+            //     }
+            // }
+
+            // if (cardManager == null)
+            // {
+            //     cardManager = FindObjectOfType<CardManager>();
+            //     if (cardManager == null)
+            //     {
+            //         Debug.Log("Couldnt find game object");
+            //     }
+            // }
+            
+            // Debug.Log("Found card manager: " + (cardManager != null));
+
             if (gameMode == GameMode.SinglePlayer)
             {
                 totalRounds = 9999;
@@ -182,13 +213,9 @@ public class GameModeManager : NetworkBehaviour
         {
             return;
         }
+        // cardManager = myCardManager.GetComponent<CardManager>();
         // setup for round
         currentRound++; // increase round count
-        // resets votes
-        cardManager.totalVote = 0;
-        cardManager.card1Vote = 0;
-        cardManager.card2Vote = 0;
-        cardManager.card3Vote = 0;
         Debug.Log("Round started: " + currentRound);
     }
 
@@ -208,6 +235,11 @@ public class GameModeManager : NetworkBehaviour
                     RpcResetGame();
                 SpawnWeaponsInGame();
                 aliveNum = playerCount;
+                // resets votes
+                // cardManager.totalVote = 0;
+                // cardManager.card1Vote = 0;
+                // cardManager.card2Vote = 0;
+                // cardManager.card3Vote = 0;
                 StartRound();
                 // TODO: Reset Map (pots / boxes)
             }
@@ -242,6 +274,17 @@ public class GameModeManager : NetworkBehaviour
     {
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
         {
+            if (cardManager == null)
+            {
+                cardManager = FindObjectOfType<CardManager>();
+                if (cardManager == null)
+                {
+                    Debug.Log("Couldnt find game object");
+                }
+            }
+            
+            Debug.Log("Found card manager: " + (cardManager != null));
+            
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
@@ -273,10 +316,10 @@ public class GameModeManager : NetworkBehaviour
                         // if we ignore last player to vote
                         break;
                     }
-                    winningCard = cardManager.FindWinningCard();
-                    RpcShowWinningCard(winningCard);
+                    // winningCard = cardManager.FindWinningCard();
+                    // RpcShowWinningCard(winningCard);
                     yield return new WaitForSeconds(5f);
-                    RpcStopShowWinner();
+                    // RpcStopShowWinner();
                     RpcStopCardPanel();
                     StartCoroutine(Countdown());
                     yield return new WaitForSeconds(5f);
