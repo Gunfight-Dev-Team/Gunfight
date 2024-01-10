@@ -39,10 +39,10 @@ public class GameModeManager : NetworkBehaviour
 
     [Header("Below are used for cards")]
     private int winningCard;
-    public int card1Votes;
-    public int card2Votes;
-    public int card3Votes;
-    public int totalVotes;
+    // public int card1Votes;
+    // public int card2Votes;
+    // public int card3Votes;
+    // public int totalVotes;
 
     private CustomNetworkManager Manager
     {
@@ -74,32 +74,6 @@ public class GameModeManager : NetworkBehaviour
         if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
             mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
-            //cardManager = GameObject.Find("CardManager").GetComponent<CardManager>();
-
-            // if (cardManager == null)
-            // {
-            //     GameObject myCardManager = GameObject.Find("CardManager");
-            //     if (myCardManager == null)
-            //     {
-            //         Debug.Log("Cant find gameobject");
-            //     }
-            //     cardManager = myCardManager.GetComponent<CardManager>();
-            //     if (cardManager == null)
-            //     {
-            //         Debug.Log("Cant find card manager");
-            //     }
-            // }
-
-            // if (cardManager == null)
-            // {
-            //     cardManager = FindObjectOfType<CardManager>();
-            //     if (cardManager == null)
-            //     {
-            //         Debug.Log("Couldnt find game object");
-            //     }
-            // }
-            
-            // Debug.Log("Found card manager: " + (cardManager != null));
 
             if (gameMode == GameMode.SinglePlayer)
             {
@@ -213,7 +187,7 @@ public class GameModeManager : NetworkBehaviour
         {
             return;
         }
-        // cardManager = myCardManager.GetComponent<CardManager>();
+
         // setup for round
         currentRound++; // increase round count
         Debug.Log("Round started: " + currentRound);
@@ -236,10 +210,10 @@ public class GameModeManager : NetworkBehaviour
                 SpawnWeaponsInGame();
                 aliveNum = playerCount;
                 // resets votes
-                // cardManager.totalVote = 0;
-                // cardManager.card1Vote = 0;
-                // cardManager.card2Vote = 0;
-                // cardManager.card3Vote = 0;
+                cardManager.totalVote = 0;
+                cardManager.card1Vote = 0;
+                cardManager.card2Vote = 0;
+                cardManager.card3Vote = 0;
                 StartRound();
                 // TODO: Reset Map (pots / boxes)
             }
@@ -290,6 +264,7 @@ public class GameModeManager : NetworkBehaviour
             {
                 if (!CheckOverallWin())
                 {
+                    RpcDisableGameInteraction();
                     RpcShowCardPanel();
                     RpcShowWinner("Winner: " + FindWinner());
                     while (!CheckAllVotes())
@@ -446,11 +421,23 @@ public class GameModeManager : NetworkBehaviour
     }
 
     [ClientRpc]
+    private void RpcDisableGameInteraction()
+    {
+        // Call the disable game interaction for all players
+        foreach (PlayerObjectController player in Manager.GamePlayers)
+        {
+            player.GetComponent<PlayerController>().SetActive(false);
+        }
+    }
+
+
+    [ClientRpc]
     private void RpcResetGame()
     {
         // Call the reset function for all players
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
+            player.GetComponent<PlayerController>().SetActive(true);
             player.GetComponent<PlayerController>().Respawn();
             player.isAlive = true;
         }
