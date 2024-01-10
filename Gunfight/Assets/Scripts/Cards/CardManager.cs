@@ -87,33 +87,56 @@ public class CardManager : NetworkBehaviour
         CMDTotalVote();
     }
 
-    [Command]
-    private void CMDCard1Vote()
+    [ClientRpc]
+    void RpcCard1Vote()
     {
         card1Vote++;
         Debug.Log("Card 1 votes: " + card1Vote);
     }
 
     [Command]
-    private void CMDCard2Vote()
+    private void CMDCard1Vote()
     {
+        RpcCard1Vote();
+    }
 
+    [ClientRpc]
+    void RpcCard2Vote()
+    {
         card2Vote++;
         Debug.Log("Card 2 votes: " + card2Vote);
     }
 
     [Command]
-    private void CMDCard3Vote()
+    private void CMDCard2Vote()
+    {
+        RpcCard2Vote();
+    }
+
+    [ClientRpc]
+    void RpcCard3Vote()
     {
         card3Vote++;
-        Debug.Log("Card 1 votes: " + card3Vote);
+        Debug.Log("Card 3 votes: " + card3Vote);
+    }
+
+    [Command]
+    private void CMDCard3Vote()
+    {
+        RpcCard3Vote();
+    }
+
+    [ClientRpc]
+    void RpcTotalVote()
+    {
+        totalVote++;
+        Debug.Log("Total votes: " + totalVote);
     }
 
     [Command]
     private void CMDTotalVote()
     {
-        totalVote++;
-        Debug.Log("Total votes: " + totalVote);
+        RpcTotalVote();
     }
 
     public int FindWinningCard()
