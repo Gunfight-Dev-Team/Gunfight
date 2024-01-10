@@ -264,7 +264,7 @@ public class GameModeManager : NetworkBehaviour
             {
                 if (!CheckOverallWin())
                 {
-                    RpcDisableGameInteraction();
+                    // RpcDisableGameInteraction();
                     RpcShowCardPanel();
                     RpcShowWinner("Winner: " + FindWinner());
                     while (!CheckAllVotes())
@@ -420,15 +420,15 @@ public class GameModeManager : NetworkBehaviour
         StartCoroutine(DelayedEndRoundSingle());
     }
 
-    [ClientRpc]
-    private void RpcDisableGameInteraction()
-    {
-        // Call the disable game interaction for all players
-        foreach (PlayerObjectController player in Manager.GamePlayers)
-        {
-            player.enabled = false;
-        }
-    }
+    // [ClientRpc]
+    // private void RpcDisableGameInteraction()
+    // {
+    //     // Call the disable game interaction for all players
+    //     foreach (PlayerObjectController player in Manager.GamePlayers)
+    //     {
+    //         player.enabled = false;
+    //     }
+    // }
 
 
     [ClientRpc]
@@ -437,7 +437,7 @@ public class GameModeManager : NetworkBehaviour
         // Call the reset function for all players
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
-            player.enabled = true;
+            // player.enabled = true;
             player.GetComponent<PlayerController>().Respawn();
             player.isAlive = true;
         }
