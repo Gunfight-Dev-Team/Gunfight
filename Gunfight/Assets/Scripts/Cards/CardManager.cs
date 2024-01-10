@@ -58,11 +58,13 @@ public class CardManager : NetworkBehaviour
             totalVote++;
         }
 
-        if (isLocalPlayer)
-        {
-            CMDCard1Vote();
-            CMDTotalVote();
-        }
+        RpcCard1Vote();
+
+        // if (isLocalPlayer)
+        // {
+        //     CMDCard1Vote();
+        //     CMDTotalVote();
+        // }
     }
 
     void TaskOnClickBtn2()
@@ -102,11 +104,11 @@ public class CardManager : NetworkBehaviour
         Debug.Log("Card 1 votes: " + card1Vote);
     }
 
-    [Command]
-    private void CMDCard1Vote()
-    {
-        RpcCard1Vote();
-    }
+    // [Command]
+    // private void CMDCard1Vote()
+    // {
+    //     RpcCard1Vote();
+    // }
 
     [ClientRpc]
     void RpcCard2Vote()
@@ -115,11 +117,11 @@ public class CardManager : NetworkBehaviour
         Debug.Log("Card 2 votes: " + card2Vote);
     }
 
-    [Command]
-    private void CMDCard2Vote()
-    {
-        RpcCard2Vote();
-    }
+    // [Command]
+    // private void CMDCard2Vote()
+    // {
+    //     RpcCard2Vote();
+    // }
 
     [ClientRpc]
     void RpcCard3Vote()
@@ -128,11 +130,11 @@ public class CardManager : NetworkBehaviour
         Debug.Log("Card 3 votes: " + card3Vote);
     }
 
-    [Command]
-    private void CMDCard3Vote()
-    {
-        RpcCard3Vote();
-    }
+    // [Command]
+    // private void CMDCard3Vote()
+    // {
+    //     RpcCard3Vote();
+    // }
 
     [ClientRpc]
     void RpcTotalVote()
@@ -141,11 +143,11 @@ public class CardManager : NetworkBehaviour
         Debug.Log("Total votes: " + totalVote);
     }
 
-    [Command]
-    private void CMDTotalVote()
-    {
-        RpcTotalVote();
-    }
+    // [Command]
+    // private void CMDTotalVote()
+    // {
+    //     RpcTotalVote();
+    // }
 
     public int FindWinningCard()
     {
