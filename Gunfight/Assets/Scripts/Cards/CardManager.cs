@@ -56,8 +56,12 @@ public class CardManager : NetworkBehaviour
             // increase votes
             card1Vote++;
             totalVote++;
-            // CMDCard1Vote();
-            // CMDTotalVote();
+        }
+
+        if (isLocalPlayer)
+        {
+            CMDCard1Vote();
+            CMDTotalVote();
         }
     }
 
