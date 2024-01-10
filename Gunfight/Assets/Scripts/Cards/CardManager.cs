@@ -61,11 +61,11 @@ public class CardManager : NetworkBehaviour
         // Card1VoteRpc();
         // TotalVoteRpc();
 
-        // if (isLocalPlayer)
-        // {
+        if (isLocalPlayer)
+        {
             CMDCard1Vote();
             CMDTotalVote();
-        // }
+        }
     }
 
     void TaskOnClickBtn2()
@@ -81,8 +81,11 @@ public class CardManager : NetworkBehaviour
         // totalVote++;
         // RpcCard2Vote();
         // RpcTotalVote();
-        CMDCard2Vote();
-        CMDTotalVote();
+        if (isLocalPlayer)
+        {
+            CMDCard2Vote();
+            CMDTotalVote();
+        }
     }
 
     void TaskOnClickBtn3()
@@ -98,8 +101,11 @@ public class CardManager : NetworkBehaviour
         // totalVote++;
         // RpcCard3Vote();
         // RpcTotalVote();
-        CMDCard3Vote();
-        CMDTotalVote();
+        if (isLocalPlayer)
+        {
+            CMDCard3Vote();
+            CMDTotalVote();
+        }
     }
 
     // [ServerRpc]
