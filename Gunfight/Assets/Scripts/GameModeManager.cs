@@ -248,6 +248,7 @@ public class GameModeManager : NetworkBehaviour
     {
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
         {
+            // gets the Card Manager game object
             if (cardManager == null)
             {
                 cardManager = FindObjectOfType<CardManager>();
@@ -294,7 +295,7 @@ public class GameModeManager : NetworkBehaviour
                     winningCard = cardManager.FindWinningCard();
                     RpcShowWinningCard(winningCard);
                     yield return new WaitForSeconds(5f);
-                    // RpcStopShowWinner();
+                    RpcStopShowWinner();
                     RpcStopCardPanel();
                     StartCoroutine(Countdown());
                     yield return new WaitForSeconds(5f);

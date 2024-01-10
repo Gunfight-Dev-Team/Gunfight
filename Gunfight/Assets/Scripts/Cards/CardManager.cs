@@ -11,11 +11,6 @@ public class CardManager : NetworkBehaviour
     [SyncVar] public int card3Vote = 0;
     [SyncVar] public int totalVote = 0;
 
-    // public int card1Vote = 0;
-    // public int card2Vote = 0;
-    // public int card3Vote = 0;
-    // public int totalVote = 0;
-
     public Button card1;
     public Button card2;
     public Button card3;
@@ -55,15 +50,11 @@ public class CardManager : NetworkBehaviour
         {
             cardUIController.DisableCards2and3();
         }
-
-        if (isLocalPlayer)
-        {
-            // increase votes
-            // card1Vote++;
-            // totalVote++;
-            CMDCard1Vote();
-            CMDTotalVote();
-        }
+        // increase votes
+        // card1Vote++;
+        // totalVote++;
+        CMDCard1Vote();
+        CMDTotalVote();
     }
 
     void TaskOnClickBtn2()
@@ -74,15 +65,11 @@ public class CardManager : NetworkBehaviour
         {
             cardUIController.DisableCards1and3();
         }
-
-        if (isLocalPlayer)
-        {
-            // increase votes
-            // card2Vote++;
-            // totalVote++;
-            CMDCard2Vote();
-            CMDTotalVote();
-        }
+        // increase votes
+        // card2Vote++;
+        // totalVote++;
+        CMDCard2Vote();
+        CMDTotalVote();
     }
 
     void TaskOnClickBtn3()
@@ -93,55 +80,40 @@ public class CardManager : NetworkBehaviour
         {
             cardUIController.DisableCards1and2();
         }
-
-        if (isLocalPlayer)
-        {
-            // increase votes
-            // card3Vote++;
-            // totalVote++;
-            CMDCard3Vote();
-            CMDTotalVote();
-        }
+        // increase votes
+        // card3Vote++;
+        // totalVote++;
+        CMDCard3Vote();
+        CMDTotalVote();
     }
 
     [Command]
     private void CMDCard1Vote()
     {
-        if (isServer)
-        {
-            card1Vote++;
-            Debug.Log("Card 1 votes: " + card1Vote);
-        }
+        card1Vote++;
+        Debug.Log("Card 1 votes: " + card1Vote);
     }
 
     [Command]
     private void CMDCard2Vote()
     {
-        if (isServer)
-        {
-            card2Vote++;
-            Debug.Log("Card 2 votes: " + card2Vote);
-        }
+
+        card2Vote++;
+        Debug.Log("Card 2 votes: " + card2Vote);
     }
 
     [Command]
     private void CMDCard3Vote()
     {
-        if (isServer)
-        {
-            card3Vote++;
-            Debug.Log("Card 1 votes: " + card3Vote);
-        }
+        card3Vote++;
+        Debug.Log("Card 1 votes: " + card3Vote);
     }
 
     [Command]
     private void CMDTotalVote()
     {
-        if (isServer)
-        {
-            totalVote++;
-            Debug.Log("Total votes: " + totalVote);
-        }
+        totalVote++;
+        Debug.Log("Total votes: " + totalVote);
     }
 
     public int FindWinningCard()
