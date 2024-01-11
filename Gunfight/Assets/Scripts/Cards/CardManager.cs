@@ -66,12 +66,12 @@ public class CardManager : NetworkBehaviour
 
         // if (isLocalPlayer)
         // {
-        //     CMDCard1Vote();
-        //     CMDTotalVote();
+            CMDCard1Vote();
+            // CMDTotalVote();
         // }
-        GameModeManager.Instance.card1Votes++;
-        Debug.Log("Card 1 vote");
-        GameModeManager.Instance.totalVotes++;
+        // GameModeManager.Instance.card1Votes++;
+        // Debug.Log("Card 1 vote");
+        // GameModeManager.Instance.totalVotes++;
     }
 
     void TaskOnClickBtn2()
@@ -89,12 +89,12 @@ public class CardManager : NetworkBehaviour
         // RpcTotalVote();
         // if (isLocalPlayer)
         // {
-        //     CMDCard2Vote();
-        //     CMDTotalVote();
+            CMDCard2Vote();
+            // CMDTotalVote();
         // }
-        GameModeManager.Instance.card2Votes++;
-        Debug.Log("Card 2 vote");
-        GameModeManager.Instance.totalVotes++;
+        // GameModeManager.Instance.card2Votes++;
+        // Debug.Log("Card 2 vote");
+        // GameModeManager.Instance.totalVotes++;
     }
 
     void TaskOnClickBtn3()
@@ -112,12 +112,12 @@ public class CardManager : NetworkBehaviour
         // RpcTotalVote();
         // if (isLocalPlayer)
         // {
-        //     CMDCard3Vote();
+            CMDCard3Vote();
         //     CMDTotalVote();
         // }
-        GameModeManager.Instance.card3Votes++;
-        Debug.Log("Card 3 vote");
-        GameModeManager.Instance.totalVotes++;
+        // GameModeManager.Instance.card3Votes++;
+        // Debug.Log("Card 3 vote");
+        // GameModeManager.Instance.totalVotes++;
     }
 
     // [ServerRpc]
@@ -131,8 +131,11 @@ public class CardManager : NetworkBehaviour
     private void CMDCard1Vote()
     {
         // RpcCard1Vote();
-        card1Vote++;
-        Debug.Log("Card 1 votes: " + card1Vote);
+        // card1Vote++;
+        // Debug.Log("Card 1 votes: " + card1Vote);
+        GameModeManager.Instance.card1Votes++;
+        Debug.Log("Card 1 vote");
+        GameModeManager.Instance.totalVotes++;
     }
 
     // [ServerRpc]
@@ -146,8 +149,11 @@ public class CardManager : NetworkBehaviour
     private void CMDCard2Vote()
     {
         // RpcCard2Vote();
-        card2Vote++;
-        Debug.Log("Card 2 votes: " + card2Vote);
+        // card2Vote++;
+        // Debug.Log("Card 2 votes: " + card2Vote);
+        GameModeManager.Instance.card2Votes++;
+        Debug.Log("Card 2 vote");
+        GameModeManager.Instance.totalVotes++;
     }
 
     // [ServerRpc]
@@ -160,9 +166,12 @@ public class CardManager : NetworkBehaviour
     [Command]
     private void CMDCard3Vote()
     {
-        card3Vote++;
-        Debug.Log("Card 3 votes: " + card3Vote);
+        // card3Vote++;
+        // Debug.Log("Card 3 votes: " + card3Vote);
         // RpcCard3Vote();
+        GameModeManager.Instance.card3Votes++;
+        Debug.Log("Card 3 vote");
+        GameModeManager.Instance.totalVotes++;
     }
 
     // [ClientRpc]
@@ -175,9 +184,12 @@ public class CardManager : NetworkBehaviour
     // [Command]
     // private void CMDTotalVote()
     // {
-    //     totalVote++;
-    //     Debug.Log("Total votes: " + totalVote);
+    //     // totalVote++;
+    //     // Debug.Log("Total votes: " + totalVote);
     //     // RpcTotalVote();
+    //     GameModeManager.Instance.card3Votes++;
+    //     Debug.Log("Card 3 vote");
+    //     GameModeManager.Instance.totalVotes++;
     // }
 
     public int FindWinningCard()

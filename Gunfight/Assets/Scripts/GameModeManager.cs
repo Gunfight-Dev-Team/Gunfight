@@ -39,10 +39,10 @@ public class GameModeManager : NetworkBehaviour
 
     [Header("Below are used for cards")]
     private int winningCard;
-    public int card1Votes = 0;
-    public int card2Votes = 0;
-    public int card3Votes = 0;
-    public int totalVotes = 0;
+    [SyncVar] public int card1Votes = 0;
+    [SyncVar] public int card2Votes = 0;
+    [SyncVar] public int card3Votes = 0;
+    [SyncVar] public int totalVotes = 0;
 
     private CustomNetworkManager Manager
     {
