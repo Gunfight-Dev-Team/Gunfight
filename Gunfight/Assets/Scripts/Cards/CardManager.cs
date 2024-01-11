@@ -64,7 +64,7 @@ public class CardManager : NetworkBehaviour
         // Card1VoteRpc();
         // TotalVoteRpc();
 
-        if (isLocalPlayer)
+        if (isOwned)
         {
             CMDCard1Vote();
             // CMDTotalVote();
