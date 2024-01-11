@@ -6,13 +6,13 @@ using UnityEngine.UI;
 
 public class CardManager : NetworkBehaviour
 {
-    // [SyncVar] public int card1Vote = 0;
-    // [SyncVar] public int card2Vote = 0;
-    // [SyncVar] public int card3Vote = 0;
-    // [SyncVar] public int totalVote = 0;
-    public int card1Vote = 0;
-    public int card2Vote = 0;
-    public int card3Vote = 0;
+    [SyncVar] public int card1Vote = 0;
+    [SyncVar] public int card2Vote = 0;
+    [SyncVar] public int card3Vote = 0;
+    [SyncVar] public int totalVote = 0;
+    // public int card1Vote = 0;
+    // public int card2Vote = 0;
+    // public int card3Vote = 0;
 
     public Button card1;
     public Button card2;
@@ -53,7 +53,7 @@ public class CardManager : NetworkBehaviour
         {
             cardUIController.DisableCards2and3();
         }
-
+        Card1Vote();
         // if (isServer)
         // {
         //     // increase votes
@@ -64,11 +64,11 @@ public class CardManager : NetworkBehaviour
         // Card1VoteRpc();
         // TotalVoteRpc();
 
-        if (isOwned)
-        {
-            CMDCard1Vote();
-            // CMDTotalVote();
-        }
+        // if (isOwned)
+        // {
+        //     CMDCard1Vote();
+        //     // CMDTotalVote();
+        // }
         // GameModeManager.Instance.card1Votes++;
         // Debug.Log("Card 1 vote");
         // GameModeManager.Instance.totalVotes++;
@@ -82,6 +82,7 @@ public class CardManager : NetworkBehaviour
         {
             cardUIController.DisableCards1and3();
         }
+        Card2Vote();
         // increase votes
         // card2Vote++;
         // totalVote++;
@@ -89,7 +90,7 @@ public class CardManager : NetworkBehaviour
         // RpcTotalVote();
         // if (isLocalPlayer)
         // {
-            CMDCard2Vote();
+            // CMDCard2Vote();
             // CMDTotalVote();
         // }
         // GameModeManager.Instance.card2Votes++;
@@ -105,6 +106,8 @@ public class CardManager : NetworkBehaviour
         {
             cardUIController.DisableCards1and2();
         }
+
+        Card3Vote();
         // increase votes
         // card3Vote++;
         // totalVote++;
@@ -112,7 +115,7 @@ public class CardManager : NetworkBehaviour
         // RpcTotalVote();
         // if (isLocalPlayer)
         // {
-            CMDCard3Vote();
+            // CMDCard3Vote();
         //     CMDTotalVote();
         // }
         // GameModeManager.Instance.card3Votes++;
@@ -127,15 +130,22 @@ public class CardManager : NetworkBehaviour
     //     Debug.Log("Card 1 votes: " + card1Vote);
     // }
 
+    [Client]
+    public void Card1Vote()
+    {
+        CMDCard1Vote();
+        CMDTotalVote();
+    }
+
     [Command]
     private void CMDCard1Vote()
     {
         // RpcCard1Vote();
-        // card1Vote++;
-        // Debug.Log("Card 1 votes: " + card1Vote);
-        GameModeManager.Instance.card1Votes++;
-        Debug.Log("Card 1 vote");
-        GameModeManager.Instance.totalVotes++;
+        card1Vote++;
+        Debug.Log("Card 1 votes: " + card1Vote);
+        // GameModeManager.Instance.card1Votes++;
+        // Debug.Log("Card 1 vote");
+        // GameModeManager.Instance.totalVotes++;
     }
 
     // [ServerRpc]
@@ -145,15 +155,22 @@ public class CardManager : NetworkBehaviour
     //     Debug.Log("Card 2 votes: " + card2Vote);
     // }
 
+    [Client]
+    public void Card2Vote()
+    {
+        CMDCard2Vote();
+        CMDTotalVote();
+    }
+
     [Command]
     private void CMDCard2Vote()
     {
         // RpcCard2Vote();
-        // card2Vote++;
-        // Debug.Log("Card 2 votes: " + card2Vote);
-        GameModeManager.Instance.card2Votes++;
-        Debug.Log("Card 2 vote");
-        GameModeManager.Instance.totalVotes++;
+        card2Vote++;
+        Debug.Log("Card 2 votes: " + card2Vote);
+        // GameModeManager.Instance.card2Votes++;
+        // Debug.Log("Card 2 vote");
+        // GameModeManager.Instance.totalVotes++;
     }
 
     // [ServerRpc]
@@ -163,15 +180,22 @@ public class CardManager : NetworkBehaviour
     //     Debug.Log("Card 3 votes: " + card3Vote);
     // }
 
+    [Client]
+    public void Card3Vote()
+    {
+        CMDCard3Vote();
+        CMDTotalVote();
+    }
+
     [Command]
     private void CMDCard3Vote()
     {
-        // card3Vote++;
-        // Debug.Log("Card 3 votes: " + card3Vote);
+        card3Vote++;
+        Debug.Log("Card 3 votes: " + card3Vote);
         // RpcCard3Vote();
-        GameModeManager.Instance.card3Votes++;
-        Debug.Log("Card 3 vote");
-        GameModeManager.Instance.totalVotes++;
+        // GameModeManager.Instance.card3Votes++;
+        // Debug.Log("Card 3 vote");
+        // GameModeManager.Instance.totalVotes++;
     }
 
     // [ClientRpc]
@@ -181,25 +205,25 @@ public class CardManager : NetworkBehaviour
     //     Debug.Log("Total votes: " + totalVote);
     // }
 
-    // [Command]
-    // private void CMDTotalVote()
-    // {
-    //     // totalVote++;
-    //     // Debug.Log("Total votes: " + totalVote);
-    //     // RpcTotalVote();
-    //     GameModeManager.Instance.card3Votes++;
-    //     Debug.Log("Card 3 vote");
-    //     GameModeManager.Instance.totalVotes++;
-    // }
+    [Command]
+    private void CMDTotalVote()
+    {
+        totalVote++;
+        Debug.Log("Total votes: " + totalVote);
+        // RpcTotalVote();
+        // GameModeManager.Instance.card3Votes++;
+        // Debug.Log("Card 3 vote");
+        // GameModeManager.Instance.totalVotes++;
+    }
 
     public int FindWinningCard()
     {
         int cardVal = 0;
         if (isServer)
         {
-            card1Vote = GameModeManager.Instance.card1Votes;
-            card2Vote = GameModeManager.Instance.card2Votes;
-            card3Vote = GameModeManager.Instance.card3Votes;
+            // card1Vote = GameModeManager.Instance.card1Votes;
+            // card2Vote = GameModeManager.Instance.card2Votes;
+            // card3Vote = GameModeManager.Instance.card3Votes;
             // check which card has the most votes
             if (card1Vote > card2Vote && card1Vote > card3Vote)
             {
@@ -278,6 +302,7 @@ public class CardManager : NetworkBehaviour
         card1Vote = 0;
         card2Vote = 0;
         card3Vote = 0;
+        totalVote = 0;
 
         return cardVal;
     }
