@@ -76,7 +76,7 @@ public class GameModeManager : NetworkBehaviour
                 initEnemy();
             }
 
-            if (LocalPlayerController.PlayerIdNumber != 1)
+            if (LocalPlayerController.PlayerIdNumber == 1)
             {
                 playerCount = aliveNum;
                 hasGameStarted = true;
