@@ -53,7 +53,10 @@ public class CardManager : NetworkBehaviour
         {
             cardUIController.DisableCards2and3();
         }
-        Card1Vote();
+        if (isLocalPlayer)
+        {
+            Card1Vote();
+        }
         // if (isServer)
         // {
         //     // increase votes
@@ -82,7 +85,10 @@ public class CardManager : NetworkBehaviour
         {
             cardUIController.DisableCards1and3();
         }
-        Card2Vote();
+        if (isLocalPlayer)
+        {
+            Card2Vote();
+        }
         // increase votes
         // card2Vote++;
         // totalVote++;
@@ -107,7 +113,11 @@ public class CardManager : NetworkBehaviour
             cardUIController.DisableCards1and2();
         }
 
-        Card3Vote();
+        if (isLocalPlayer)
+        {
+            Card3Vote();
+        }
+        
         // increase votes
         // card3Vote++;
         // totalVote++;
