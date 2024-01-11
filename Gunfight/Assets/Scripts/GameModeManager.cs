@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class GameModeManager : NetworkBehaviour
 {
     public static GameModeManager Instance;
-    public PlayerObjectController LocalPlayerController;
     public MapManager mapManager;
 
     [SyncVar]
@@ -55,20 +54,17 @@ public class GameModeManager : NetworkBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            LocalPlayerController = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
         }
     }
 
     private void Update()
     {
-        if (LocalPlayerController.PlayerIdNumber != 1)
+        if (!isServer)
         {
             return;
         }
-        
         if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
-            
             mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
             if (gameMode == GameMode.SinglePlayer)
             {
@@ -76,9 +72,8 @@ public class GameModeManager : NetworkBehaviour
                 initEnemy();
             }
 
-            if (LocalPlayerController.PlayerIdNumber == 1)
+            if (isServer)
             {
-                Debug.Log("here");
                 playerCount = aliveNum;
                 hasGameStarted = true;
                 StartRound(); // starts the first round after Awake
@@ -88,7 +83,7 @@ public class GameModeManager : NetworkBehaviour
 
     private void initEnemy()
     {
-        if (LocalPlayerController.PlayerIdNumber != 1)
+        if (!isServer)
         {
             return;
         }
@@ -107,7 +102,7 @@ public class GameModeManager : NetworkBehaviour
 
     public void spawnEnemies()
     {
-        if (LocalPlayerController.PlayerIdNumber != 1)
+        if (!isServer)
         {
             return;
         }
@@ -179,7 +174,7 @@ public class GameModeManager : NetworkBehaviour
 
     public void StartRound()
     {
-        if (LocalPlayerController.PlayerIdNumber != 1)
+        if (!isServer)
         {
             return;
         }
@@ -190,9 +185,8 @@ public class GameModeManager : NetworkBehaviour
 
     public void EndRound()
     {
-        if (LocalPlayerController.PlayerIdNumber != 1)
+        if (!isServer)
         {
-            Debug.Log("here");
             SceneManager.LoadScene("Lobby");
             return;
         }
@@ -201,7 +195,7 @@ public class GameModeManager : NetworkBehaviour
             if (currentRound < totalRounds) // if current round is less than total rounds
             {
                 DeleteWeaponsInGame();
-                if (LocalPlayerController.PlayerIdNumber == 1)
+                if (isServer)
                     RpcResetGame();
                 SpawnWeaponsInGame();
                 aliveNum = playerCount;
@@ -219,7 +213,7 @@ public class GameModeManager : NetworkBehaviour
         {
             // if single player mode
             DeleteWeaponsInGame();
-            if (LocalPlayerController.PlayerIdNumber == 1)
+            if (isServer)
                 RpcResetGame();
             SpawnWeaponsInGame();
             currentRoundNumberOfEnemies = Mathf.RoundToInt(currentRoundNumberOfEnemies * enemyMultiplier);
@@ -237,7 +231,7 @@ public class GameModeManager : NetworkBehaviour
 
     private IEnumerator DelayedEndRound()
     {
-        if (LocalPlayerController.PlayerIdNumber == 1 && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
+        if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
         {
             // If only one player is alive, end round 
             if (aliveNum <= 1)
@@ -253,7 +247,7 @@ public class GameModeManager : NetworkBehaviour
 
     private IEnumerator DelayedEndRoundSingle()
     {
-        if (LocalPlayerController.PlayerIdNumber == 1 && SceneManager.GetActiveScene().name != "Lobby" && 
+        if (isServer && SceneManager.GetActiveScene().name != "Lobby" && 
             currentNumberOfEnemies != startingNumberOfEnemies)
         {
             // If no enemy, end round 
