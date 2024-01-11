@@ -205,6 +205,7 @@ public class GameModeManager : NetworkBehaviour
             {
                 //DisplayOverallWinner();
                 //GoToLobby();
+                Debug.Log("here");
                 SceneManager.LoadScene("Lobby");
             }
         }
