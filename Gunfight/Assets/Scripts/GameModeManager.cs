@@ -78,6 +78,7 @@ public class GameModeManager : NetworkBehaviour
 
             if (LocalPlayerController.PlayerIdNumber == 1)
             {
+                Debug.Log("here");
                 playerCount = aliveNum;
                 hasGameStarted = true;
                 StartRound(); // starts the first round after Awake
@@ -87,7 +88,7 @@ public class GameModeManager : NetworkBehaviour
 
     private void initEnemy()
     {
-        if (!isServer)
+        if (LocalPlayerController.PlayerIdNumber != 1)
         {
             return;
         }
@@ -106,7 +107,7 @@ public class GameModeManager : NetworkBehaviour
 
     public void spawnEnemies()
     {
-        if (!isServer)
+        if (LocalPlayerController.PlayerIdNumber != 1)
         {
             return;
         }
@@ -178,7 +179,7 @@ public class GameModeManager : NetworkBehaviour
 
     public void StartRound()
     {
-        if (!isServer)
+        if (LocalPlayerController.PlayerIdNumber != 1)
         {
             return;
         }
@@ -189,7 +190,7 @@ public class GameModeManager : NetworkBehaviour
 
     public void EndRound()
     {
-        if (!isServer)
+        if (LocalPlayerController.PlayerIdNumber != 1)
         {
             Debug.Log("here");
             SceneManager.LoadScene("Lobby");
@@ -200,7 +201,7 @@ public class GameModeManager : NetworkBehaviour
             if (currentRound < totalRounds) // if current round is less than total rounds
             {
                 DeleteWeaponsInGame();
-                if (isServer)
+                if (LocalPlayerController.PlayerIdNumber == 1)
                     RpcResetGame();
                 SpawnWeaponsInGame();
                 aliveNum = playerCount;
@@ -218,7 +219,7 @@ public class GameModeManager : NetworkBehaviour
         {
             // if single player mode
             DeleteWeaponsInGame();
-            if (isServer)
+            if (LocalPlayerController.PlayerIdNumber == 1)
                 RpcResetGame();
             SpawnWeaponsInGame();
             currentRoundNumberOfEnemies = Mathf.RoundToInt(currentRoundNumberOfEnemies * enemyMultiplier);
@@ -236,7 +237,7 @@ public class GameModeManager : NetworkBehaviour
 
     private IEnumerator DelayedEndRound()
     {
-        if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
+        if (LocalPlayerController.PlayerIdNumber == 1 && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
         {
             // If only one player is alive, end round 
             if (aliveNum <= 1)
@@ -252,7 +253,7 @@ public class GameModeManager : NetworkBehaviour
 
     private IEnumerator DelayedEndRoundSingle()
     {
-        if (isServer && SceneManager.GetActiveScene().name != "Lobby" && 
+        if (LocalPlayerController.PlayerIdNumber == 1 && SceneManager.GetActiveScene().name != "Lobby" && 
             currentNumberOfEnemies != startingNumberOfEnemies)
         {
             // If no enemy, end round 
