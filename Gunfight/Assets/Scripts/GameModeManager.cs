@@ -187,6 +187,7 @@ public class GameModeManager : NetworkBehaviour
     {
         if (!isServer)
         {
+            Debug.Log("here");
             SceneManager.LoadScene("Lobby");
             return;
         }
