@@ -187,6 +187,7 @@ public class GameModeManager : NetworkBehaviour
     {
         if (!isServer)
         {
+            SceneManager.LoadScene("Lobby");
             return;
         }
         if (gameMode != GameMode.SinglePlayer)
@@ -205,7 +206,6 @@ public class GameModeManager : NetworkBehaviour
             {
                 //DisplayOverallWinner();
                 //GoToLobby();
-                Debug.Log("here");
                 SceneManager.LoadScene("Lobby");
             }
         }
