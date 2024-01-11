@@ -64,11 +64,11 @@ public class CardManager : NetworkBehaviour
         // Card1VoteRpc();
         // TotalVoteRpc();
 
-        // if (isLocalPlayer)
-        // {
+        if (isLocalPlayer)
+        {
             CMDCard1Vote();
             // CMDTotalVote();
-        // }
+        }
         // GameModeManager.Instance.card1Votes++;
         // Debug.Log("Card 1 vote");
         // GameModeManager.Instance.totalVotes++;
