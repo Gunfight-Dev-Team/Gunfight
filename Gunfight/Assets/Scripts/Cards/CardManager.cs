@@ -91,7 +91,7 @@ public class CardManager : NetworkBehaviour
         //     CMDCard2Vote();
         //     CMDTotalVote();
         // }
-        GameModeManager.Instance.card1Votes++;
+        GameModeManager.Instance.card2Votes++;
         GameModeManager.Instance.totalVotes++;
     }
 
@@ -113,7 +113,7 @@ public class CardManager : NetworkBehaviour
         //     CMDCard3Vote();
         //     CMDTotalVote();
         // }
-        GameModeManager.Instance.card1Votes++;
+        GameModeManager.Instance.card3Votes++;
         GameModeManager.Instance.totalVotes++;
     }
 
