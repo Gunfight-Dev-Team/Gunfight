@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameModeManager : NetworkBehaviour
 {
     public static GameModeManager Instance;
+    public PlayerObjectController LocalPlayerController;
     public MapManager mapManager;
 
     [SyncVar]
@@ -54,17 +55,20 @@ public class GameModeManager : NetworkBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            LocalPlayerController = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
         }
     }
 
     private void Update()
     {
-        if (!isServer)
+        if (LocalPlayerController.PlayerIdNumber != 1)
         {
             return;
         }
+        
         if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
+            
             mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
             if (gameMode == GameMode.SinglePlayer)
             {
