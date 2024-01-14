@@ -79,7 +79,10 @@ public class LobbyController : MonoBehaviour
         if (GameObject.Find(gameModeManager.name) == null)
         {
             gameModeManager = Instantiate(gameModeManager);
-            NetworkServer.Spawn(gameModeManager.GameObject());
+            if (LocalPlayerController.PlayerIdNumber == 1)
+            {
+                NetworkServer.Spawn(gameModeManager.GameObject());
+            }
         }
 
         if (LocalPlayerController.PlayerIdNumber == 1)
