@@ -206,6 +206,7 @@ public class GameModeManager : NetworkBehaviour
             {
                 //DisplayOverallWinner();
                 //GoToLobby();
+                currentRound = 0;
                 manager.StartGame("Lobby");
             }
         }
