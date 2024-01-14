@@ -72,7 +72,9 @@ public class LobbyController : MonoBehaviour
             NetworkServer.Spawn(gameModeManager.GameObject());
         }
 
-        LocalPlayerObject = GameObject.Find(LocalPlayerObject.name);
+        Instance.FindLocalPlayer();
+        Instance.UpdateLobbyName();
+        Instance.UpdatePlayerList();
 
         if (LocalPlayerController.PlayerIdNumber == 1)
         {
