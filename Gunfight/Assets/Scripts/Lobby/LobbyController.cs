@@ -66,6 +66,12 @@ public class LobbyController : MonoBehaviour
         {
             LocalPlayerController = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
         }
+        if (GameObject.Find(gameModeManager.name) == null)
+        {
+            gameModeManager = Instantiate(gameModeManager);
+            NetworkServer.Spawn(gameModeManager.GameObject());
+
+        }
         if (LocalPlayerController.PlayerIdNumber == 1)
         {
             // if host

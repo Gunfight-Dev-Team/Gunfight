@@ -59,6 +59,7 @@ public class GameModeManager : NetworkBehaviour
 
     private void Update()
     {
+        Debug.Log(isServer);
         if (!isServer)
         {
             return;
@@ -187,6 +188,7 @@ public class GameModeManager : NetworkBehaviour
     {
         if (!isServer)
         {
+            Debug.Log("here");
             SceneManager.LoadScene("Lobby");
             return;
         }
