@@ -62,7 +62,10 @@ public class LobbyController : MonoBehaviour
 
     private void OnEnable()
     {
-        Instance.FindLocalPlayer();
+        if (GameObject.Find("LocalGamePlayer") != null)
+        {
+            Instance.FindLocalPlayer();
+        }
         Instance.UpdateLobbyName();
         Instance.UpdatePlayerList();
     }
