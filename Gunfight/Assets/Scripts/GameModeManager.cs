@@ -179,6 +179,7 @@ public class GameModeManager : NetworkBehaviour
             return;
         }
         // setup for round
+        RpcResetGame();
         currentRound++; // increase round count
         Debug.Log("Round started: " + currentRound);
     }
@@ -205,8 +206,6 @@ public class GameModeManager : NetworkBehaviour
             {
                 //DisplayOverallWinner();
                 //GoToLobby();
-                if (isServer)
-                    RpcResetGame();
                 manager.StartGame("Lobby");
             }
         }
