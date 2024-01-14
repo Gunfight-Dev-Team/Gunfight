@@ -205,6 +205,8 @@ public class GameModeManager : NetworkBehaviour
             {
                 //DisplayOverallWinner();
                 //GoToLobby();
+                if (isServer)
+                    RpcResetGame();
                 manager.StartGame("Lobby");
             }
         }
