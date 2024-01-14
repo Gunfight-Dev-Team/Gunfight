@@ -234,6 +234,7 @@ public class LobbyController : MonoBehaviour
     {
         LocalPlayerObject = GameObject.Find("LocalGamePlayer");
         LocalPlayerController = LocalPlayerObject.GetComponent<PlayerObjectController>();
+        LocalPlayerObject.GetComponent<PlayerController>().hasSpawned = false;
     }
 
     public void CreateHostPlayerItem()

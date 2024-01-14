@@ -125,7 +125,8 @@ public class PlayerController : NetworkBehaviour
                 // Spawns player with knife, sets position, team, and sprite
                 Debug.Log("Spawning");
                 weaponInfo.setDefault();
-                SetPosition();
+                //SetPosition();
+                Respawn();
                 SetTeam();
                 health = 10f;
                 hasSpawned = true;
