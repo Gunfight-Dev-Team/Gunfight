@@ -60,6 +60,13 @@ public class LobbyController : MonoBehaviour
         if(Instance == null) { Instance = this; }
     }
 
+    private void OnEnable()
+    {
+        Instance.FindLocalPlayer();
+        Instance.UpdateLobbyName();
+        Instance.UpdatePlayerList();
+    }
+
     private void Start()
     {
         if (LocalPlayerController == null)
@@ -71,10 +78,6 @@ public class LobbyController : MonoBehaviour
             gameModeManager = Instantiate(gameModeManager);
             NetworkServer.Spawn(gameModeManager.GameObject());
         }
-
-        Instance.FindLocalPlayer();
-        Instance.UpdateLobbyName();
-        Instance.UpdatePlayerList();
 
         if (LocalPlayerController.PlayerIdNumber == 1)
         {
