@@ -186,6 +186,7 @@ public class PlayerObjectController : NetworkBehaviour
             {
                 if (manager.GamePlayers.Count > 1)
                 {
+                    Debug.Log("here");
                     foreach (PlayerObjectController player in manager.GamePlayers)
                     {
                         if (player != this)
@@ -194,8 +195,10 @@ public class PlayerObjectController : NetworkBehaviour
                         }
                     }
                 }
-                
-                manager.StopHost();
+                else
+                {
+                    manager.StopHost();
+                }
             }
             else
             {
