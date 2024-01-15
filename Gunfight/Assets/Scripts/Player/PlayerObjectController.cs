@@ -192,6 +192,7 @@ public class PlayerObjectController : NetworkBehaviour
             if (isServer)
             {
                 RpcClientQuit();
+                while (manager.GamePlayers.Count <= 1);
                 manager.StopHost();
             }
             else
