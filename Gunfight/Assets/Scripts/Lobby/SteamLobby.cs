@@ -184,5 +184,10 @@ public class SteamLobby : MonoBehaviour
             numGlobalPlayers = pCallback.m_cPlayers;
         }
     }
+
+    public void ChangeHost(CSteamID steamIDLobby, CSteamID steamIDNewOwner)
+    {
+        SteamMatchmaking.SetLobbyOwner(steamIDLobby, steamIDNewOwner);
+    }
 }
 
