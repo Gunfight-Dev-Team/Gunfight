@@ -184,15 +184,12 @@ public class PlayerObjectController : NetworkBehaviour
         //Make the active scene the offline scene
         SceneManager.LoadScene("MainMenu");
 
-        //Leave Steam Lobby
-        SteamLobby.Instance.LeaveLobby();
 
         if (isOwned)
         {
             if (isServer)
             {
                 RpcClientQuit();
-                while (manager.GamePlayers.Count >= 1);
                 manager.StopHost();
             }
             else
@@ -200,5 +197,8 @@ public class PlayerObjectController : NetworkBehaviour
                 manager.StopClient();
             }
         }
+
+        //Leave Steam Lobby
+        SteamLobby.Instance.LeaveLobby();
     }
 }
