@@ -151,6 +151,12 @@ public class PlayerObjectController : NetworkBehaviour
         SendPlayerColor(PlayerColor, newValue);
     }
 
+    [ClientRpc]
+    void RpcClientQuit()
+    {
+        Quit();
+    }
+
     public void SendPlayerColor(int oldValue, int newValue)
     {
         if(isServer)
@@ -179,33 +185,19 @@ public class PlayerObjectController : NetworkBehaviour
         SceneManager.LoadScene("MainMenu");
 
         //Leave Steam Lobby
+        SteamLobby.Instance.LeaveLobby();
 
         if (isOwned)
         {
             if (isServer)
             {
-                if (manager.GamePlayers.Count > 1)
-                {
-                    Debug.Log("here");
-                    foreach (PlayerObjectController player in manager.GamePlayers)
-                    {
-                        if (player != this)
-                        {
-                            SteamLobby.Instance.ChangeHost((CSteamID)SteamLobby.Instance.CurrentLobbyID, (CSteamID)player.PlayerSteamID);
-                        }
-                    }
-                }
-                else
-                {
-                    manager.StopHost();
-                }
+                RpcClientQuit();
+                manager.StopHost();
             }
             else
             {
                 manager.StopClient();
             }
         }
-
-        SteamLobby.Instance.LeaveLobby();
     }
 }
