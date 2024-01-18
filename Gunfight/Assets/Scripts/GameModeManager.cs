@@ -39,10 +39,6 @@ public class GameModeManager : NetworkBehaviour
 
     [Header("Below are used for cards")]
     private int winningCard;
-    // [SyncVar] public int card1Vote = 0;
-    // [SyncVar] public int card2Vote = 0;
-    // [SyncVar] public int card3Vote = 0;
-    // [SyncVar] public int totalVote = 0;
 
     private CustomNetworkManager Manager
     {
@@ -209,15 +205,6 @@ public class GameModeManager : NetworkBehaviour
                     RpcResetGame();
                 SpawnWeaponsInGame();
                 aliveNum = playerCount;
-                // resets votes
-                cardManager.totalVote = 0;
-                cardManager.card1Vote = 0;
-                cardManager.card2Vote = 0;
-                cardManager.card3Vote = 0;
-                // card1Votes = 0;
-                // card2Votes = 0;
-                // card3Votes = 0;
-                // totalVotes = 0;
                 StartRound();
                 // TODO: Reset Map (pots / boxes)
             }
@@ -270,37 +257,35 @@ public class GameModeManager : NetworkBehaviour
                 if (!CheckOverallWin())
                 {
                     RpcDisableGameInteraction();
-                    RpcShowCardPanel();
+                    cardManager.RpcShowCardPanel();
                     RpcShowWinner("Winner: " + FindWinner());
-                    while (!CheckAllVotes())
-                    {
-                        Debug.Log("Inside not check all votes loop");
-                        // if not everyone voted
-                        while (!CheckAllButOneVote())
-                        {
-                            Debug.Log("Inside not check all but one vote loop");
-                            // wait till more players vote
-                            yield return new WaitForSeconds(1f); 
-                        }
 
-                        int count = 0;
-                        while (CheckAllButOneVote() && count < 10)
+                    // start 10s timer 
+                    int count = 0;
+
+                    while (count < 10)
+                    {
+                        if (cardManager.CheckIfEveryoneVoted(playerCount))
                         {
-                            Debug.Log("Inside check all but one and counter loop " + count);  
-                            // check if there is still one vote left
-                            yield return new WaitForSeconds(1f); 
-                            count++;
+                            Debug.Log("Break countdown");
+                            break;
                         }
-                        
-                        Debug.Log("end of not check all votes loop");
-                        // if we ignore last player to vote
-                        break;
+                        yield return new WaitForSeconds(1f);
+                        count++;
+                        Debug.Log("Card countdown: " + count);
                     }
-                    winningCard = cardManager.FindWinningCard();
-                    RpcShowWinningCard(winningCard);
-                    yield return new WaitForSeconds(5f);
+                    
+                    //if before 10s everyone voted (only time need to check if everyone voted), check for most voted card, show winning card, start game
+                    // use Max functions, this will resolve ties
+                    //end of 10s, check for most voted card, show winning card, begin game (hard deadline)
+
+                    winningCard = cardManager.FindMaxVote();
+                    Debug.Log("Winning card: " + winningCard);
+
+                    cardManager.RpcShowWinningCard(winningCard); // only displaying the winning card
+                    yield return new WaitForSeconds(5f); // pause to show winning card
                     RpcStopShowWinner();
-                    RpcStopCardPanel();
+                    cardManager.RpcStopCardPanel();
                     StartCoroutine(Countdown());
                     yield return new WaitForSeconds(5f);
                 }
@@ -314,14 +299,24 @@ public class GameModeManager : NetworkBehaviour
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" && 
             currentNumberOfEnemies != startingNumberOfEnemies)
         {
+            // gets the Card Manager game object
+            if (cardManager == null)
+            {
+                cardManager = FindObjectOfType<CardManager>();
+                if (cardManager == null)
+                {
+                    Debug.Log("Couldnt find game object");
+                }
+            }
+
             // If no enemy, end round 
             if (currentNumberOfEnemies <= 0)
             {
-                RpcShowCardPanel();
+                cardManager.RpcShowCardPanel();
                 RpcShowWinner("Round: " + currentRound);
                 yield return new WaitForSeconds(10.0f); 
                 RpcStopShowWinner();
-                RpcStopCardPanel();
+                cardManager.RpcStopCardPanel();
 
                 StartCoroutine(Countdown());
                 yield return new WaitForSeconds(5f);
@@ -349,26 +344,6 @@ public class GameModeManager : NetworkBehaviour
 
         // Clear the countdown text when the countdown is complete
         RpcStopShowCount();
-    }
-
-    private bool CheckAllVotes()
-    {
-        // checks if everyone has voted
-        if (playerCount == cardManager.totalVote) // cardManager.totalVote
-        {
-            return true;
-        }
-        return false;
-    }
-
-    private bool CheckAllButOneVote()
-    {
-        // check if there is one more player to vote
-        if ((playerCount - 1) == cardManager.totalVote) // cardManager.totalVote
-        {
-            return true;
-        }
-        return false;
     }
 
     private string FindWinner()
@@ -523,50 +498,5 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    public void RpcShowCardPanel()
-    {
-        CardUIController cardUIController = FindObjectOfType<CardUIController>();
-
-        if (cardUIController != null)
-        {
-            cardUIController.DisplayCardPanel();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopCardPanel()
-    {
-        CardUIController cardUIController = FindObjectOfType<CardUIController>();
-
-        if (cardUIController != null)
-        {
-            cardUIController.StopDisplayCardPanel();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowWinningCard(int winningCard)
-    {
-        CardUIController cardUIController = FindObjectOfType<CardUIController>();
-        if (cardUIController != null)
-        {
-            switch(winningCard)
-            {
-                case 1:
-                    cardUIController.DisplayCard1();
-                    break;
-                case 2:
-                    cardUIController.DisplayCard2();
-                    break;
-                case 3:
-                    cardUIController.DisplayCard3();
-                    break;
-                default:
-                    break;
-            }
-
-            winningCard = 0;
-        }
-    }
+    
 }

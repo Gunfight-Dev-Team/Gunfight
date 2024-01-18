@@ -24,26 +24,18 @@ public class CardUIController : MonoBehaviour
     public void StopDisplayCardPanel()
     {
         CardPanel.SetActive(false);
+        card1.gameObject.SetActive(true);
+        card2.gameObject.SetActive(true);
+        card3.gameObject.SetActive(true);
         card1.interactable = false;
         card2.interactable = false;
         card3.interactable = false;
     }
 
-    public void DisableCards2and3()
-    {
-        card2.interactable = false;
-        card3.interactable = false;
-    }
-
-    public void DisableCards1and2()
+    public void DisableCards()
     {
         card1.interactable = false;
         card2.interactable = false;
-    }
-
-    public void DisableCards1and3()
-    {
-        card1.interactable = false;
         card3.interactable = false;
     }
 
@@ -51,20 +43,17 @@ public class CardUIController : MonoBehaviour
     {
         card2.gameObject.SetActive(false);
         card3.gameObject.SetActive(false);
-        card1.interactable = false;
     }
 
     public void DisplayCard2()
     {
         card1.gameObject.SetActive(false);
         card3.gameObject.SetActive(false);
-        card2.interactable = false;
     }
 
     public void DisplayCard3()
     {
         card1.gameObject.SetActive(false);
         card2.gameObject.SetActive(false);
-        card3.interactable = false;
     }
 }
