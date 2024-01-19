@@ -32,6 +32,8 @@ public class CardManager : NetworkBehaviour
 
     private void Start()
     {
+        // give client authority
+        // GameObject.GetComponent().AssignClientAuthority(conn);
         // make sure card panel is not displayed 
         cardUIController.StopDisplayCardPanel();
         votes.Add(0);
@@ -42,27 +44,62 @@ public class CardManager : NetworkBehaviour
 
     public void Card1Selected()
     {
+        if (!isClient) return;
         // when user clicks card 1
         cardUIController.DisableCards();
         Debug.Log("Card 1 pressed");
-        votes[0]++;
+        // votes[0]++;
+
+        CmdCard1Vote();
     }
 
     public void Card2Selected()
     {
+        if (!isClient) return;
         // when user clicks card 2
         cardUIController.DisableCards();
         Debug.Log("Card 2 pressed");
-        votes[1]++;
+        // votes[1]++;
+        CmdCard2Vote();
     }
 
     public void Card3Selected()
     {
+        if (!isClient) return;
         // when user clicks card 3
         cardUIController.DisableCards();
         Debug.Log("Card 3 pressed");
-        votes[2]++;
+        // votes[2]++;
+        CmdCard3Vote();
     }
+
+    [Command(requiresAuthority = false)]
+    public void CmdCard1Vote()
+    {
+        votes[0]++;
+        Debug.Log("Sending card 1 vote to server");
+        // RpcCard1Vote();
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdCard2Vote()
+    {
+        votes[1]++;
+        Debug.Log("Sending card 2 vote to server");
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdCard3Vote()
+    {
+        votes[2]++;
+        Debug.Log("Sending card 3 vote to server");
+    }
+
+    // [ClientRpc]
+    // private void RpcCard1Vote()
+    // {
+
+    // }
 
     public bool CheckIfEveryoneVoted(int playerCount)
     {
