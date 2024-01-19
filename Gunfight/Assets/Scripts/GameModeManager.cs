@@ -254,17 +254,19 @@ public class GameModeManager : NetworkBehaviour
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
+                string winner = FindWinner();
                 if (!CheckOverallWin())
                 {
                     RpcDisableGameInteraction();
                     cardManager.RpcShowCardPanel();
-                    RpcShowWinner("Winner: " + FindWinner());
+                    RpcShowWinner("Winner: " + winner);
 
                     // start 10s timer 
                     int count = 0;
 
                     while (count < 10)
                     {
+                        // if everyone voted stop countdown
                         if (cardManager.CheckIfEveryoneVoted(playerCount))
                         {
                             Debug.Log("Break countdown");
@@ -278,7 +280,8 @@ public class GameModeManager : NetworkBehaviour
                     //if before 10s everyone voted (only time need to check if everyone voted), check for most voted card, show winning card, start game
                     // use Max functions, this will resolve ties
                     //end of 10s, check for most voted card, show winning card, begin game (hard deadline)
-
+                    
+                    // find the card voted the most
                     winningCard = cardManager.FindMaxVote();
                     Debug.Log("Winning card: " + winningCard);
 
