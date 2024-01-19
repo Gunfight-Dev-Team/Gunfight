@@ -7,6 +7,7 @@ public class GameModeManager : NetworkBehaviour
 {
     public static GameModeManager Instance;
     public MapManager mapManager;
+    public CardManager cardManager;
 
     [SyncVar]
     public int currentRound = 0; // keeps track of the current round
@@ -35,6 +36,9 @@ public class GameModeManager : NetworkBehaviour
     public int currentRoundNumberOfEnemies;
     [SyncVar(hook = nameof(CheckWinConditionSingle))]
     public int currentNumberOfEnemies;
+
+    [Header("Below are used for cards")]
+    private int winningCard;
 
     private CustomNetworkManager Manager
     {
@@ -66,6 +70,7 @@ public class GameModeManager : NetworkBehaviour
         if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
         {
             mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+
             if (gameMode == GameMode.SinglePlayer)
             {
                 totalRounds = 9999;
@@ -178,6 +183,7 @@ public class GameModeManager : NetworkBehaviour
         {
             return;
         }
+
         // setup for round
         currentRound++; // increase round count
         Debug.Log("Round started: " + currentRound);
@@ -191,7 +197,8 @@ public class GameModeManager : NetworkBehaviour
         }
         if (gameMode != GameMode.SinglePlayer)
         {
-            if (currentRound < totalRounds) // if current round is less than total rounds
+            //if (currentRound < totalRounds) // if current round is less than total rounds
+            if (!CheckOverallWin()) // if there is not an overall winner
             {
                 DeleteWeaponsInGame();
                 if (isServer)
@@ -201,11 +208,12 @@ public class GameModeManager : NetworkBehaviour
                 StartRound();
                 // TODO: Reset Map (pots / boxes)
             }
-            else // if the current round equals the total round
+            else // if there is an overall winner
             {
-                //DisplayOverallWinner();
+                Debug.Log("End of game!");
+                RpcShowWinner("Overall Winner: " + FindOverallWinner());
                 //GoToLobby();
-                SceneManager.LoadScene("Lobby");
+                // SceneManager.LoadScene("Lobby");
             }
         }
         else
@@ -232,13 +240,59 @@ public class GameModeManager : NetworkBehaviour
     {
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
         {
+            // gets the Card Manager game object
+            if (cardManager == null)
+            {
+                cardManager = FindObjectOfType<CardManager>();
+                if (cardManager == null)
+                {
+                    Debug.Log("Couldnt find game object");
+                }
+            }
+            
+            Debug.Log("Found card manager: " + (cardManager != null));
+            
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
-                RpcShowWinner("Winner: " + FindWinner());
-                StartCoroutine(Countdown());
-                yield return new WaitForSeconds(5f);
-                RpcStopShowWinner();
+                string winner = FindWinner();
+                if (!CheckOverallWin())
+                {
+                    RpcDisableGameInteraction();
+                    cardManager.RpcShowCardPanel();
+                    RpcShowWinner("Winner: " + winner);
+
+                    // start 10s timer 
+                    int count = 0;
+
+                    while (count < 10)
+                    {
+                        // if everyone voted stop countdown
+                        if (cardManager.CheckIfEveryoneVoted(playerCount))
+                        {
+                            Debug.Log("Break countdown");
+                            break;
+                        }
+                        yield return new WaitForSeconds(1f);
+                        count++;
+                        Debug.Log("Card countdown: " + count);
+                    }
+                    
+                    //if before 10s everyone voted (only time need to check if everyone voted), check for most voted card, show winning card, start game
+                    // use Max functions, this will resolve ties
+                    //end of 10s, check for most voted card, show winning card, begin game (hard deadline)
+                    
+                    // find the card voted the most
+                    winningCard = cardManager.FindMaxVote();
+                    Debug.Log("Winning card: " + winningCard);
+
+                    cardManager.RpcShowWinningCard(winningCard); // only displaying the winning card
+                    yield return new WaitForSeconds(5f); // pause to show winning card
+                    RpcStopShowWinner();
+                    cardManager.RpcStopCardPanel();
+                    StartCoroutine(Countdown());
+                    yield return new WaitForSeconds(5f);
+                }
                 EndRound();
             }
         }
@@ -249,13 +303,29 @@ public class GameModeManager : NetworkBehaviour
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" && 
             currentNumberOfEnemies != startingNumberOfEnemies)
         {
+            // gets the Card Manager game object
+            if (cardManager == null)
+            {
+                cardManager = FindObjectOfType<CardManager>();
+                if (cardManager == null)
+                {
+                    Debug.Log("Couldnt find game object");
+                }
+            }
+
             // If no enemy, end round 
             if (currentNumberOfEnemies <= 0)
             {
+                cardManager.RpcShowCardPanel();
+                RpcShowWinner("Round: " + currentRound);
+                yield return new WaitForSeconds(10.0f); 
+                RpcStopShowWinner();
+                cardManager.RpcStopCardPanel();
+
                 StartCoroutine(Countdown());
                 yield return new WaitForSeconds(5f);
-                EndRound();
             }
+            EndRound();
         }
     }
 
@@ -286,10 +356,39 @@ public class GameModeManager : NetworkBehaviour
         {
             if(player.isAlive)
             {
+                player.wins++;
                 return player.PlayerName;
             }
         }
         return "No one";
+    }
+
+    private string FindOverallWinner()
+    {
+        foreach (PlayerObjectController player in Manager.GamePlayers)
+        {
+            if(player.wins == totalRounds)
+            {
+                return player.PlayerName;
+            }
+        }
+        return "No one";
+    }
+
+    private bool CheckOverallWin()
+    {
+        foreach (PlayerObjectController player in Manager.GamePlayers)
+        {
+            if(gameMode == GameMode.FreeForAll)
+            {
+                // checks if a player has the required amount of wins
+                if(player.wins == totalRounds)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     void CheckWinCondition(int oldAliveNum, int newAliveNum)
@@ -306,11 +405,23 @@ public class GameModeManager : NetworkBehaviour
     }
 
     [ClientRpc]
+    private void RpcDisableGameInteraction()
+    {
+        // Call the disable game interaction for all players
+        foreach (PlayerObjectController player in Manager.GamePlayers)
+        {
+            player.GetComponent<PlayerController>().enabled = false;
+        }
+    }
+
+
+    [ClientRpc]
     private void RpcResetGame()
     {
         // Call the reset function for all players
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
+            player.GetComponent<PlayerController>().enabled = true;
             player.GetComponent<PlayerController>().Respawn();
             player.isAlive = true;
         }
@@ -390,4 +501,6 @@ public class GameModeManager : NetworkBehaviour
             gameModeUIController.StopDisplayCount();
         }
     }
+
+    
 }

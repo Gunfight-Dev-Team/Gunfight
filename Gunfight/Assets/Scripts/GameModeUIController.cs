@@ -7,7 +7,7 @@ public class GameModeUIController : MonoBehaviour
 {
     public Text Winner;
     public Text Countdown;
-
+    
     public void DisplayWinner(string newText)
     {
         Winner.enabled = true;
