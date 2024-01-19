@@ -210,6 +210,7 @@ public class GameModeManager : NetworkBehaviour
             }
             else // if there is an overall winner
             {
+                Debug.Log("End of game!");
                 RpcShowWinner("Overall Winner: " + FindOverallWinner());
                 //GoToLobby();
                 // SceneManager.LoadScene("Lobby");
