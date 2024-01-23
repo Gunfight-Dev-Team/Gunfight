@@ -202,7 +202,6 @@ public class GameModeManager : NetworkBehaviour
         }
         if (gameMode != GameMode.SinglePlayer)
         {
-            //if (currentRound < totalRounds) // if current round is less than total rounds
             if (!CheckOverallWin()) // if there is not an overall winner
             {
                 DeleteWeaponsInGame();
@@ -219,6 +218,7 @@ public class GameModeManager : NetworkBehaviour
                 RpcShowRoundPanel();
                 RankingList();
                 string winner = FindOverallWinner();
+                Debug.Log(winner);
                 RpcShowWinner("Overall Winner: " + winner);
                 //GoToLobby();
                 // SceneManager.LoadScene("Lobby");
