@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameModeManager : NetworkBehaviour
 {
@@ -39,6 +41,9 @@ public class GameModeManager : NetworkBehaviour
 
     [Header("Below are used for cards")]
     private int winningCard;
+
+    // keeps track of the rankings
+    public List<string> ranking = new List<string>();
 
     private CustomNetworkManager Manager
     {
@@ -261,12 +266,14 @@ public class GameModeManager : NetworkBehaviour
                     RpcDisableGameInteraction();
                     cardManager.RpcShowCardPanel();
                     RpcShowWinner("Winner: " + winner);
-
+                    RpcShowRoundNumber("Round: " + Mathf.Ceil(currentRound).ToString());
+                    RankingList(); // displays the rankings
                     // start 10s timer 
-                    int count = 0;
+                    int count = 10;
 
-                    while (count < 10)
+                    while (count > 0)
                     {
+                        RpcShowTimer(Mathf.Ceil(count).ToString());
                         // if everyone voted stop countdown
                         if (cardManager.CheckIfEveryoneVoted(playerCount))
                         {
@@ -274,13 +281,11 @@ public class GameModeManager : NetworkBehaviour
                             break;
                         }
                         yield return new WaitForSeconds(1f);
-                        count++;
+                        count--;
                         Debug.Log("Card countdown: " + count);
                     }
-                    
-                    //if before 10s everyone voted (only time need to check if everyone voted), check for most voted card, show winning card, start game
-                    // use Max functions, this will resolve ties
-                    //end of 10s, check for most voted card, show winning card, begin game (hard deadline)
+
+                    RpcStopShowTimer();
                     
                     // find the card voted the most
                     winningCard = cardManager.FindMaxVote();
@@ -288,6 +293,8 @@ public class GameModeManager : NetworkBehaviour
 
                     cardManager.RpcShowWinningCard(winningCard); // only displaying the winning card
                     yield return new WaitForSeconds(5f); // pause to show winning card
+                    RpcStopShowRanking();
+                    RpcStopShowRoundNumber();
                     RpcStopShowWinner();
                     cardManager.RpcStopCardPanel();
                     StartCoroutine(Countdown());
@@ -404,6 +411,54 @@ public class GameModeManager : NetworkBehaviour
         StartCoroutine(DelayedEndRoundSingle());
     }
 
+    private void RankingList()
+    {
+        // creates list with everyones name and their wins
+        foreach (PlayerObjectController player in Manager.GamePlayers.OrderBy(player => player.wins))
+        {
+            ranking.Add(player.PlayerName);
+            ranking.Add(Mathf.Ceil(player.wins).ToString());
+        }
+
+        string rankingString = "";
+        string winsString = "";
+
+        // creates strings with the values from the list
+        for(int i = 0; i < (playerCount * 2); i++)
+        {
+            rankingString += ranking[i] + "\n";
+            winsString += ranking[i + 1] + "\n";
+            i++;
+        }
+
+        Debug.Log("Ranking names: " + rankingString);
+        Debug.Log("Ranking wins: " + winsString);
+
+        RpcShowRanking(rankingString, winsString);
+    }
+
+    [ClientRpc]
+    private void RpcShowRanking(string rankings, string wins)
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayRanking(rankings, wins);
+        }
+    }
+
+    [ClientRpc]
+    private void RpcStopShowRanking()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayRanking();
+        }
+    }
+
     [ClientRpc]
     private void RpcDisableGameInteraction()
     {
@@ -502,5 +557,48 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    public void RpcShowTimer(string count)
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayTimer(count);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcStopShowTimer()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayTimer();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcShowRoundNumber(string number)
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayRoundNumber(number);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcStopShowRoundNumber()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayRoundNumber();
+        }
+    }
     
 }
