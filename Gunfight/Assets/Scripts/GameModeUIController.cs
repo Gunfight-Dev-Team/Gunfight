@@ -11,6 +11,17 @@ public class GameModeUIController : MonoBehaviour
     public Text RoundNumber;
     public Text Ranking;
     public Text Wins;
+    public GameObject RoundStats;
+
+    public void DisplayRoundPanel()
+    {
+        RoundStats.SetActive(true);
+    }
+
+    public void StopDisplayRoundPanel()
+    {
+        RoundStats.SetActive(false);
+    }
     
     public void DisplayWinner(string newText)
     {

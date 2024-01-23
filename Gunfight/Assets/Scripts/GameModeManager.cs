@@ -216,6 +216,7 @@ public class GameModeManager : NetworkBehaviour
             else // if there is an overall winner
             {
                 Debug.Log("End of game!");
+                RpcShowRoundPanel();
                 RankingList();
                 RpcShowWinner("Overall Winner: " + FindOverallWinner());
                 //GoToLobby();
@@ -266,6 +267,7 @@ public class GameModeManager : NetworkBehaviour
                 if (!CheckOverallWin())
                 {
                     cardManager.RpcShowCardPanel();
+                    RpcShowRoundPanel();
                     RpcShowWinner("Winner: " + winner);
                     RpcShowRoundNumber("Round: " + Mathf.Ceil(currentRound).ToString());
                     RankingList(); // displays the rankings
@@ -298,6 +300,7 @@ public class GameModeManager : NetworkBehaviour
                     RpcStopShowRoundNumber();
                     RpcStopShowWinner();
                     cardManager.RpcStopCardPanel();
+                    RpcStopShowRoundPanel();
                     StartCoroutine(Countdown());
                     yield return new WaitForSeconds(5f);
                 }
@@ -436,6 +439,28 @@ public class GameModeManager : NetworkBehaviour
         Debug.Log("Ranking wins: " + winsString);
 
         RpcShowRanking(rankingString, winsString);
+    }
+
+    [ClientRpc]
+    private void RpcShowRoundPanel()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayRoundPanel();
+        }
+    }
+
+    [ClientRpc]
+    private void RpcStopShowRoundPanel()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayRoundPanel();
+        }
     }
 
     [ClientRpc]
