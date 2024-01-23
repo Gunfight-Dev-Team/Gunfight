@@ -216,8 +216,8 @@ public class GameModeManager : NetworkBehaviour
             else // if there is an overall winner
             {
                 Debug.Log("End of game!");
-                RpcShowWinner("Overall Winner: " + FindOverallWinner());
                 RankingList();
+                RpcShowWinner("Overall Winner: " + FindOverallWinner());
                 //GoToLobby();
                 // SceneManager.LoadScene("Lobby");
             }
@@ -261,10 +261,10 @@ public class GameModeManager : NetworkBehaviour
             // If only one player is alive, end round 
             if (aliveNum <= 1)
             {
+                RpcDisableGameInteraction();
                 string winner = FindWinner();
                 if (!CheckOverallWin())
                 {
-                    RpcDisableGameInteraction();
                     cardManager.RpcShowCardPanel();
                     RpcShowWinner("Winner: " + winner);
                     RpcShowRoundNumber("Round: " + Mathf.Ceil(currentRound).ToString());
