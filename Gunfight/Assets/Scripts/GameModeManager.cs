@@ -435,31 +435,6 @@ public class GameModeManager : NetworkBehaviour
         Debug.Log("Ranking wins: " + winsString);
 
         RpcShowRanking(rankingString, winsString);
-        
-        // creates list with everyones name and their wins
-        // foreach (PlayerObjectController player in Manager.GamePlayers.OrderBy(player => player.wins))
-        // {
-        //     ranking.Add(player.PlayerName);
-        //     ranking.Add(Mathf.Ceil(player.wins).ToString());
-        // }
-
-        // Debug.Log(Manager.GamePlayers.OrderBy(player => player.wins));
-
-        // string rankingString = "";
-        // string winsString = "";
-
-        // // creates strings with the values from the list
-        // for(int i = 0; i < (playerCount * 2); i++)
-        // {
-        //     rankingString += ranking[i] + "\n";
-        //     winsString += ranking[i + 1] + "\n";
-        //     i++;
-        // }
-
-        // Debug.Log("Ranking names: " + rankingString);
-        // Debug.Log("Ranking wins: " + winsString);
-
-        // RpcShowRanking(rankingString, winsString);
     }
 
     [ClientRpc]
