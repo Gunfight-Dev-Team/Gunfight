@@ -217,9 +217,7 @@ public class GameModeManager : NetworkBehaviour
                 Debug.Log("End of game!");
                 RpcShowRoundPanel();
                 RankingList();
-                string winner = FindOverallWinner();
-                Debug.Log(winner);
-                RpcShowWinner("Overall Winner: " + winner);
+                RpcShowWinner("Overall Winner: " + FindOverallWinner());
                 //GoToLobby();
                 // SceneManager.LoadScene("Lobby");
             }
