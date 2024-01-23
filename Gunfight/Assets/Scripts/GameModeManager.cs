@@ -419,7 +419,7 @@ public class GameModeManager : NetworkBehaviour
             players.Add(player);
         }
 
-        players = players.OrderBy(player => player.wins).ToList();
+        players = players.OrderByDescending(player => player.wins).ToList();
 
         string rankingString = "";
         string winsString = "";
