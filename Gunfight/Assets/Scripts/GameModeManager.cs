@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameModeManager : NetworkBehaviour
 {
@@ -39,6 +41,15 @@ public class GameModeManager : NetworkBehaviour
 
     [Header("Below are used for cards")]
     private int winningCard;
+
+    // keeps track of the rankings
+    public List<string> ranking = new List<string>();
+
+    [Header("Gunfight mode")]
+    public int[] teamAlive = {0, 0}; // keeps track of how many players on each team is alive
+    public int[] teamWins = {0, 0}; // keeps track of how many wins each team has
+    private bool teamWinner = false; 
+    private int teamWinNum;
 
     private CustomNetworkManager Manager
     {
@@ -81,6 +92,10 @@ public class GameModeManager : NetworkBehaviour
             {
                 playerCount = aliveNum;
                 hasGameStarted = true;
+                if(gameMode == GameMode.Gunfight)
+                {
+                    GetTeamPlayers();
+                }
                 StartRound(); // starts the first round after Awake
             }
         }
@@ -189,6 +204,25 @@ public class GameModeManager : NetworkBehaviour
         Debug.Log("Round started: " + currentRound);
     }
 
+    private void GetTeamPlayers()
+    {
+        //assigns the number of players on each team
+        foreach(PlayerObjectController player in Manager.GamePlayers)
+        {
+            if(player.Team == 1)
+            {
+                teamAlive[0]++;
+            }
+            else if(player.Team == 2)
+            {
+                teamAlive[1]++;
+            }
+        }
+
+        Debug.Log("Team 1 players alive: " + teamAlive[0]);
+        Debug.Log("Team 2 players alive: " + teamAlive[1]);
+    }
+
     public void EndRound()
     {
         if (!isServer)
@@ -197,7 +231,6 @@ public class GameModeManager : NetworkBehaviour
         }
         if (gameMode != GameMode.SinglePlayer)
         {
-            //if (currentRound < totalRounds) // if current round is less than total rounds
             if (!CheckOverallWin()) // if there is not an overall winner
             {
                 DeleteWeaponsInGame();
@@ -211,6 +244,8 @@ public class GameModeManager : NetworkBehaviour
             else // if there is an overall winner
             {
                 Debug.Log("End of game!");
+                RpcShowRoundPanel();
+                RankingList();
                 RpcShowWinner("Overall Winner: " + FindOverallWinner());
                 //GoToLobby();
                 // SceneManager.LoadScene("Lobby");
@@ -252,21 +287,29 @@ public class GameModeManager : NetworkBehaviour
             
             Debug.Log("Found card manager: " + (cardManager != null));
             
-            // If only one player is alive, end round 
-            if (aliveNum <= 1)
+            if(gameMode == GameMode.Gunfight)
             {
+                teamWinner = CheckTeamWin();
+            }
+
+            // If only one player is alive or there is a team winner, end round 
+            if (aliveNum <= 1 || teamWinner)
+            {
+                RpcDisableGameInteraction();
                 string winner = FindWinner();
                 if (!CheckOverallWin())
                 {
-                    RpcDisableGameInteraction();
                     cardManager.RpcShowCardPanel();
+                    RpcShowRoundPanel();
                     RpcShowWinner("Winner: " + winner);
-
+                    RpcShowRoundNumber("Round: " + Mathf.Ceil(currentRound).ToString());
+                    RankingList(); // displays the rankings
                     // start 10s timer 
-                    int count = 0;
+                    int count = 10;
 
-                    while (count < 10)
+                    while (count > 0)
                     {
+                        RpcShowTimer(Mathf.Ceil(count).ToString());
                         // if everyone voted stop countdown
                         if (cardManager.CheckIfEveryoneVoted(playerCount))
                         {
@@ -274,13 +317,11 @@ public class GameModeManager : NetworkBehaviour
                             break;
                         }
                         yield return new WaitForSeconds(1f);
-                        count++;
+                        count--;
                         Debug.Log("Card countdown: " + count);
                     }
-                    
-                    //if before 10s everyone voted (only time need to check if everyone voted), check for most voted card, show winning card, start game
-                    // use Max functions, this will resolve ties
-                    //end of 10s, check for most voted card, show winning card, begin game (hard deadline)
+
+                    RpcStopShowTimer();
                     
                     // find the card voted the most
                     winningCard = cardManager.FindMaxVote();
@@ -288,8 +329,11 @@ public class GameModeManager : NetworkBehaviour
 
                     cardManager.RpcShowWinningCard(winningCard); // only displaying the winning card
                     yield return new WaitForSeconds(5f); // pause to show winning card
+                    RpcStopShowRanking();
+                    RpcStopShowRoundNumber();
                     RpcStopShowWinner();
                     cardManager.RpcStopCardPanel();
+                    RpcStopShowRoundPanel();
                     StartCoroutine(Countdown());
                     yield return new WaitForSeconds(5f);
                 }
@@ -352,12 +396,29 @@ public class GameModeManager : NetworkBehaviour
 
     private string FindWinner()
     {
-        foreach (PlayerObjectController player in Manager.GamePlayers)
+        if(gameMode == GameMode.FreeForAll)
         {
-            if(player.isAlive)
+            foreach (PlayerObjectController player in Manager.GamePlayers)
             {
-                player.wins++;
-                return player.PlayerName;
+                if(player.isAlive)
+                {
+                    player.wins++;
+                    return player.PlayerName;
+                }
+            }
+        }
+
+        if(gameMode == GameMode.Gunfight)
+        {
+            if(teamWinNum == 1)
+            {
+                teamWins[0]++;
+                return "Team 1";
+            }
+            else if (teamWinNum == 2)
+            {
+                teamWins[1]++;
+                return "Team 2";
             }
         }
         return "No one";
@@ -365,21 +426,70 @@ public class GameModeManager : NetworkBehaviour
 
     private string FindOverallWinner()
     {
-        foreach (PlayerObjectController player in Manager.GamePlayers)
+        if(gameMode == GameMode.FreeForAll)
         {
-            if(player.wins == totalRounds)
+            foreach (PlayerObjectController player in Manager.GamePlayers)
             {
-                return player.PlayerName;
+                if(player.wins == totalRounds)
+                {
+                    return player.PlayerName;
+                }
+            }
+        }
+
+        if(gameMode == GameMode.Gunfight)
+        {
+            if(teamWins[0] == totalRounds)
+            {
+                return "Team 1";
+            }
+            else if(teamWins[1] == totalRounds)
+            {
+                return "Team 2";
             }
         }
         return "No one";
     }
 
-    private bool CheckOverallWin()
+    private bool CheckTeamWin()
     {
+        int teamOneAlive = 0;
+        int teamTwoALive = 0;
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
-            if(gameMode == GameMode.FreeForAll)
+            if(player.isAlive)
+            {
+                if(player.Team == 1)
+                {
+                    teamOneAlive++;
+                }
+                else if(player.Team == 2)
+                {
+                    teamTwoALive++;
+                }
+            }
+        }
+
+        if(teamOneAlive == 0 || teamTwoALive == 0)
+        {
+            if (teamOneAlive == 0)
+            {
+                teamWinNum = 2;
+            }
+            else if (teamTwoALive == 0)
+            {
+                teamWinNum = 1;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private bool CheckOverallWin()
+    {
+        if(gameMode == GameMode.FreeForAll)
+        {
+            foreach (PlayerObjectController player in Manager.GamePlayers)
             {
                 // checks if a player has the required amount of wins
                 if(player.wins == totalRounds)
@@ -388,6 +498,17 @@ public class GameModeManager : NetworkBehaviour
                 }
             }
         }
+
+        if(gameMode == GameMode.Gunfight)
+        {
+            // check if a team has the required number of wins
+            if(teamWins[0] == totalRounds || teamWins[1] == totalRounds)
+            {
+                Debug.Log("A team has won");
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -402,6 +523,85 @@ public class GameModeManager : NetworkBehaviour
     void CheckWinConditionSingle(int oldAliveNum, int newAliveNum)
     {
         StartCoroutine(DelayedEndRoundSingle());
+    }
+
+    private void RankingList()
+    {
+        string rankingString = "";
+        string winsString = "";
+
+        if(gameMode == GameMode.FreeForAll)
+        {
+            List<PlayerObjectController> players = new List<PlayerObjectController>();
+            foreach(PlayerObjectController player in Manager.GamePlayers)
+            {
+                players.Add(player);
+            }
+
+            players = players.OrderByDescending(player => player.wins).ToList();
+
+            // creates strings with the values from the list
+            for(int i = 0; i < playerCount; i++)
+            {
+                rankingString += players[i].PlayerName + "\n";
+                winsString += players[i].wins + "\n";
+            }
+        }
+
+        if(gameMode == GameMode.Gunfight)
+        {
+            rankingString = "Team 1 \nTeam 2\n";
+            winsString = teamWins[0] + "\n" + teamWins[1] + "\n";
+        }
+
+        Debug.Log("Ranking names: " + rankingString);
+        Debug.Log("Ranking wins: " + winsString);
+
+        RpcShowRanking(rankingString, winsString);
+    }
+
+    [ClientRpc]
+    private void RpcShowRoundPanel()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayRoundPanel();
+        }
+    }
+
+    [ClientRpc]
+    private void RpcStopShowRoundPanel()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayRoundPanel();
+        }
+    }
+
+    [ClientRpc]
+    private void RpcShowRanking(string rankings, string wins)
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayRanking(rankings, wins);
+        }
+    }
+
+    [ClientRpc]
+    private void RpcStopShowRanking()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayRanking();
+        }
     }
 
     [ClientRpc]
@@ -502,5 +702,48 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    public void RpcShowTimer(string count)
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayTimer(count);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcStopShowTimer()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayTimer();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcShowRoundNumber(string number)
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayRoundNumber(number);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcStopShowRoundNumber()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayRoundNumber();
+        }
+    }
     
 }
