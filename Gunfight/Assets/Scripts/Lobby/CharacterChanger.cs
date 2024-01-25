@@ -7,45 +7,76 @@ using Mirror;
 
 public class CharacterChanger : MonoBehaviour
 {
-    public int currentColorIndex = 0;
+    public int currentBodyIndex = 0;
+    public int currentHairIndex = 0;
+    public int currentEyesIndex = 0;
     public Color[] playerColors;
     public string[] colorNames;
-    public Image currentColorImage;
-    public Image displaySprite;
+    public Image displaySpriteBody;
+    public Image displaySpriteHair;
+    public Image displaySpriteEyes;
     private PlayerController player;
-    private GameObject playerSprite;
     public Text currentColorText;
 
     private void Start()
     {
-        currentColorIndex = PlayerPrefs.GetInt("currentColorIndex", 0); // allows persistent variables even on game restart
-        currentColorImage.color = playerColors[currentColorIndex];
-        currentColorText.text = colorNames[currentColorIndex];
-        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerColor(currentColorIndex);
+        currentBodyIndex = PlayerPrefs.GetInt("currentBodyIndex", 0); // allows persistent variables even on game restart
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerBody(currentBodyIndex);
         player = GameObject.Find("LocalGamePlayer").GetComponent<PlayerController>();
-        playerSprite = player.transform.Find("Sprite").gameObject;
+
+        currentHairIndex = PlayerPrefs.GetInt("currentHairIndex", 0); // allows persistent variables even on game restart
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerHair(currentHairIndex);
+
+        currentEyesIndex = PlayerPrefs.GetInt("currentEyesIndex", 0); // allows persistent variables even on game restart
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerHair(currentEyesIndex);
     }
 
     private void Update()
     {
-        displaySprite.sprite = playerSprite.GetComponent<SpriteRenderer>().sprite;
+        displaySpriteBody.sprite = player.spriteRendererBody.sprite;
+        displaySpriteHair.sprite = player.spriteRendererHair.sprite;
+        displaySpriteEyes.sprite = player.spriteRendererEyes.sprite;
     }
 
-    public void NextColor()
+    public void NextBody()
     {
-        currentColorIndex = (currentColorIndex + 1) % playerColors.Length;
-        PlayerPrefs.SetInt("currentColorIndex", currentColorIndex);
-        currentColorImage.color = playerColors[currentColorIndex];
-        currentColorText.text = colorNames[currentColorIndex];
-        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerColor(currentColorIndex);
+        currentBodyIndex = (currentBodyIndex + 1) % player.bodySpriteLibraryArray.Length;
+        PlayerPrefs.SetInt("currentBodyIndex", currentBodyIndex);
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerBody(currentBodyIndex);
     }
 
-    public void PrevColor()
+    public void PrevBody()
     {
-        currentColorIndex = (currentColorIndex - 1 + playerColors.Length) % playerColors.Length;
-        PlayerPrefs.SetInt("currentColorIndex", currentColorIndex);
-        currentColorImage.color = playerColors[currentColorIndex];
-        currentColorText.text = colorNames[currentColorIndex];
-        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerColor(currentColorIndex);
+        currentBodyIndex = (currentBodyIndex - 1 + player.bodySpriteLibraryArray.Length) % player.bodySpriteLibraryArray.Length;
+        PlayerPrefs.SetInt("currentBodyIndex", currentBodyIndex);
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerBody(currentBodyIndex);
+    }
+
+    public void NextHair()
+    {
+        currentHairIndex = (currentHairIndex + 1) % player.hairSpriteLibraryArray.Length;
+        PlayerPrefs.SetInt("currentHairIndex", currentHairIndex);
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerHair(currentHairIndex);
+    }
+
+    public void PrevHair()
+    {
+        currentHairIndex = (currentHairIndex - 1 + player.hairSpriteLibraryArray.Length) % player.hairSpriteLibraryArray.Length;
+        PlayerPrefs.SetInt("currentHairIndex", currentHairIndex);
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerHair(currentHairIndex);
+    }
+
+    public void NextEyes()
+    {
+        currentEyesIndex = (currentEyesIndex + 1) % player.eyesSpriteLibraryArray.Length;
+        PlayerPrefs.SetInt("currentEyesIndex", currentEyesIndex);
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerEyes(currentEyesIndex);
+    }
+
+    public void PrevEyes()
+    {
+        currentEyesIndex = (currentEyesIndex - 1 + player.eyesSpriteLibraryArray.Length) % player.eyesSpriteLibraryArray.Length;
+        PlayerPrefs.SetInt("currentEyesIndex", currentEyesIndex);
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerEyes(currentEyesIndex);
     }
 }

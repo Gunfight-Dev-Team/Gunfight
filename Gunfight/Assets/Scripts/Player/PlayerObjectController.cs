@@ -18,7 +18,9 @@ public class PlayerObjectController : NetworkBehaviour
     public int wins = 0;
 
     //Cosmestics / Team
-    [SyncVar(hook = nameof(SendPlayerColor))] public int PlayerColor;
+    [SyncVar(hook = nameof(SendPlayerBody))] public int BodyIndex;
+    [SyncVar(hook = nameof(SendPlayerHair))] public int HairIndex;
+    [SyncVar(hook = nameof(SendPlayerEyes))] public int EyesIndex;
 
     private CustomNetworkManager manager;
 
@@ -147,28 +149,76 @@ public class PlayerObjectController : NetworkBehaviour
     }
 
     [Command]
-    public void CmdUpdatePlayerColor(int newValue)
+    public void CmdUpdatePlayerBody(int newValue)
     {
-        SendPlayerColor(PlayerColor, newValue);
+        SendPlayerBody(BodyIndex, newValue);
     }
 
-    public void SendPlayerColor(int oldValue, int newValue)
+    [Command]
+    public void CmdUpdatePlayerHair(int newValue)
+    {
+        SendPlayerHair(HairIndex, newValue);
+    }
+
+    [Command]
+    public void CmdUpdatePlayerEyes(int newValue)
+    {
+        SendPlayerEyes(HairIndex, newValue);
+    }
+
+    public void SendPlayerBody(int oldValue, int newValue)
     {
         if(isServer)
         {
-            PlayerColor = newValue;
+            BodyIndex = newValue;
         }
         if (isClient && (oldValue != newValue))
         {
-            UpdateColor(newValue);
+            UpdateBody(newValue);
+        }
+    }
+
+    public void SendPlayerHair(int oldValue, int newValue)
+    {
+        if (isServer)
+        {
+            HairIndex = newValue;
+        }
+        if (isClient && (oldValue != newValue))
+        {
+            UpdateHair(newValue);
+        }
+    }
+
+    public void SendPlayerEyes(int oldValue, int newValue)
+    {
+        if (isServer)
+        {
+            EyesIndex = newValue;
+        }
+        if (isClient && (oldValue != newValue))
+        {
+            UpdateEyes(newValue);
         }
     }
 
     //separte function because buggy if not
-    void UpdateColor(int message)
+    void UpdateBody(int message)
     { 
-        PlayerColor = message;
-        GetComponent<PlayerController>().SwitchSkin(PlayerColor);
+        BodyIndex = message;
+        GetComponent<PlayerController>().SwitchBodySprite(BodyIndex);
+    }
+
+    void UpdateHair(int message)
+    {
+        HairIndex = message;
+        GetComponent<PlayerController>().SwitchHairSprite(HairIndex);
+    }
+
+    void UpdateEyes(int message)
+    {
+        EyesIndex = message;
+        GetComponent<PlayerController>().SwitchEyesSprite(EyesIndex);
     }
 
     public void Quit()

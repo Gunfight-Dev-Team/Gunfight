@@ -17,6 +17,7 @@ public class EnemyObjectController : NetworkBehaviour
     public float damage;
     public float damageMultipiler = 0.5f;
     public GameObject closestPlayer;
+    public Animator ratAnimator;
 
 
     private GameObject[] players;
@@ -77,11 +78,11 @@ public class EnemyObjectController : NetworkBehaviour
 
         if (deltaPosition.x < 0)
         {
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = false;
         }
         else
         {
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipX = true;
         }
     }
 
@@ -118,9 +119,9 @@ public class EnemyObjectController : NetworkBehaviour
 
     void RpcDie()
     {
-        spriteRenderer.enabled = false;
+        ratAnimator.SetTrigger("death");
         GameModeManager.Instance.currentNumberOfEnemies--;
-        Destroy(gameObject);
+        Destroy(gameObject, 0.5f);
     }
 
     IEnumerator FlashSprite()

@@ -32,12 +32,20 @@ public class PlayerController : NetworkBehaviour
 
     //Sprite
 
-    public SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRendererBody;
+    public SpriteRenderer spriteRendererHair;
+    public SpriteRenderer spriteRendererEyes;
     public SpriteRenderer weaponSpriteRenderer;
 
     public Animator playerAnimator;
 
-    public SpriteLibraryAsset[] spriteLibraryArray;
+    public SpriteLibraryAsset[] bodySpriteLibraryArray;
+    public SpriteLibraryAsset[] hairSpriteLibraryArray;
+    public SpriteLibraryAsset[] eyesSpriteLibraryArray;
+
+    public SpriteLibrary bodySpriteLibrary;
+    public SpriteLibrary hairSpriteLibrary;
+    public SpriteLibrary eyesSpriteLibrary;
 
     //Shooting
     public Transform shootPoint;
@@ -84,13 +92,21 @@ public class PlayerController : NetworkBehaviour
     private AudioSource audioSource;
 
     [SerializeField] private GameObject ammo;
-
-    public SpriteLibrary spriteLibrary;
     public string skinCategory;
 
-    public void SwitchSkin(int index)
+    public void SwitchBodySprite(int index)
     {
-        spriteLibrary.spriteLibraryAsset = spriteLibraryArray[index];
+       bodySpriteLibrary.spriteLibraryAsset = bodySpriteLibraryArray[index];
+    }
+
+    public void SwitchHairSprite(int index)
+    {
+        hairSpriteLibrary.spriteLibraryAsset = hairSpriteLibraryArray[index];
+    }
+
+    public void SwitchEyesSprite(int index)
+    {
+        eyesSpriteLibrary.spriteLibraryAsset = eyesSpriteLibraryArray[index];
     }
 
     public override void OnStartLocalPlayer()
@@ -211,10 +227,10 @@ public class PlayerController : NetworkBehaviour
         if(cam != null)
             mousePosition = cam.ScreenToWorldPoint(mousePosition);
 
-        if ((mousePosition.x > transform.position.x && spriteRenderer.flipX) ||
-            (mousePosition.x < transform.position.x && !spriteRenderer.flipX))
+        if ((mousePosition.x > transform.position.x && spriteRendererBody.flipX) ||
+            (mousePosition.x < transform.position.x && !spriteRendererBody.flipX))
         {
-            CmdFlipPlayer(spriteRenderer.flipX);
+            CmdFlipPlayer(spriteRendererBody.flipX);
         }
 
         Vector2 direction = (mousePosition - weapon.transform.position).normalized;
@@ -247,9 +263,11 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     void RpcFlipPlayer(bool flipped)
     {
-        if (flipped == spriteRenderer.flipX) // Fixes BUG: Flips switch on Client for some reason? better solution...?
+        if (flipped == spriteRendererBody.flipX) // Fixes BUG: Flips switch on Client for some reason? better solution...?
         {
-            spriteRenderer.flipX = !spriteRenderer.flipX;
+            spriteRendererBody.flipX = !spriteRendererBody.flipX;
+            spriteRendererHair.flipX = !spriteRendererHair.flipX;
+            spriteRendererEyes.flipX = !spriteRendererEyes.flipX;
             weapon.transform.localScale = new Vector3(1, -weapon.transform.localScale.y, 1);
         }
     }
@@ -435,11 +453,11 @@ public class PlayerController : NetworkBehaviour
 
     IEnumerator FlashSprite()
     {
-        // makes player flash red when hit
-        Color temp = spriteRenderer.color;
-        spriteRenderer.color = Color.red;
+        spriteRendererBody.color = Color.red;
+        spriteRendererHair.color = Color.green;
         yield return new WaitForSeconds(0.1f);
-        spriteRenderer.color = Color.white;
+        spriteRendererBody.color = Color.white;
+        spriteRendererHair.color = Color.white;
     }
 
     [ClientRpc]
@@ -456,7 +474,7 @@ public class PlayerController : NetworkBehaviour
         weaponInfo.damage = 0;
         weaponInfo.speedOfPlayer = 0;
         weaponSpriteRenderer.enabled = false;
-        spriteRenderer.enabled = false;
+        //spriteRenderer.enabled = false;
         GetComponent<PlayerWeaponController>().enabled = false;
     }
 
@@ -466,11 +484,12 @@ public class PlayerController : NetworkBehaviour
         health = 10f;
         weaponInfo.setDefault();
         GetComponent<PlayerWeaponController>().ChangeSprite(WeaponID.Knife);
-        spriteRenderer.color = Color.white; // prevents sprite from having the red damage on it forever
-
+        spriteRendererBody.color = Color.white; // prevents sprite from having the red damage on it forever
+        spriteRendererHair.color = Color.white;
+        
         GetComponent<PlayerWeaponController>().enabled = true;
         weaponSpriteRenderer.enabled = true;
-        spriteRenderer.enabled = true;
+        spriteRendererBody.enabled = true;
     }
 
     [ClientRpc]
