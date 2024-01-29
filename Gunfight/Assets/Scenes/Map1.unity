@@ -36491,7 +36491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1823545182211827559, guid: e8f87337c31cd5c4884f1818714d1e8b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1823545182211827576, guid: e8f87337c31cd5c4884f1818714d1e8b, type: 3}
       propertyPath: m_Pivot.x
@@ -36676,7 +36676,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2317431546778277431, guid: fd6c27a8b81155c41bb9d58dee359f9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2317431547288523939, guid: fd6c27a8b81155c41bb9d58dee359f9f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
