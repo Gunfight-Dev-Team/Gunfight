@@ -60,8 +60,30 @@ public class LobbyController : MonoBehaviour
         if(Instance == null) { Instance = this; }
     }
 
+    private void OnEnable()
+    {
+        if (GameObject.Find("LocalGamePlayer") != null)
+        {
+            Instance.FindLocalPlayer();
+        }
+        Instance.UpdateLobbyName();
+        Instance.UpdatePlayerList();
+    }
+
     private void Start()
     {
+        if (LocalPlayerController == null)
+        {
+            LocalPlayerController = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
+        }
+        if (GameObject.Find(gameModeManager.name) == null)
+        {
+            gameModeManager = Instantiate(gameModeManager);
+            if (LocalPlayerController.PlayerIdNumber == 1)
+            {
+                NetworkServer.Spawn(gameModeManager.GameObject());
+            }
+        }
 
         if (LocalPlayerController.PlayerIdNumber == 1)
         {
@@ -212,6 +234,7 @@ public class LobbyController : MonoBehaviour
     {
         LocalPlayerObject = GameObject.Find("LocalGamePlayer");
         LocalPlayerController = LocalPlayerObject.GetComponent<PlayerObjectController>();
+        LocalPlayerObject.GetComponent<PlayerController>().hasSpawned = false;
     }
 
     public void CreateHostPlayerItem()

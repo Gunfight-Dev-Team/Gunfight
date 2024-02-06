@@ -167,6 +167,14 @@ public class PlayerObjectController : NetworkBehaviour
     }
 
     public void SendPlayerBody(int oldValue, int newValue)
+    
+    [ClientRpc]
+    void RpcClientQuit()
+    {
+        Quit();
+    }
+
+    public void SendPlayerColor(int oldValue, int newValue)
     {
         if(isServer)
         {
@@ -229,13 +237,12 @@ public class PlayerObjectController : NetworkBehaviour
         //Make the active scene the offline scene
         SceneManager.LoadScene("MainMenu");
 
-        //Leave Steam Lobby
-        SteamLobby.Instance.LeaveLobby();
 
         if (isOwned)
         {
             if (isServer)
             {
+                RpcClientQuit();
                 manager.StopHost();
             }
             else
@@ -243,5 +250,8 @@ public class PlayerObjectController : NetworkBehaviour
                 manager.StopClient();
             }
         }
+
+        //Leave Steam Lobby
+        SteamLobby.Instance.LeaveLobby();
     }
 }

@@ -65,5 +65,13 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+  mapManager: {fileID: 0}
+  currentRound: 0
+  totalRounds: 1
   aliveNum: 0
   gameMode: 0
+  enemyPrefab: {fileID: 5128584884438735198, guid: 608ae7d5761017c469596d6818938927, type: 3}
+  startingNumberOfEnemies: 4
+  enemyMultiplier: 1.15
+  currentRoundNumberOfEnemies: 0
+  currentNumberOfEnemies: 0
