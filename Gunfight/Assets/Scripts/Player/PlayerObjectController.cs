@@ -165,8 +165,6 @@ public class PlayerObjectController : NetworkBehaviour
     {
         SendPlayerEyes(HairIndex, newValue);
     }
-
-    public void SendPlayerBody(int oldValue, int newValue)
     
     [ClientRpc]
     void RpcClientQuit()
@@ -174,7 +172,7 @@ public class PlayerObjectController : NetworkBehaviour
         Quit();
     }
 
-    public void SendPlayerColor(int oldValue, int newValue)
+    public void SendPlayerBody(int oldValue, int newValue)
     {
         if(isServer)
         {
