@@ -13,7 +13,7 @@ using UnityEngine.Tilemaps;
 using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
-public class PlayerController : NetworkBehaviour
+public class PlayerController : NetworkBehaviour, IDamageable
 {
     public WeaponInfo weaponInfo;
     public GameObject weapon;
@@ -330,56 +330,10 @@ public class PlayerController : NetworkBehaviour
 
             if (hit.collider != null && !hit.collider.CompareTag("Uncolliable"))
             {
-                if (hit.collider.gameObject.tag == "Player")
+                IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+                if (damageable != null)
                 {
-                    hit.collider.gameObject.GetComponent<PlayerController>().TakeDamage(weaponInfo.damage);
-
-                    AudioSource
-                        .PlayClipAtPoint(HurtsSound[Random.Range(0, 1)],
-                        hit.point,
-                        AudioListener.volume);
-                }
-
-                if (hit.collider.gameObject.tag == "Enemy")
-                {
-                    hit.collider.gameObject.GetComponent<EnemyObjectController>().TakeDamage(weaponInfo.damage);
-                }
-
-                if (hit.collider.gameObject.tag == "destroy")
-                {
-                    Tilemap collidableTileMap =
-                        GameObject.Find("destroyable").GetComponent<Tilemap>();
-
-                    Debug.Log("Hit Pot");
-
-                    Vector3Int potPos =
-                        collidableTileMap.WorldToCell(hit.point);
-
-                    RpcBreakPot(potPos);
-
-                    collidableTileMap.SetTile(potPos, null);
-
-                    // collidableTileMap.GetComponent<CompositeCollider2D>().GenerateGeometry();
-
-                    // TilemapCollider2D collider = collidableTileMap.GetComponent<TilemapCollider2D>();
-                    // if (collider.hasTilemapChanges)
-                    // {
-                    //     collidableTileMap. GetComponent<TilemapCollider2D>().ProcessTilemapChanges();
-                    // }
-
-                    // disables collider
-                    // hit.collider.enabled = false;
-
-                    AudioSource
-                        .PlayClipAtPoint(breakSound,
-                        hit.point,
-                        AudioListener.volume);
-
-                    //drops ammo on top of broken pot (fixed!)
-                    GameObject ammoInstance =
-                        Instantiate(ammo, hit.point, Quaternion.identity);
-
-                    NetworkServer.Spawn(ammoInstance);
+                    damageable.TakeDamage(weaponInfo.damage, hit.point);
                 }
             }
             else
@@ -408,7 +362,7 @@ public class PlayerController : NetworkBehaviour
         GameModeManager.Instance.PlayerDied(this);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage, Vector2 hitPoint)
     {
         if (!isServer) return;
 
@@ -455,7 +409,7 @@ public class PlayerController : NetworkBehaviour
     IEnumerator FlashSprite()
     {
         spriteRendererBody.color = Color.red;
-        spriteRendererHair.color = Color.green;
+        spriteRendererHair.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         spriteRendererBody.color = Color.white;
         spriteRendererHair.color = Color.white;
@@ -491,14 +445,5 @@ public class PlayerController : NetworkBehaviour
         GetComponent<PlayerWeaponController>().enabled = true;
         weaponSpriteRenderer.enabled = true;
         spriteRendererBody.enabled = true;
-    }
-
-    [ClientRpc]
-    void RpcBreakPot(Vector3Int potPos)
-    {
-        Tilemap collidableTileMap =
-            GameObject.Find("destroyable").GetComponent<Tilemap>();
-        collidableTileMap.SetTile(potPos, null);
-        AudioSource.PlayClipAtPoint(breakSound, potPos, AudioListener.volume);
     }
 }
