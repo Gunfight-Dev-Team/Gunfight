@@ -28,7 +28,7 @@ public class CharacterChanger : MonoBehaviour
         LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerHair(currentHairIndex);
 
         currentEyesIndex = PlayerPrefs.GetInt("currentEyesIndex", 0); // allows persistent variables even on game restart
-        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerHair(currentEyesIndex);
+        LobbyController.Instance.LocalPlayerController.CmdUpdatePlayerEyes(currentEyesIndex);
     }
 
     private void Update()
