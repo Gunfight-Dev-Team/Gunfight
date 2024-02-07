@@ -3,7 +3,7 @@ using UnityEngine;
 using Mirror;
 using Unity.Burst.CompilerServices;
 
-public class EnemyObjectController : NetworkBehaviour
+public class EnemyObjectController : NetworkBehaviour, IDamageable
 {
     public Pathfinding.AIDestinationSetter target;
     public Pathfinding.AIPath path;
@@ -86,7 +86,7 @@ public class EnemyObjectController : NetworkBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage, Vector2 hitPoint)
     {
 
         health -= damage;
