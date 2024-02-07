@@ -113,9 +113,13 @@ public class StartManager : MonoBehaviour
 
     public void toStart()
     {
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        Invoke("LoadMainMenu", 1f);
     }
 
+    private void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+    }
     public void Quit()
     {
         Application.Quit();

@@ -6,6 +6,7 @@ public class menuButtonTween : MonoBehaviour
     public float hoverDuration;
     public float hoverScaleFactor; // Public variable for the scaling factor
     public Color hoverColor; // Public variable for the hover color
+    public GameObject uiShotPrefab; // Reference to the UIshot prefab
 
     private Transform spriteObject;
     private Transform textObject;
@@ -111,5 +112,38 @@ public class menuButtonTween : MonoBehaviour
                 lastChildRenderer.color = originalLastChildColor;
             }
         }
+    }
+
+    public void onClick()
+    {
+        // Spawn UIshot prefab at the cursor position
+        Vector3 mousePosition = Input.mousePosition;
+        Instantiate(uiShotPrefab, mousePosition, Quaternion.identity, transform);
+
+        Vector3 forceDirection = (mousePosition - transform.position).normalized;
+
+        // Add a Rigidbody component if not already present
+        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody>();
+            rb.useGravity = true;
+        }
+
+        float forceMagnitude = 10f; // Adjust the force strength as needed
+        Vector3 force = forceDirection * forceMagnitude;
+
+        // Apply the force in the direction calculated
+        rb.AddForce(force * 15, ForceMode.Impulse);
+
+        // Add a force in the negative y-direction
+        Vector3 negativeYForce = new Vector3(0, -forceMagnitude * 100, 0);
+        rb.AddForce(negativeYForce, ForceMode.Impulse);
+
+        // Apply torque
+        rb.AddTorque(Random.insideUnitSphere * forceMagnitude, ForceMode.Impulse);
+
+        // Set mass
+        rb.mass = 100.0f;
     }
 }
