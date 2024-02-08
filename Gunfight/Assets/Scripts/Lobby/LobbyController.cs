@@ -31,6 +31,7 @@ public class LobbyController : MonoBehaviour
 
     public Button ReadyButton;
     public Toggle publicToggle;
+    public Toggle cardToggle;
     public TMP_Text ReadyButtonText;
     public Dropdown GameModeChooser;
     public Dropdown RoundNumChooser;
@@ -90,10 +91,12 @@ public class LobbyController : MonoBehaviour
             // if host
             // able to control game access
             publicToggle.interactable = true;
+            // able to control using cards
+            cardToggle.interactable = true;
             // able to edit lobby name
             LobbyNameInput.interactable = true;
             LobbyNameInput.onEndEdit.AddListener(OnEndEdit);
-            // able to choose gmae mode
+            // able to choose game mode
             GameModeChooser.interactable = true;
             //able to choose number of rounds
             RoundNumChooser.interactable = true;
@@ -103,6 +106,7 @@ public class LobbyController : MonoBehaviour
         else 
         {
             publicToggle.interactable = false;
+            cardToggle.interactable = false;
             GameModeChooser.interactable = false;
             RoundNumChooser.interactable = false;
             LobbyNameInput.interactable = false;
@@ -376,6 +380,11 @@ public class LobbyController : MonoBehaviour
             SteamMatchmaking.SetLobbyType(new CSteamID(CurrentLobbyID), ELobbyType.k_ELobbyTypeFriendsOnly);
         }
         isPublic = !isPublic;
+    }
+
+    public void ToggleCards()
+    {
+        gameModeManager.useCards = !gameModeManager.useCards;
     }
 
     public void SwitchGameModes()

@@ -41,7 +41,7 @@ public class GameModeManager : NetworkBehaviour
 
     [Header("Below are used for cards")]
     private int winningCard;
-    public bool useCards = true; 
+    public bool useCards = false; 
 
     // keeps track of the rankings
     public List<string> ranking = new List<string>();
@@ -260,6 +260,9 @@ public class GameModeManager : NetworkBehaviour
                     teamWins[0] = 0;
                     teamWins[1] = 0;
                 }
+
+                RpcStopShowWinner();
+                RpcStopShowRoundPanel();
                 currentRound = 0;
                 manager.StartGame("Lobby");
             }
