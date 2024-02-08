@@ -199,6 +199,7 @@ public class GameModeManager : NetworkBehaviour
             return;
         }
         // setup for round
+        RpcResetGame();
         currentRound++; // increase round count
         Debug.Log("Round started: " + currentRound);
     }
@@ -242,10 +243,10 @@ public class GameModeManager : NetworkBehaviour
             }
             else // if there is an overall winner
             {
-                // Debug.Log("End of game!");
-                // RpcShowRoundPanel();
-                // RankingList();
-                // RpcShowWinner("Overall Winner: " + FindOverallWinner());
+                Debug.Log("End of game!");
+                RpcShowRoundPanel();
+                RankingList();
+                RpcShowWinner("Overall Winner: " + FindOverallWinner());
                 // need to do a delay before going back to lobby
 
                 // reset players stats
@@ -259,7 +260,6 @@ public class GameModeManager : NetworkBehaviour
                     teamWins[0] = 0;
                     teamWins[1] = 0;
                 }
-                RpcResetGame();
                 currentRound = 0;
                 manager.StartGame("Lobby");
             }
