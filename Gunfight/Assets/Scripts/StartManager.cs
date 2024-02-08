@@ -27,10 +27,28 @@ public class StartManager : MonoBehaviour
 
     private bool inControl;
 
+    private Dictionary<Transform, TransformData> initialTransforms = new Dictionary<Transform, TransformData>();
+
+    // Helper class to store RectTransform data
+    public class TransformData
+    {
+        public Vector3 position;
+        public Quaternion rotation;
+        public Vector3 scale;
+
+        public TransformData(Transform transform)
+        {
+            position = transform.GetComponent<RectTransform>().localPosition;
+            rotation = transform.GetComponent<RectTransform>().localRotation;
+            scale = transform.localScale;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         init();
+        StoreInitialPositions();
     }
 
     // Update is called once per frame
@@ -45,6 +63,16 @@ public class StartManager : MonoBehaviour
         }
     }
 
+    void StoreInitialPositions()
+    {
+        initialTransforms.Add(StartButton.transform, new TransformData(StartButton.transform));
+        initialTransforms.Add(ControlsButton.transform, new TransformData(ControlsButton.transform));
+        initialTransforms.Add(SettingsButton.transform, new TransformData(SettingsButton.transform));
+        initialTransforms.Add(GraphicButton.transform, new TransformData(GraphicButton.transform));
+        initialTransforms.Add(SoundButton.transform, new TransformData(SoundButton.transform));
+        initialTransforms.Add(BackButton.transform, new TransformData(BackButton.transform));
+    }
+
     public void toControl()
     {
         SettingPage.SetActive(false);
@@ -54,6 +82,11 @@ public class StartManager : MonoBehaviour
     }
 
     public void toSetting()
+    {
+        Invoke("loadSetting", 0.75f);
+    }
+
+    public void loadSetting()
     {
         Title.SetActive(false);
         StartButton.SetActive(false);
@@ -109,11 +142,30 @@ public class StartManager : MonoBehaviour
         ControlsPage.SetActive(false);
         BackButton.SetActive(false);
         inControl = false;
+
+        // Reset button positions
+        foreach (var kvp in initialTransforms)
+        {
+            kvp.Key.GetComponent<RectTransform>().localPosition = kvp.Value.position;
+            kvp.Key.GetComponent<RectTransform>().localRotation = kvp.Value.rotation;
+            kvp.Key.localScale = kvp.Value.scale;
+
+            Rigidbody rb = kvp.Key.gameObject.GetComponent<Rigidbody>();
+            Transform shot = kvp.Key.gameObject.transform.Find("UIshot(Clone)");
+            if (rb != null)
+            {
+                Destroy(rb);
+            }
+            if (shot != null)
+            {
+                Destroy(shot.gameObject);
+            }
+        }
     }
 
     public void toStart()
     {
-        Invoke("LoadMainMenu", 1f);
+        Invoke("LoadMainMenu", 0.75f);
     }
 
     private void LoadMainMenu()

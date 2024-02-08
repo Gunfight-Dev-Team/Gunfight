@@ -19,11 +19,21 @@ public class ButtonManager : MonoBehaviour
 
     public void HostLobbyButton()
     {
+        Invoke("loadHostButton", 0.75f);
+    }
+
+    private void loadHostButton()
+    {
         SteamLobby.Instance.HostLobby();
         PlayerPrefs.SetInt("isJoinedSingle", 0);
     }
 
     public void QuickStartButton()
+    {
+        Invoke("loadQuickStart", 0.75f);
+    }
+
+    private void loadQuickStart()
     {
         SteamLobby.Instance.QuickStart();
         PlayerPrefs.SetInt("isJoinedSingle", 0);
@@ -31,8 +41,23 @@ public class ButtonManager : MonoBehaviour
 
     public void SinglePlayerButton()
     {
+        Invoke("loadSinglePlayer", 0.75f);
+    }
+
+    private void loadSinglePlayer()
+    {
         SteamLobby.Instance.HostLobby();
         PlayerPrefs.SetInt("isJoinedSingle", 1);
+    }
+
+    public void JoinLobbyButton()
+    {
+        Invoke("loadJoinLobby", 0.75f);
+    }
+
+    private void loadJoinLobby()
+    {
+        LobbiesListManager.instance.toLobbyList();
     }
 
     public void onHoverQuick()

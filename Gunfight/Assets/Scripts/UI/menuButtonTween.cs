@@ -95,8 +95,8 @@ public class menuButtonTween : MonoBehaviour
         // move the text towards the center
         if (multipleText)
         {
-            LeanTween.move(textObject.transform.GetChild(0).gameObject, topPosition, 0);
-            LeanTween.move(textObject.transform.GetChild(1).gameObject, bottomPosition, 0);
+            LeanTween.move(textObject.transform.GetChild(0).gameObject, topPosition, 0.5f).setEase(LeanTweenType.easeOutElastic);
+            LeanTween.move(textObject.transform.GetChild(1).gameObject, bottomPosition, 0.5f).setEase(LeanTweenType.easeOutElastic);
         }
 
         // Change the color of the last child in the sprite component
@@ -173,7 +173,7 @@ public class menuButtonTween : MonoBehaviour
         rb.AddForce(force * 15, ForceMode.Impulse);
 
         // Add a force in the negative y-direction
-        Vector3 negativeYForce = new Vector3(0, -forceMagnitude * 100, 0);
+        Vector3 negativeYForce = new Vector3(0, -forceMagnitude * 120, 0);
         rb.AddForce(negativeYForce, ForceMode.Impulse);
 
         // Apply torque
