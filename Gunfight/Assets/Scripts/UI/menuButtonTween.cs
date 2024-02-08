@@ -18,11 +18,26 @@ public class menuButtonTween : MonoBehaviour
 
     private int hoverTweenId; // Store the tween ID for the hover effect
 
+    private bool multipleText = false; // States whether object has multiple text objects
+    // public float topXMove; // Public variable fot moving text
+    // public float bottomXMove;   // Public variable for moving text
+    private Vector3 originalTopPosition;
+    private Vector3 originalBottomPosition;
+    public Transform topPosition;
+    public Transform bottomPosition;
+
     void Start()
     {
         // Find sprite and text objects under the current GameObject's children
         spriteObject = transform.Find("sprite");
         textObject = transform.Find("Text (TMP)");
+
+        // if there are multiple text objects
+        if (textObject == null)
+        {
+            textObject = transform.Find("text");
+            multipleText = true;
+        }
 
         if (spriteObject == null || textObject == null)
         {
@@ -32,6 +47,13 @@ public class menuButtonTween : MonoBehaviour
         // Store the original scales for later use
         originalScaleSprite = spriteObject.localScale;
         originalScaleText = textObject.localScale;
+
+        if (multipleText)
+        {
+            originalTopPosition = textObject.GetChild(0).position;
+            originalBottomPosition = textObject.GetChild(1).position;
+        }
+        
 
         // Get the original color of the last child in the sprite component
         Transform lastChild = spriteObject.GetChild(spriteObject.childCount - 1);
@@ -70,6 +92,13 @@ public class menuButtonTween : MonoBehaviour
         LeanTween.rotateZ(gameObject, Random.Range(0, 2) == 0 ? -2.5f : 2.5f, hoverDuration)
             .setEase(LeanTweenType.easeOutQuad);
 
+        // move the text towards the center
+        if (multipleText)
+        {
+            LeanTween.move(textObject.transform.GetChild(0).gameObject, topPosition, 0);
+            LeanTween.move(textObject.transform.GetChild(1).gameObject, bottomPosition, 0);
+        }
+
         // Change the color of the last child in the sprite component
         Transform lastChild = spriteObject.GetChild(spriteObject.childCount - 1);
         if (lastChild != null)
@@ -98,6 +127,13 @@ public class menuButtonTween : MonoBehaviour
         // Reset the text scaling and color
         LeanTween.scale(textObject.gameObject, originalScaleText, hoverDuration)
             .setEase(LeanTweenType.easeOutElastic);
+
+        // move the text back to original
+        if (multipleText)
+        {
+            LeanTween.move(textObject.transform.GetChild(0).gameObject, originalTopPosition, 0);
+            LeanTween.move(textObject.transform.GetChild(1).gameObject, originalBottomPosition, 0);
+        }
 
         // Cancel the ongoing hover effect
         LeanTween.cancel(gameObject, hoverTweenId);
