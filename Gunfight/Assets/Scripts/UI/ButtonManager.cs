@@ -7,6 +7,38 @@ public class ButtonManager : MonoBehaviour
 {
     public Text ButtonInfo;
 
+    public GameObject
+
+            QuickButton,
+            SingleButton,
+            HostButton,
+            JoinButton,
+            BackButton;
+
+    
+    private Dictionary<Transform, TransformData> initialTransforms = new Dictionary<Transform, TransformData>();
+
+    // Helper class to store RectTransform data
+    public class TransformData
+    {
+        public Vector3 position;
+        public Quaternion rotation;
+        public Vector3 scale;
+
+        public TransformData(Transform transform)
+        {
+            position = transform.GetComponent<RectTransform>().localPosition;
+            rotation = transform.GetComponent<RectTransform>().localRotation;
+            scale = transform.localScale;
+        }
+    }
+
+    void Start()
+    {
+        init();
+        StoreInitialPositions();
+    }
+
     [SerializeField]
     private string[] Infos =
     {
@@ -16,6 +48,37 @@ public class ButtonManager : MonoBehaviour
         "Join the Fun and Explore Existing Lobbies!",
         "Test Your Skills with Single-Player Mode!"
     };
+
+    void StoreInitialPositions()
+    {
+        initialTransforms.Add(QuickButton.transform, new TransformData(QuickButton.transform));
+        initialTransforms.Add(SingleButton.transform, new TransformData(SingleButton.transform));
+        initialTransforms.Add(HostButton.transform, new TransformData(HostButton.transform));
+        initialTransforms.Add(JoinButton.transform, new TransformData(JoinButton.transform));
+        initialTransforms.Add(BackButton.transform, new TransformData(BackButton.transform));
+    }
+
+    public void init()
+    {
+        // Reset button positions
+        foreach (var kvp in initialTransforms)
+        {
+            kvp.Key.GetComponent<RectTransform>().localPosition = kvp.Value.position;
+            kvp.Key.GetComponent<RectTransform>().localRotation = kvp.Value.rotation;
+            kvp.Key.localScale = kvp.Value.scale;
+
+            Rigidbody rb = kvp.Key.gameObject.GetComponent<Rigidbody>();
+            Transform shot = kvp.Key.gameObject.transform.Find("UIshot(Clone)");
+            if (rb != null)
+            {
+                Destroy(rb);
+            }
+            if (shot != null)
+            {
+                Destroy(shot.gameObject);
+            }
+        }
+    }
 
     public void HostLobbyButton()
     {
@@ -57,6 +120,7 @@ public class ButtonManager : MonoBehaviour
 
     private void loadJoinLobby()
     {
+        init();
         LobbiesListManager.instance.toLobbyList();
     }
 

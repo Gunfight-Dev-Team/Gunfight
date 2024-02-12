@@ -15,6 +15,8 @@ public class LobbiesListManager : MonoBehaviour
     public GameObject lobbyListContent;
     public Text buttonText;
 
+    public ButtonManager buttonManager;
+
     public GameObject searchBar;
 
     public GameObject title;
@@ -32,7 +34,12 @@ public class LobbiesListManager : MonoBehaviour
         if (instance == null) { instance = this; }
     }
 
-    public void GoBack()
+    public void goBack()
+    {
+        Invoke("loadGoBack", 0.75f);
+    }
+
+    public void loadGoBack()
     {
         if (inLobbyList)
         {
@@ -46,6 +53,7 @@ public class LobbiesListManager : MonoBehaviour
             DestroyLobbies();
             inLobbyList = false;
             buttonText.enabled = true;
+            buttonManager.init();
         }
         else
         {

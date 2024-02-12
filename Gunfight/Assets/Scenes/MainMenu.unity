@@ -2059,6 +2059,7 @@ MonoBehaviour:
   lobbyDataItemPrefab: {fileID: 2876961585267011576, guid: 9ca142c05d64801419dd5e3da43e312d, type: 3}
   lobbyListContent: {fileID: 726496109}
   buttonText: {fileID: 155320820}
+  buttonManager: {fileID: 1596555114}
   searchBar: {fileID: 533107708}
   title: {fileID: 1055331421}
   lobbiesButton: {fileID: 47044034}
@@ -4914,7 +4915,19 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 548252045}
         m_TargetAssemblyTypeName: LobbiesListManager, Assembly-CSharp
-        m_MethodName: GoBack
+        m_MethodName: goBack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1416023493}
+        m_TargetAssemblyTypeName: menuButtonTween, Assembly-CSharp
+        m_MethodName: onClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5990,6 +6003,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ButtonInfo: {fileID: 155320820}
+  QuickButton: {fileID: 1613593289}
+  SingleButton: {fileID: 1550975387}
+  HostButton: {fileID: 428809841}
+  JoinButton: {fileID: 47044034}
+  BackButton: {fileID: 1416023488}
   Infos:
   - 
   - Quick Start and Dive into the Action!
