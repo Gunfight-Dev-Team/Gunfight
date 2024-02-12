@@ -120,7 +120,6 @@ public class ButtonManager : MonoBehaviour
 
     private void loadJoinLobby()
     {
-        init();
         LobbiesListManager.instance.toLobbyList();
     }
 
