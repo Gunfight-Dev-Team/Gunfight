@@ -17,6 +17,7 @@ public class menuButtonTween : MonoBehaviour
     private Color originalLastChildColor; // Store the original color of the last child
 
     private int hoverTweenId; // Store the tween ID for the hover effect
+    private bool clicked = false;
 
     private bool multipleText = false; // States whether object has multiple text objects
     private Vector3 originalTopPosition;
@@ -111,39 +112,42 @@ public class menuButtonTween : MonoBehaviour
 
     public void onPointerExit()
     {
-        // Reset the scaling when the pointer exits
-        LeanTween.scale(gameObject, Vector3.one, hoverDuration)
-            .setEase(LeanTweenType.easeOutElastic);
-
-        // Reset the sprite scaling and rotation
-        LeanTween.scale(gameObject, originalScaleSprite, hoverDuration)
-            .setEase(LeanTweenType.easeOutElastic);
-
-        LeanTween.rotateZ(gameObject, 0f, hoverDuration)
-            .setEase(LeanTweenType.easeOutQuad);
-
-        // Reset the text scaling and color
-        LeanTween.scale(textObject.gameObject, originalScaleText, hoverDuration)
-            .setEase(LeanTweenType.easeOutElastic);
-
-        // move the text back to original
-        if (multipleText)
+        if (!clicked)
         {
-            LeanTween.move(textObject.transform.GetChild(0).gameObject, originalTopPosition, 0.1f).setEase(LeanTweenType.easeOutElastic);
-            LeanTween.move(textObject.transform.GetChild(1).gameObject, originalBottomPosition, 0.1f).setEase(LeanTweenType.easeOutElastic);
-        }
+            // Reset the scaling when the pointer exits
+            LeanTween.scale(gameObject, Vector3.one, hoverDuration)
+                .setEase(LeanTweenType.easeOutElastic);
 
-        // Cancel the ongoing hover effect
-        LeanTween.cancel(gameObject, hoverTweenId);
+            // Reset the sprite scaling and rotation
+            LeanTween.scale(gameObject, originalScaleSprite, hoverDuration)
+                .setEase(LeanTweenType.easeOutElastic);
 
-        // Reset the color of the last child in the sprite component
-        Transform lastChild = spriteObject.GetChild(spriteObject.childCount - 1);
-        if (lastChild != null)
-        {
-            Image lastChildRenderer = lastChild.GetComponent<Image>();
-            if (lastChildRenderer != null)
+            LeanTween.rotateZ(gameObject, 0f, hoverDuration)
+                .setEase(LeanTweenType.easeOutQuad);
+
+            // Reset the text scaling and color
+            LeanTween.scale(textObject.gameObject, originalScaleText, hoverDuration)
+                .setEase(LeanTweenType.easeOutElastic);
+
+            // move the text back to original
+            if (multipleText)
             {
-                lastChildRenderer.color = originalLastChildColor;
+                LeanTween.move(textObject.transform.GetChild(0).gameObject, originalTopPosition, 0.1f).setEase(LeanTweenType.easeOutElastic);
+                LeanTween.move(textObject.transform.GetChild(1).gameObject, originalBottomPosition, 0.1f).setEase(LeanTweenType.easeOutElastic);
+            }
+
+            // Cancel the ongoing hover effect
+            LeanTween.cancel(gameObject, hoverTweenId);
+
+            // Reset the color of the last child in the sprite component
+            Transform lastChild = spriteObject.GetChild(spriteObject.childCount - 1);
+            if (lastChild != null)
+            {
+                Image lastChildRenderer = lastChild.GetComponent<Image>();
+                if (lastChildRenderer != null)
+                {
+                    lastChildRenderer.color = originalLastChildColor;
+                }
             }
         }
     }
@@ -179,5 +183,6 @@ public class menuButtonTween : MonoBehaviour
 
         // Set mass
         rb.mass = 100.0f;
+        clicked = true;
     }
 }
