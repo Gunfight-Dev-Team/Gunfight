@@ -1331,7 +1331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverDuration: 0.2
   hoverScaleFactor: 1.03
-  hoverColor: {r: 1, g: 0.7882353, b: 0.98039216, a: 0}
+  hoverColor: {r: 1, g: 0.7882353, b: 0.98039216, a: 1}
   uiShotPrefab: {fileID: 1797405078775965033, guid: f78c3091961091b43af47f07be876a3d, type: 3}
   topPosition: {fileID: 0}
   bottomPosition: {fileID: 0}
@@ -7287,7 +7287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverDuration: 0.2
   hoverScaleFactor: 1.03
-  hoverColor: {r: 1, g: 0.7882353, b: 0.98039216, a: 0}
+  hoverColor: {r: 1, g: 0.7882353, b: 0.98039216, a: 1}
   uiShotPrefab: {fileID: 1797405078775965033, guid: f78c3091961091b43af47f07be876a3d, type: 3}
   topPosition: {fileID: 0}
   bottomPosition: {fileID: 0}

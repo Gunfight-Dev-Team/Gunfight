@@ -19,8 +19,6 @@ public class menuButtonTween : MonoBehaviour
     private int hoverTweenId; // Store the tween ID for the hover effect
 
     private bool multipleText = false; // States whether object has multiple text objects
-    // public float topXMove; // Public variable fot moving text
-    // public float bottomXMove;   // Public variable for moving text
     private Vector3 originalTopPosition;
     private Vector3 originalBottomPosition;
     public Transform topPosition;
@@ -131,8 +129,8 @@ public class menuButtonTween : MonoBehaviour
         // move the text back to original
         if (multipleText)
         {
-            LeanTween.move(textObject.transform.GetChild(0).gameObject, originalTopPosition, 0);
-            LeanTween.move(textObject.transform.GetChild(1).gameObject, originalBottomPosition, 0);
+            LeanTween.move(textObject.transform.GetChild(0).gameObject, originalTopPosition, 0.1f).setEase(LeanTweenType.easeOutElastic);
+            LeanTween.move(textObject.transform.GetChild(1).gameObject, originalBottomPosition, 0.1f).setEase(LeanTweenType.easeOutElastic);
         }
 
         // Cancel the ongoing hover effect

@@ -5044,7 +5044,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &843987385
 GameObject:
   m_ObjectHideFlags: 0
@@ -10015,7 +10015,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverDuration: 0.2
   hoverScaleFactor: 1.03
-  hoverColor: {r: 1, g: 0.7882353, b: 0.98039216, a: 0}
+  hoverColor: {r: 1, g: 0.7882353, b: 0.98039216, a: 1}
   uiShotPrefab: {fileID: 1797405078775965033, guid: f78c3091961091b43af47f07be876a3d, type: 3}
   topPosition: {fileID: 0}
   bottomPosition: {fileID: 0}
@@ -10494,7 +10494,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverDuration: 0.2
   hoverScaleFactor: 1.03
-  hoverColor: {r: 1, g: 0.7882353, b: 0.98039216, a: 0}
+  hoverColor: {r: 1, g: 0.7882353, b: 0.98039216, a: 1}
   uiShotPrefab: {fileID: 1797405078775965033, guid: f78c3091961091b43af47f07be876a3d, type: 3}
   topPosition: {fileID: 0}
   bottomPosition: {fileID: 0}
@@ -11948,7 +11948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3973911278848044931, guid: 9469b697d7451a648984cbcfc465c539, type: 3}
       propertyPath: useCards
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3973911278848044931, guid: 9469b697d7451a648984cbcfc465c539, type: 3}
       propertyPath: enemyPrefab

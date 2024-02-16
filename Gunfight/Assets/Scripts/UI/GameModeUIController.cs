@@ -12,6 +12,8 @@ public class GameModeUIController : MonoBehaviour
     public Text Ranking;
     public Text Wins;
     public GameObject RoundStats;
+    public Button quitButton;
+    public GameObject quit;
 
     public void DisplayRoundPanel()
     {
@@ -79,5 +81,19 @@ public class GameModeUIController : MonoBehaviour
     {
         Ranking.enabled = false;
         Wins.enabled = false;
+    }
+
+    public void DisplayQuitButton()
+    {
+        quit.SetActive(true);
+        quitButton.enabled = true;
+        quitButton.interactable = true;
+    }
+
+    public void StopDisplayQuitButton()
+    {
+        quit.SetActive(false);
+        quitButton.enabled = false;
+        quitButton.interactable = false;
     }
 }

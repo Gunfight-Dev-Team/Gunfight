@@ -419,8 +419,13 @@ public class LobbyController : MonoBehaviour
             GameModeManager.Instance.totalRounds = intVal;
         }
     }
-
+    
     public void Leave()
+    {
+        Invoke("loadLeave", 0.75f);
+    }
+
+    private void loadLeave()
     {
         LocalPlayerController.Quit();
     }

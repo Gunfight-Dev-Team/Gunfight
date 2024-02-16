@@ -41,7 +41,7 @@ public class GameModeManager : NetworkBehaviour
 
     [Header("Below are used for cards")]
     private int winningCard;
-    public bool useCards = false; 
+    public bool useCards = true; 
 
     // keeps track of the rankings
     public List<string> ranking = new List<string>();
@@ -51,6 +51,8 @@ public class GameModeManager : NetworkBehaviour
     public int[] teamWins = {0, 0}; // keeps track of how many wins each team has
     private bool teamWinner = false; 
     private int teamWinNum;
+
+    public bool quitClicked = false; // keeps track if quit button was clicked
 
     private CustomNetworkManager Manager
     {
@@ -244,10 +246,11 @@ public class GameModeManager : NetworkBehaviour
             else // if there is an overall winner
             {
                 Debug.Log("End of game!");
+                GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+                gameModeUIController.DisplayQuitButton();
                 RpcShowRoundPanel();
                 RankingList();
                 RpcShowWinner("Overall Winner: " + FindOverallWinner());
-                // need to do a delay before going back to lobby
 
                 // reset players stats
                 if (gameMode == GameMode.FreeForAll)
@@ -261,10 +264,9 @@ public class GameModeManager : NetworkBehaviour
                     teamWins[1] = 0;
                 }
 
-                RpcStopShowWinner();
-                RpcStopShowRoundPanel();
                 currentRound = 0;
-                manager.StartGame("Lobby");
+                
+                StartCoroutine(QuitCountdown());
             }
         }
         else
@@ -279,6 +281,39 @@ public class GameModeManager : NetworkBehaviour
             StartRound();
             spawnEnemies();
         }
+    }
+
+    public void QuitGame()
+    {
+        // quits back to the lobby
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+        gameModeUIController.StopDisplayQuitButton();
+        RpcStopShowWinner();
+        RpcStopShowRoundPanel();
+        quitClicked = false;
+        ToLobby();
+    }
+
+    private void ToLobby()
+    {
+        manager.StartGame("Lobby");
+    }
+
+    private IEnumerator QuitCountdown()
+    {
+        // 10s countdown 
+        int count = 10;
+        while (count > 0)
+        {
+            if (quitClicked)
+            {
+                break;
+            }
+            yield return new WaitForSeconds(1f);
+            count--;
+        }
+        Debug.Log("Quit game");
+        ToLobby();
     }
 
     public void PlayerDied(PlayerController player)
