@@ -163,7 +163,7 @@ public class GameModeManager : NetworkBehaviour
             if (controller != null)
             {
                 // Call the updateSpeed function
-                controller.updateSpeed(currentRound);
+                controller.updateSpeedExpn(currentRound);
             }
             else
             {
@@ -183,7 +183,7 @@ public class GameModeManager : NetworkBehaviour
             if (controller != null)
             {
                 // Call the updateSpeed function
-                controller.updateDamage(currentRound);
+                controller.updateDamageExpn(currentRound);
             }
             else
             {
