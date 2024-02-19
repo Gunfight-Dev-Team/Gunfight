@@ -374,6 +374,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
         if (health <= 0)
         {
             RpcDie();
+            playerAnimator.SetBool("isDead", true);
             SendPlayerDeath();
         }
         else
@@ -441,7 +442,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
         GetComponent<PlayerWeaponController>().ChangeSprite(WeaponID.Knife);
         spriteRendererBody.color = Color.white; // prevents sprite from having the red damage on it forever
         spriteRendererHair.color = Color.white;
-        
+        playerAnimator.SetBool("isDead", false);
         GetComponent<PlayerWeaponController>().enabled = true;
         weaponSpriteRenderer.enabled = true;
         spriteRendererBody.enabled = true;
