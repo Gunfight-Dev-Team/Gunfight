@@ -246,8 +246,6 @@ public class GameModeManager : NetworkBehaviour
             else // if there is an overall winner
             {
                 Debug.Log("End of game!");
-                GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-                gameModeUIController.DisplayQuitButton();
                 RpcShowRoundPanel();
                 RankingList();
                 RpcShowWinner("Overall Winner: " + FindOverallWinner());
@@ -266,7 +264,7 @@ public class GameModeManager : NetworkBehaviour
 
                 currentRound = 0;
                 
-                StartCoroutine(QuitCountdown());
+                StartCoroutine(BackToLobbyCountdown());
             }
         }
         else
@@ -299,20 +297,18 @@ public class GameModeManager : NetworkBehaviour
         manager.StartGame("Lobby");
     }
 
-    private IEnumerator QuitCountdown()
+    private IEnumerator BackToLobbyCountdown()
     {
         // 10s countdown 
         int count = 10;
         while (count > 0)
         {
-            if (quitClicked)
-            {
-                break;
-            }
+            RpcShowTimer(Mathf.Ceil(count).ToString());
             yield return new WaitForSeconds(1f);
             count--;
         }
         Debug.Log("Quit game");
+        RpcStopShowTimer();
         ToLobby();
     }
 
