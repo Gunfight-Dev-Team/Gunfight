@@ -31,13 +31,13 @@ public class GameModeManager : NetworkBehaviour
 
     public GameMode gameMode; // get this from lobby
 
-    [Header("Below are used for Single Player")]
-    public GameObject enemyPrefab;
-    public int startingNumberOfEnemies = 4;
-    public float enemyMultiplier = 1.15f;
-    public int currentRoundNumberOfEnemies;
-    [SyncVar(hook = nameof(CheckWinConditionSingle))]
-    public int currentNumberOfEnemies;
+    //[Header("Below are used for Single Player")]
+    //public GameObject enemyPrefab;
+    //public int startingNumberOfEnemies = 4;
+    //public float enemyMultiplier = 1.15f;
+    //public int currentRoundNumberOfEnemies;
+    //[SyncVar(hook = nameof(CheckWinConditionSingle))]
+    //public int currentNumberOfEnemies;
 
     [Header("Below are used for cards")]
     private int winningCard;
@@ -103,96 +103,96 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
-    private void initEnemy()
-    {
-        if (!isServer)
-        {
-            return;
-        }
-        currentNumberOfEnemies = currentRoundNumberOfEnemies;
-        for (int i = 0; i < startingNumberOfEnemies; i++)
-        {
-            float x = (i % 2 == 0) ? mapManager.mapWidth / 2 : -mapManager.mapWidth / 2;
-            float y = (i < 2) ? (mapManager.mapHeight - mapManager.heightOffset) / 2 : -(mapManager.mapHeight - mapManager.heightOffset) / 2;
+    //private void initEnemy()
+    //{
+    //    if (!isServer)
+    //    {
+    //        return;
+    //    }
+    //    currentNumberOfEnemies = currentRoundNumberOfEnemies;
+    //    for (int i = 0; i < startingNumberOfEnemies; i++)
+    //    {
+    //        float x = (i % 2 == 0) ? mapManager.mapWidth / 2 : -mapManager.mapWidth / 2;
+    //        float y = (i < 2) ? (mapManager.mapHeight - mapManager.heightOffset) / 2 : -(mapManager.mapHeight - mapManager.heightOffset) / 2;
 
-            Vector3 spawnPos = new Vector3(x, y, 0);
+    //        Vector3 spawnPos = new Vector3(x, y, 0);
 
-            GameObject enemyInstance = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-            NetworkServer.Spawn(enemyInstance);
-        }
-    }
+    //        GameObject enemyInstance = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+    //        NetworkServer.Spawn(enemyInstance);
+    //    }
+    //}
 
-    public void spawnEnemies()
-    {
-        if (!isServer)
-        {
-            return;
-        }
-        for (int i = 0; i < currentRoundNumberOfEnemies; i++)
-        {
-            float x, y;
+    //public void spawnEnemies()
+    //{
+    //    if (!isServer)
+    //    {
+    //        return;
+    //    }
+    //    for (int i = 0; i < currentRoundNumberOfEnemies; i++)
+    //    {
+    //        float x, y;
 
-            if (i % 2 == 0)
-            {
-                // Even index, spawn on the top or bottom edge
-                x = Random.Range(-mapManager.mapWidth / 2, mapManager.mapWidth / 2);
-                y = (i < 2) ? (mapManager.mapHeight - mapManager.heightOffset) / 2 : -(mapManager.mapHeight - mapManager.heightOffset) / 2;
-            }
-            else
-            {
-                // Odd index, spawn on the left or right edge
-                x = (i < 2) ? mapManager.mapWidth / 2 : -mapManager.mapWidth / 2;
-                y = Random.Range(-(mapManager.mapHeight - mapManager.heightOffset) / 2, (mapManager.mapHeight - mapManager.heightOffset) / 2);
-            }
+    //        if (i % 2 == 0)
+    //        {
+    //            // Even index, spawn on the top or bottom edge
+    //            x = Random.Range(-mapManager.mapWidth / 2, mapManager.mapWidth / 2);
+    //            y = (i < 2) ? (mapManager.mapHeight - mapManager.heightOffset) / 2 : -(mapManager.mapHeight - mapManager.heightOffset) / 2;
+    //        }
+    //        else
+    //        {
+    //            // Odd index, spawn on the left or right edge
+    //            x = (i < 2) ? mapManager.mapWidth / 2 : -mapManager.mapWidth / 2;
+    //            y = Random.Range(-(mapManager.mapHeight - mapManager.heightOffset) / 2, (mapManager.mapHeight - mapManager.heightOffset) / 2);
+    //        }
 
-            Vector3 spawnPos = new Vector3(x, y, 0);
+    //        Vector3 spawnPos = new Vector3(x, y, 0);
 
-            GameObject enemyInstance = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-            NetworkServer.Spawn(enemyInstance);
-        }
-        increaseSpeed();
-        increaseDamage();
-    }
+    //        GameObject enemyInstance = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+    //        NetworkServer.Spawn(enemyInstance);
+    //    }
+    //    increaseSpeed();
+    //    increaseDamage();
+    //}
 
-    public void increaseSpeed()
-    {
-        GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (GameObject enemyObject in enemyObjects)
-        {
-            // Check if the GameObject has the EnemyObjectController script attached
-            EnemyObjectController controller = enemyObject.GetComponent<EnemyObjectController>();
+    //public void increaseSpeed()
+    //{
+    //    GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
+    //    foreach (GameObject enemyObject in enemyObjects)
+    //    {
+    //        // Check if the GameObject has the EnemyObjectController script attached
+    //        EnemyObjectController controller = enemyObject.GetComponent<EnemyObjectController>();
 
-            if (controller != null)
-            {
-                // Call the updateSpeed function
-                controller.updateSpeed(currentRound);
-            }
-            else
-            {
-                Debug.LogWarning("EnemyObjectController script not found on GameObject: " + enemyObject.name);
-            }
-        }
-    }
+    //        if (controller != null)
+    //        {
+    //            // Call the updateSpeed function
+    //            controller.updateSpeed(currentRound);
+    //        }
+    //        else
+    //        {
+    //            Debug.LogWarning("EnemyObjectController script not found on GameObject: " + enemyObject.name);
+    //        }
+    //    }
+    //}
 
-    public void increaseDamage()
-    {
-        GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (GameObject enemyObject in enemyObjects)
-        {
-            // Check if the GameObject has the EnemyObjectController script attached
-            EnemyObjectController controller = enemyObject.GetComponent<EnemyObjectController>();
+    //public void increaseDamage()
+    //{
+    //    GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
+    //    foreach (GameObject enemyObject in enemyObjects)
+    //    {
+    //        // Check if the GameObject has the EnemyObjectController script attached
+    //        EnemyObjectController controller = enemyObject.GetComponent<EnemyObjectController>();
 
-            if (controller != null)
-            {
-                // Call the updateSpeed function
-                controller.updateDamage(currentRound);
-            }
-            else
-            {
-                Debug.LogWarning("EnemyObjectController script not found on GameObject: " + enemyObject.name);
-            }
-        }
-    }
+    //        if (controller != null)
+    //        {
+    //            // Call the updateSpeed function
+    //            controller.updateDamage(currentRound);
+    //        }
+    //        else
+    //        {
+    //            Debug.LogWarning("EnemyObjectController script not found on GameObject: " + enemyObject.name);
+    //        }
+    //    }
+    //}
 
     public void StartRound()
     {
@@ -414,6 +414,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    // combine each delay end round for one generic method, put in interface
     private IEnumerator DelayedEndRoundSingle()
     {
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" && 
@@ -445,6 +446,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    // interface function (change name to PreroundCountdown?)
     // Coroutine to handle the countdown visualization
     private IEnumerator Countdown()
     {
@@ -466,6 +468,7 @@ public class GameModeManager : NetworkBehaviour
         RpcStopShowCount();
     }
 
+    //competitive absract class
     private string FindWinner()
     {
         if (gameMode == GameMode.FreeForAll)
@@ -496,6 +499,7 @@ public class GameModeManager : NetworkBehaviour
         return "No one";
     }
 
+    // competitive abstract class
     private string FindOverallWinner()
     {
         if (gameMode == GameMode.FreeForAll)
@@ -523,6 +527,7 @@ public class GameModeManager : NetworkBehaviour
         return "No one";
     }
 
+    // gunfight only
     private bool CheckTeamWin()
     {
         int teamOneAlive = 0;
@@ -558,6 +563,7 @@ public class GameModeManager : NetworkBehaviour
         return false;
     }
 
+    //move to competitive abstract class
     private bool CheckOverallWin()
     {
         if (gameMode == GameMode.FreeForAll)
@@ -585,6 +591,7 @@ public class GameModeManager : NetworkBehaviour
         return false;
     }
 
+    // move to competitive abstract class
     void CheckWinCondition(int oldAliveNum, int newAliveNum)
     {
         if (gameMode != GameMode.SinglePlayer)
@@ -593,11 +600,13 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    // refactor for interface (each game mode)
     void CheckWinConditionSingle(int oldAliveNum, int newAliveNum)
     {
         StartCoroutine(DelayedEndRoundSingle());
     }
 
+    // move to competitive abstract class
     private void RankingList()
     {
         string rankingString = "";
