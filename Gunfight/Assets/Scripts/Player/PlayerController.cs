@@ -432,6 +432,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
         weaponSpriteRenderer.enabled = false;
         //spriteRenderer.enabled = false;
         GetComponent<PlayerWeaponController>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
     }
 
     public void Respawn()
@@ -444,6 +445,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
         spriteRendererHair.color = Color.white;
         playerAnimator.SetBool("isDead", false);
         GetComponent<PlayerWeaponController>().enabled = true;
+        GetComponent<Collider2D>().enabled = true;
         weaponSpriteRenderer.enabled = true;
         spriteRendererBody.enabled = true;
     }
