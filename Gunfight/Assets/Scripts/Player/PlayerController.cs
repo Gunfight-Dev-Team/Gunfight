@@ -168,7 +168,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
                         // Fire a single shot
                         cooldownTimer = weaponInfo.cooldown;
                         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-                        CmdShoot(shootPoint.position, mousePos);
+                        CmdShoot(shootPoint.position, shootPoint.rotation);
                     }
                 }
                 else if (Input.GetButtonUp("Fire1") && weaponInfo.isAuto)
@@ -192,7 +192,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
             // Fire a shot and wait for the cooldown timer to expire
             cooldownTimer = weaponInfo.cooldown;
             Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-            CmdShoot(shootPoint.position, mousePos);
+            CmdShoot(shootPoint.position, shootPoint.rotation);
             if (weaponInfo.nAmmo > 0)
                 CameraShaker.ShootCameraShake(5.0f);
             yield return new WaitForSeconds(cooldownTimer);
@@ -278,8 +278,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
     {
         if (weaponInfo.isMelee)
         {
-            AudioSource
-                .PlayClipAtPoint(KnifeSound, startPos, AudioListener.volume);
+            AudioSource.PlayClipAtPoint(KnifeSound, startPos, AudioListener.volume);
         }
         else
         {
@@ -300,10 +299,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
                 AudioSource.PlayClipAtPoint(PistolShotSound, startPos, AudioListener.volume);
             }
         }
-        if (
-            !weaponInfo.isMelee &&
-            weaponInfo.nAmmo > 0
-        )
+        if (!weaponInfo.isMelee && weaponInfo.nAmmo > 0)
         {
             Instantiate(bulletParticle.GetComponent<ParticleSystem>(),
             startPos,
@@ -319,11 +315,11 @@ public class PlayerController : NetworkBehaviour, IDamageable
     }
 
     [Command]
-    public void CmdShoot(Vector2 shootPoint, Vector2 mousePos)
+    public void CmdShoot(Vector2 shootPoint, Quaternion gunRotation)
     {
         if (weaponInfo.nAmmo > 0)
         {
-            Vector2 direction = (mousePos - shootPoint).normalized;
+            Vector2 direction = gunRotation * Vector2.right;
             RaycastHit2D hit = Physics2D.Raycast(shootPoint, direction, weaponInfo.range);
 
             var endPos = hit.point;
@@ -338,10 +334,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
             }
             else
             {
-                endPos =
-                    shootPoint +
-                    direction *
-                    weaponInfo.range;
+                endPos = shootPoint + direction * weaponInfo.range;
             }
             RpcSpawnBulletTrail(shootPoint, endPos);
         }
