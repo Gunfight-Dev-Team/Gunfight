@@ -14,8 +14,7 @@ public class ButtonManager : MonoBehaviour
             SingleButton,
             HostButton,
             JoinButton,
-            BackButton,
-            QuitButton;
+            BackButton;
 
     
     private Dictionary<Transform, TransformData> initialTransforms = new Dictionary<Transform, TransformData>();
@@ -60,11 +59,6 @@ public class ButtonManager : MonoBehaviour
             initialTransforms.Add(HostButton.transform, new TransformData(HostButton.transform));
             initialTransforms.Add(JoinButton.transform, new TransformData(JoinButton.transform));
             initialTransforms.Add(BackButton.transform, new TransformData(BackButton.transform));
-        }
-
-        if (SceneManager.GetActiveScene().name != "MainMenu")
-        {
-            initialTransforms.Add(QuitButton.transform, new TransformData(QuitButton.transform));
         }
     }
 
@@ -131,21 +125,6 @@ public class ButtonManager : MonoBehaviour
     private void loadJoinLobby()
     {
         LobbiesListManager.instance.toLobbyList();
-    }
-
-    public void QuitGameToLobby()
-    {
-        Invoke("loadQuitGame", 0.75f);
-    }
-
-    private void loadQuitGame()
-    {
-        GameModeManager gameModeManager = FindObjectOfType<GameModeManager>();
-        if (gameModeManager != null)
-        {
-            gameModeManager.quitClicked = true;
-            gameModeManager.QuitGame();
-        }
     }
 
     public void onHoverQuick()
