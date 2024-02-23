@@ -46,13 +46,13 @@ public class GameModeManager : NetworkBehaviour
     // keeps track of the rankings
     public List<string> ranking = new List<string>();
 
-    [Header("Gunfight mode")]
-    public int[] teamAlive = {0, 0}; // keeps track of how many players on each team is alive
-    public int[] teamWins = {0, 0}; // keeps track of how many wins each team has
-    private bool teamWinner = false; 
-    private int teamWinNum;
+    //[Header("Gunfight mode")]
+    //public int[] teamAlive = {0, 0}; // keeps track of how many players on each team is alive
+    //public int[] teamWins = {0, 0}; // keeps track of how many wins each team has
+    //private bool teamWinner = false; 
+    //private int teamWinNum;
 
-    public bool quitClicked = false; // keeps track if quit button was clicked
+    //public bool quitClicked = false; // keeps track if quit button was clicked
 
     private CustomNetworkManager Manager
     {
@@ -194,37 +194,40 @@ public class GameModeManager : NetworkBehaviour
     //    }
     //}
 
-    public void StartRound()
-    {
-        if (!isServer)
-        {
-            return;
-        }
-        // setup for round
-        RpcResetGame();
-        currentRound++; // increase round count
-        Debug.Log("Round started: " + currentRound);
-    }
+    //interface
+    //public void StartRound()
+    //{
+    //    if (!isServer)
+    //    {
+    //        return;
+    //    }
+    //    // setup for round
+    //    RpcResetGame();
+    //    currentRound++; // increase round count
+    //    Debug.Log("Round started: " + currentRound);
+    //}
 
-    private void GetTeamPlayers()
-    {
-        //assigns the number of players on each team
-        foreach (PlayerObjectController player in Manager.GamePlayers)
-        {
-            if (player.Team == 1)
-            {
-                teamAlive[0]++;
-            }
-            else if (player.Team == 2)
-            {
-                teamAlive[1]++;
-            }
-        }
+    //gunfight class only
+    //private void GetTeamPlayers()
+    //{
+    //    //assigns the number of players on each team
+    //    foreach (PlayerObjectController player in Manager.GamePlayers)
+    //    {
+    //        if (player.Team == 1)
+    //        {
+    //            teamAlive[0]++;
+    //        }
+    //        else if (player.Team == 2)
+    //        {
+    //            teamAlive[1]++;
+    //        }
+    //    }
 
-        Debug.Log("Team 1 players alive: " + teamAlive[0]);
-        Debug.Log("Team 2 players alive: " + teamAlive[1]);
-    }
+    //    Debug.Log("Team 1 players alive: " + teamAlive[0]);
+    //    Debug.Log("Team 2 players alive: " + teamAlive[1]);
+    //}
 
+    //interface
     public void EndRound()
     {
         if (!isServer)
@@ -272,56 +275,61 @@ public class GameModeManager : NetworkBehaviour
         else
         {
             // if single player mode
-            DeleteWeaponsInGame();
-            if (isServer)
-                RpcResetGame();
-            SpawnWeaponsInGame();
-            currentRoundNumberOfEnemies = Mathf.RoundToInt(currentRoundNumberOfEnemies * enemyMultiplier);
-            currentNumberOfEnemies = currentRoundNumberOfEnemies;
-            StartRound();
-            spawnEnemies();
+            //DeleteWeaponsInGame();
+            //if (isServer)
+            //    RpcResetGame();
+            //SpawnWeaponsInGame();
+            //currentRoundNumberOfEnemies = Mathf.RoundToInt(currentRoundNumberOfEnemies * enemyMultiplier);
+            //currentNumberOfEnemies = currentRoundNumberOfEnemies;
+            //StartRound();
+            //spawnEnemies();
         }
     }
 
-    public void QuitGame()
-    {
-        // quits back to the lobby
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-        gameModeUIController.StopDisplayQuitButton();
-        RpcStopShowWinner();
-        RpcStopShowRoundPanel();
-        quitClicked = false;
-        ToLobby();
-    }
+    //abstract class -> depracated
+    //public void QuitGame()
+    //{
+    //    // quits back to the lobby
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //    gameModeUIController.StopDisplayQuitButton();
+    //    RpcStopShowWinner();
+    //    RpcStopShowRoundPanel();
+    //    quitClicked = false;
+    //    ToLobby();
+    //}
 
-    private void ToLobby()
-    {
-        manager.StartGame("Lobby");
-    }
+    //interface or stay here?
+    //private void ToLobby()
+    //{
+    //    manager.StartGame("Lobby");
+    //}
 
-    private IEnumerator QuitCountdown()
-    {
-        // 10s countdown 
-        int count = 10;
-        while (count > 0)
-        {
-            if (quitClicked)
-            {
-                break;
-            }
-            yield return new WaitForSeconds(1f);
-            count--;
-        }
-        Debug.Log("Quit game");
-        ToLobby();
-    }
+    //interface/stay here?
+    //private IEnumerator QuitCountdown()
+    //{
+    //    // 10s countdown 
+    //    int count = 10;
+    //    while (count > 0)
+    //    {
+    //        if (quitClicked)
+    //        {
+    //            break;
+    //        }
+    //        yield return new WaitForSeconds(1f);
+    //        count--;
+    //    }
+    //    Debug.Log("Quit game");
+    //    ToLobby();
+    //}
 
-    public void PlayerDied(PlayerController player)
-    {
-        player.poc.isAlive = false;
-        aliveNum--;
-    }
+    //interface most likely
+    //public void PlayerDied(PlayerController player)
+    //{
+    //    player.poc.isAlive = false;
+    //    aliveNum--;
+    //}
 
+    //interface
     private IEnumerator DelayedEndRound()
     {
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
@@ -415,36 +423,36 @@ public class GameModeManager : NetworkBehaviour
     }
 
     // combine each delay end round for one generic method, put in interface
-    private IEnumerator DelayedEndRoundSingle()
-    {
-        if (isServer && SceneManager.GetActiveScene().name != "Lobby" && 
-            currentNumberOfEnemies != startingNumberOfEnemies)
-        {
-            // gets the Card Manager game object
-            if (cardManager == null)
-            {
-                cardManager = FindObjectOfType<CardManager>();
-                if (cardManager == null)
-                {
-                    Debug.Log("Couldnt find game object");
-                }
-            }
+    //private IEnumerator DelayedEndRoundSingle()
+    //{
+    //    if (isServer && SceneManager.GetActiveScene().name != "Lobby" && 
+    //        currentNumberOfEnemies != startingNumberOfEnemies)
+    //    {
+    //        // gets the Card Manager game object
+    //        if (cardManager == null)
+    //        {
+    //            cardManager = FindObjectOfType<CardManager>();
+    //            if (cardManager == null)
+    //            {
+    //                Debug.Log("Couldnt find game object");
+    //            }
+    //        }
 
-            // If no enemy, end round 
-            if (currentNumberOfEnemies <= 0)
-            {
-                cardManager.RpcShowCardPanel();
-                RpcShowWinner("Round: " + currentRound);
-                yield return new WaitForSeconds(10.0f); 
-                RpcStopShowWinner();
-                cardManager.RpcStopCardPanel();
+    //        // If no enemy, end round 
+    //        if (currentNumberOfEnemies <= 0)
+    //        {
+    //            cardManager.RpcShowCardPanel();
+    //            RpcShowWinner("Round: " + currentRound);
+    //            yield return new WaitForSeconds(10.0f); 
+    //            RpcStopShowWinner();
+    //            cardManager.RpcStopCardPanel();
 
-                StartCoroutine(Countdown());
-                yield return new WaitForSeconds(5f);
-            }
-            EndRound();
-        }
-    }
+    //            StartCoroutine(Countdown());
+    //            yield return new WaitForSeconds(5f);
+    //        }
+    //        EndRound();
+    //    }
+    //}
 
     // interface function (change name to PreroundCountdown?)
     // Coroutine to handle the countdown visualization
@@ -528,42 +536,42 @@ public class GameModeManager : NetworkBehaviour
     }
 
     // gunfight only
-    private bool CheckTeamWin()
-    {
-        int teamOneAlive = 0;
-        int teamTwoALive = 0;
+    //private bool CheckTeamWin()
+    //{
+    //    int teamOneAlive = 0;
+    //    int teamTwoALive = 0;
 
-        foreach (PlayerObjectController player in Manager.GamePlayers)
-        {
-            if (player.isAlive)
-            {
-                if (player.Team == 1)
-                {
-                    teamOneAlive++;
-                }
-                else if (player.Team == 2)
-                {
-                    teamTwoALive++;
-                }
-            }
-        }
+    //    foreach (PlayerObjectController player in Manager.GamePlayers)
+    //    {
+    //        if (player.isAlive)
+    //        {
+    //            if (player.Team == 1)
+    //            {
+    //                teamOneAlive++;
+    //            }
+    //            else if (player.Team == 2)
+    //            {
+    //                teamTwoALive++;
+    //            }
+    //        }
+    //    }
 
-        if (teamOneAlive == 0 || teamTwoALive == 0)
-        {
-            if (teamOneAlive == 0)
-            {
-                teamWinNum = 2;
-            }
-            else if (teamTwoALive == 0)
-            {
-                teamWinNum = 1;
-            }
-            return true;
-        }
-        return false;
-    }
+    //    if (teamOneAlive == 0 || teamTwoALive == 0)
+    //    {
+    //        if (teamOneAlive == 0)
+    //        {
+    //            teamWinNum = 2;
+    //        }
+    //        else if (teamTwoALive == 0)
+    //        {
+    //            teamWinNum = 1;
+    //        }
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
-    //move to competitive abstract class
+    //move to competitive abstract class /
     private bool CheckOverallWin()
     {
         if (gameMode == GameMode.FreeForAll)
@@ -592,13 +600,13 @@ public class GameModeManager : NetworkBehaviour
     }
 
     // move to competitive abstract class
-    void CheckWinCondition(int oldAliveNum, int newAliveNum)
-    {
-        if (gameMode != GameMode.SinglePlayer)
-        {
-            StartCoroutine(DelayedEndRound());
-        }
-    }
+    //void CheckWinCondition(int oldAliveNum, int newAliveNum)
+    //{
+    //    if (gameMode != GameMode.SinglePlayer)
+    //    {
+    //        StartCoroutine(DelayedEndRound());
+    //    }
+    //}
 
     // refactor for interface (each game mode)
     void CheckWinConditionSingle(int oldAliveNum, int newAliveNum)
@@ -651,6 +659,7 @@ public class GameModeManager : NetworkBehaviour
         RpcShowRanking(rankingString, winsString);
     }
 
+    //interface?
     [ClientRpc]
     private void RpcShowRoundPanel()
     {
@@ -662,6 +671,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    //interface?
     [ClientRpc]
     private void RpcStopShowRoundPanel()
     {
@@ -673,6 +683,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    //comp ac
     [ClientRpc]
     private void RpcShowRanking(string rankings, string wins)
     {
@@ -684,6 +695,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    //competitive ac
     [ClientRpc]
     private void RpcStopShowRanking()
     {
@@ -695,6 +707,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    //interface?
     [ClientRpc]
     private void RpcDisableGameInteraction()
     {
@@ -705,6 +718,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    //interface?
     [ClientRpc]
     private void RpcResetGame()
     {
@@ -717,6 +731,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    // move to interface?
     public void SpawnWeaponsInGame()
     {
         // Find the WeaponSpawning script in the "game" scene
@@ -732,6 +747,7 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
+    // move to interface?
     // This method is called when you want to delete weapons in the "game" scene
     public void DeleteWeaponsInGame()
     {
