@@ -174,8 +174,6 @@ public class CardManager : NetworkBehaviour
             }
 
             cardUIController.InteractableCards(false);
-
-            winningCard = 0;
         }
     }
 }

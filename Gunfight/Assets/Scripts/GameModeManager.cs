@@ -10,6 +10,7 @@ public class GameModeManager : NetworkBehaviour
     public static GameModeManager Instance;
     public MapManager mapManager;
     public CardManager cardManager;
+    public GameModeUIController gameModeUIController;
 
     [SyncVar]
     public int currentRound = 0; // keeps track of the current round
@@ -246,9 +247,9 @@ public class GameModeManager : NetworkBehaviour
             else // if there is an overall winner
             {
                 Debug.Log("End of game!");
-                RpcShowRoundPanel();
+                gameModeUIController.RpcShowRoundPanel(true);
                 RankingList();
-                RpcShowWinner("Overall Winner: " + FindOverallWinner());
+                gameModeUIController.RpcShowWinner("Overall Winner: " + FindOverallWinner());
 
                 // reset players stats
                 if (gameMode == GameMode.FreeForAll)
@@ -282,17 +283,6 @@ public class GameModeManager : NetworkBehaviour
         }
     }
 
-    public void QuitGame()
-    {
-        // quits back to the lobby
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-        gameModeUIController.StopDisplayQuitButton();
-        RpcStopShowWinner();
-        RpcStopShowRoundPanel();
-        quitClicked = false;
-        ToLobby();
-    }
-
     private void ToLobby()
     {
         manager.StartGame("Lobby");
@@ -304,12 +294,12 @@ public class GameModeManager : NetworkBehaviour
         int count = 10;
         while (count > 0)
         {
-            RpcShowTimer(Mathf.Ceil(count).ToString());
+            gameModeUIController.RpcShowTimer(Mathf.Ceil(count).ToString());
             yield return new WaitForSeconds(1f);
             count--;
         }
         Debug.Log("Quit game");
-        RpcStopShowTimer();
+        gameModeUIController.RpcStopShowTimer();
         ToLobby();
     }
 
@@ -338,6 +328,8 @@ public class GameModeManager : NetworkBehaviour
                 Debug.Log("Found card manager: " + (cardManager != null));
             }
 
+            gameModeUIController = GameObject.Find("GameModeUIController").GetComponent<GameModeUIController>();
+
             if (gameMode == GameMode.Gunfight)
             {
                 teamWinner = CheckTeamWin();
@@ -355,9 +347,9 @@ public class GameModeManager : NetworkBehaviour
                         cardManager.RpcShowCardPanel();
                     }
 
-                    RpcShowRoundPanel();
-                    RpcShowWinner("Winner: " + winner);
-                    RpcShowRoundNumber("Round: " + Mathf.Ceil(currentRound).ToString());
+                    gameModeUIController.RpcShowRoundPanel(true);
+                    gameModeUIController.RpcShowWinner("Winner: " + winner);
+                    gameModeUIController.RpcShowRoundNumber("Round: " + Mathf.Ceil(currentRound).ToString());
                     RankingList(); // displays the rankings
 
                     if (useCards)
@@ -367,7 +359,7 @@ public class GameModeManager : NetworkBehaviour
 
                         while (count > 0)
                         {
-                            RpcShowTimer(Mathf.Ceil(count).ToString());
+                            gameModeUIController.RpcShowTimer(Mathf.Ceil(count).ToString());
                             // if everyone voted stop countdown
                             if (cardManager.CheckIfEveryoneVoted(playerCount))
                             {
@@ -379,7 +371,7 @@ public class GameModeManager : NetworkBehaviour
                             Debug.Log("Card countdown: " + count);
                         }
 
-                        RpcStopShowTimer();
+                        gameModeUIController.RpcStopShowTimer();
                         
                         // find the card voted the most
                         winningCard = cardManager.FindMaxVote();
@@ -393,16 +385,16 @@ public class GameModeManager : NetworkBehaviour
                         yield return new WaitForSeconds(5f);
                     }
 
-                    RpcStopShowRanking();
-                    RpcStopShowRoundNumber();
-                    RpcStopShowWinner();
+                    gameModeUIController.RpcStopShowRanking();
+                    gameModeUIController.RpcStopShowRoundNumber();
+                    gameModeUIController.RpcStopShowWinner();
 
                     if (useCards)
                     {
                         cardManager.RpcStopCardPanel();
                     }
                 
-                    RpcStopShowRoundPanel();
+                    gameModeUIController.RpcShowRoundPanel(false);
                     StartCoroutine(Countdown());
                     yield return new WaitForSeconds(5f);
                 }
@@ -430,9 +422,9 @@ public class GameModeManager : NetworkBehaviour
             if (currentNumberOfEnemies <= 0)
             {
                 cardManager.RpcShowCardPanel();
-                RpcShowWinner("Round: " + currentRound);
+                gameModeUIController.RpcShowWinner("Round: " + currentRound);
                 yield return new WaitForSeconds(10.0f); 
-                RpcStopShowWinner();
+                gameModeUIController.RpcStopShowWinner();
                 cardManager.RpcStopCardPanel();
 
                 StartCoroutine(Countdown());
@@ -450,7 +442,7 @@ public class GameModeManager : NetworkBehaviour
         while (countdownTime > 0)
         {
             // Update the countdown text on the UI
-            RpcShowCount(Mathf.Ceil(countdownTime).ToString());
+            gameModeUIController.RpcShowCount(Mathf.Ceil(countdownTime).ToString());
 
             // Wait for the next frame
             yield return null;
@@ -460,7 +452,7 @@ public class GameModeManager : NetworkBehaviour
         }
 
         // Clear the countdown text when the countdown is complete
-        RpcStopShowCount();
+        gameModeUIController.RpcStopShowCount();
     }
 
     private string FindWinner()
@@ -636,51 +628,7 @@ public class GameModeManager : NetworkBehaviour
         Debug.Log("Ranking names: " + rankingString);
         Debug.Log("Ranking wins: " + winsString);
 
-        RpcShowRanking(rankingString, winsString);
-    }
-
-    [ClientRpc]
-    private void RpcShowRoundPanel()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayRoundPanel();
-        }
-    }
-
-    [ClientRpc]
-    private void RpcStopShowRoundPanel()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayRoundPanel();
-        }
-    }
-
-    [ClientRpc]
-    private void RpcShowRanking(string rankings, string wins)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayRanking(rankings, wins);
-        }
-    }
-
-    [ClientRpc]
-    private void RpcStopShowRanking()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayRanking();
-        }
+        gameModeUIController.RpcShowRanking(rankingString, winsString);
     }
 
     [ClientRpc]
@@ -733,94 +681,6 @@ public class GameModeManager : NetworkBehaviour
         else
         {
             Debug.LogError("WeaponSpawning script not found in the 'game' scene.");
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowWinner(string winner)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayWinner(winner);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowWinner()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayWinner();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowCount(string count)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayCount(count);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowCount()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayCount();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowTimer(string count)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayTimer(count);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowTimer()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayTimer();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowRoundNumber(string number)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayRoundNumber(number);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowRoundNumber()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayRoundNumber();
         }
     }
 

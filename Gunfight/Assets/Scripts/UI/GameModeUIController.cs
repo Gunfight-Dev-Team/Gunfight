@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
-public class GameModeUIController : MonoBehaviour
+public class GameModeUIController : NetworkBehaviour
 {
     public Text Winner;
     public Text Countdown;
@@ -12,17 +13,10 @@ public class GameModeUIController : MonoBehaviour
     public Text Ranking;
     public Text Wins;
     public GameObject RoundStats;
-    public Button quitButton;
-    public GameObject quit;
 
-    public void DisplayRoundPanel()
+    public void DisplayRoundPanel(bool tOrF)
     {
-        RoundStats.SetActive(true);
-    }
-
-    public void StopDisplayRoundPanel()
-    {
-        RoundStats.SetActive(false);
+        RoundStats.SetActive(tOrF);
     }
     
     public void DisplayWinner(string newText)
@@ -83,17 +77,69 @@ public class GameModeUIController : MonoBehaviour
         Wins.enabled = false;
     }
 
-    public void DisplayQuitButton()
+    [ClientRpc]
+    public void RpcShowRoundPanel(bool tOrF)
     {
-        quit.SetActive(true);
-        quitButton.enabled = true;
-        quitButton.interactable = true;
+        DisplayRoundPanel(tOrF);
     }
 
-    public void StopDisplayQuitButton()
+    [ClientRpc]
+    public void RpcShowRanking(string rankings, string wins)
     {
-        quit.SetActive(false);
-        quitButton.enabled = false;
-        quitButton.interactable = false;
+        DisplayRanking(rankings, wins);
+    }
+
+    [ClientRpc]
+    public void RpcStopShowRanking()
+    {
+        StopDisplayRanking();
+    }
+
+     [ClientRpc]
+    public void RpcShowWinner(string winner)
+    {
+        DisplayWinner(winner);
+    }
+
+    [ClientRpc]
+    public void RpcStopShowWinner()
+    {
+        StopDisplayWinner();
+    }
+
+    [ClientRpc]
+    public void RpcShowCount(string count)
+    {
+        DisplayCount(count);
+    }
+
+    [ClientRpc]
+    public void RpcStopShowCount()
+    {
+        StopDisplayCount();
+    }
+
+    [ClientRpc]
+    public void RpcShowTimer(string count)
+    {
+        DisplayTimer(count);
+    }
+
+    [ClientRpc]
+    public void RpcStopShowTimer()
+    {
+        StopDisplayTimer();
+    }
+
+    [ClientRpc]
+    public void RpcShowRoundNumber(string number)
+    {
+        DisplayRoundNumber(number);
+    }
+
+    [ClientRpc]
+    public void RpcStopShowRoundNumber()
+    {
+        StopDisplayRoundNumber();
     }
 }

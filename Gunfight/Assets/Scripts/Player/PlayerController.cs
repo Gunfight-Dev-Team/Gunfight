@@ -178,6 +178,14 @@ public class PlayerController : NetworkBehaviour, IDamageable
                     StopCoroutine(ContinuousFire());
                 }
 
+                // used for testing - kill yourself
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    RpcDie();
+                    playerAnimator.SetBool("isDead", true);
+                    SendPlayerDeath();
+                }
+
                 // updates weapon cooldown timer
                 cooldownTimer -= Time.deltaTime;
                 if (cooldownTimer < 0) cooldownTimer = 0;
