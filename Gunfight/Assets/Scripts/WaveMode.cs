@@ -1,6 +1,5 @@
 using Mirror;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,7 +16,7 @@ public class WaveMode : NetworkBehaviour, IGameMode
     public float enemyMultiplier = 1.15f;
     public int currentRoundNumberOfEnemies;
 
-    [SyncVar(hook = nameof(CheckWinConditionSingle))]
+    [SyncVar(hook = nameof(CheckWinCondition))]
     public int currentNumberOfEnemies;
     [SyncVar(hook = nameof(CheckWinCondition))]
     public int aliveNum; // get this from lobby
@@ -40,108 +39,7 @@ public class WaveMode : NetworkBehaviour, IGameMode
         }
     }
 
-    public void StartRound()
-    {
-        if (!isServer)
-        {
-            return;
-        }
-        // setup for round
-        RpcResetGame();
-        currentRound++; // increase round count
-        Debug.Log("Round started: " + currentRound);
-    }
-
-    public void EndRound()
-    {
-        if (!isServer) { return; }
-        DeleteWeaponsInGame();
-        //checked if server here? doesn't seem needed but check here if bugged
-        RpcResetGame();
-        SpawnWeaponsInGame();
-        currentRoundNumberOfEnemies = Mathf.RoundToInt(currentRoundNumberOfEnemies * enemyMultiplier);
-        currentNumberOfEnemies = currentRoundNumberOfEnemies;
-        StartRound();
-        spawnEnemies();
-    }
-    private void ToLobby()
-    {
-        manager.StartGame("Lobby");
-    }
-
-    private IEnumerator QuitCountdown()
-    {
-        // 10s countdown 
-        int count = 10;
-        while (count > 0)
-        {
-            if (quitClicked)
-            {
-                break;
-            }
-            yield return new WaitForSeconds(1f);
-            count--;
-        }
-        Debug.Log("Quit game");
-        ToLobby();
-    }
-
-    public void PlayerDied(PlayerController player)
-    {
-        player.poc.isAlive = false;
-        aliveNum--;
-    }
-
-    private IEnumerator DelayedEndRound()
-    {
-        if (isServer && SceneManager.GetActiveScene().name != "Lobby" &&
-            currentNumberOfEnemies != startingNumberOfEnemies)
-        {
-            // gets the Card Manager game object
-            if (cardManager == null)
-            {
-                cardManager = FindObjectOfType<CardManager>();
-                if (cardManager == null)
-                {
-                    Debug.Log("Couldnt find game object");
-                }
-            }
-
-            // If no enemy, end round 
-            if (currentNumberOfEnemies <= 0)
-            {
-                cardManager.RpcShowCardPanel();
-                RpcShowWinner("Round: " + currentRound);
-                yield return new WaitForSeconds(10.0f);
-                RpcStopShowWinner();
-                cardManager.RpcStopCardPanel();
-
-                StartCoroutine(Countdown());
-                yield return new WaitForSeconds(5f);
-            }
-            EndRound();
-        }
-    }
-
-    private IEnumerator PreroundCountdown()
-    {
-        float countdownTime = 5f;
-
-        while (countdownTime > 0)
-        {
-            // Update the countdown text on the UI
-            RpcShowCount(Mathf.Ceil(countdownTime).ToString());
-
-            // Wait for the next frame
-            yield return null;
-
-            // Reduce the countdown time
-            countdownTime -= Time.deltaTime;
-        }
-
-        // Clear the countdown text when the countdown is complete
-        RpcStopShowCount();
-    }
+    //-------------Wave Mode-exclusive Methods--------------
 
     private void initEnemy()
     {
@@ -234,8 +132,225 @@ public class WaveMode : NetworkBehaviour, IGameMode
         }
     }
 
-    void CheckWinConditionSingle(int oldAliveNum, int newAliveNum)
+    //------------------Game Mode Interface Methods------------------------------
+
+    public void StartRound()
+    {
+        if (!isServer)
+        {
+            return;
+        }
+        // setup for round
+        RpcResetGame();
+        currentRound++; // increase round count
+        Debug.Log("Round started: " + currentRound);
+    }
+
+    public void EndRound()
+    {
+        if (!isServer) { return; }
+        DeleteWeaponsInGame();
+        //checked if server here? doesn't seem needed but check here if bugged
+        RpcResetGame();
+        SpawnWeaponsInGame();
+        currentRoundNumberOfEnemies = Mathf.RoundToInt(currentRoundNumberOfEnemies * enemyMultiplier);
+        currentNumberOfEnemies = currentRoundNumberOfEnemies;
+        StartRound();
+        spawnEnemies();
+    }
+    public void ToLobby()
+    {
+        manager.StartGame("Lobby");
+    }
+
+    public IEnumerator QuitCountdown()
+    {
+        // 10s countdown 
+        int count = 10;
+        while (count > 0)
+        {
+            if (quitClicked)
+            {
+                break;
+            }
+            yield return new WaitForSeconds(1f);
+            count--;
+        }
+        Debug.Log("Quit game");
+        ToLobby();
+    }
+
+    public void PlayerDied(PlayerController player)
+    {
+        player.poc.isAlive = false;
+        aliveNum--;
+    }
+
+    public IEnumerator DelayedEndRound()
+    {
+        if (isServer && SceneManager.GetActiveScene().name != "Lobby" &&
+            currentNumberOfEnemies != startingNumberOfEnemies)
+        {
+            // gets the Card Manager game object
+            if (cardManager == null)
+            {
+                cardManager = FindObjectOfType<CardManager>();
+                if (cardManager == null)
+                {
+                    Debug.Log("Couldnt find game object");
+                }
+            }
+
+            // If no enemy, end round (bug source??)
+            if (currentNumberOfEnemies <= 0)
+            {
+                cardManager.RpcShowCardPanel();
+                RpcShowWinner("Round: " + currentRound);
+                yield return new WaitForSeconds(10.0f);
+                RpcStopShowWinner();
+                cardManager.RpcStopCardPanel();
+
+                StartCoroutine(PreroundCountdown());
+                yield return new WaitForSeconds(5f);
+            }
+            EndRound();
+        }
+    }
+
+    public IEnumerator PreroundCountdown()
+    {
+        float countdownTime = 5f;
+
+        while (countdownTime > 0)
+        {
+            // Update the countdown text on the UI
+            RpcShowCount(Mathf.Ceil(countdownTime).ToString());
+
+            // Wait for the next frame
+            yield return null;
+
+            // Reduce the countdown time
+            countdownTime -= Time.deltaTime;
+        }
+
+        // Clear the countdown text when the countdown is complete
+        RpcStopShowCount();
+    }
+
+    public void CheckWinCondition(int oldAliveNum, int newAliveNum)
     {
         StartCoroutine(DelayedEndRound());
+    }
+
+    public void SpawnWeaponsInGame()
+    {
+        // Find the WeaponSpawning script in the "game" scene
+        WeaponSpawning weaponSpawning = FindObjectOfType<WeaponSpawning>();
+
+        if (weaponSpawning != null)
+        {
+            weaponSpawning.SpawnWeapons();
+        }
+        else
+        {
+            Debug.LogError("WeaponSpawning script not found in the 'game' scene.");
+        }
+    }
+
+    public void DeleteWeaponsInGame()
+    {
+        // Find the WeaponSpawning script in the "game" scene
+        WeaponSpawning weaponSpawning = FindObjectOfType<WeaponSpawning>();
+
+        if (weaponSpawning != null)
+        {
+            weaponSpawning.DeleteWeapons();
+        }
+        else
+        {
+            Debug.LogError("WeaponSpawning script not found in the 'game' scene.");
+        }
+    }
+
+    [ClientRpc]
+    public void RpcResetGame()
+    {
+        // Call the reset function for all players
+        foreach (PlayerObjectController player in Manager.GamePlayers)
+        {
+            player.GetComponent<PlayerController>().enabled = true;
+            player.GetComponent<PlayerController>().Respawn();
+            player.isAlive = true;
+        }
+    }
+
+    //------------------------------------------------------------------
+    //--------------------temporary UI RPC Methods----------------------
+    //------------------------------------------------------------------
+
+    [ClientRpc]
+    public void RpcShowRoundPanel()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayRoundPanel();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcStopShowRoundPanel()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayRoundPanel();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcShowWinner(string winner)
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayWinner(winner);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcStopShowWinner()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayWinner();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcShowCount(string count)
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.DisplayCount(count);
+        }
+    }
+
+    [ClientRpc]
+    public void RpcStopShowCount()
+    {
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        if (gameModeUIController != null)
+        {
+            gameModeUIController.StopDisplayCount();
+        }
     }
 }

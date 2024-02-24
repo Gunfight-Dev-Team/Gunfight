@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public interface IGameMode
 {
@@ -11,8 +12,23 @@ public interface IGameMode
     IEnumerator QuitCountdown();
     IEnumerator DelayedEndRound();
     IEnumerator PreroundCountdown();
-    void CheckWinCondition(int oldAliveNum, int newAliveNum)
-    {
-        StartCoroutine(DelayedEndRoundSingle());
-    }
+    void CheckWinCondition(int oldAliveNum, int newAliveNum);
+    void SpawnWeaponsInGame();
+    void DeleteWeaponsInGame();
+
+    // temporary UI RPC methods
+    [ClientRpc]
+    void RpcShowRoundPanel();
+    [ClientRpc]
+    void RpcStopShowRoundPanel();
+    [ClientRpc]
+    void RpcShowWinner(string winner);
+    [ClientRpc]
+    void RpcStopShowWinner();
+    [ClientRpc]
+    void RpcResetGame();
+    [ClientRpc]
+    void RpcShowCount(string count);
+    [ClientRpc]
+    void RpcStopShowCount();
 }

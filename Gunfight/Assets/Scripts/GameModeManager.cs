@@ -11,17 +11,17 @@ public class GameModeManager : NetworkBehaviour
     public MapManager mapManager;
     public CardManager cardManager;
 
-    [SyncVar]
-    public int currentRound = 0; // keeps track of the current round
-    public int totalRounds = 3; // keeps track of total amount of rounds
+    //[SyncVar]
+    //public int currentRound = 0; // keeps track of the current round
+    //public int totalRounds = 3; // keeps track of total amount of rounds
 
-    [SyncVar(hook = nameof(CheckWinCondition))]
-    public int aliveNum; // get this from lobby
+    //[SyncVar(hook = nameof(CheckWinCondition))]
+    //public int aliveNum; // get this from lobby
 
     private CustomNetworkManager manager;
 
-    private int playerCount;
-    private bool hasGameStarted = false;
+    //private int playerCount;
+    //private bool hasGameStarted = false;
     public enum GameMode
     {
         FreeForAll = 0,
@@ -39,12 +39,12 @@ public class GameModeManager : NetworkBehaviour
     //[SyncVar(hook = nameof(CheckWinConditionSingle))]
     //public int currentNumberOfEnemies;
 
-    [Header("Below are used for cards")]
-    private int winningCard;
-    public bool useCards = true; 
+    //[Header("Below are used for cards")]
+    //private int winningCard;
+    //public bool useCards = true; 
 
     // keeps track of the rankings
-    public List<string> ranking = new List<string>();
+    //public List<string> ranking = new List<string>();
 
     //[Header("Gunfight mode")]
     //public int[] teamAlive = {0, 0}; // keeps track of how many players on each team is alive
@@ -272,8 +272,8 @@ public class GameModeManager : NetworkBehaviour
                 StartCoroutine(QuitCountdown());
             }
         }
-        else
-        {
+        //else
+        //{
             // if single player mode
             //DeleteWeaponsInGame();
             //if (isServer)
@@ -283,7 +283,7 @@ public class GameModeManager : NetworkBehaviour
             //currentNumberOfEnemies = currentRoundNumberOfEnemies;
             //StartRound();
             //spawnEnemies();
-        }
+        //}
     }
 
     //abstract class -> depracated
@@ -329,7 +329,8 @@ public class GameModeManager : NetworkBehaviour
     //    aliveNum--;
     //}
 
-    //interface
+    // refactor to combine with delayedendsingle -> interface
+    // this code is comp AC only
     private IEnumerator DelayedEndRound()
     {
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
@@ -609,12 +610,12 @@ public class GameModeManager : NetworkBehaviour
     //}
 
     // refactor for interface (each game mode)
-    void CheckWinConditionSingle(int oldAliveNum, int newAliveNum)
-    {
-        StartCoroutine(DelayedEndRoundSingle());
-    }
+    //void CheckWinConditionSingle(int oldAliveNum, int newAliveNum)
+    //{
+    //    StartCoroutine(DelayedEndRoundSingle());
+    //}
 
-    // move to competitive abstract class
+    // move to competitive abstract class /
     private void RankingList()
     {
         string rankingString = "";
@@ -660,205 +661,205 @@ public class GameModeManager : NetworkBehaviour
     }
 
     //interface?
-    [ClientRpc]
-    private void RpcShowRoundPanel()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //private void RpcShowRoundPanel()
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayRoundPanel();
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.DisplayRoundPanel();
+    //    }
+    //}
 
     //interface?
-    [ClientRpc]
-    private void RpcStopShowRoundPanel()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //private void RpcStopShowRoundPanel()
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayRoundPanel();
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.StopDisplayRoundPanel();
+    //    }
+    //}
 
     //comp ac
-    [ClientRpc]
-    private void RpcShowRanking(string rankings, string wins)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //private void RpcShowRanking(string rankings, string wins)
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayRanking(rankings, wins);
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.DisplayRanking(rankings, wins);
+    //    }
+    //}
 
     //competitive ac
-    [ClientRpc]
-    private void RpcStopShowRanking()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //private void RpcStopShowRanking()
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayRanking();
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.StopDisplayRanking();
+    //    }
+    //}
 
-    //interface?
-    [ClientRpc]
-    private void RpcDisableGameInteraction()
-    {
-        // Call the disable game interaction for all players
-        foreach (PlayerObjectController player in Manager.GamePlayers)
-        {
-            player.GetComponent<PlayerController>().enabled = false;
-        }
-    }
+    //comp ac
+    //[ClientRpc]
+    //private void RpcDisableGameInteraction()
+    //{
+    //    // Call the disable game interaction for all players
+    //    foreach (PlayerObjectController player in Manager.GamePlayers)
+    //    {
+    //        player.GetComponent<PlayerController>().enabled = false;
+    //    }
+    //}
 
-    //interface?
-    [ClientRpc]
-    private void RpcResetGame()
-    {
-        // Call the reset function for all players
-        foreach (PlayerObjectController player in Manager.GamePlayers)
-        {
-            player.GetComponent<PlayerController>().enabled = true;
-            player.GetComponent<PlayerController>().Respawn();
-            player.isAlive = true;
-        }
-    }
+    // interface
+    //[ClientRpc]
+    //private void RpcResetGame()
+    //{
+    //    // Call the reset function for all players
+    //    foreach (PlayerObjectController player in Manager.GamePlayers)
+    //    {
+    //        player.GetComponent<PlayerController>().enabled = true;
+    //        player.GetComponent<PlayerController>().Respawn();
+    //        player.isAlive = true;
+    //    }
+    //}
 
-    // move to interface?
-    public void SpawnWeaponsInGame()
-    {
-        // Find the WeaponSpawning script in the "game" scene
-        WeaponSpawning weaponSpawning = FindObjectOfType<WeaponSpawning>();
+    // interface
+    //public void SpawnWeaponsInGame()
+    //{
+    //    // Find the WeaponSpawning script in the "game" scene
+    //    WeaponSpawning weaponSpawning = FindObjectOfType<WeaponSpawning>();
 
-        if (weaponSpawning != null)
-        {
-            weaponSpawning.SpawnWeapons();
-        }
-        else
-        {
-            Debug.LogError("WeaponSpawning script not found in the 'game' scene.");
-        }
-    }
+    //    if (weaponSpawning != null)
+    //    {
+    //        weaponSpawning.SpawnWeapons();
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("WeaponSpawning script not found in the 'game' scene.");
+    //    }
+    //}
 
-    // move to interface?
+    // interface
     // This method is called when you want to delete weapons in the "game" scene
-    public void DeleteWeaponsInGame()
-    {
-        // Find the WeaponSpawning script in the "game" scene
-        WeaponSpawning weaponSpawning = FindObjectOfType<WeaponSpawning>();
+    //public void DeleteWeaponsInGame()
+    //{
+    //    // Find the WeaponSpawning script in the "game" scene
+    //    WeaponSpawning weaponSpawning = FindObjectOfType<WeaponSpawning>();
 
-        if (weaponSpawning != null)
-        {
-            weaponSpawning.DeleteWeapons();
-        }
-        else
-        {
-            Debug.LogError("WeaponSpawning script not found in the 'game' scene.");
-        }
-    }
+    //    if (weaponSpawning != null)
+    //    {
+    //        weaponSpawning.DeleteWeapons();
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("WeaponSpawning script not found in the 'game' scene.");
+    //    }
+    //}
 
-    [ClientRpc]
-    public void RpcShowWinner(string winner)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //public void RpcShowWinner(string winner)
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayWinner(winner);
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.DisplayWinner(winner);
+    //    }
+    //}
 
-    [ClientRpc]
-    public void RpcStopShowWinner()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //public void RpcStopShowWinner()
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayWinner();
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.StopDisplayWinner();
+    //    }
+    //}
 
-    [ClientRpc]
-    public void RpcShowCount(string count)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //public void RpcShowCount(string count)
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayCount(count);
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.DisplayCount(count);
+    //    }
+    //}
 
-    [ClientRpc]
-    public void RpcStopShowCount()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //public void RpcStopShowCount()
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayCount();
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.StopDisplayCount();
+    //    }
+    //}
 
-    [ClientRpc]
-    public void RpcShowTimer(string count)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //public void RpcShowTimer(string count)
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayTimer(count);
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.DisplayTimer(count);
+    //    }
+    //}
 
-    [ClientRpc]
-    public void RpcStopShowTimer()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //public void RpcStopShowTimer()
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayTimer();
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.StopDisplayTimer();
+    //    }
+    //}
 
-    [ClientRpc]
-    public void RpcShowRoundNumber(string number)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //public void RpcShowRoundNumber(string number)
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayRoundNumber(number);
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.DisplayRoundNumber(number);
+    //    }
+    //}
 
-    [ClientRpc]
-    public void RpcStopShowRoundNumber()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //[ClientRpc]
+    //public void RpcStopShowRoundNumber()
+    //{
+    //    GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
 
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayRoundNumber();
-        }
-    }
+    //    if (gameModeUIController != null)
+    //    {
+    //        gameModeUIController.StopDisplayRoundNumber();
+    //    }
+    //}
 
-    [ClientRpc]
-    public void RpcResetPlayerStats()
-    {
-        // reset wins for all players
-        foreach (PlayerObjectController player in Manager.GamePlayers)
-        {
-            player.wins = 0;
-        }
-    }
+    //[ClientRpc]
+    //public void RpcResetPlayerStats()
+    //{
+    //    // reset wins for all players
+    //    foreach (PlayerObjectController player in Manager.GamePlayers)
+    //    {
+    //        player.wins = 0;
+    //    }
+    //}
 }
