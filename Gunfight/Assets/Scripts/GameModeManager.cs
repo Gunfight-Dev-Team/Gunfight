@@ -29,6 +29,8 @@ public class GameModeManager : NetworkBehaviour
         SinglePlayer = 2
     }
 
+    public IGameMode iGameMode;
+
     public GameMode gameMode; // get this from lobby
 
     //[Header("Below are used for Single Player")]
@@ -81,25 +83,9 @@ public class GameModeManager : NetworkBehaviour
         {
             return;
         }
-        if (!hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0)
+        if (iGameMode.CheckIfGameNeedsStart())
         {
-            mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
-            if (gameMode == GameMode.SinglePlayer)
-            {
-                totalRounds = 9999;
-                initEnemy();
-            }
-
-            if (isServer)
-            {
-                playerCount = aliveNum;
-                hasGameStarted = true;
-                if (gameMode == GameMode.Gunfight)
-                {
-                    GetTeamPlayers();
-                }
-                StartRound(); // starts the first round after Awake
-            }
+            iGameMode.InitializeGameMode();
         }
     }
 
@@ -228,50 +214,50 @@ public class GameModeManager : NetworkBehaviour
     //}
 
     //interface
-    public void EndRound()
-    {
-        if (!isServer)
-        {
-            return;
-        }
-        if (gameMode != GameMode.SinglePlayer)
-        {
-            if (!CheckOverallWin()) // if there is not an overall winner
-            {
-                DeleteWeaponsInGame();
-                if (isServer)
-                    RpcResetGame();
-                SpawnWeaponsInGame();
-                aliveNum = playerCount;
-                StartRound();
-                // TODO: Reset Map (pots / boxes)
-            }
-            else // if there is an overall winner
-            {
-                Debug.Log("End of game!");
-                GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-                gameModeUIController.DisplayQuitButton();
-                RpcShowRoundPanel();
-                RankingList();
-                RpcShowWinner("Overall Winner: " + FindOverallWinner());
+    //public void EndRound()
+    //{
+    //    if (!isServer)
+    //    {
+    //        return;
+    //    }
+    //    if (gameMode != GameMode.SinglePlayer)
+    //    {
+    //        if (!CheckOverallWin()) // if there is not an overall winner
+    //        {
+    //            DeleteWeaponsInGame();
+    //            if (isServer)
+    //                RpcResetGame();
+    //            SpawnWeaponsInGame();
+    //            aliveNum = playerCount;
+    //            StartRound();
+    //            // TODO: Reset Map (pots / boxes)
+    //        }
+    //        else // if there is an overall winner
+    //        {
+    //            Debug.Log("End of game!");
+    //            GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+    //            gameModeUIController.DisplayQuitButton();
+    //            RpcShowRoundPanel();
+    //            RankingList();
+    //            RpcShowWinner("Overall Winner: " + FindOverallWinner());
 
-                // reset players stats
-                if (gameMode == GameMode.FreeForAll)
-                {
-                    RpcResetPlayerStats();
-                }
-                // reset team stats
-                if (gameMode == GameMode.Gunfight)
-                {
-                    teamWins[0] = 0;
-                    teamWins[1] = 0;
-                }
+    //            // reset players stats
+    //            if (gameMode == GameMode.FreeForAll)
+    //            {
+    //                RpcResetPlayerStats();
+    //            }
+    //            // reset team stats
+    //            if (gameMode == GameMode.Gunfight)
+    //            {
+    //                teamWins[0] = 0;
+    //                teamWins[1] = 0;
+    //            }
 
-                currentRound = 0;
+    //            currentRound = 0;
                 
-                StartCoroutine(QuitCountdown());
-            }
-        }
+    //            StartCoroutine(QuitCountdown());
+    //        }
+    //    }
         //else
         //{
             // if single player mode
@@ -284,7 +270,7 @@ public class GameModeManager : NetworkBehaviour
             //StartRound();
             //spawnEnemies();
         //}
-    }
+    //}
 
     //abstract class -> depracated
     //public void QuitGame()
@@ -331,97 +317,97 @@ public class GameModeManager : NetworkBehaviour
 
     // refactor to combine with delayedendsingle -> interface
     // this code is comp AC only
-    private IEnumerator DelayedEndRound()
-    {
-        if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
-        {
-            if (useCards)
-            {
-                // gets the Card Manager game object
-                if (cardManager == null)
-                {
-                    cardManager = FindObjectOfType<CardManager>();
-                    if (cardManager == null)
-                    {
-                        Debug.Log("Couldnt find game object");
-                    }
-                }
+    //private IEnumerator DelayedEndRound()
+    //{
+    //    if (isServer && SceneManager.GetActiveScene().name != "Lobby" && aliveNum != playerCount)
+    //    {
+    //        if (useCards)
+    //        {
+    //            // gets the Card Manager game object
+    //            if (cardManager == null)
+    //            {
+    //                cardManager = FindObjectOfType<CardManager>();
+    //                if (cardManager == null)
+    //                {
+    //                    Debug.Log("Couldnt find game object");
+    //                }
+    //            }
             
-                Debug.Log("Found card manager: " + (cardManager != null));
-            }
+    //            Debug.Log("Found card manager: " + (cardManager != null));
+    //        }
 
-            if (gameMode == GameMode.Gunfight)
-            {
-                teamWinner = CheckTeamWin();
-            }
+    //        if (gameMode == GameMode.Gunfight)
+    //        {
+    //            teamWinner = CheckTeamWin();
+    //        }
 
-            // If only one player is alive or there is a team winner, end round 
-            if (aliveNum <= 1 || teamWinner)
-            {
-                RpcDisableGameInteraction();
-                string winner = FindWinner();
-                if (!CheckOverallWin())
-                {
-                    if (useCards)
-                    {
-                        cardManager.RpcShowCardPanel();
-                    }
+    //        // If only one player is alive or there is a team winner, end round 
+    //        if (aliveNum <= 1 || teamWinner)
+    //        {
+    //            RpcDisableGameInteraction();
+    //            string winner = FindWinner();
+    //            if (!CheckOverallWin())
+    //            {
+    //                if (useCards)
+    //                {
+    //                    cardManager.RpcShowCardPanel();
+    //                }
 
-                    RpcShowRoundPanel();
-                    RpcShowWinner("Winner: " + winner);
-                    RpcShowRoundNumber("Round: " + Mathf.Ceil(currentRound).ToString());
-                    RankingList(); // displays the rankings
+    //                RpcShowRoundPanel();
+    //                RpcShowWinner("Winner: " + winner);
+    //                RpcShowRoundNumber("Round: " + Mathf.Ceil(currentRound).ToString());
+    //                RankingList(); // displays the rankings
 
-                    if (useCards)
-                    {
-                        // start 10s timer 
-                        int count = 10;
+    //                if (useCards)
+    //                {
+    //                    // start 10s timer 
+    //                    int count = 10;
 
-                        while (count > 0)
-                        {
-                            RpcShowTimer(Mathf.Ceil(count).ToString());
-                            // if everyone voted stop countdown
-                            if (cardManager.CheckIfEveryoneVoted(playerCount))
-                            {
-                                Debug.Log("Break countdown");
-                                break;
-                            }
-                            yield return new WaitForSeconds(1f);
-                            count--;
-                            Debug.Log("Card countdown: " + count);
-                        }
+    //                    while (count > 0)
+    //                    {
+    //                        RpcShowTimer(Mathf.Ceil(count).ToString());
+    //                        // if everyone voted stop countdown
+    //                        if (cardManager.CheckIfEveryoneVoted(playerCount))
+    //                        {
+    //                            Debug.Log("Break countdown");
+    //                            break;
+    //                        }
+    //                        yield return new WaitForSeconds(1f);
+    //                        count--;
+    //                        Debug.Log("Card countdown: " + count);
+    //                    }
 
-                        RpcStopShowTimer();
+    //                    RpcStopShowTimer();
                         
-                        // find the card voted the most
-                        winningCard = cardManager.FindMaxVote();
-                        Debug.Log("Winning card: " + winningCard);
+    //                    // find the card voted the most
+    //                    winningCard = cardManager.FindMaxVote();
+    //                    Debug.Log("Winning card: " + winningCard);
 
-                        cardManager.RpcShowWinningCard(winningCard); // only displaying the winning card
-                        yield return new WaitForSeconds(5f); // pause to show winning card
-                    }
-                    else // if cards are not being used
-                    {
-                        yield return new WaitForSeconds(5f);
-                    }
+    //                    cardManager.RpcShowWinningCard(winningCard); // only displaying the winning card
+    //                    yield return new WaitForSeconds(5f); // pause to show winning card
+    //                }
+    //                else // if cards are not being used
+    //                {
+    //                    yield return new WaitForSeconds(5f);
+    //                }
 
-                    RpcStopShowRanking();
-                    RpcStopShowRoundNumber();
-                    RpcStopShowWinner();
+    //                RpcStopShowRanking();
+    //                RpcStopShowRoundNumber();
+    //                RpcStopShowWinner();
 
-                    if (useCards)
-                    {
-                        cardManager.RpcStopCardPanel();
-                    }
+    //                if (useCards)
+    //                {
+    //                    cardManager.RpcStopCardPanel();
+    //                }
                 
-                    RpcStopShowRoundPanel();
-                    StartCoroutine(Countdown());
-                    yield return new WaitForSeconds(5f);
-                }
-                EndRound();
-            }
-        }
-    }
+    //                RpcStopShowRoundPanel();
+    //                StartCoroutine(Countdown());
+    //                yield return new WaitForSeconds(5f);
+    //            }
+    //            EndRound();
+    //        }
+    //    }
+    //}
 
     // combine each delay end round for one generic method, put in interface
     //private IEnumerator DelayedEndRoundSingle()
@@ -457,84 +443,84 @@ public class GameModeManager : NetworkBehaviour
 
     // interface function (change name to PreroundCountdown?)
     // Coroutine to handle the countdown visualization
-    private IEnumerator Countdown()
-    {
-        float countdownTime = 5f;
+    //private IEnumerator Countdown()
+    //{
+    //    float countdownTime = 5f;
 
-        while (countdownTime > 0)
-        {
-            // Update the countdown text on the UI
-            RpcShowCount(Mathf.Ceil(countdownTime).ToString());
+    //    while (countdownTime > 0)
+    //    {
+    //        // Update the countdown text on the UI
+    //        RpcShowCount(Mathf.Ceil(countdownTime).ToString());
 
-            // Wait for the next frame
-            yield return null;
+    //        // Wait for the next frame
+    //        yield return null;
 
-            // Reduce the countdown time
-            countdownTime -= Time.deltaTime;
-        }
+    //        // Reduce the countdown time
+    //        countdownTime -= Time.deltaTime;
+    //    }
 
-        // Clear the countdown text when the countdown is complete
-        RpcStopShowCount();
-    }
+    //    // Clear the countdown text when the countdown is complete
+    //    RpcStopShowCount();
+    //}
 
     //competitive absract class
-    private string FindWinner()
-    {
-        if (gameMode == GameMode.FreeForAll)
-        {
-            foreach (PlayerObjectController player in Manager.GamePlayers)
-            {
-                if (player.isAlive)
-                {
-                    player.wins++;
-                    return player.PlayerName;
-                }
-            }
-        }
+    //private string FindWinner()
+    //{
+    //    if (gameMode == GameMode.FreeForAll)
+    //    {
+    //        foreach (PlayerObjectController player in Manager.GamePlayers)
+    //        {
+    //            if (player.isAlive)
+    //            {
+    //                player.wins++;
+    //                return player.PlayerName;
+    //            }
+    //        }
+    //    }
 
-        if (gameMode == GameMode.Gunfight)
-        {
-            if (teamWinNum == 1)
-            {
-                teamWins[0]++;
-                return "Team 1";
-            }
-            else if (teamWinNum == 2)
-            {
-                teamWins[1]++;
-                return "Team 2";
-            }
-        }
-        return "No one";
-    }
+    //    if (gameMode == GameMode.Gunfight)
+    //    {
+    //        if (teamWinNum == 1)
+    //        {
+    //            teamWins[0]++;
+    //            return "Team 1";
+    //        }
+    //        else if (teamWinNum == 2)
+    //        {
+    //            teamWins[1]++;
+    //            return "Team 2";
+    //        }
+    //    }
+    //    return "No one";
+    //}
 
     // competitive abstract class
-    private string FindOverallWinner()
-    {
-        if (gameMode == GameMode.FreeForAll)
-        {
-            foreach (PlayerObjectController player in Manager.GamePlayers)
-            {
-                if (player.wins == totalRounds)
-                {
-                    return player.PlayerName;
-                }
-            }
-        }
+    //private string FindOverallWinner()
+    //{
+    //    if (gameMode == GameMode.FreeForAll)
+    //    {
+    //        foreach (PlayerObjectController player in Manager.GamePlayers)
+    //        {
+    //            if (player.wins == totalRounds)
+    //            {
+    //                return player.PlayerName;
+    //            }
+    //        }
+    //    }
 
-        if (gameMode == GameMode.Gunfight)
-        {
-            if (teamWins[0] == totalRounds)
-            {
-                return "Team 1";
-            }
-            else if (teamWins[1] == totalRounds)
-            {
-                return "Team 2";
-            }
-        }
-        return "No one";
-    }
+    //    if (gameMode == GameMode.Gunfight)
+    //    {
+    //        if (teamWins[0] == totalRounds)
+    //        {
+    //            return "Team 1";
+    //        }
+    //        else if (teamWins[1] == totalRounds)
+    //        {
+    //            return "Team 2";
+    //        }
+    //    }
+    //    return "No one";
+    //}
 
     // gunfight only
     //private bool CheckTeamWin()
@@ -573,32 +559,32 @@ public class GameModeManager : NetworkBehaviour
     //}
 
     //move to competitive abstract class /
-    private bool CheckOverallWin()
-    {
-        if (gameMode == GameMode.FreeForAll)
-        {
-            foreach (PlayerObjectController player in Manager.GamePlayers)
-            {
-                // checks if a player has the required amount of wins
-                if (player.wins == totalRounds)
-                {
-                    return true;
-                }
-            }
-        }
+    //private bool CheckOverallWin()
+    //{
+    //    if (gameMode == GameMode.FreeForAll)
+    //    {
+    //        foreach (PlayerObjectController player in Manager.GamePlayers)
+    //        {
+    //            // checks if a player has the required amount of wins
+    //            if (player.wins == totalRounds)
+    //            {
+    //                return true;
+    //            }
+    //        }
+    //    } 
 
-        if (gameMode == GameMode.Gunfight)
-        {
-            // check if a team has the required number of wins
-            if (teamWins[0] == totalRounds || teamWins[1] == totalRounds)
-            {
-                Debug.Log("A team has won");
-                return true;
-            }
-        }
+    //    if (gameMode == GameMode.Gunfight)
+    //    {
+    //        // check if a team has the required number of wins
+    //        if (teamWins[0] == totalRounds || teamWins[1] == totalRounds)
+    //        {
+    //            Debug.Log("A team has won");
+    //            return true;
+    //        }
+    //    }
 
-        return false;
-    }
+    //    return false;
+    //}
 
     // move to competitive abstract class
     //void CheckWinCondition(int oldAliveNum, int newAliveNum)
@@ -616,49 +602,49 @@ public class GameModeManager : NetworkBehaviour
     //}
 
     // move to competitive abstract class /
-    private void RankingList()
-    {
-        string rankingString = "";
-        string winsString = "";
+    //private void RankingList()
+    //{
+    //    string rankingString = "";
+    //    string winsString = "";
 
-        if (gameMode == GameMode.FreeForAll)
-        {
-            List<PlayerObjectController> players = new List<PlayerObjectController>();
-            foreach (PlayerObjectController player in Manager.GamePlayers)
-            {
-                players.Add(player);
-            }
+    //    if (gameMode == GameMode.FreeForAll)
+    //    {
+    //        List<PlayerObjectController> players = new List<PlayerObjectController>();
+    //        foreach (PlayerObjectController player in Manager.GamePlayers)
+    //        {
+    //            players.Add(player);
+    //        }
 
-            players = players.OrderByDescending(player => player.wins).ToList();
+    //        players = players.OrderByDescending(player => player.wins).ToList();
 
-            // creates strings with the values from the list
-            for (int i = 0; i < playerCount; i++)
-            {
-                rankingString += players[i].PlayerName + "\n";
-                winsString += players[i].wins + "\n";
-            }
-        }
+    //        // creates strings with the values from the list
+    //        for (int i = 0; i < playerCount; i++)
+    //        {
+    //            rankingString += players[i].PlayerName + "\n";
+    //            winsString += players[i].wins + "\n";
+    //        }
+    //    }
 
-        if (gameMode == GameMode.Gunfight)
-        {
-            if (teamWinNum == 1)
-            {
-                rankingString = "Team 1 \nTeam 2\n";
-                winsString = teamWins[0] + "\n" + teamWins[1] + "\n";
-            }
+    //    if (gameMode == GameMode.Gunfight)
+    //    {
+    //        if (teamWinNum == 1)
+    //        {
+    //            rankingString = "Team 1 \nTeam 2\n";
+    //            winsString = teamWins[0] + "\n" + teamWins[1] + "\n";
+    //        }
 
-            if (teamWinNum == 2)
-            {
-                rankingString = "Team 2 \nTeam 1\n";
-                winsString = teamWins[1] + "\n" + teamWins[0] + "\n";
-            }
-        }
+    //        if (teamWinNum == 2)
+    //        {
+    //            rankingString = "Team 2 \nTeam 1\n";
+    //            winsString = teamWins[1] + "\n" + teamWins[0] + "\n";
+    //        }
+    //    }
 
-        Debug.Log("Ranking names: " + rankingString);
-        Debug.Log("Ranking wins: " + winsString);
+    //    Debug.Log("Ranking names: " + rankingString);
+    //    Debug.Log("Ranking wins: " + winsString);
 
-        RpcShowRanking(rankingString, winsString);
-    }
+    //    RpcShowRanking(rankingString, winsString);
+    //}
 
     //interface?
     //[ClientRpc]

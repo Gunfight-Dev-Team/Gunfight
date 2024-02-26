@@ -15,6 +15,14 @@ public interface IGameMode
     void CheckWinCondition(int oldAliveNum, int newAliveNum);
     void SpawnWeaponsInGame();
     void DeleteWeaponsInGame();
+    bool CheckIfGameNeedsStart();
+    void InitializeGameMode();
+
+    //bool getHasGameStarted();
+    //void setHasGameStarted(bool hasGameStarted);
+    //int getAliveNum();
+    //void setTotalRounds(int rounds);
+    //void setPlayerCount(int numPlayers);
 
     // temporary UI RPC methods
     [ClientRpc]

@@ -16,6 +16,9 @@ public class WaveMode : NetworkBehaviour, IGameMode
     public float enemyMultiplier = 1.15f;
     public int currentRoundNumberOfEnemies;
 
+    public int playerCount;
+    public bool hasGameStarted = false;
+
     [SyncVar(hook = nameof(CheckWinCondition))]
     public int currentNumberOfEnemies;
     [SyncVar(hook = nameof(CheckWinCondition))]
@@ -133,6 +136,25 @@ public class WaveMode : NetworkBehaviour, IGameMode
     }
 
     //------------------Game Mode Interface Methods------------------------------
+
+    public bool CheckIfGameNeedsStart()
+    {
+        return !hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0;
+    }
+
+    public void InitializeGameMode()
+    {
+        mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+
+        // for wave mode only
+        totalRounds = 9999;
+        initEnemy();
+
+        //for all game modes (checked isServer here, removed b/c redundant, if bugged check here)
+        playerCount = aliveNum;
+        hasGameStarted = true;
+        StartRound();
+    }
 
     public void StartRound()
     {

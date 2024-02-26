@@ -22,8 +22,8 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
     protected CustomNetworkManager manager;
 
     // also changed to protected during refactor
-    protected int playerCount;
-    private bool hasGameStarted = false;
+    public int playerCount;
+    public bool hasGameStarted = false;
 
     // keeps track of the rankings
     public List<string> ranking = new List<string>();
@@ -41,6 +41,7 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
     public abstract void RankingList();
     public abstract void ResetOverallGame();
     public abstract bool CheckRoundWinCondition();
+    public abstract void InitializeGameMode();
 
     private CustomNetworkManager Manager
     {
@@ -52,6 +53,11 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
             }
             return manager = CustomNetworkManager.singleton as CustomNetworkManager;
         }
+    }
+
+    public bool CheckIfGameNeedsStart()
+    {
+        return !hasGameStarted && (SceneManager.GetActiveScene().name != "Lobby") && aliveNum != 0;
     }
 
     public void StartRound()

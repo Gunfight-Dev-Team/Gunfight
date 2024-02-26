@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameModeManager;
 
 public class GunfightMode : CompetitiveGameMode
 {
@@ -8,8 +9,6 @@ public class GunfightMode : CompetitiveGameMode
     public int[] teamWins = { 0, 0 }; // keeps track of how many wins each team has
     private bool teamWinner = false;
     private int teamWinNum;
-
-    public bool quitClicked = false; // keeps track if quit button was clicked
 
     // not sure if having this in subclass will break it
     private CustomNetworkManager Manager
@@ -22,6 +21,16 @@ public class GunfightMode : CompetitiveGameMode
             }
             return manager = CustomNetworkManager.singleton as CustomNetworkManager;
         }
+    }
+
+    public override void InitializeGameMode()
+    {
+        mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+
+        playerCount = aliveNum;
+        hasGameStarted = true;
+        GetTeamPlayers();
+        StartRound(); // starts the first round after Awake
     }
 
     public override void ResetOverallGame()

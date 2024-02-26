@@ -17,6 +17,15 @@ public class FreeForAllMode : CompetitiveGameMode
         }
     }
 
+    public override void InitializeGameMode()
+    {
+        mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+
+        playerCount = aliveNum;
+        hasGameStarted = true;
+        StartRound();
+    }
+
     public override void ResetOverallGame()
     {
         RpcResetPlayerStats();

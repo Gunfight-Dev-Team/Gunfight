@@ -117,7 +117,7 @@ public class LobbyController : MonoBehaviour
         {
             // Joined single player
             GameModeChooser.value = 2;
-            GameModeManager.Instance.gameMode = GameModeManager.GameMode.SinglePlayer;
+            GameModeManager.Instance.iGameMode = new WaveMode();
         }
     }
 
