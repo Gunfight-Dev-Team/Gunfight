@@ -78,9 +78,20 @@ public class GameModeUIController : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcShowRoundPanel(bool tOrF)
+    public void RpcShowRoundPanel(bool tOrF, string winner, string round)
     {
         DisplayRoundPanel(tOrF);
+        if (tOrF == true)
+        {
+            DisplayWinner(winner);
+            DisplayRoundNumber(round);
+        }
+        else
+        {
+            StopDisplayWinner();
+            StopDisplayRoundNumber();
+            StopDisplayRanking();
+        }
     }
 
     [ClientRpc]
@@ -90,12 +101,6 @@ public class GameModeUIController : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcStopShowRanking()
-    {
-        StopDisplayRanking();
-    }
-
-     [ClientRpc]
     public void RpcShowWinner(string winner)
     {
         DisplayWinner(winner);
@@ -129,17 +134,5 @@ public class GameModeUIController : NetworkBehaviour
     public void RpcStopShowTimer()
     {
         StopDisplayTimer();
-    }
-
-    [ClientRpc]
-    public void RpcShowRoundNumber(string number)
-    {
-        DisplayRoundNumber(number);
-    }
-
-    [ClientRpc]
-    public void RpcStopShowRoundNumber()
-    {
-        StopDisplayRoundNumber();
     }
 }

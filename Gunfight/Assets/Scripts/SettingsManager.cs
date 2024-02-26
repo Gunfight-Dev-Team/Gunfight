@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Mirror;
 
-public class SettingsManager : MonoBehaviour
+public class SettingsManager : NetworkBehaviour
 {
     public GameObject QuitButton;
 
@@ -56,6 +57,13 @@ public class SettingsManager : MonoBehaviour
 
     private void loadQuitGameToMatchmaking()
     {
+        CmdPlayerQuit();
         LocalPlayerController.Quit();
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdPlayerQuit()
+    {
+        GameModeManager.Instance.PlayerQuit(); 
     }
 }

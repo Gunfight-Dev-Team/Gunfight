@@ -10,6 +10,7 @@ public class GameModeManager : NetworkBehaviour
     public static GameModeManager Instance;
     public MapManager mapManager;
     public CardManager cardManager;
+    public CardUIController cardUIController;
     public GameModeUIController gameModeUIController;
 
     [SyncVar]
@@ -52,8 +53,6 @@ public class GameModeManager : NetworkBehaviour
     public int[] teamWins = {0, 0}; // keeps track of how many wins each team has
     private bool teamWinner = false; 
     private int teamWinNum;
-
-    public bool quitClicked = false; // keeps track if quit button was clicked
 
     private CustomNetworkManager Manager
     {
@@ -202,6 +201,10 @@ public class GameModeManager : NetworkBehaviour
             return;
         }
         // setup for round
+        if (gameMode == GameMode.Gunfight)
+        {
+            GetTeamPlayers();
+        }
         RpcResetGame();
         currentRound++; // increase round count
         Debug.Log("Round started: " + currentRound);
@@ -247,9 +250,10 @@ public class GameModeManager : NetworkBehaviour
             else // if there is an overall winner
             {
                 Debug.Log("End of game!");
-                gameModeUIController.RpcShowRoundPanel(true);
+                string overallString = "Overall Winner: " + FindOverallWinner();
+                string roundString = "Round: " + Mathf.Ceil(currentRound).ToString();
+                gameModeUIController.RpcShowRoundPanel(true, overallString, roundString);
                 RankingList();
-                gameModeUIController.RpcShowWinner("Overall Winner: " + FindOverallWinner());
 
                 // reset players stats
                 if (gameMode == GameMode.FreeForAll)
@@ -303,6 +307,13 @@ public class GameModeManager : NetworkBehaviour
         ToLobby();
     }
 
+    public void PlayerQuit() // player quit during the game
+    {
+        aliveNum--;
+        playerCount--;
+        Debug.Log("Player left game");
+    }
+
     public void PlayerDied(PlayerController player)
     {
         player.poc.isAlive = false;
@@ -328,6 +339,7 @@ public class GameModeManager : NetworkBehaviour
                 Debug.Log("Found card manager: " + (cardManager != null));
             }
 
+            cardUIController = GameObject.Find("CardUIController").GetComponent<CardUIController>();
             gameModeUIController = GameObject.Find("GameModeUIController").GetComponent<GameModeUIController>();
 
             if (gameMode == GameMode.Gunfight)
@@ -344,12 +356,12 @@ public class GameModeManager : NetworkBehaviour
                 {
                     if (useCards)
                     {
-                        cardManager.RpcShowCardPanel();
+                        cardUIController.RpcShowCardPanel(true);
                     }
 
-                    gameModeUIController.RpcShowRoundPanel(true);
-                    gameModeUIController.RpcShowWinner("Winner: " + winner);
-                    gameModeUIController.RpcShowRoundNumber("Round: " + Mathf.Ceil(currentRound).ToString());
+                    string winnerString = "Winner: " + winner;
+                    string roundString = "Round: " + Mathf.Ceil(currentRound).ToString();
+                    gameModeUIController.RpcShowRoundPanel(true, winnerString, roundString);
                     RankingList(); // displays the rankings
 
                     if (useCards)
@@ -377,7 +389,7 @@ public class GameModeManager : NetworkBehaviour
                         winningCard = cardManager.FindMaxVote();
                         Debug.Log("Winning card: " + winningCard);
 
-                        cardManager.RpcShowWinningCard(winningCard); // only displaying the winning card
+                        cardUIController.RpcShowWinningCard(winningCard); // only displaying the winning card
                         yield return new WaitForSeconds(5f); // pause to show winning card
                     }
                     else // if cards are not being used
@@ -385,16 +397,12 @@ public class GameModeManager : NetworkBehaviour
                         yield return new WaitForSeconds(5f);
                     }
 
-                    gameModeUIController.RpcStopShowRanking();
-                    gameModeUIController.RpcStopShowRoundNumber();
-                    gameModeUIController.RpcStopShowWinner();
-
                     if (useCards)
                     {
-                        cardManager.RpcStopCardPanel();
+                        cardUIController.RpcShowCardPanel(false);
                     }
                 
-                    gameModeUIController.RpcShowRoundPanel(false);
+                    gameModeUIController.RpcShowRoundPanel(false, "", "");
                     StartCoroutine(Countdown());
                     yield return new WaitForSeconds(5f);
                 }
@@ -421,11 +429,11 @@ public class GameModeManager : NetworkBehaviour
             // If no enemy, end round 
             if (currentNumberOfEnemies <= 0)
             {
-                cardManager.RpcShowCardPanel();
+                cardUIController.RpcShowCardPanel(true);
                 gameModeUIController.RpcShowWinner("Round: " + currentRound);
                 yield return new WaitForSeconds(10.0f); 
                 gameModeUIController.RpcStopShowWinner();
-                cardManager.RpcStopCardPanel();
+                cardUIController.RpcShowCardPanel(false);
 
                 StartCoroutine(Countdown());
                 yield return new WaitForSeconds(5f);

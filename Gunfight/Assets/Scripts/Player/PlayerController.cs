@@ -181,6 +181,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
                 // used for testing - kill yourself
                 if (Input.GetKeyDown(KeyCode.F))
                 {
+                    health = 0;
                     RpcDie();
                     playerAnimator.SetBool("isDead", true);
                     SendPlayerDeath();

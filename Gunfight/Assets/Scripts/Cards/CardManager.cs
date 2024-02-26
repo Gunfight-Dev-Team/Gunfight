@@ -33,7 +33,7 @@ public class CardManager : NetworkBehaviour
     private void Start()
     {
         // make sure card panel is not displayed 
-        cardUIController.StopDisplayCardPanel();
+        cardUIController.DisplayCardPanel(false);
         votes.Add(0);
         votes.Add(0);
         votes.Add(0);
@@ -128,52 +128,5 @@ public class CardManager : NetworkBehaviour
         votes[1] = 0;
         votes[2] = 0;
         Debug.Log("Reset votes: " + votes[0] + ", " + votes[1] + ", " + votes[2]);
-    }
-
-    [ClientRpc]
-    public void RpcShowCardPanel()
-    {
-        CardUIController cardUIController = FindObjectOfType<CardUIController>();
-
-        if (cardUIController != null)
-        {
-            cardUIController.DisplayCardPanel();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopCardPanel()
-    {
-        CardUIController cardUIController = FindObjectOfType<CardUIController>();
-
-        if (cardUIController != null)
-        {
-            cardUIController.StopDisplayCardPanel();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowWinningCard(int winningCard)
-    {
-        CardUIController cardUIController = FindObjectOfType<CardUIController>();
-        if (cardUIController != null)
-        {
-            switch(winningCard)
-            {
-                case 0:
-                    cardUIController.StopDisplayCards(card2, card3);
-                    break;
-                case 1:
-                    cardUIController.StopDisplayCards(card1, card3);
-                    break;
-                case 2:
-                    cardUIController.StopDisplayCards(card1, card2);
-                    break;
-                default:
-                    break;
-            }
-
-            cardUIController.InteractableCards(false);
-        }
     }
 }
