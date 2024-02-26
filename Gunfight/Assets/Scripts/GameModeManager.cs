@@ -267,7 +267,6 @@ public class GameModeManager : NetworkBehaviour
                     teamWins[1] = 0;
                 }
 
-                RpcResetGame();
                 currentRound = 0;
                 
                 StartCoroutine(BackToLobbyCountdown());
@@ -304,6 +303,7 @@ public class GameModeManager : NetworkBehaviour
         }
         Debug.Log("Quit game");
         gameModeUIController.RpcStopShowTimer();
+        RpcResetGame();
         ToLobby();
     }
 
