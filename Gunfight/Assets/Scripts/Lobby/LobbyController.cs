@@ -117,7 +117,8 @@ public class LobbyController : MonoBehaviour
         {
             // Joined single player
             GameModeChooser.value = 2;
-            GameModeManager.Instance.iGameMode = new WaveMode();
+            // might be bug here, VS says to use addcomponent and not "= new WaveMode()"
+            GameModeManager.Instance.iGameMode = gameObject.AddComponent<SurvivalMode>();
         }
     }
 
@@ -365,7 +366,7 @@ public class LobbyController : MonoBehaviour
 
     public void StartGame()
     {
-        GameModeManager.Instance.aliveNum = manager.GamePlayers.Count;
+        GameModeManager.Instance.iGameMode.SetAliveNum(manager.GamePlayers.Count);
         LocalPlayerController.CanStartGame(MapName);
     }
 
@@ -384,7 +385,7 @@ public class LobbyController : MonoBehaviour
 
     public void ToggleCards()
     {
-        gameModeManager.useCards = !gameModeManager.useCards;
+        gameModeManager.iGameMode.SetUseCards(!gameModeManager.iGameMode.GetUseCards());
     }
 
     public void SwitchGameModes()
@@ -393,19 +394,19 @@ public class LobbyController : MonoBehaviour
         {
             PlayerList2.SetActive(false);
             ChatBox.SetActive(true);
-            gameModeManager.gameMode = GameModeManager.GameMode.FreeForAll;
+            gameModeManager.iGameMode = gameObject.AddComponent<FreeForAllMode>();
         }
         else if(GameModeChooser.value == 1)
         {
             PlayerList2.SetActive(true);
             ChatBox.SetActive(false);
-            gameModeManager.gameMode = GameModeManager.GameMode.Gunfight;
+            gameModeManager.iGameMode = gameObject.AddComponent<GunfightMode>();
         }
         else if (GameModeChooser.value == 2)
         {
             PlayerList2.SetActive(false);
             ChatBox.SetActive(true);
-            gameModeManager.gameMode = GameModeManager.GameMode.SinglePlayer;
+            gameModeManager.iGameMode = gameObject.AddComponent<SurvivalMode>();
         }
 
     }
@@ -416,7 +417,7 @@ public class LobbyController : MonoBehaviour
 
         if(int.TryParse(selectedNum, out int intVal))
         {
-            GameModeManager.Instance.totalRounds = intVal;
+            GameModeManager.Instance.iGameMode.SetTotalRounds(intVal);
         }
     }
     

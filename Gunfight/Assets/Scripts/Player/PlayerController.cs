@@ -202,7 +202,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
     public void SetPosition()
     {
         // Determine the spawn points based on the game mode
-        Transform[] spawnPoints = GameModeManager.Instance.gameMode != GameModeManager.GameMode.SinglePlayer
+        Transform[] spawnPoints = GameModeManager.Instance.iGameMode is not SurvivalMode
             ? MapManager.Instance.FFASpawnPoints
             : MapManager.Instance.SPSpawnPoints;
 
@@ -359,7 +359,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
     public void CmdPlayerDied()
     {
         // Call the PlayerDied function on the server
-        GameModeManager.Instance.PlayerDied(this);
+        GameModeManager.Instance.iGameMode.PlayerDied(this);
     }
 
     public void TakeDamage(int damage, Vector2 hitPoint)
@@ -393,7 +393,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
         {
             // If the object does not have authority, it's likely a remote player object, and we don't need to do anything on the client-side.
             // The server will handle the death logic, and the state will be synchronized to this client automatically.
-            GameModeManager.Instance.PlayerDied(this);
+            GameModeManager.Instance.iGameMode.PlayerDied(this);
         }
     }
 

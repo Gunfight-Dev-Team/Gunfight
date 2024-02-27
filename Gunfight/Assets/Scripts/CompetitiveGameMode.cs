@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using static GameModeManager;
 using UnityEngine.SceneManagement;
+using System;
 
 public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
 {
@@ -238,6 +239,17 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
         aliveNum--;
     }
 
+    public void QuitGame()
+    {
+        // quits back to the lobby
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+        gameModeUIController.StopDisplayQuitButton();
+        RpcStopShowWinner();
+        RpcStopShowRoundPanel();
+        quitClicked = false;
+        ToLobby();
+    }
+
     public void CheckWinCondition(int oldAliveNum, int newAliveNum)
     {
         StartCoroutine(DelayedEndRound());
@@ -271,6 +283,41 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
         {
             Debug.LogError("WeaponSpawning script not found in the 'game' scene.");
         }
+    }
+
+    public int GetAliveNum()
+    {
+        return this.aliveNum;
+    }
+
+    public void SetAliveNum(int num)
+    {
+        this.aliveNum = num;
+    }
+
+    public void SetUseCards(bool usingCards)
+    {
+        this.useCards = usingCards;
+    }
+
+    public bool GetUseCards()
+    {
+        return this.useCards;
+    }
+
+    public void SetTotalRounds(int rounds)
+    {
+        this.totalRounds = rounds;
+    }
+
+    public void SetQuitClicked(bool b)
+    {
+        this.quitClicked = b;
+    }
+
+    public void DecrementCurrentNumberOfEnemies()
+    {
+        Debug.Log("Attempted to decrement number of enemies in non-surival game mode.");
     }
 
     //---------------------------------------------------------------------------

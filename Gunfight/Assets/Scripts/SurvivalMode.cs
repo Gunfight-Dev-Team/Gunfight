@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class WaveMode : NetworkBehaviour, IGameMode
+public class SurvivalMode : NetworkBehaviour, IGameMode
 {
     public static GameModeManager Instance;
     public MapManager mapManager;
@@ -18,6 +18,7 @@ public class WaveMode : NetworkBehaviour, IGameMode
 
     public int playerCount;
     public bool hasGameStarted = false;
+    public bool useCards = false;
 
     [SyncVar(hook = nameof(CheckWinCondition))]
     public int currentNumberOfEnemies;
@@ -208,6 +209,17 @@ public class WaveMode : NetworkBehaviour, IGameMode
         aliveNum--;
     }
 
+    public void QuitGame()
+    {
+        // quits back to the lobby
+        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
+        gameModeUIController.StopDisplayQuitButton();
+        RpcStopShowWinner();
+        RpcStopShowRoundPanel();
+        quitClicked = false;
+        ToLobby();
+    }
+
     public IEnumerator DelayedEndRound()
     {
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" &&
@@ -304,6 +316,41 @@ public class WaveMode : NetworkBehaviour, IGameMode
             player.GetComponent<PlayerController>().Respawn();
             player.isAlive = true;
         }
+    }
+
+    public int GetAliveNum()
+    {
+        return this.aliveNum;
+    }
+
+    public void SetAliveNum(int num)
+    {
+        this.aliveNum = num;
+    }
+
+    public void SetUseCards(bool usingCards)
+    {
+        this.useCards = usingCards;
+    }
+
+    public bool GetUseCards()
+    {
+        return this.useCards;
+    }
+
+    public void SetTotalRounds(int rounds)
+    {
+        this.totalRounds = rounds;
+    }
+
+    public void DecrementCurrentNumberOfEnemies()
+    {
+        this.currentNumberOfEnemies--;
+    }
+
+    public void SetQuitClicked(bool b)
+    {
+        this.quitClicked = b;
     }
 
     //------------------------------------------------------------------

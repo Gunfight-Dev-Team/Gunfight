@@ -9,6 +9,7 @@ public interface IGameMode
     void EndRound();
     void ToLobby();
     void PlayerDied(PlayerController player);
+    void QuitGame();
     IEnumerator QuitCountdown();
     IEnumerator DelayedEndRound();
     IEnumerator PreroundCountdown();
@@ -17,12 +18,15 @@ public interface IGameMode
     void DeleteWeaponsInGame();
     bool CheckIfGameNeedsStart();
     void InitializeGameMode();
+    void DecrementCurrentNumberOfEnemies();
 
-    //bool getHasGameStarted();
-    //void setHasGameStarted(bool hasGameStarted);
-    //int getAliveNum();
-    //void setTotalRounds(int rounds);
-    //void setPlayerCount(int numPlayers);
+
+    bool GetUseCards();
+    void SetUseCards(bool usingCards);
+    int GetAliveNum();
+    void SetAliveNum(int num);
+    void SetTotalRounds(int totalRounds);
+    void SetQuitClicked(bool b);
 
     // temporary UI RPC methods
     [ClientRpc]

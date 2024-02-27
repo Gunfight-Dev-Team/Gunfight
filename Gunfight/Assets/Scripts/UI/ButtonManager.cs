@@ -143,8 +143,8 @@ public class ButtonManager : MonoBehaviour
         GameModeManager gameModeManager = FindObjectOfType<GameModeManager>();
         if (gameModeManager != null)
         {
-            gameModeManager.quitClicked = true;
-            gameModeManager.QuitGame();
+            gameModeManager.iGameMode.SetQuitClicked(true);
+            gameModeManager.iGameMode.QuitGame();
         }
     }
 

@@ -7,7 +7,6 @@ public class GunfightMode : CompetitiveGameMode
 {
     public int[] teamAlive = { 0, 0 }; // keeps track of how many players on each team is alive
     public int[] teamWins = { 0, 0 }; // keeps track of how many wins each team has
-    private bool teamWinner = false;
     private int teamWinNum;
 
     // not sure if having this in subclass will break it

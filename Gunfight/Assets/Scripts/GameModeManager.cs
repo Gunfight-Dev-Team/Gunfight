@@ -22,16 +22,16 @@ public class GameModeManager : NetworkBehaviour
 
     //private int playerCount;
     //private bool hasGameStarted = false;
-    public enum GameMode
-    {
-        FreeForAll = 0,
-        Gunfight = 1,
-        SinglePlayer = 2
-    }
+    //public enum GameMode
+    //{
+    //    FreeForAll = 0,
+    //    Gunfight = 1,
+    //    SinglePlayer = 2
+    //}
 
     public IGameMode iGameMode;
 
-    public GameMode gameMode; // get this from lobby
+    //public GameMode gameMode; // get this from lobby
 
     //[Header("Below are used for Single Player")]
     //public GameObject enemyPrefab;
@@ -254,22 +254,22 @@ public class GameModeManager : NetworkBehaviour
     //            }
 
     //            currentRound = 0;
-                
+
     //            StartCoroutine(QuitCountdown());
     //        }
     //    }
-        //else
-        //{
-            // if single player mode
-            //DeleteWeaponsInGame();
-            //if (isServer)
-            //    RpcResetGame();
-            //SpawnWeaponsInGame();
-            //currentRoundNumberOfEnemies = Mathf.RoundToInt(currentRoundNumberOfEnemies * enemyMultiplier);
-            //currentNumberOfEnemies = currentRoundNumberOfEnemies;
-            //StartRound();
-            //spawnEnemies();
-        //}
+    //else
+    //{
+    // if single player mode
+    //DeleteWeaponsInGame();
+    //if (isServer)
+    //    RpcResetGame();
+    //SpawnWeaponsInGame();
+    //currentRoundNumberOfEnemies = Mathf.RoundToInt(currentRoundNumberOfEnemies * enemyMultiplier);
+    //currentNumberOfEnemies = currentRoundNumberOfEnemies;
+    //StartRound();
+    //spawnEnemies();
+    //}
     //}
 
     //abstract class -> depracated
@@ -332,7 +332,7 @@ public class GameModeManager : NetworkBehaviour
     //                    Debug.Log("Couldnt find game object");
     //                }
     //            }
-            
+
     //            Debug.Log("Found card manager: " + (cardManager != null));
     //        }
 
@@ -378,7 +378,7 @@ public class GameModeManager : NetworkBehaviour
     //                    }
 
     //                    RpcStopShowTimer();
-                        
+
     //                    // find the card voted the most
     //                    winningCard = cardManager.FindMaxVote();
     //                    Debug.Log("Winning card: " + winningCard);
@@ -399,7 +399,7 @@ public class GameModeManager : NetworkBehaviour
     //                {
     //                    cardManager.RpcStopCardPanel();
     //                }
-                
+
     //                RpcStopShowRoundPanel();
     //                StartCoroutine(Countdown());
     //                yield return new WaitForSeconds(5f);
