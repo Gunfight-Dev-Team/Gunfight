@@ -6,6 +6,7 @@ using static GameModeManager;
 using UnityEngine.SceneManagement;
 using System;
 
+[System.Serializable]
 public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
 {
     public static GameModeManager Instance;

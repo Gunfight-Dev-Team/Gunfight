@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
 public class SurvivalMode : NetworkBehaviour, IGameMode
 {
     public static GameModeManager Instance;

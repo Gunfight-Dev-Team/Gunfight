@@ -29,7 +29,14 @@ public class GameModeManager : NetworkBehaviour
     //    SinglePlayer = 2
     //}
 
-    public IGameMode iGameMode;
+    [SerializeField]
+    public IGameMode currentGameMode;
+
+    public SurvivalMode survivalMode;
+    public FreeForAllMode freeForAllMode;
+    public GunfightMode gunfightMode;
+
+    public string gameMode;
 
     //public GameMode gameMode; // get this from lobby
 
@@ -83,9 +90,9 @@ public class GameModeManager : NetworkBehaviour
         {
             return;
         }
-        if (iGameMode.CheckIfGameNeedsStart())
+        if (currentGameMode.CheckIfGameNeedsStart())
         {
-            iGameMode.InitializeGameMode();
+            currentGameMode.InitializeGameMode();
         }
     }
 

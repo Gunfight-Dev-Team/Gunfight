@@ -13,7 +13,6 @@ using Unity.VisualScripting;
 public class LobbyController : MonoBehaviour
 {
     public static LobbyController Instance;
-    public GameModeManager gameModeManager;
 
     public InputField LobbyNameInput;
 
@@ -77,12 +76,12 @@ public class LobbyController : MonoBehaviour
         {
             LocalPlayerController = GameObject.Find("LocalGamePlayer").GetComponent<PlayerObjectController>();
         }
-        if (GameObject.Find(gameModeManager.name) == null)
+        if (GameObject.Find(GameModeManager.Instance.name) == null)
         {
-            gameModeManager = Instantiate(gameModeManager);
+            GameModeManager.Instance = Instantiate(GameModeManager.Instance);
             if (LocalPlayerController.PlayerIdNumber == 1)
             {
-                NetworkServer.Spawn(gameModeManager.GameObject());
+                NetworkServer.Spawn(GameModeManager.Instance.GameObject());
             }
         }
 
@@ -118,7 +117,7 @@ public class LobbyController : MonoBehaviour
             // Joined single player
             GameModeChooser.value = 2;
             // might be bug here, VS says to use addcomponent and not "= new WaveMode()"
-            GameModeManager.Instance.iGameMode = gameObject.AddComponent<SurvivalMode>();
+            GameModeManager.Instance.currentGameMode = gameObject.AddComponent<SurvivalMode>();
         }
     }
 
@@ -366,7 +365,7 @@ public class LobbyController : MonoBehaviour
 
     public void StartGame()
     {
-        GameModeManager.Instance.iGameMode.SetAliveNum(manager.GamePlayers.Count);
+        GameModeManager.Instance.currentGameMode.SetAliveNum(manager.GamePlayers.Count);
         LocalPlayerController.CanStartGame(MapName);
     }
 
@@ -385,7 +384,7 @@ public class LobbyController : MonoBehaviour
 
     public void ToggleCards()
     {
-        gameModeManager.iGameMode.SetUseCards(!gameModeManager.iGameMode.GetUseCards());
+        GameModeManager.Instance.currentGameMode.SetUseCards(!GameModeManager.Instance.currentGameMode.GetUseCards());
     }
 
     public void SwitchGameModes()
@@ -394,19 +393,39 @@ public class LobbyController : MonoBehaviour
         {
             PlayerList2.SetActive(false);
             ChatBox.SetActive(true);
-            gameModeManager.iGameMode = gameObject.AddComponent<FreeForAllMode>();
+            if (GameModeManager.Instance.freeForAllMode)
+            {
+                GameModeManager.Instance.freeForAllMode.gameObject.SetActive(true);
+            }
+            else
+            {
+                Debug.Log(GameModeManager.Instance.freeForAllMode.gameObject);
+                Debug.Log(GameModeManager.Instance.freeForAllMode);
+            }
+
+            GameModeManager.Instance.survivalMode.gameObject.SetActive(false);
+            GameModeManager.Instance.gunfightMode.gameObject.SetActive(false);
+            GameModeManager.Instance.currentGameMode = GameModeManager.Instance.freeForAllMode;
+            GameModeManager.Instance.gameMode = "freeForAll";
+
         }
         else if(GameModeChooser.value == 1)
         {
             PlayerList2.SetActive(true);
             ChatBox.SetActive(false);
-            gameModeManager.iGameMode = gameObject.AddComponent<GunfightMode>();
+            GameModeManager.Instance.gunfightMode.gameObject.SetActive(true);
+            GameModeManager.Instance.freeForAllMode.gameObject.SetActive(false);
+            GameModeManager.Instance.survivalMode.gameObject.SetActive(false);
+            GameModeManager.Instance.currentGameMode = GameModeManager.Instance.gunfightMode;
         }
         else if (GameModeChooser.value == 2)
         {
             PlayerList2.SetActive(false);
             ChatBox.SetActive(true);
-            gameModeManager.iGameMode = gameObject.AddComponent<SurvivalMode>();
+            GameModeManager.Instance.survivalMode.gameObject.SetActive(true);
+            GameModeManager.Instance.freeForAllMode.gameObject.SetActive(false);
+            GameModeManager.Instance.gunfightMode.gameObject.SetActive(false);
+            GameModeManager.Instance.currentGameMode = GameModeManager.Instance.survivalMode;
         }
 
     }
@@ -417,7 +436,7 @@ public class LobbyController : MonoBehaviour
 
         if(int.TryParse(selectedNum, out int intVal))
         {
-            GameModeManager.Instance.iGameMode.SetTotalRounds(intVal);
+            GameModeManager.Instance.currentGameMode.SetTotalRounds(intVal);
         }
     }
     
