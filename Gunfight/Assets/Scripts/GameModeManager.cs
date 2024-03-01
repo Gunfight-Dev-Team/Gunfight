@@ -77,10 +77,15 @@ public class GameModeManager : NetworkBehaviour
 
     private void Start()
     {
+        currentGameMode = freeForAllMode;
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 

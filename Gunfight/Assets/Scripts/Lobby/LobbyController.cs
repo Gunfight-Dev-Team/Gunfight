@@ -231,7 +231,7 @@ public class LobbyController : MonoBehaviour
             return; // gets rid of error when shutting down the game and lobby controller has already been deleted.
         // Sync Gamemode Text
         GetComponent<GameModeDropdown>().OnDropdownValueChanged();
-        SwitchGameModes();
+        //SwitchGameModes();
     }
 
     public void FindLocalPlayer()
@@ -393,7 +393,7 @@ public class LobbyController : MonoBehaviour
         {
             PlayerList2.SetActive(false);
             ChatBox.SetActive(true);
-            if (GameModeManager.Instance.freeForAllMode)
+            if (GameModeManager.Instance)
             {
                 GameModeManager.Instance.freeForAllMode.gameObject.SetActive(true);
             }
