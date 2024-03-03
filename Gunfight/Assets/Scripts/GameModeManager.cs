@@ -309,9 +309,23 @@ public class GameModeManager : NetworkBehaviour
 
     public void PlayerQuit() // player quit during the game
     {
+        // aliveNum--;
+        // playerCount--;
+        if (!isClient) return;
+        CmdPlayerQuit();
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdPlayerQuit()
+    {
         aliveNum--;
         playerCount--;
-        Debug.Log("Player left game");
+        Debug.Log("player left the game");
+
+        foreach (PlayerObjectController player in Manager.GamePlayers)
+        {
+            Debug.Log(player.name);
+        }
     }
 
     public void PlayerDied(PlayerController player)
