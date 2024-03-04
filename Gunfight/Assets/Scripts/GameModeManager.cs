@@ -307,27 +307,56 @@ public class GameModeManager : NetworkBehaviour
         ToLobby();
     }
 
-    // public void PlayerQuit() // player quit during the game
-    // {
-    //     // aliveNum--;
-    //     // playerCount--;
-    //     if (!isClient) return;
-    //     Debug.Log("player left the game");
-    //     CmdPlayerQuit();
-    // }
-
     // [Command(requiresAuthority = false)]
     public void PlayerQuit()
     {
-        Debug.Log("Alive num before: " + aliveNum + " Player count before: " + playerCount);
         aliveNum--;
         playerCount--;
-        Debug.Log("Alive num after: " + aliveNum + " Player count after: " + playerCount);
         Debug.Log("player left the game");
 
-        foreach (PlayerObjectController player in Manager.GamePlayers)
+        // free-for-all: if there is one player left end game
+        if (gameMode == GameMode.FreeForAll)
         {
-            Debug.Log(player.PlayerName);
+            if (playerCount == 1)
+            {
+                Debug.Log("One player left");
+                // reset stats
+                RpcResetPlayerStats();
+                currentRound = 0;
+                
+                RpcResetGame();
+                ToLobby();
+            }
+        }
+
+        // gunfight: if all the players that are left are from the same team, end game
+        if (gameMode == GameMode.Gunfight)
+        {
+            int team1 = 0;
+            int team2 = 0;
+            foreach (PlayerObjectController player in Manager.GamePlayers)
+            {
+                if (player.Team == 1)
+                {
+                    team1++;
+                }
+                else if (player.Team == 2)
+                {
+                    team2++;
+                }
+            }
+
+            if (team1 == 0 || team2 == 0)
+            {
+                Debug.Log("One team left");
+                // reset stats
+                teamWins[0] = 0;
+                teamWins[1] = 0;
+                currentRound = 0;
+
+                RpcResetGame();
+                ToLobby();
+            }
         }
     }
 
