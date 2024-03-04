@@ -57,7 +57,7 @@ public class SettingsManager : NetworkBehaviour
 
     private void loadQuitGameToMatchmaking()
     {
-        // if (!isClient) return;
+        if (!isClient) return;
         // CmdPlayerQuit();
         GameModeManager.Instance.PlayerQuit(); 
         LocalPlayerController.Quit();

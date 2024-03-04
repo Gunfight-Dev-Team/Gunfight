@@ -311,7 +311,8 @@ public class GameModeManager : NetworkBehaviour
     {
         // aliveNum--;
         // playerCount--;
-        if (!isClient) return;
+        //if (!isClient) return;
+        Debug.Log("player left the game");
         CmdPlayerQuit();
     }
 
@@ -320,11 +321,11 @@ public class GameModeManager : NetworkBehaviour
     {
         aliveNum--;
         playerCount--;
-        Debug.Log("player left the game");
+        Debug.Log("sending player left the game to server");
 
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
-            Debug.Log(player.name);
+            Debug.Log(player.PlayerName);
         }
     }
 
