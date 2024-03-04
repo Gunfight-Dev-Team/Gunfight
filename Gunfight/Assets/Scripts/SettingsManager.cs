@@ -59,7 +59,11 @@ public class SettingsManager : NetworkBehaviour
     {
         if (!isClient) return;
         CmdPlayerQuit();
-        //GameModeManager.Instance.PlayerQuit(); 
+        Invoke("PlayerQuitGame", 0.1f);
+    }
+
+    private void PlayerQuitGame()
+    {
         LocalPlayerController.Quit();
     }
 
