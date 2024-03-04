@@ -58,14 +58,15 @@ public class SettingsManager : NetworkBehaviour
     private void loadQuitGameToMatchmaking()
     {
         if (!isClient) return;
-        // CmdPlayerQuit();
-        GameModeManager.Instance.PlayerQuit(); 
+        CmdPlayerQuit();
+        //GameModeManager.Instance.PlayerQuit(); 
         LocalPlayerController.Quit();
     }
 
-    // [Command(requiresAuthority = false)]
-    // public void CmdPlayerQuit()
-    // {
-    //     GameModeManager.Instance.PlayerQuit(); 
-    // }
+    [Command(requiresAuthority = false)]
+    public void CmdPlayerQuit()
+    {
+        Debug.Log("sending player left the game to server");
+        GameModeManager.Instance.PlayerQuit(); 
+    }
 }

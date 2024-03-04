@@ -307,21 +307,23 @@ public class GameModeManager : NetworkBehaviour
         ToLobby();
     }
 
-    public void PlayerQuit() // player quit during the game
-    {
-        // aliveNum--;
-        // playerCount--;
-        //if (!isClient) return;
-        Debug.Log("player left the game");
-        CmdPlayerQuit();
-    }
+    // public void PlayerQuit() // player quit during the game
+    // {
+    //     // aliveNum--;
+    //     // playerCount--;
+    //     if (!isClient) return;
+    //     Debug.Log("player left the game");
+    //     CmdPlayerQuit();
+    // }
 
-    [Command(requiresAuthority = false)]
-    public void CmdPlayerQuit()
+    // [Command(requiresAuthority = false)]
+    public void PlayerQuit()
     {
+        Debug.Log("Alive num before: " + aliveNum + " Player count before: " + playerCount);
         aliveNum--;
         playerCount--;
-        Debug.Log("sending player left the game to server");
+        Debug.Log("Alive num after: " + aliveNum + " Player count after: " + playerCount);
+        Debug.Log("player left the game");
 
         foreach (PlayerObjectController player in Manager.GamePlayers)
         {
