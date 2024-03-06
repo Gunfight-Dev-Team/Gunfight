@@ -21,6 +21,8 @@ public class LobbiesListManager : MonoBehaviour
 
     public GameObject title;
 
+    public GameObject infoBox;
+
     public GameObject lobbiesButton, hostButton, quickstartButton, backButton, singleplayerButton;
 
     public List<GameObject> listOfLobbies = new List<GameObject> ();
@@ -50,6 +52,7 @@ public class LobbiesListManager : MonoBehaviour
             singleplayerButton.SetActive(true);
             lobbiesMenu.SetActive(false);
             backButton.SetActive(true);
+            infoBox.SetActive(true);
             DestroyLobbies();
             inLobbyList = false;
             buttonText.enabled = true;
@@ -70,6 +73,7 @@ public class LobbiesListManager : MonoBehaviour
         lobbiesButton.SetActive(false);
         buttonText.enabled = false;
         title.SetActive(false);
+        infoBox.SetActive(false);
 
         lobbiesMenu.SetActive(true);
 

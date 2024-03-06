@@ -55,6 +55,7 @@ public class GameModeManager : NetworkBehaviour
     private int teamWinNum;
 
     private bool playersQuit = false; // keeps track if enough players quit during game
+    public GameObject boxes; // parent game object of boxes in map
 
     private CustomNetworkManager Manager
     {
@@ -237,13 +238,19 @@ public class GameModeManager : NetworkBehaviour
         {
             if (!CheckOverallWin() && (playersQuit == false)) // if there is not an overall winner
             {
+                // resets the boxes
+                boxes = GameObject.Find("Objects");
+                foreach (Box child in boxes.GetComponentsInChildren<Box>())
+                {
+                    child.RpcResetBox();
+                }
+
                 DeleteWeaponsInGame();
                 if (isServer)
                     RpcResetGame();
                 SpawnWeaponsInGame();
                 aliveNum = playerCount;
                 StartRound();
-                // TODO: Reset Map (pots / boxes)
             }
             else // if there is an overall winner
             {
