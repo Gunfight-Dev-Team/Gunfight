@@ -54,6 +54,7 @@ public class GameModeManager : NetworkBehaviour
     private bool teamWinner = false; 
     private int teamWinNum;
 
+    private bool playersQuit = false;
     public GameObject boxes; // parent game object of boxes in map
 
     private CustomNetworkManager Manager
@@ -98,6 +99,13 @@ public class GameModeManager : NetworkBehaviour
                 hasGameStarted = true;
                 StartRound(); // starts the first round after Awake
             }
+        }
+        else if (playersQuit && (SceneManager.GetActiveScene().name != "Lobby"))
+        {
+            StopCoroutine(DelayedEndRound());
+            Debug.Log("Stop coroutine");
+            playersQuit = false;
+            Invoke("ToLobby", 0.2f);
         }
     }
 
@@ -326,9 +334,7 @@ public class GameModeManager : NetworkBehaviour
                 // reset stats
                 RpcResetPlayerStats();
                 currentRound = 0;
-                StopCoroutine(DelayedEndRound());
-
-                Invoke("ToLobby", 0.2f);
+                playersQuit = true;
             }
         }
 
@@ -356,9 +362,10 @@ public class GameModeManager : NetworkBehaviour
                 teamWins[0] = 0;
                 teamWins[1] = 0;
                 currentRound = 0;
-                StopCoroutine(DelayedEndRound());
+                playersQuit = true;
+                // StopCoroutine(DelayedEndRound());
 
-                Invoke("ToLobby", 0.2f);
+                // Invoke("ToLobby", 0.2f);
             }
         }
     }
