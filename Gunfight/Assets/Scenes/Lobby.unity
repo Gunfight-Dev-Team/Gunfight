@@ -361,6 +361,7 @@ GameObject:
   - component: {fileID: 41049957}
   - component: {fileID: 41049954}
   - component: {fileID: 41049956}
+  - component: {fileID: 41049960}
   m_Layer: 0
   m_Name: LobbyController
   m_TagString: Untagged
@@ -532,6 +533,23 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   dropdown: {fileID: 1989389838}
+--- !u!114 &41049960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41049951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06bf03bd0917b493cb239d5ce72084e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.1
+  publicToggle: {fileID: 360413125}
+  cardToggle: {fileID: 827399137}
 --- !u!1 &46754091
 GameObject:
   m_ObjectHideFlags: 0
@@ -2115,6 +2133,18 @@ MonoBehaviour:
       - m_Target: {fileID: 41049952}
         m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
         m_MethodName: TogglePublic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 41049960}
+        m_TargetAssemblyTypeName: ToggleController, Assembly-CSharp
+        m_MethodName: OnPublicToggleValueChanged
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5035,6 +5065,18 @@ MonoBehaviour:
       - m_Target: {fileID: 41049952}
         m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
         m_MethodName: ToggleCards
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 41049960}
+        m_TargetAssemblyTypeName: ToggleController, Assembly-CSharp
+        m_MethodName: OnCardToggleValueChanged
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

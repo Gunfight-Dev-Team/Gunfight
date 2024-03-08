@@ -54,7 +54,6 @@ public class GameModeManager : NetworkBehaviour
     private bool teamWinner = false; 
     private int teamWinNum;
 
-    private bool playersQuit = false; // keeps track if enough players quit during game
     public GameObject boxes; // parent game object of boxes in map
 
     private CustomNetworkManager Manager
@@ -236,7 +235,7 @@ public class GameModeManager : NetworkBehaviour
         }
         if (gameMode != GameMode.SinglePlayer)
         {
-            if (!CheckOverallWin() && (playersQuit == false)) // if there is not an overall winner
+            if (!CheckOverallWin()) // if there is not an overall winner
             {
                 // resets the boxes
                 boxes = GameObject.Find("Objects");
@@ -273,7 +272,6 @@ public class GameModeManager : NetworkBehaviour
                 }
 
                 currentRound = 0;
-                playersQuit = false;
                 
                 StartCoroutine(BackToLobbyCountdown());
             }
@@ -313,7 +311,6 @@ public class GameModeManager : NetworkBehaviour
         ToLobby();
     }
 
-    // [Command(requiresAuthority = false)]
     public void PlayerQuit()
     {
         aliveNum--;
@@ -326,43 +323,44 @@ public class GameModeManager : NetworkBehaviour
             if (playerCount == 1)
             {
                 Debug.Log("One player left");
-                playersQuit = true;
-                // // reset stats
-                // RpcResetPlayerStats();
-                // currentRound = 0;
+                // reset stats
+                RpcResetPlayerStats();
+                currentRound = 0;
+                StopCoroutine(DelayedEndRound());
 
-                // Invoke("ToLobby", 0.2f);
+                Invoke("ToLobby", 0.2f);
             }
         }
 
         // gunfight: if all the players that are left are from the same team, end game
-        // if (gameMode == GameMode.Gunfight)
-        // {
-        //     int team1 = 0;
-        //     int team2 = 0;
-        //     foreach (PlayerObjectController player in Manager.GamePlayers)
-        //     {
-        //         if (player.Team == 1)
-        //         {
-        //             team1++;
-        //         }
-        //         else if (player.Team == 2)
-        //         {
-        //             team2++;
-        //         }
-        //     }
+        if (gameMode == GameMode.Gunfight)
+        {
+            int team1 = 0;
+            int team2 = 0;
+            foreach (PlayerObjectController player in Manager.GamePlayers)
+            {
+                if (player.Team == 1)
+                {
+                    team1++;
+                }
+                else if (player.Team == 2)
+                {
+                    team2++;
+                }
+            }
 
-        //     if (team1 == 0 || team2 == 0)
-        //     {
-        //         Debug.Log("One team left");
-        //         // reset stats
-        //         teamWins[0] = 0;
-        //         teamWins[1] = 0;
-        //         currentRound = 0;
+            if (team1 == 0 || team2 == 0)
+            {
+                Debug.Log("One team left");
+                // reset stats
+                teamWins[0] = 0;
+                teamWins[1] = 0;
+                currentRound = 0;
+                StopCoroutine(DelayedEndRound());
 
-        //         ToLobby();
-        //     }
-        // }
+                Invoke("ToLobby", 0.2f);
+            }
+        }
     }
 
     public void PlayerDied(PlayerController player)
@@ -399,7 +397,7 @@ public class GameModeManager : NetworkBehaviour
             }
 
             // If only one player is alive or there is a team winner, end round 
-            if ((aliveNum <= 1 || teamWinner) && (playersQuit == false))
+            if ((aliveNum <= 1 || teamWinner))
             {
                 RpcDisableGameInteraction();
                 string winner = FindWinner();

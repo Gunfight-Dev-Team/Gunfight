@@ -135,19 +135,23 @@ public class menuButtonTween : MonoBehaviour
                 LeanTween.move(textObject.transform.GetChild(0).gameObject, originalTopPosition, 0.1f).setEase(LeanTweenType.easeOutElastic);
                 LeanTween.move(textObject.transform.GetChild(1).gameObject, originalBottomPosition, 0.1f).setEase(LeanTweenType.easeOutElastic);
             }
+        }
+        else
+        {
+            clicked = false;
+        }
 
-            // Cancel the ongoing hover effect
-            LeanTween.cancel(gameObject, hoverTweenId);
+        // Cancel the ongoing hover effect
+        LeanTween.cancel(gameObject, hoverTweenId);
 
-            // Reset the color of the last child in the sprite component
-            Transform lastChild = spriteObject.GetChild(spriteObject.childCount - 1);
-            if (lastChild != null)
+        // Reset the color of the last child in the sprite component
+        Transform lastChild = spriteObject.GetChild(spriteObject.childCount - 1);
+        if (lastChild != null)
+        {
+            Image lastChildRenderer = lastChild.GetComponent<Image>();
+            if (lastChildRenderer != null)
             {
-                Image lastChildRenderer = lastChild.GetComponent<Image>();
-                if (lastChildRenderer != null)
-                {
-                    lastChildRenderer.color = originalLastChildColor;
-                }
+                lastChildRenderer.color = originalLastChildColor;
             }
         }
     }
