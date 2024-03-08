@@ -52,7 +52,7 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
         {
             return;
         }
-        currentNumberOfEnemies = currentRoundNumberOfEnemies;
+        currentNumberOfEnemies = startingNumberOfEnemies;
         for (int i = 0; i < startingNumberOfEnemies; i++)
         {
             float x = (i % 2 == 0) ? mapManager.mapWidth / 2 : -mapManager.mapWidth / 2;
@@ -224,7 +224,7 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
     public IEnumerator DelayedEndRound()
     {
         if (isServer && SceneManager.GetActiveScene().name != "Lobby" &&
-            currentNumberOfEnemies != startingNumberOfEnemies)
+            currentNumberOfEnemies <= 0) // changed from curNumNME != startingNum 
         {
             // gets the Card Manager game object
             if (cardManager == null)

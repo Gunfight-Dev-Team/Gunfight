@@ -29,6 +29,7 @@ public class FreeForAllMode : CompetitiveGameMode
     public override void ResetOverallGame()
     {
         RpcResetPlayerStats();
+        RpcResetGame();
     }
 
     public override bool CheckRoundWinCondition()
