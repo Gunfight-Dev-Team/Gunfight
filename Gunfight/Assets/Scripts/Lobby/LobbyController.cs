@@ -119,6 +119,7 @@ public class LobbyController : MonoBehaviour
             // might be bug here, VS says to use addcomponent and not "= new WaveMode()"
             GameModeManager.Instance.currentGameMode = gameObject.AddComponent<SurvivalMode>();
         }
+        SwitchGameModes();
     }
 
     private void OnEndEdit(string newName)
