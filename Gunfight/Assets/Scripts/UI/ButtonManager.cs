@@ -127,6 +127,21 @@ public class ButtonManager : MonoBehaviour
         LobbiesListManager.instance.toLobbyList();
     }
 
+    public void QuitGameToLobby()
+    {
+        Invoke("loadQuitGame", 0.75f);
+    }
+
+    private void loadQuitGame()
+    {
+        GameModeManager gameModeManager = FindObjectOfType<GameModeManager>();
+        if (gameModeManager != null)
+        {
+            gameModeManager.currentGameMode.SetQuitClicked(true);
+            gameModeManager.currentGameMode.QuitGame();
+        }
+    }
+
     public void onHoverQuick()
     {
         ButtonInfo.text = Infos[1];

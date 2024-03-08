@@ -120,7 +120,7 @@ public class EnemyObjectController : NetworkBehaviour, IDamageable
     void RpcDie()
     {
         ratAnimator.SetTrigger("death");
-        GameModeManager.Instance.currentNumberOfEnemies--;
+        GameModeManager.Instance.currentGameMode.DecrementCurrentNumberOfEnemies();
         Destroy(gameObject, 0.5f);
     }
 
