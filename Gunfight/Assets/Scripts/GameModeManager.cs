@@ -13,6 +13,8 @@ public class GameModeManager : NetworkBehaviour
     public CardUIController cardUIController;
     public GameModeUIController gameModeUIController;
 
+    private Coroutine coroutine; // variable to start and stop coroutine
+
     [SyncVar]
     public int currentRound = 0; // keeps track of the current round
     public int totalRounds = 3; // keeps track of total amount of rounds
@@ -102,7 +104,7 @@ public class GameModeManager : NetworkBehaviour
         }
         else if (playersQuit && (SceneManager.GetActiveScene().name != "Lobby"))
         {
-            StopCoroutine(DelayedEndRound());
+            StopCoroutine(coroutine);
             Debug.Log("Stop coroutine");
             playersQuit = false;
             Invoke("ToLobby", 0.2f);
@@ -642,7 +644,7 @@ public class GameModeManager : NetworkBehaviour
     {
         if (gameMode != GameMode.SinglePlayer)
         {
-            StartCoroutine(DelayedEndRound());
+            coroutine = StartCoroutine(DelayedEndRound());
         }
     }
 
