@@ -71,6 +71,6 @@ public class SettingsManager : NetworkBehaviour
     public void CmdPlayerQuit()
     {
         Debug.Log("sending player left the game to server");
-        GameModeManager.Instance.PlayerQuit(); 
+        // GameModeManager.Instance.PlayerQuit(); 
     }
 }

@@ -98,7 +98,7 @@ public class FreeForAllMode : CompetitiveGameMode
         Debug.Log("Ranking names: " + rankingString);
         Debug.Log("Ranking wins: " + winsString);
 
-        RpcShowRanking(rankingString, winsString);
+        gameModeUIController.RpcShowRanking(rankingString, winsString);
     }
 
 }

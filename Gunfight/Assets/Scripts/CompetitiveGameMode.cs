@@ -12,6 +12,8 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
     public static GameModeManager Instance;
     public MapManager mapManager;
     public CardManager cardManager;
+    public GameModeUIController gameModeUIController;
+    public CardUIController cardUIController;
 
     [SyncVar]
     public int currentRound = 0; // keeps track of the current round
@@ -93,11 +95,11 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
         else // if there is an overall winner
         {
             Debug.Log("End of game!");
-            GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-            gameModeUIController.DisplayQuitButton();
-            RpcShowRoundPanel();
+            // gameModeUIController.DisplayQuitButton();
+            string overallString = "Overall Winner: " + FindOverallWinner();
+            string roundString = "Round: " + Mathf.Ceil(currentRound).ToString();
+            gameModeUIController.RpcShowRoundPanel(true, overallString, roundString);
             RankingList();
-            RpcShowWinner("Overall Winner: " + FindOverallWinner());
 
             //reset player stats
             ResetOverallGame();
@@ -127,6 +129,9 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
                 Debug.Log("Found card manager: " + (cardManager != null));
             }
 
+            cardUIController = FindObjectOfType<CardUIController>();
+            gameModeUIController = FindObjectOfType<GameModeUIController>();
+
             // If only one player is alive or there is a team winner, end round 
             if (CheckRoundWinCondition())
             {
@@ -136,12 +141,12 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
                 {
                     if (useCards)
                     {
-                        cardManager.RpcShowCardPanel();
+                        cardUIController.RpcShowCardPanel(true);
                     }
-
-                    RpcShowRoundPanel();
-                    RpcShowWinner("Winner: " + winner);
-                    RpcShowRoundNumber("Round: " + Mathf.Ceil(currentRound).ToString());
+                    
+                    string winnerString = "Winner: " + winner;
+                    string roundString = "Round: " + Mathf.Ceil(currentRound).ToString();
+                    gameModeUIController.RpcShowRoundPanel(true, winnerString, roundString);
                     RankingList(); // displays the rankings
 
                     if (useCards)
@@ -151,7 +156,7 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
 
                         while (count > 0)
                         {
-                            RpcShowTimer(Mathf.Ceil(count).ToString());
+                            gameModeUIController.RpcShowTimer(Mathf.Ceil(count).ToString());
                             // if everyone voted stop countdown
                             if (cardManager.CheckIfEveryoneVoted(playerCount))
                             {
@@ -163,13 +168,13 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
                             Debug.Log("Card countdown: " + count);
                         }
 
-                        RpcStopShowTimer();
+                        gameModeUIController.RpcStopShowTimer();
 
                         // find the card voted the most
                         winningCard = cardManager.FindMaxVote();
                         Debug.Log("Winning card: " + winningCard);
 
-                        cardManager.RpcShowWinningCard(winningCard); // only displaying the winning card
+                        cardUIController.RpcShowWinningCard(winningCard); // only displaying the winning card
                         yield return new WaitForSeconds(5f); // pause to show winning card
                     }
                     else // if cards are not being used
@@ -177,16 +182,12 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
                         yield return new WaitForSeconds(5f);
                     }
 
-                    RpcStopShowRanking();
-                    RpcStopShowRoundNumber();
-                    RpcStopShowWinner();
-
                     if (useCards)
                     {
-                        cardManager.RpcStopCardPanel();
+                        cardUIController.RpcShowCardPanel(false);
                     }
 
-                    RpcStopShowRoundPanel();
+                    gameModeUIController.RpcShowRoundPanel(false, "", "");
                     StartCoroutine(PreroundCountdown());
                     yield return new WaitForSeconds(5f);
                 }
@@ -202,14 +203,14 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
         while (countdownTime > 0)
         {
             // Update the countdown text on the UI
-            RpcShowCount(Mathf.Ceil(countdownTime).ToString());
+            gameModeUIController.RpcShowCount(Mathf.Ceil(countdownTime).ToString());
 
             // Wait for the next frame
             yield return null;
             countdownTime -= Time.deltaTime;
         }
 
-        RpcStopShowCount();
+        gameModeUIController.RpcStopShowCount();
     }
 
     public void ToLobby()
@@ -243,10 +244,8 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
     public void QuitGame()
     {
         // quits back to the lobby
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-        gameModeUIController.StopDisplayQuitButton();
-        RpcStopShowWinner();
-        RpcStopShowRoundPanel();
+        // gameModeUIController.StopDisplayQuitButton();
+        gameModeUIController.RpcShowRoundPanel(false, "", "");
         quitClicked = false;
         ToLobby();
     }
@@ -321,54 +320,6 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
         Debug.Log("Attempted to decrement number of enemies in non-surival game mode.");
     }
 
-    //---------------------------------------------------------------------------
-    //--------------------temporary UI RPC Methods-------------------------------
-    //---------------------------------------------------------------------------
-
-    [ClientRpc]
-    public void RpcShowRoundPanel()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayRoundPanel();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowRoundPanel()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayRoundPanel();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowRanking(string rankings, string wins)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayRanking(rankings, wins);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowRanking()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayRanking();
-        }
-    }
-
     [ClientRpc]
     public void RpcDisableGameInteraction()
     {
@@ -388,94 +339,6 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
             player.GetComponent<PlayerController>().enabled = true;
             player.GetComponent<PlayerController>().Respawn();
             player.isAlive = true;
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowWinner(string winner)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayWinner(winner);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowWinner()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayWinner();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowCount(string count)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayCount(count);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowCount()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayCount();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowTimer(string count)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayTimer(count);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowTimer()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayTimer();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowRoundNumber(string number)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayRoundNumber(number);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowRoundNumber()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayRoundNumber();
         }
     }
 

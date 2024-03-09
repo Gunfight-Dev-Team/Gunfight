@@ -151,6 +151,6 @@ public class GunfightMode : CompetitiveGameMode
         Debug.Log("Ranking names: " + rankingString);
         Debug.Log("Ranking wins: " + winsString);
 
-        RpcShowRanking(rankingString, winsString);
+        gameModeUIController.RpcShowRanking(rankingString, winsString);
     }
 }

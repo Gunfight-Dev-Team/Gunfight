@@ -27,20 +27,4 @@ public interface IGameMode
     void SetAliveNum(int num);
     void SetTotalRounds(int totalRounds);
     void SetQuitClicked(bool b);
-
-    // temporary UI RPC methods
-    [ClientRpc]
-    void RpcShowRoundPanel();
-    [ClientRpc]
-    void RpcStopShowRoundPanel();
-    [ClientRpc]
-    void RpcShowWinner(string winner);
-    [ClientRpc]
-    void RpcStopShowWinner();
-    [ClientRpc]
-    void RpcResetGame();
-    [ClientRpc]
-    void RpcShowCount(string count);
-    [ClientRpc]
-    void RpcStopShowCount();
 }

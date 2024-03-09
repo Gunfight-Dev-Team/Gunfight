@@ -9,6 +9,8 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
     public static GameModeManager Instance;
     public MapManager mapManager;
     public CardManager cardManager;
+    public GameModeUIController gameModeUIController;
+    public CardUIController cardUIController;
 
     private CustomNetworkManager manager;
 
@@ -213,10 +215,8 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
     public void QuitGame()
     {
         // quits back to the lobby
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-        gameModeUIController.StopDisplayQuitButton();
-        RpcStopShowWinner();
-        RpcStopShowRoundPanel();
+        // gameModeUIController.StopDisplayQuitButton();
+        gameModeUIController.RpcShowRoundPanel(false, "", "");
         quitClicked = false;
         ToLobby();
     }
@@ -236,14 +236,17 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
                 }
             }
 
+            cardUIController = FindObjectOfType<CardUIController>();
+            gameModeUIController = FindObjectOfType<GameModeUIController>();
+
             // If no enemy, end round (bug source??)
             if (currentNumberOfEnemies <= 0)
             {
-                cardManager.RpcShowCardPanel();
-                RpcShowWinner("Round: " + currentRound);
+                cardUIController.RpcShowCardPanel(true);
+                gameModeUIController.RpcShowWinner("Round: " + currentRound);
                 yield return new WaitForSeconds(10.0f);
-                RpcStopShowWinner();
-                cardManager.RpcStopCardPanel();
+                gameModeUIController.RpcStopShowWinner();
+                cardUIController.RpcShowCardPanel(false);
 
                 StartCoroutine(PreroundCountdown());
                 yield return new WaitForSeconds(5f);
@@ -259,7 +262,7 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
         while (countdownTime > 0)
         {
             // Update the countdown text on the UI
-            RpcShowCount(Mathf.Ceil(countdownTime).ToString());
+            gameModeUIController.RpcShowCount(Mathf.Ceil(countdownTime).ToString());
 
             // Wait for the next frame
             yield return null;
@@ -269,7 +272,7 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
         }
 
         // Clear the countdown text when the countdown is complete
-        RpcStopShowCount();
+        gameModeUIController.RpcStopShowCount();
     }
 
     public void CheckWinCondition(int oldAliveNum, int newAliveNum)
@@ -352,75 +355,5 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
     public void SetQuitClicked(bool b)
     {
         this.quitClicked = b;
-    }
-
-    //------------------------------------------------------------------
-    //--------------------temporary UI RPC Methods----------------------
-    //------------------------------------------------------------------
-
-    [ClientRpc]
-    public void RpcShowRoundPanel()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayRoundPanel();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowRoundPanel()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayRoundPanel();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowWinner(string winner)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayWinner(winner);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowWinner()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayWinner();
-        }
-    }
-
-    [ClientRpc]
-    public void RpcShowCount(string count)
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.DisplayCount(count);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcStopShowCount()
-    {
-        GameModeUIController gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-        if (gameModeUIController != null)
-        {
-            gameModeUIController.StopDisplayCount();
-        }
     }
 }
