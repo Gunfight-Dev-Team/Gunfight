@@ -30,8 +30,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ShineGlow: 1
-    - _ShineLocation: 0.5
+    - _ShineGlow: 0.3
+    - _ShineLocation: 0.472
     - _ShineRotate: 6.28
     - _ShineWidth: 0.05
     m_Colors:

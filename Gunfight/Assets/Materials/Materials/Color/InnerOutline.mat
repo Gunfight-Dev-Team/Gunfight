@@ -26,9 +26,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _InnerOutlineAlpha: 0.5
-    - _InnerOutlineGlow: 4
+    - _InnerOutlineAlpha: 0.164
+    - _InnerOutlineGlow: 2.38
     - _InnerOutlineThickness: 1
     m_Colors:
-    - _InnerOutlineColor: {r: 1, g: 0.43703276, b: 0, a: 1}
+    - _InnerOutlineColor: {r: 1, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

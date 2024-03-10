@@ -29,6 +29,6 @@ Material:
     - _ChromAberrAlpha: 0.25
     - _ChromAberrAmount: 0.5
     - _TikTokAlpha: 0.25
-    - _TikTokAmount: 0.5
+    - _TikTokAmount: 0.03
     m_Colors: []
   m_BuildTextureStacks: []

@@ -2,10 +2,10 @@ Shader "Hidden/Fade" {
     Properties {
         _MainTex ("Texture", 2D) = "white" { }
 
-        _FadeTex ("FadeTexture", 2D) = "white" { }//溶解的噪声图
-        _FadeAmount ("FadeAmount", Range(0, 1)) = 0 //溶解的数值
-        _FadeColor ("FadeColor", Color) = (1, 1, 0, 1) //溶解时的颜色
-        _FadeBurnWidth ("Fade Burn Width", Range(0, 1)) = 0.02 //当颜色覆盖了多少的时候才开始溶解
+        _FadeTex ("FadeTexture", 2D) = "white" { }
+        _FadeAmount ("FadeAmount", Range(0, 1)) = 0
+        _FadeColor ("FadeColor", Color) = (1, 1, 0, 1)
+        _FadeBurnWidth ("Fade Burn Width", Range(0, 1)) = 0.02
 
     }
     SubShader {
@@ -43,16 +43,16 @@ Shader "Hidden/Fade" {
             }
 
             fixed4 frag(v2f i) : SV_Target {
-                fixed4 col = tex2D(_MainTex, i.uv);//原始图片采样的颜色
-                float originalAlpha = col.a;//原始的alpha值
+                fixed4 col = tex2D(_MainTex, i.uv);
+                float originalAlpha = col.a;
 
-                float2 tiledUvFade = TRANSFORM_TEX(i.uv, _FadeTex);//得到噪声texture的UV坐标
+                float2 tiledUvFade = TRANSFORM_TEX(i.uv, _FadeTex);
 
-                float fadeTemp = tex2D(_FadeTex, tiledUvFade).r;//选取噪声texture的r值来进行消失的判定
-                float fade = step(_FadeAmount, fadeTemp);//通过texture的r值值来进行溶解判定，高于_FadeAmount为1，反之为0
-                float fadeBurn = saturate(step(_FadeAmount - _FadeBurnWidth, fadeTemp));//当颜色覆盖_FadeBurnWidth以后才开始溶解的值 也是0或1
-                col.a *= fade;//让原本的颜色的alpha值和fade相乘来表示消失的部分
-                col += fadeBurn * tex2D(_FadeTex, tiledUvFade) * _FadeColor * originalAlpha * (1 - col.a);//相乘得到最后的溶解效果
+                float fadeTemp = tex2D(_FadeTex, tiledUvFade).r;
+                float fade = step(_FadeAmount, fadeTemp);
+                float fadeBurn = saturate(step(_FadeAmount - _FadeBurnWidth, fadeTemp));
+                col.a *= fade;
+                col += fadeBurn * tex2D(_FadeTex, tiledUvFade) * _FadeColor * originalAlpha * (1 - col.a);
 
                 return col;
             }

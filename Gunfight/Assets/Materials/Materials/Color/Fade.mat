@@ -30,7 +30,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FadeAmount: -0.1
+    - _FadeAmount: 0.672
     - _FadeBurnWidth: 0.2
     m_Colors:
     - _FadeColor: {r: 1, g: 0, b: 0, a: 1}

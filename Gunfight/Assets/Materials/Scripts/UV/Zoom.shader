@@ -1,7 +1,7 @@
 Shader "Hidden/Zoom" {
     Properties {
         _MainTex ("Texture", 2D) = "white" { }
-        _ZoomUvAmount ("Zoom Amount", Range(0.1, 5)) = 0.5 //108
+        _ZoomUvAmount ("Zoom Amount", Range(0.1, 5)) = 0.5
 
     }
     SubShader {
@@ -37,11 +37,11 @@ Shader "Hidden/Zoom" {
             half _ZoomUvAmount;
 
             fixed4 frag(v2f i) : SV_Target {
-                half2 centerTiled = half2(0.5, 0.5);//定义了一个半径为0.5的中心点
-                i.uv -= centerTiled;//将纹理坐标平移到以纹理中心为原点的坐标系中
-                i.uv = i.uv * _ZoomUvAmount;//对纹理坐标进行缩放操作
-                i.uv += centerTiled;//将缩放后的纹理坐标平移到原来的坐标系中心
-                fixed4 col = tex2D(_MainTex, i.uv);//采样
+                half2 centerTiled = half2(0.5, 0.5);
+                i.uv -= centerTiled;
+                i.uv = i.uv * _ZoomUvAmount;
+                i.uv += centerTiled;
+                fixed4 col = tex2D(_MainTex, i.uv);
                 return col;
             }
             ENDCG

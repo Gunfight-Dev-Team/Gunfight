@@ -35,11 +35,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _DistortAmount: 2
-    - _DistortTexXSpeed: 0
+    - _DistortTexXSpeed: 5
     - _DistortTexYSpeed: -5
     - _Glow: 0
     - _GlowGlobal: 1
-    - _GlowIntensity: 2
+    - _GlowIntensity: 1
     m_Colors:
-    - _GlowColor: {r: 1, g: 0, b: 0, a: 1}
+    - _GlowColor: {r: 1, g: 0.52619624, b: 0, a: 1}
   m_BuildTextureStacks: []

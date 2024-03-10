@@ -21,19 +21,19 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _ColorSwapTex:
-        m_Texture: {fileID: 2800000, guid: 211b3fe75b3631e488efe311bd4cf1b9, type: 3}
+        m_Texture: {fileID: 2800000, guid: a63d5c3e77f5fa548a61081abe97332a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6ab875f6279622e4e91c8fb9271fd56b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _ColorSwapBlend: 1
-    - _ColorSwapBlueLuminosity: 0
-    - _ColorSwapGreenLuminosity: 0
-    - _ColorSwapRedLuminosity: 0
+    - _ColorSwapBlueLuminosity: 1
+    - _ColorSwapGreenLuminosity: 1
+    - _ColorSwapRedLuminosity: -1
     m_Colors:
     - _ColorSwapBlue: {r: 1, g: 1, b: 1, a: 1}
     - _ColorSwapGreen: {r: 0.59607846, g: 0, b: 0.40200886, a: 1}

@@ -26,7 +26,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ShakeUvSpeed: 8
+    - _ShakeUvSpeed: 15
     - _ShakeUvX: 0.15
     - _ShakeUvY: 0.1
     m_Colors: []
