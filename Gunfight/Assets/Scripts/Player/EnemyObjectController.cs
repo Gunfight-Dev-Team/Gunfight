@@ -119,6 +119,7 @@ public class EnemyObjectController : NetworkBehaviour, IDamageable
 
     void RpcDie()
     {
+        path.maxSpeed = 0;
         ratAnimator.SetTrigger("death");
         GetComponent<Collider2D>().enabled = false;
         GameModeManager.Instance.currentGameMode.DecrementCurrentNumberOfEnemies();

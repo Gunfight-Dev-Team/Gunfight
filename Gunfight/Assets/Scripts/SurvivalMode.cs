@@ -179,11 +179,6 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
         RpcResetGame();
         currentRound++; 
 
-        //these were in end round
-        SpawnWeaponsInGame();
-        enemiesSpawnedThisRound = Mathf.RoundToInt(enemiesSpawnedThisRound * enemyMultiplier);
-        currentNumberOfEnemies = enemiesSpawnedThisRound;
-        spawnEnemies();
         //end these
         Debug.Log("Round started: " + currentRound);
     }
@@ -192,6 +187,13 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
     {
         if (!isServer) { return; }
         DeleteWeaponsInGame();
+
+        //these were in end round
+        SpawnWeaponsInGame();
+        enemiesSpawnedThisRound = Mathf.RoundToInt(enemiesSpawnedThisRound * enemyMultiplier);
+        currentNumberOfEnemies = enemiesSpawnedThisRound;
+        spawnEnemies();
+
         //checked if server here? doesn't seem needed but check here if bugged
         StartRound();
         
