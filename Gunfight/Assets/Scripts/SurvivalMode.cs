@@ -15,17 +15,17 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
     private CustomNetworkManager manager;
 
     public GameObject enemyPrefab;
-    public int startingNumberOfEnemies = 4;
+    public int startingNumberOfEnemies;
     public float enemyMultiplier = 1.15f;
-    public int currentRoundNumberOfEnemies;
+    public int enemiesSpawnedThisRound;
 
     public int playerCount;
     public bool hasGameStarted = false;
-    public bool useCards = false;
+    public bool useCards = true;
 
     [SyncVar(hook = nameof(CheckWinCondition))]
     public int currentNumberOfEnemies;
-    [SyncVar(hook = nameof(CheckWinCondition))]
+    [SyncVar(hook = nameof(CheckLossCondition))]
     public int aliveNum; // get this from lobby
 
     [SyncVar]
@@ -55,6 +55,7 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
             return;
         }
         currentNumberOfEnemies = startingNumberOfEnemies;
+        enemiesSpawnedThisRound = startingNumberOfEnemies;
         for (int i = 0; i < startingNumberOfEnemies; i++)
         {
             float x = (i % 2 == 0) ? mapManager.mapWidth / 2 : -mapManager.mapWidth / 2;
@@ -73,7 +74,7 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
         {
             return;
         }
-        for (int i = 0; i < currentRoundNumberOfEnemies; i++)
+        for (int i = 0; i < enemiesSpawnedThisRound; i++)
         {
             float x, y;
 
@@ -139,6 +140,14 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
         }
     }
 
+    public void CheckLossCondition(int oldAliveNum, int newAliveNum)
+    {
+        if(aliveNum <= 0)
+        {
+            //game over logic
+        }
+    }
+
     //------------------Game Mode Interface Methods------------------------------
 
     public bool CheckIfGameNeedsStart()
@@ -166,9 +175,16 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
         {
             return;
         }
-        // setup for round
+        // respawns all players
         RpcResetGame();
-        currentRound++; // increase round count
+        currentRound++; 
+
+        //these were in end round
+        SpawnWeaponsInGame();
+        enemiesSpawnedThisRound = Mathf.RoundToInt(enemiesSpawnedThisRound * enemyMultiplier);
+        currentNumberOfEnemies = enemiesSpawnedThisRound;
+        spawnEnemies();
+        //end these
         Debug.Log("Round started: " + currentRound);
     }
 
@@ -177,12 +193,8 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
         if (!isServer) { return; }
         DeleteWeaponsInGame();
         //checked if server here? doesn't seem needed but check here if bugged
-        RpcResetGame();
-        SpawnWeaponsInGame();
-        currentRoundNumberOfEnemies = Mathf.RoundToInt(currentRoundNumberOfEnemies * enemyMultiplier);
-        currentNumberOfEnemies = currentRoundNumberOfEnemies;
         StartRound();
-        spawnEnemies();
+        
     }
     public void ToLobby()
     {
@@ -223,36 +235,30 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
 
     public IEnumerator DelayedEndRound()
     {
-        if (isServer && SceneManager.GetActiveScene().name != "Lobby" &&
-            currentNumberOfEnemies <= 0) // changed from curNumNME != startingNum 
+        
+        // gets the Card Manager game object
+        if (cardManager == null)
         {
-            // gets the Card Manager game object
+            cardManager = FindObjectOfType<CardManager>();
             if (cardManager == null)
             {
-                cardManager = FindObjectOfType<CardManager>();
-                if (cardManager == null)
-                {
-                    Debug.Log("Couldnt find game object");
-                }
+                Debug.Log("Couldnt find game object");
             }
-
-            cardUIController = FindObjectOfType<CardUIController>();
-            gameModeUIController = FindObjectOfType<GameModeUIController>();
-
-            // If no enemy, end round (bug source??)
-            if (currentNumberOfEnemies <= 0)
-            {
-                cardUIController.RpcShowCardPanel(true);
-                gameModeUIController.RpcShowWinner("Round: " + currentRound);
-                yield return new WaitForSeconds(10.0f);
-                gameModeUIController.RpcStopShowWinner();
-                cardUIController.RpcShowCardPanel(false);
-
-                StartCoroutine(PreroundCountdown());
-                yield return new WaitForSeconds(5f);
-            }
-            EndRound();
         }
+
+        cardUIController = FindObjectOfType<CardUIController>();
+        gameModeUIController = FindObjectOfType<GameModeUIController>();
+
+        // If no enemy, end round (bug source??)
+        cardUIController.RpcShowCardPanel(true);
+        gameModeUIController.RpcShowWinner("Round: " + currentRound);
+        yield return new WaitForSeconds(10.0f);
+        gameModeUIController.RpcStopShowWinner();
+        cardUIController.RpcShowCardPanel(false);
+
+        StartCoroutine(PreroundCountdown());
+        yield return new WaitForSeconds(5f);
+        EndRound();
     }
 
     public IEnumerator PreroundCountdown()
@@ -275,9 +281,13 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
         gameModeUIController.RpcStopShowCount();
     }
 
-    public void CheckWinCondition(int oldAliveNum, int newAliveNum)
+    public void CheckWinCondition(int oldCurrentNumberOfEnemies, int newCurrentNumberOfEnemies)
     {
-        StartCoroutine(DelayedEndRound());
+        if (isServer && SceneManager.GetActiveScene().name != "Lobby" &&
+                currentNumberOfEnemies <= 0) // changed from curNumNME != startingNum 
+        {
+            StartCoroutine(DelayedEndRound());
+        }
     }
 
     public void SpawnWeaponsInGame()
