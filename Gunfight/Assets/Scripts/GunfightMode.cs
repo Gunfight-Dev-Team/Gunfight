@@ -204,7 +204,7 @@ public class GunfightMode : CompetitiveGameMode
                 // gets the Teams object in the RoundStats object
                 GameObject statsList = canvas.transform.GetChild(6).GetChild(0).GetChild(1).gameObject;
 
-                NewTeamStatsItem.transform.parent = statsList.transform;
+                NewTeamStatsItem.transform.SetParent(statsList.transform);
 
                 PlayerStatsItems.Add(NewStatsItemScript);
             }

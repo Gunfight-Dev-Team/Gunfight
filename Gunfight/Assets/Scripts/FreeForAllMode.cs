@@ -145,7 +145,7 @@ public class FreeForAllMode : CompetitiveGameMode
                     Debug.Log("teams object found");
                 }
 
-                NewPlayerStatsItem.transform.parent = statsList.transform;
+                NewPlayerStatsItem.transform.SetParent(statsList.transform);
 
                 PlayerStatsItems.Add(NewStatsItemScript);
             }
