@@ -1677,6 +1677,8 @@ MonoBehaviour:
   syncInterval: 0.1
   mapManager: {fileID: 0}
   cardManager: {fileID: 0}
+  gameModeUIController: {fileID: 0}
+  cardUIController: {fileID: 0}
   enemyPrefab: {fileID: 5128584884438735198, guid: 608ae7d5761017c469596d6818938927, type: 3}
   startingNumberOfEnemies: 4
   enemyMultiplier: 1.15
@@ -1688,7 +1690,6 @@ MonoBehaviour:
   aliveNum: 0
   currentRound: 0
   totalRounds: 3
-  quitClicked: 0
 --- !u!114 &251112227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4388,6 +4389,8 @@ MonoBehaviour:
   syncInterval: 0.1
   mapManager: {fileID: 0}
   cardManager: {fileID: 0}
+  gameModeUIController: {fileID: 0}
+  cardUIController: {fileID: 0}
   currentRound: 0
   totalRounds: 3
   aliveNum: 0
@@ -4396,6 +4399,9 @@ MonoBehaviour:
   ranking: []
   quitClicked: 0
   useCards: 1
+  boxes: {fileID: 0}
+  PlayerStatsItemPrefab: {fileID: 551276866891013252, guid: e7fbcb449a02a436694692b2726022fa, type: 3}
+  PlayerStatsItems: []
 --- !u!114 &776546640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9335,6 +9341,8 @@ MonoBehaviour:
   syncInterval: 0.1
   mapManager: {fileID: 0}
   cardManager: {fileID: 0}
+  gameModeUIController: {fileID: 0}
+  cardUIController: {fileID: 0}
   currentRound: 0
   totalRounds: 3
   aliveNum: 0
@@ -9343,6 +9351,9 @@ MonoBehaviour:
   ranking: []
   quitClicked: 0
   useCards: 1
+  boxes: {fileID: 0}
+  PlayerStatsItemPrefab: {fileID: 551276866891013252, guid: e7fbcb449a02a436694692b2726022fa, type: 3}
+  PlayerStatsItems: []
   teamAlive: 0000000000000000
   teamWins: 0000000000000000
 --- !u!114 &1721334446

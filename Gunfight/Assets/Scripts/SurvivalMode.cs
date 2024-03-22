@@ -32,7 +32,7 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
     public int currentRound = 0; // keeps track of the current round
     public int totalRounds = 3; // keeps track of total amount of rounds
 
-    public bool quitClicked = false;
+    // public bool quitClicked = false;
 
     private CustomNetworkManager Manager
     {
@@ -195,10 +195,10 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
         int count = 10;
         while (count > 0)
         {
-            if (quitClicked)
-            {
-                break;
-            }
+            // if (quitClicked)
+            // {
+            //     break;
+            // }
             yield return new WaitForSeconds(1f);
             count--;
         }
@@ -216,8 +216,8 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
     {
         // quits back to the lobby
         // gameModeUIController.StopDisplayQuitButton();
-        gameModeUIController.RpcShowRoundPanel(false, "", "");
-        quitClicked = false;
+        // gameModeUIController.RpcShowRoundPanel(false, "", "");
+        // quitClicked = false;
         ToLobby();
     }
 
@@ -352,8 +352,8 @@ public class SurvivalMode : NetworkBehaviour, IGameMode
         this.currentNumberOfEnemies--;
     }
 
-    public void SetQuitClicked(bool b)
-    {
-        this.quitClicked = b;
-    }
+    // public void SetQuitClicked(bool b)
+    // {
+    //     this.quitClicked = b;
+    // }
 }

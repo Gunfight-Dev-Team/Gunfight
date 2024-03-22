@@ -26,5 +26,5 @@ public interface IGameMode
     int GetAliveNum();
     void SetAliveNum(int num);
     void SetTotalRounds(int totalRounds);
-    void SetQuitClicked(bool b);
+    // void SetQuitClicked(bool b);
 }

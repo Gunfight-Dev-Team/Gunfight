@@ -101,4 +101,64 @@ public class FreeForAllMode : CompetitiveGameMode
         gameModeUIController.RpcShowRanking(rankingString, winsString);
     }
 
+    public override void PlayerQuit()
+    {
+        aliveNum--;
+        playerCount--;
+
+        Debug.Log("player left the game");
+
+        if (playerCount == 1)
+        {
+            Debug.Log("One player left");
+
+            // reset stats
+            RpcResetPlayerStats();
+            currentRound = 0;
+            GameModeManager.Instance.playersQuit = true;
+        }
+    }
+
+    public override void StatsList()
+    {
+        foreach (PlayerObjectController player in Manager.GamePlayers)
+        {
+            if (!PlayerStatsItems.Any(b=>b.ConnectionID == player.ConnectionID))
+            {
+                GameObject NewPlayerStatsItem = Instantiate(PlayerStatsItemPrefab) as GameObject;
+                PlayerStatsItem NewStatsItemScript = NewPlayerStatsItem.GetComponent<PlayerStatsItem>();
+                NewStatsItemScript.ConnectionID = player.ConnectionID;
+                NewStatsItemScript.PlayerSteamID = player.PlayerSteamID;
+                
+                NewStatsItemScript.SetPlayerStats(player.wins);
+
+                GameObject canvas = GameObject.Find("Canvas");
+                // gets the Teams object in the RoundStats object
+                GameObject statsList = canvas.transform.GetChild(6).GetChild(0).GetChild(1).gameObject;
+
+                if (statsList == null)
+                {
+                    Debug.Log("teams object not found");
+                }
+                else
+                {
+                    Debug.Log("teams object found");
+                }
+
+                NewPlayerStatsItem.transform.parent = statsList.transform;
+
+                PlayerStatsItems.Add(NewStatsItemScript);
+            }
+            else
+            {
+                foreach(PlayerStatsItem PlayerStatsItemScript in PlayerStatsItems)
+                {
+                    if (PlayerStatsItemScript.ConnectionID == player.ConnectionID)
+                    {
+                        PlayerStatsItemScript.SetPlayerStats(player.wins);
+                    }
+                }
+            }
+        }
+    }
 }

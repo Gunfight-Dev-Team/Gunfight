@@ -38,6 +38,11 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
     private int winningCard;
     public bool useCards = true;
 
+    public GameObject boxes; // parent game object of boxes in map
+
+    public GameObject PlayerStatsItemPrefab; 
+    public List<PlayerStatsItem> PlayerStatsItems = new List<PlayerStatsItem>();
+    //public GameObject RoundStatsList;
 
     public abstract string FindWinner();
     public abstract string FindOverallWinner();
@@ -46,6 +51,8 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
     public abstract void ResetOverallGame();
     public abstract bool CheckRoundWinCondition();
     public abstract void InitializeGameMode();
+    public abstract void StatsList();
+    public abstract void PlayerQuit();
 
     private CustomNetworkManager Manager
     {
@@ -88,9 +95,16 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
             if (isServer)
                 RpcResetGame();
             SpawnWeaponsInGame();
+
+            // reset boxes
+            boxes = GameObject.Find("Objects");
+            foreach (Box child in boxes.GetComponentsInChildren<Box>())
+            {
+                child.RpcResetBox();
+            }
+
             aliveNum = playerCount;
             StartRound();
-            // TODO: Reset Map (pots / boxes)
         }
         else // if there is an overall winner
         {
@@ -98,7 +112,7 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
             // gameModeUIController.DisplayQuitButton();
             string overallString = "Overall Winner: " + FindOverallWinner();
             string roundString = "Round: " + Mathf.Ceil(currentRound).ToString();
-            gameModeUIController.RpcShowRoundPanel(true, overallString, roundString);
+            gameModeUIController.RpcShowEndOfGamePanel(true, overallString, roundString);
             RankingList();
 
             //reset player stats
@@ -144,10 +158,9 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
                         cardUIController.RpcShowCardPanel(true);
                     }
                     
-                    string winnerString = "Winner: " + winner;
                     string roundString = "Round: " + Mathf.Ceil(currentRound).ToString();
-                    gameModeUIController.RpcShowRoundPanel(true, winnerString, roundString);
-                    RankingList(); // displays the rankings
+                    gameModeUIController.RpcShowRoundStats(true, roundString);
+                    StatsList(); // displays the player stats
 
                     if (useCards)
                     {
@@ -176,18 +189,14 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
 
                         cardUIController.RpcShowWinningCard(winningCard); // only displaying the winning card
                         yield return new WaitForSeconds(5f); // pause to show winning card
+                        cardUIController.RpcShowCardPanel(false);
+                        gameModeUIController.RpcShowRoundStats(false, "");
                     }
                     else // if cards are not being used
                     {
                         yield return new WaitForSeconds(5f);
                     }
 
-                    if (useCards)
-                    {
-                        cardUIController.RpcShowCardPanel(false);
-                    }
-
-                    gameModeUIController.RpcShowRoundPanel(false, "", "");
                     StartCoroutine(PreroundCountdown());
                     yield return new WaitForSeconds(5f);
                 }
@@ -224,13 +233,16 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
         int count = 10;
         while (count > 0)
         {
-            if (quitClicked)
-            {
-                break;
-            }
+            // if (quitClicked)
+            // {
+            //     break;
+            // }
+            // Update the countdown text on the UI
+            gameModeUIController.RpcShowTimer(Mathf.Ceil(count).ToString());
             yield return new WaitForSeconds(1f);
             count--;
         }
+        gameModeUIController.RpcStopShowTimer();
         Debug.Log("Quit game");
         ToLobby();
     }
@@ -245,14 +257,14 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
     {
         // quits back to the lobby
         // gameModeUIController.StopDisplayQuitButton();
-        gameModeUIController.RpcShowRoundPanel(false, "", "");
-        quitClicked = false;
+        gameModeUIController.RpcShowEndOfGamePanel(false, "", "");
+        // quitClicked = false;
         ToLobby();
     }
 
     public void CheckWinCondition(int oldAliveNum, int newAliveNum)
     {
-        StartCoroutine(DelayedEndRound());
+        GameModeManager.Instance.coroutine = StartCoroutine(DelayedEndRound());
     }
 
     public void SpawnWeaponsInGame()
@@ -310,10 +322,10 @@ public abstract class CompetitiveGameMode : NetworkBehaviour, IGameMode
         this.totalRounds = rounds;
     }
 
-    public void SetQuitClicked(bool b)
-    {
-        this.quitClicked = b;
-    }
+    // public void SetQuitClicked(bool b)
+    // {
+    //     this.quitClicked = b;
+    // }
 
     public void DecrementCurrentNumberOfEnemies()
     {

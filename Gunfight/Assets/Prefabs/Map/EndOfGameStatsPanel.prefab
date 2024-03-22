@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 4666136708496376680}
   - component: {fileID: 3808991446090559425}
   m_Layer: 5
-  m_Name: RoundStatsPanel
+  m_Name: EndOfGameStatsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

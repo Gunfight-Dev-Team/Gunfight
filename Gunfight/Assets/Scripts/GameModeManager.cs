@@ -13,7 +13,7 @@ public class GameModeManager : NetworkBehaviour
     public CardUIController cardUIController;
     public GameModeUIController gameModeUIController;
 
-    private Coroutine coroutine; // variable to start and stop coroutine
+    public Coroutine coroutine; // variable to start and stop coroutine
 
     //[SyncVar]
     //public int currentRound = 0; // keeps track of the current round
@@ -65,8 +65,7 @@ public class GameModeManager : NetworkBehaviour
     //private bool teamWinner = false; 
     //private int teamWinNum;
 
-    private bool playersQuit = false;
-    public GameObject boxes; // parent game object of boxes in map
+    public bool playersQuit = false;
 
     private CustomNetworkManager Manager
     {
@@ -109,8 +108,14 @@ public class GameModeManager : NetworkBehaviour
             StopCoroutine(coroutine);
             Debug.Log("Stop coroutine");
             playersQuit = false;
-            Invoke("ToLobby", 0.2f);
+            
+            Invoke("ReturnToLobby", 0.2f);
         }
+    }
+
+    private void ReturnToLobby()
+    {
+        currentGameMode.ToLobby();
     }
 
     //private void initEnemy()
