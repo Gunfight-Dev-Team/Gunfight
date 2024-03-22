@@ -198,7 +198,16 @@ public class GunfightMode : CompetitiveGameMode
                 GameObject NewTeamStatsItem = Instantiate(PlayerStatsItemPrefab) as GameObject;
                 PlayerStatsItem NewStatsItemScript = NewTeamStatsItem.GetComponent<PlayerStatsItem>();
                 NewStatsItemScript.Team = i;
-                NewStatsItemScript.SetTeamStats(teamWins[i - 1]);
+                Color teamColor;
+                if (i == 1)
+                {
+                    teamColor = Color.red;
+                }
+                else
+                {
+                    teamColor = Color.blue;
+                }
+                NewStatsItemScript.SetTeamStats(teamWins[i - 1], teamColor);
 
                 GameObject canvas = GameObject.Find("Canvas");
                 // gets the Teams object in the RoundStats object
@@ -215,11 +224,11 @@ public class GunfightMode : CompetitiveGameMode
             {
                 if (TeamStatsScript.Team == 1)
                 {
-                    TeamStatsScript.SetTeamStats(teamWins[0]);
+                    TeamStatsScript.SetTeamStats(teamWins[0], Color.red);
                 }
                 else
                 {
-                    TeamStatsScript.SetTeamStats(teamWins[1]);
+                    TeamStatsScript.SetTeamStats(teamWins[1], Color.blue);
                 }
             }
         }

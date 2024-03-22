@@ -70,8 +70,9 @@ public class PlayerStatsItem : MonoBehaviour
         return texture;
     }
 
-    public void SetTeamStats(int rounds)
+    public void SetTeamStats(int rounds, Color teamColor)
     {
         wins.text = "Wins: " + rounds;
+        PlayerIcon.color = teamColor;
     }
 }
