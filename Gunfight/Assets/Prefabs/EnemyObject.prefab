@@ -272,6 +272,7 @@ MonoBehaviour:
   speedMultipiler: 0.5
   damage: 2
   damageMultipiler: 0.5
+  attackInterval: 1
   closestPlayer: {fileID: 0}
   ratAnimator: {fileID: 1487136203386737061}
 --- !u!114 &5017803194305878077

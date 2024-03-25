@@ -16,9 +16,11 @@ public class EnemyObjectController : NetworkBehaviour, IDamageable
     public float speedMultipiler = 0.25f;
     public float damage;
     public float damageMultipiler = 0.5f;
+    public float attackInterval;
     public GameObject closestPlayer;
     public Animator ratAnimator;
 
+    private float attackCooldownRemaining = 0;
 
     private GameObject[] players;
 
@@ -102,20 +104,46 @@ public class EnemyObjectController : NetworkBehaviour, IDamageable
         }
     }
 
-/*    public void OnCollisionEnter2D(Collision2D collision)
+    // damage player every attackInterval seconds
+    public void OnCollisionStay2D(Collision2D collision)
     {
-        hitPlayer(collision);
+        if (collision.gameObject.transform.CompareTag("Player"))
+        {
+            if(attackCooldownRemaining <= 0)
+            {
+                attackCooldownRemaining = attackInterval;
+                PlayerController p = collision.collider.gameObject.GetComponent<PlayerController>();
+                hitPlayer(p);
+            }
+            else
+            {
+                attackCooldownRemaining -= Time.deltaTime;
+            }
+        }
+    }
+
+    // reset attack timer when collision stops
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        
+        if (collision.gameObject.transform.CompareTag("Player"))
+        {
+            if (attackCooldownRemaining > 0)
+            {
+                attackCooldownRemaining = 0;
+            }
+        }
     }
 
     [ClientRpc]
-    public void hitPlayer(Collision2D collision)
+    public void hitPlayer(PlayerController player)
     {
-        if (collision.collider.gameObject.tag == "Player")
-        {
-            collision.collider.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
-        }
+        //Vector2 collisionLocation = new Vector2(collision.GetContact(0).point.x, collision.GetContact(0).point.y);
 
-    }*/
+        // player.takeDamage doesn't use collision location, give it a dummy var
+        Vector2 collisionLocation = new Vector2(0, 0);
+        player.TakeDamage(Mathf.FloorToInt(damage), collisionLocation);
+    }
 
     void RpcDie()
     {
