@@ -100,6 +100,8 @@ public class LobbyController : MonoBehaviour
             //able to choose number of rounds
             RoundNumChooser.interactable = true;
             // able to change map, this is handled in mapController
+
+            SteamLobby.Instance.UnhideLobby();
             
         }
         else 
@@ -136,6 +138,7 @@ public class LobbyController : MonoBehaviour
     {
         if(LocalPlayerController.PlayerIdNumber == 1 && AllReady)
         {
+            SteamLobby.Instance.HideLobby();
             // if host, should be able to start the game
             StartGame();
         }
